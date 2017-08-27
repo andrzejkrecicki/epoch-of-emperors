@@ -5,6 +5,9 @@ class Menu extends Konva.Group {
         super();
         this.navigator = nav;
     }
+    refresh() {
+        this.parent.draw();
+    }
 }
 
 class MainMenu extends Menu {
