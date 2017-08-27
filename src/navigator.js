@@ -1,11 +1,12 @@
-import { MainMenu, SinglePlayerMenu } from './menu.js';
+import { MainMenu, SinglePlayerMenu, RandomMapMenu } from './menu.js';
 
 class MenuNavigator {
     constructor(stage, layer) {
         this.layer = layer;
         this.menus = {
             MainMenu: new MainMenu(stage, this),
-            SinglePlayerMenu: new SinglePlayerMenu(stage, this)
+            SinglePlayerMenu: new SinglePlayerMenu(stage, this),
+            RandomMapMenu: new RandomMapMenu(stage, this)
         };
         this.navigate("MainMenu");
     }
