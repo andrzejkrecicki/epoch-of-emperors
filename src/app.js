@@ -13,6 +13,12 @@ class Game {
             height: this.stage_height
         });
         this.interface_layer = new Konva.Layer();
+        this.interface_layer.add(new Konva.Rect({
+            x: 0, y: 0,
+            width: this.stage_width,
+            height: this.stage_height,
+            fill: "#923d0e"
+        }))
         this.stage.add(this.interface_layer);
 
         this.navigator = new MenuNavigator(this.stage, this.interface_layer);
