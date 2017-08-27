@@ -19,20 +19,20 @@ class TextButton extends Konva.Group {
     }
     mouseover() {
         if (this.rectOptions.moverFill) this.rect.setFill(this.rectOptions.moverFill);
-        this.parent.refresh();
+        this.fire("refresh", null, true);
     }
     mouseout() {
         if (this.rectOptions.fill) this.rect.setFill(this.rectOptions.fill);
         this.mouseup()
-        this.parent.refresh();
+        this.fire("refresh", null, true);
     }
     mousedown() {
         if (this.textOptions.mdownFill) this.text.setFill(this.textOptions.mdownFill);
-        this.parent.refresh();
+        this.fire("refresh", null, true);
     }
     mouseup() {
         if (this.textOptions.fill) this.text.setFill(this.textOptions.fill);
-        this.parent.refresh();
+        this.fire("refresh", null, true);
     }
     click() {
         this.mouseout();
@@ -94,7 +94,8 @@ class DropDown extends Konva.Group {
                 that.value = this.value;
                 that.valueText.setText("" + values[this.value]);
                 that.options.hide();
-                that.refresh();
+                that.fire("update");
+                that.fire("refresh", null, true);
             });
         }
         this.chosen.on("mouseover", this.mouseover.bind(this));
@@ -105,27 +106,25 @@ class DropDown extends Konva.Group {
     }
     mouseover() {
         if (DropDown.DEFAULT_RECT_OPTIONS.moverFill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.moverFill);
-        this.refresh();
+        this.fire("refresh", null, true);
     }
     mouseout() {
         if (DropDown.DEFAULT_RECT_OPTIONS.fill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.fill);
         this.mouseup()
-        this.refresh();
+        this.fire("refresh", null, true);
     }
     mousedown() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.mdownFill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.mdownFill);
-        this.refresh();
+        this.fire("refresh", null, true);
     }
     mouseup() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.fill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.fill);
-        this.refresh();
+        this.fire("refresh", null, true);
     }
     click() {
+        this.moveToTop();
         this.options.show();
-        this.refresh();
-    }
-    refresh() {
-        this.parent.refresh();
+        this.fire("refresh", null, true);
     }
 }
 DropDown.DEFAULT_RECT_OPTIONS = {
