@@ -3,10 +3,13 @@ import { TextButton, Header, Label, DropDown } from './ui.js';
 class Menu extends Konva.Group {
     constructor(stage, nav) {
         super();
+        this.stage = stage;
         this.navigator = nav;
+        this.on("refresh", this.refresh)
     }
-    refresh() {
+    refresh(e) {
         this.parent.draw();
+        e.cancelBubble = true;
     }
 }
 
