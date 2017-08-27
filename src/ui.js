@@ -59,7 +59,8 @@ class DropDown extends Konva.Group {
     constructor(x, y, width, values, chosenIndex) {
         super({ x, y });
         this.width = width;
-        this.value = values[chosenIndex];
+        this.values = values;
+        this.chosenIndex = chosenIndex;
 
         this.chosen = new Konva.Group();
 
@@ -68,7 +69,7 @@ class DropDown extends Konva.Group {
         }));
         this.chosen.add(this.rect);
         this.valueText = new Label({
-            text: "" + this.value,
+            text: "" + this.values[this.chosenIndex],
             width: this.width
         });
         this.valueText.setY(this.rect.height() / 2 - this.valueText.fontSize() / 2);
@@ -91,8 +92,8 @@ class DropDown extends Konva.Group {
             let that = this;
             option.on("click", function(e) {
                 e.cancelBubble = true;
-                that.value = this.value;
-                that.valueText.setText("" + values[this.value]);
+                that.chosenIndex = this.index;
+                that.valueText.setText("" + values[this.index]);
                 that.options.hide();
                 that.fire("update");
                 that.fire("refresh", null, true);
@@ -142,12 +143,12 @@ DropDown.DEFAULT_TEXT_OPTIONS = {
 
 
 class Option extends Konva.Group {
-    constructor(x, y, text, value, width) {
+    constructor(x, y, text, index, width) {
         super({ x, y });
-        this.value = value;
+        this.index = index;
         this.text = text;
-        this.rect = new Konva.Rect(Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
-            width: width
+        this.rect = new Konva.Rect(Object.assign({}, Option.DEFAULT_RECT_OPTIONS, {
+            width: width,
         }));
         this.add(this.rect);
         this.valueText = new Label({
@@ -161,31 +162,30 @@ class Option extends Konva.Group {
         this.on("mouseout", this.mouseout);
         this.on("mousedown", this.mousedown);
         this.on("mouseup", this.mouseup);
-        this.on("click", function() {
-            this.parent.parent.fire("update");
-        });
     }
     mouseover() {
-        if (DropDown.DEFAULT_RECT_OPTIONS.moverFill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.moverFill);
-        this.refresh();
+        if (Option.DEFAULT_RECT_OPTIONS.moverFill) this.rect.setFill(Option.DEFAULT_RECT_OPTIONS.moverFill);
+        this.fire("refresh", null, true);
     }
     mouseout() {
-        if (DropDown.DEFAULT_RECT_OPTIONS.fill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.fill);
+        if (Option.DEFAULT_RECT_OPTIONS.fill) this.rect.setFill(Option.DEFAULT_RECT_OPTIONS.fill);
         this.mouseup()
-        this.refresh();
+        this.fire("refresh", null, true);
     }
     mousedown() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.mdownFill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.mdownFill);
-        this.refresh();
+        this.fire("refresh", null, true);
     }
     mouseup() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.fill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.fill);
-        this.refresh();
-    }
-    refresh() {
-        this.parent.parent.refresh();
+        this.fire("refresh", null, true);
     }
 }
+Option.DEFAULT_RECT_OPTIONS = Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
+    stroke: '#716031',
+    fill: '#1c1107',
+    moverFill: '#3c3127'
+});
 
 
 class Header extends Konva.Text {
