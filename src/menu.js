@@ -16,26 +16,26 @@ class MainMenu extends Menu {
         };
         let btnMargin = 20;
         this.singlePlayerBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 2,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 2,
             { text: 'Single Player' }
         );
         this.add(this.singlePlayerBtn);
         this.multiPlayerBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 1,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 1,
             { text: 'Multi Player' }
         );
         this.add(this.multiPlayerBtn);
         this.scenarioBuilderBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 0,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 0,
             { text: 'Scenario Builder' }
         );
         this.add(this.scenarioBuilderBtn);
         this.helpBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y + (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 1,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 1,
             { text: 'Help' }
         );
         this.add(this.helpBtn);
@@ -55,32 +55,32 @@ class SinglePlayerMenu extends Menu {
         };
         let btnMargin = 20;
         this.randomMapBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 2,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 2,
             { text: 'Random Map' }
         );
         this.add(this.randomMapBtn);
         this.campaignBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 1,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 1,
             { text: 'Campaign' }
         );
         this.add(this.campaignBtn);
         this.scenarioBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 0,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 0,
             { text: 'Scenario' }
         );
         this.add(this.scenarioBtn);
         this.savedGameBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y + (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 1,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 1,
             { text: 'Saved Game' }
         );
         this.add(this.savedGameBtn);
         this.cancelBtn = new TextButton(
-            stage_center.x - TextButton.DEFAULT_OPTIONS.width / 2,
-            stage_center.y + (TextButton.DEFAULT_OPTIONS.height + btnMargin) * 2,
+            stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
+            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 2,
             { text: 'Cancel' }
         );
         this.add(this.cancelBtn);

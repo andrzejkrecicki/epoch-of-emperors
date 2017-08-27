@@ -1,7 +1,7 @@
 class TextButton extends Konva.Group {
     constructor(x, y, textOptions, rectOptions) {
         super({ x, y });
-        this.rectOptions = Object.assign({}, TextButton.DEFAULT_OPTIONS, rectOptions);
+        this.rectOptions = Object.assign({}, TextButton.DEFAULT_RECT_OPTIONS, rectOptions);
         this.textOptions = Object.assign({}, TextButton.DEFAULT_TEXT_OPTIONS, textOptions);
 
         this.rect = new Konva.Rect(this.rectOptions);
@@ -46,7 +46,7 @@ TextButton.DEFAULT_TEXT_OPTIONS = {
     strokeWidth: 2,
     mdownFill: 'yellow',
 }
-TextButton.DEFAULT_OPTIONS = {
+TextButton.DEFAULT_RECT_OPTIONS = {
     stroke: '#817041',
     fill: '#2c2117',
     strokeWidth: 3,
