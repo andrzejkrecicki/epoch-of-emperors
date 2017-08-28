@@ -1,4 +1,4 @@
-import { TextButton, Header, Label, DropDown } from './ui.js';
+import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox } from './ui.js';
 import { PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
 
 class Menu extends Konva.Group {
@@ -104,28 +104,10 @@ class SinglePlayerMenu extends Menu {
 class RandomMapMenu extends Menu {
     constructor(stage, nav) {
         super(...arguments);
-        this.game_definition = {
-            players: this.getDefaultPlayersDefinitions()
-        };
+        this.game_definition = this.getDefaultGameDefinition();
         this.initializeWidgets();
     }
     initializeWidgets() {
-        this.cancelBtn = new TextButton(
-            this.stage.width() - 80 - 300,
-            this.stage.height() - 15 - TextButton.DEFAULT_RECT_OPTIONS.height,
-            { text: 'Cancel' },
-            { width: 300 }
-        );
-        this.add(this.cancelBtn);
-
-        this.startGameBtn = new TextButton(
-            80,
-            this.stage.height() - 15 - TextButton.DEFAULT_RECT_OPTIONS.height,
-            { text: 'Start Game' },
-            { width: 300 }
-        );
-        this.add(this.startGameBtn);
-
         let row_offset = 30;
         this.add(new Header({
             text: 'Name',
@@ -181,11 +163,166 @@ class RandomMapMenu extends Menu {
             this.fire("refresh");
         });
 
+        this.initializeMapSettingsSection();
+
+        this.startGameBtn = new TextButton(
+            80,
+            this.stage.height() - 15 - TextButton.DEFAULT_RECT_OPTIONS.height,
+            { text: 'Start Game' },
+            { width: 300 }
+        );
+        this.add(this.startGameBtn);
+
+        this.cancelBtn = new TextButton(
+            this.stage.width() - 80 - 300,
+            this.stage.height() - 15 - TextButton.DEFAULT_RECT_OPTIONS.height,
+            { text: 'Cancel' },
+            { width: 300 }
+        );
+        this.add(this.cancelBtn);
+
         this.cancelBtn.on("click", () => {
             this.navigator.navigate("SinglePlayerMenu");
         });
     }
+    initializeMapSettingsSection() {
+        let offset = {
+            x: this.stage.width() - 280, y: 80
+        };
+        let that = this;
+        this.add(new Header({
+            text: "Map Settings",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.y += 40;
+        this.add(new Label({
+            text: "Map Size",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.x += 80;
+        this.mapSizeDropDown = new DropDown(
+            offset.x, offset.y - 7, 150,
+            RandomMapMenu.MAP_SIZES,
+            this.game_definition.map.size
+        );
+        this.mapSizeDropDown.on("update", function() {
+            that.game_definition.map.size = this.chosenIndex
+        });
+        this.add(this.mapSizeDropDown);
+        offset.y += 45;
+        offset.x = this.stage.width() - 280;
+
+        this.add(new Label({
+            text: "Map Type",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.x += 80;
+        this.mapTypeDropDown = new DropDown(
+            offset.x, offset.y - 7, 150,
+            RandomMapMenu.MAP_TYPES,
+            this.game_definition.map.type
+        );
+        this.mapTypeDropDown.on("update", function() {
+            that.game_definition.map.type = this.chosenIndex
+        });
+        this.add(this.mapTypeDropDown);
+        offset.y += 45;
+        offset.x = this.stage.width() - 280;
+
+        this.add(new Label({
+            text: "Age",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.x += 80;
+        this.ageDropDown = new DropDown(
+            offset.x, offset.y - 7, 150,
+            RandomMapMenu.AGES,
+            this.game_definition.map.startingAge
+        );
+        this.ageDropDown.on("update", function() {
+            that.game_definition.map.startingAge = this.chosenIndex
+        });
+        this.add(this.ageDropDown);
+        offset.y += 45;
+        offset.x = this.stage.width() - 280;
+
+        this.add(new Label({
+            text: "Resources",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.x += 80;
+        this.resourcesDropDown = new DropDown(
+            offset.x, offset.y - 7, 150,
+            RandomMapMenu.RESOURCES,
+            this.game_definition.map.resources
+        );
+        this.resourcesDropDown.on("update", function() {
+            that.game_definition.map.resources = this.chosenIndex
+        });
+        this.add(this.resourcesDropDown);
+        offset.y += 45;
+        offset.x = this.stage.width() - 280;
+
+
+        this.add(new Label({
+            text: "Difficulty",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.x += 80;
+        this.difficultyDropDown = new DropDown(
+            offset.x, offset.y - 7, 150,
+            RandomMapMenu.DIFFICULTY,
+            this.game_definition.map.difficulty
+        );
+        this.difficultyDropDown.on("update", function() {
+            that.game_definition.map.difficulty = this.chosenIndex
+        });
+        this.add(this.difficultyDropDown);
+        offset.y += 45;
+        offset.x = this.stage.width() - 280;
+
+
+        this.add(new Label({
+            text: "Reveal Map",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.x += 80;
+        this.revealMapCheck = new CheckBox(
+            offset.x, offset.y - 7, false
+        );
+        this.revealMapCheck.on("update", function() {
+            that.game_definition.map.revealMap = this.checked
+        });
+        this.add(this.revealMapCheck);
+        offset.y += 45;
+        offset.x = this.stage.width() - 280;
+
+
+        this.add(new Label({
+            text: "Full Tech",
+            x: offset.x,
+            y: offset.y
+        }));
+        offset.x += 80;
+        this.fullTechCheck = new CheckBox(
+            offset.x, offset.y - 7, false
+        );
+        this.fullTechCheck.on("update", function() {
+            that.game_definition.map.fullTech = this.checked
+        });
+        this.add(this.fullTechCheck);
+        offset.y += 45;
+
+    }
     initialziePlayersSection() {
+        var that = this;
         var offset = {
             x: 0, y: 0
         }
@@ -203,25 +340,60 @@ class RandomMapMenu extends Menu {
                 offset.x, offset.y , 150, 
                 CIVILIZATIONS_NAMES, this.game_definition.players[i].civ
             );
-            civDropDown.options.setZIndex(10);
+            civDropDown.on("update", (function(){
+                return function() {
+                    that.game_definition.players[i].civ = this.chosenIndex;
+                }
+            })(i));
             this.playersSection.add(civDropDown);
+            offset.x += RandomMapMenu.CIV_SECTION_WIDTH;
+
+            offset.x += RandomMapMenu.PLAYER_SECTION_WIDTH;
+
+            let teamButton = new MultiStateButton(
+                offset.x, offset.y,
+                ["-", "1", "2", "3"],
+                this.game_definition.players[i].team || 0
+            );
+            this.playersSection.add(teamButton);
+            teamButton.on("update", (function(i) {
+                return function() {
+                    that.game_definition.players[i].team = this.currentState || null;
+                }
+            })(i));
 
             offset.y += 40;
         }
     }
-    getDefaultPlayersDefinitions() {
-        return [
-            new PlayerDefinition(0, "You", null, PLAYER_COLOURS[0], null),
-            new PlayerDefinition(1, "Computer 1", null, PLAYER_COLOURS[1], null, true),
-            new PlayerDefinition(2, "Computer 2", null, PLAYER_COLOURS[2], null, true),
-            new PlayerDefinition(3, "Computer 3", null, PLAYER_COLOURS[3], null, true)
-        ];
+    getDefaultGameDefinition() {
+        return {
+            players: [
+                new PlayerDefinition(0, "You", null, PLAYER_COLOURS[0], null),
+                new PlayerDefinition(1, "Computer 1", null, PLAYER_COLOURS[1], null, true),
+                new PlayerDefinition(2, "Computer 2", null, PLAYER_COLOURS[2], null, true),
+                new PlayerDefinition(3, "Computer 3", null, PLAYER_COLOURS[3], null, true)
+            ],
+            map: {
+                size: 1,
+                type: 3,
+                startingAge: 1,
+                resources: 1,
+                difficulty: 2,
+                revealMap: false,
+                fullTech : false
+            }
+        };
     }
 }
-RandomMapMenu.NAME_SECTION_WIDTH = 170;
+RandomMapMenu.NAME_SECTION_WIDTH = 130;
 RandomMapMenu.CIV_SECTION_WIDTH = 170;
 RandomMapMenu.PLAYER_SECTION_WIDTH = 90;
 RandomMapMenu.DEFAULT_PLAYERS_NUMBER = 4;
+RandomMapMenu.MAP_SIZES = ["Small", "Medium", "Large"];
+RandomMapMenu.MAP_TYPES = ["Small Islands", "Large Islands", "Coastal", "Inland"];
+RandomMapMenu.AGES = ["Nomad", "Stone Age", "Tool Age", "Bronze Age", "Iron Age"];
+RandomMapMenu.RESOURCES = ["Small", "Medium", "High"];
+RandomMapMenu.DIFFICULTY = ["Easiest", "Easy", "Moderate", "Hard", "Hardest"];
 
 
 export {
