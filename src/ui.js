@@ -188,6 +188,81 @@ Option.DEFAULT_RECT_OPTIONS = Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
 });
 
 
+class MultiStateButton extends TextButton {
+    constructor(x, y, states, currentState, textOptions, rectOptions) {
+        let mergedRectOptions = Object.assign({}, MultiStateButton.DEFAULT_RECT_OPTIONS, rectOptions);
+        let mergedTextOptions = Object.assign({}, MultiStateButton.DEFAULT_TEXT_OPTIONS, textOptions, {
+            text: states[currentState]
+        });
+        super(x, y, mergedTextOptions, mergedRectOptions);
+        this.states = states;
+        this.currentState = currentState;
+
+        this.on("click", () => {
+            this.currentState = (this.currentState + 1) % this.states.length;
+            this.text.setText(this.states[this.currentState]);
+            this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
+            this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
+            this.fire("update");
+            this.fire("refresh", null, true);
+        });
+    }
+}
+MultiStateButton.DEFAULT_RECT_OPTIONS = Object.assign({}, TextButton.DEFAULT_RECT_OPTIONS, {
+    width: 40,
+    height: 30
+});
+MultiStateButton.DEFAULT_TEXT_OPTIONS = Object.assign({}, TextButton.DEFAULT_TEXT_OPTIONS, {
+    fontSize: 14
+});
+
+
+class CheckBox extends Konva.Group {
+    constructor(x, y, checked, options) {
+        super({ x, y });
+        this.options = Object.assign({}, CheckBox.DEFAULT_OPTIONS, options);
+
+        this.checked = checked;
+
+        this.rect = new Konva.Rect(this.options);
+        this.mark = new Konva.Path({
+            data: "M 50 100 L 100 50 L 250 200 L 400 50 L 450 100 L 300 250 L 450 400 L 400 450 L 250 300 L 100 450 L 50 400 L 200 250",
+            fill: this.options.stroke,
+            scale: { x: this.options.width / 500, y: this.options.height / 500 },
+            visible: checked
+        });
+        this.add(this.rect);
+        this.add(this.mark);
+
+        this.on("mouseover", this.mouseover);
+        this.on("mouseout", this.mouseout);
+        this.on("click", this.click);
+    }
+    mouseover() {
+        if (this.options.moverFill) this.rect.setFill(this.options.moverFill);
+        this.fire("refresh", null, true);
+    }
+    mouseout() {
+        if (this.options.fill) this.rect.setFill(this.options.fill);
+        this.fire("refresh", null, true);
+    }
+    click() {
+        this.checked = !this.checked;
+        this.mark.setVisible(this.checked);
+        this.fire("update");
+        this.fire("refresh", null, true);
+    }
+}
+CheckBox.DEFAULT_OPTIONS = {
+    stroke: '#817041',
+    fill: '#2c2117',
+    strokeWidth: 3,
+    width: 30,
+    height: 30,
+    moverFill: '#4c4137'
+}
+
+
 class Header extends Konva.Text {
     constructor(options) {
         super(Object.assign({}, options, Header.DEFAULT_OPTIONS));
@@ -214,5 +289,5 @@ Label.DEFAULT_OPTIONS = {
 }
 
 export {
-    TextButton, Header, Label, DropDown
+    TextButton, Header, Label, DropDown, MultiStateButton, CheckBox
 };
