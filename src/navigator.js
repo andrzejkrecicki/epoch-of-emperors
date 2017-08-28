@@ -15,7 +15,7 @@ class MenuNavigator {
             this.currentMenu.remove();
             this.currentMenu.setListening(false);
         }
-        this.currentMenu = this.menus[menuName]
+        this.currentMenu = this.menus[menuName];
         this.currentMenu.setListening(true);
         this.layer.add(this.currentMenu);
         this.layer.draw();
