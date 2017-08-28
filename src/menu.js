@@ -173,6 +173,10 @@ class RandomMapMenu extends Menu {
         );
         this.add(this.startGameBtn);
 
+        this.startGameBtn.on("click", () => {
+            this.navigator.startGame(this.game_definition);
+        });
+
         this.cancelBtn = new TextButton(
             this.stage.width() - 80 - 300,
             this.stage.height() - 15 - TextButton.DEFAULT_RECT_OPTIONS.height,
@@ -380,7 +384,8 @@ class RandomMapMenu extends Menu {
                 resources: 1,
                 difficulty: 2,
                 revealMap: false,
-                fullTech : false
+                fullTech : false,
+                random: true
             }
         };
     }

@@ -12,16 +12,18 @@ class Game {
             width: this.stage_width,
             height: this.stage_height
         });
-        this.interface_layer = new Konva.Layer();
-        this.interface_layer.add(new Konva.Rect({
-            x: 0, y: 0,
-            width: this.stage_width,
-            height: this.stage_height,
-            fill: "#923d0e"
-        }))
-        this.stage.add(this.interface_layer);
 
-        this.navigator = new MenuNavigator(this.stage, this.interface_layer);
+        this.layers = {
+            terrain_layer: new Konva.Layer(),
+            interface_layer: new Konva.Layer()
+        };
+        this.layers.terrain_layer.hitGraphEnabled(false);
+
+        this.stage.add(this.layers.terrain_layer);
+
+        this.stage.add(this.layers.interface_layer);
+
+        this.navigator = new MenuNavigator(this.stage, this.layers);
     }
     draw() {
         this.stage.draw();

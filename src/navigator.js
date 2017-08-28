@@ -1,8 +1,17 @@
 import { MainMenu, SinglePlayerMenu, RandomMapMenu } from './menu.js';
+import { GameViewer } from './viewer.js';
+
 
 class MenuNavigator {
-    constructor(stage, layer) {
-        this.layer = layer;
+    constructor(stage, layers) {
+        this.stage = stage;
+        this.layers = layers;
+        this.layers.interface_layer.add(new Konva.Rect({
+            x: 0, y: 0,
+            width: stage.width(),
+            height: stage.height(),
+            fill: "#923d0e"
+        }));
         this.menus = {
             MainMenu: new MainMenu(stage, this),
             SinglePlayerMenu: new SinglePlayerMenu(stage, this),
@@ -17,8 +26,14 @@ class MenuNavigator {
         }
         this.currentMenu = this.menus[menuName];
         this.currentMenu.setListening(true);
-        this.layer.add(this.currentMenu);
-        this.layer.draw();
+        this.layers.interface_layer.add(this.currentMenu);
+        this.layers.interface_layer.draw();
+    }
+    startGame(gameDefinition) {
+        this.currentMenu.remove();
+        this.currentMenu.setListening(false);
+        this.layers.interface_layer.removeChildren();
+        this.gameViewer = new GameViewer(gameDefinition, this, this.layers);
     }
 }
 
