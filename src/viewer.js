@@ -10,7 +10,7 @@ class GameViewer {
 
         this.engine = new Engine(definition);
 
-        this.mapDrawable = new MapDrawable(this.engine.map);
+        this.mapDrawable = new MapDrawable(this.engine.map, this.stage);
         this.layers.terrain_layer.add(this.mapDrawable);
         this.stage.draw();
     }
@@ -18,10 +18,10 @@ class GameViewer {
 
 
 class MapDrawable extends Konva.Group {
-    constructor(map) {
+    constructor(map, stage) {
         super({
-            x: -(Map.SIZES[map.definition.size] * MapDrawable.TILE_SIZE.width / 3),
-            y: -(Map.SIZES[map.definition.size] * MapDrawable.TILE_SIZE.height / 3)
+            x: -Math.round(Map.SIZES[map.definition.size] * MapDrawable.TILE_SIZE.width / 2 - stage.width() / 2),
+            y: -Math.round(Map.SIZES[map.definition.size] * MapDrawable.TILE_SIZE.height / 2 - stage.height() / 2)
         });
         this.map = map;
         this.insertTiles();
@@ -38,7 +38,9 @@ class MapDrawable extends Konva.Group {
                 y: -(Map.SIZES[this.map.definition.size] * MapDrawable.TILE_ROW_OFFSET.y) + (y * MapDrawable.TILE_COL_OFFSET.y)
             };
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
-                if (this.map.terrain_tiles[x][y] == 1) {
+                if (this.map.terrain_tiles[x][y] == 0) {
+                    tmpCtx.drawImage(images.water_00, origin.x, origin.y);
+                } else if (this.map.terrain_tiles[x][y] == 1) {
                     tmpCtx.drawImage(images.grass_00, origin.x, origin.y);
                 } else if (this.map.terrain_tiles[x][y] == 2) {
                     tmpCtx.drawImage(images.sand_00, origin.x, origin.y);
@@ -58,15 +60,15 @@ class MapDrawable extends Konva.Group {
     }
 }
 MapDrawable.TILE_SIZE = {
-    width: 52, height: 32
+    width: 62, height: 34
 }
 MapDrawable.TILE_ROW_OFFSET = {
-    x: 23,
-    y: -13
+    x: 31,
+    y: -16
 }
 MapDrawable.TILE_COL_OFFSET = {
-    x: 26,
-    y: 17
+    x: MapDrawable.TILE_SIZE.width - MapDrawable.TILE_ROW_OFFSET.x,
+    y: MapDrawable.TILE_SIZE.height + MapDrawable.TILE_ROW_OFFSET.y
 }
 
 var images = {};
@@ -76,6 +78,8 @@ images.grass_00.src = "img/grass_00.png";
 images.sand_00 = new Image();
 images.sand_00.src = "img/sand_00.png";
 
+images.water_00 = new Image();
+images.water_00.src = "img/water_00.png";
 
 export {
     GameViewer
