@@ -17,7 +17,7 @@ class Game {
             terrain_layer: new Konva.Layer(),
             interface_layer: new Konva.Layer()
         };
-        this.layers.terrain_layer.hitGraphEnabled(false);
+        // this.layers.terrain_layer.hitGraphEnabled(false);
 
         this.stage.add(this.layers.terrain_layer);
 
