@@ -7,6 +7,7 @@ class Map {
 }
 Map.SIZES = [128, 256, 512];
 Map.TERRAIN_TILES = {
+    WATER: 0,
     GRASS: 1,
     SAND: 2
 }
