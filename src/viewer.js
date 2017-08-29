@@ -13,6 +13,27 @@ class GameViewer {
         this.mapDrawable = new MapDrawable(this.engine.map, this.stage);
         this.layers.terrain_layer.add(this.mapDrawable);
         this.stage.draw();
+
+        this.initializeTemporaryScrolling();
+    }
+    initializeTemporaryScrolling() {
+        this.layers.terrain_layer.on("mousemove", (e) => {
+            if (e.evt.layerX < 30) {
+                this.mapDrawable.x(this.mapDrawable.x() + 20);
+                this.stage.draw();
+            } else if (e.evt.layerX > this.stage.width() - 30) {
+                this.mapDrawable.x(this.mapDrawable.x() - 20);
+                this.stage.draw();
+            }
+
+            if (e.evt.layerY < 30) {
+                this.mapDrawable.y(this.mapDrawable.y() + 20);
+                this.stage.draw();
+            } else if (e.evt.layerY > this.stage.height() - 30) {
+                this.mapDrawable.y(this.mapDrawable.y() - 20);
+                this.stage.draw();
+            }
+        });
     }
 }
 
