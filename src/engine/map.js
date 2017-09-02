@@ -19,29 +19,21 @@ class RandomMap extends Map {
         this.generate();
     }
     generate() {
-        var default_tile;
-        if (this.definition.type == 3) {
-            // inland
-            default_tile = Map.TERRAIN_TILES.GRASS;
-        } else {
-            default_tile = Map.TERRAIN_TILES.WATER;
-        }
         this.terrain_tiles = new Array(RandomMap.SIZES[this.definition.size]);
         this.terrain_tiles.fill(null);
         this.terrain_tiles = this.terrain_tiles.map(() => {
             let arr = new Array(RandomMap.SIZES[this.definition.size]);
-            arr.fill(default_tile);
+            arr.fill(this.constructor.DEFAULT_TILE);
             return arr;
         });
 
-        // Coastal
-        if (this.definition.type == 2) {
-            this.initializeCoastal();
-        }
+        this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
 
     }
-    initializeCoastal() {
+
+class CoastalMap extends RandomMap {
+    randomizeTerrain() {
         let total_surface = RandomMap.SIZES[this.definition.size] * RandomMap.SIZES[this.definition.size];
         // 60% - 80% of land
         let desired_land_surface = Math.floor(total_surface * (Math.random() * 2 + 6) / 10);
@@ -81,18 +73,24 @@ class RandomMap extends Map {
             return terrain;
         }
     }
-    normalizeNeighbouringTiles() {
-        let size = RandomMap.SIZES[this.definition.size];
-        for (let x = 0; x < size; ++x) {
-            let prev = this.terrain_tiles[x][0];
-            for (let y = 1; y < size; ++y) {
-                if (prev == RandomMap.TERRAIN_TILES.WATER && false);
-            }
-        }
-    }
-};
+}
+CoastalMap.DEFAULT_TILE = Map.TERRAIN_TILES.WATER;
 
+
+function MapFactory(definition) {
+    if (definition.random) {
+        return new (MapFactory.TYPES_CONSTRUCTOR[definition.type])(definition);
+    } else {
+        //
+    }
+}
+MapFactory.TYPES_CONSTRUCTOR = {
+    // 0: SmallIslandsMap,
+    // 1: LargeIslandsMap,
+    2: CoastalMap,
+    // 3: InlandMap
+}
 
 export {
-    Map, RandomMap
+    Map, RandomMap, MapFactory
 }
