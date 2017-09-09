@@ -55,7 +55,17 @@ let CIVILIZATIONS_NAMES = [
 ]
 
 
+var make_image = function(src) {
+    let img = new Image;
+    img.src = src;
+    return img;
+}
+
+var to_binary = function(num) {
+    let bin = (+num).toString(2);
+    return "00000000".substr(bin.length) + bin;
+}
 
 export {
-    PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES
+    PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES, make_image, to_binary
 }
