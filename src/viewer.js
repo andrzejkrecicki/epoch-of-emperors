@@ -1,5 +1,6 @@
 import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
+import { make_image } from './utils.js';
 
 
 class GameViewer {
@@ -59,13 +60,8 @@ class MapDrawable extends Konva.Group {
                 y: -(Map.SIZES[this.map.definition.size] * MapDrawable.TILE_ROW_OFFSET.y) + (y * MapDrawable.TILE_COL_OFFSET.y)
             };
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
-                if (this.map.terrain_tiles[x][y] == 0) {
-                    tmpCtx.drawImage(images.water_00, origin.x, origin.y);
-                } else if (this.map.terrain_tiles[x][y] == 1) {
-                    tmpCtx.drawImage(images.grass_00, origin.x, origin.y);
-                } else if (this.map.terrain_tiles[x][y] == 2) {
-                    tmpCtx.drawImage(images.sand_00, origin.x, origin.y);
-                }
+                tmpCtx.drawImage(images[this.map.terrain_tiles[x][y]], origin.x, origin.y);
+
                 origin.x += MapDrawable.TILE_ROW_OFFSET.x;
                 origin.y += MapDrawable.TILE_ROW_OFFSET.y;
             }
@@ -81,10 +77,10 @@ class MapDrawable extends Konva.Group {
     }
 }
 MapDrawable.TILE_SIZE = {
-    width: 62, height: 34
+    width: 64, height: 32
 }
 MapDrawable.TILE_ROW_OFFSET = {
-    x: 31,
+    x: 32,
     y: -16
 }
 MapDrawable.TILE_COL_OFFSET = {
@@ -92,15 +88,25 @@ MapDrawable.TILE_COL_OFFSET = {
     y: MapDrawable.TILE_SIZE.height + MapDrawable.TILE_ROW_OFFSET.y
 }
 
-var images = {};
-images.grass_00 = new Image();
-images.grass_00.src = "img/grass_00.png";
+let images = {};
+images[Map.TERRAIN_TILES.WATER] = make_image("img/tiles/water_00.png");
+images[Map.TERRAIN_TILES.GRASS] = make_image("img/tiles/grass_00.png");
+images[Map.TERRAIN_TILES.SAND] = make_image("img/tiles/sand_00.png");
+images[Map.TERRAIN_TILES.SANDWATER_4] = make_image("img/tiles/sandwater_4.png");
+images[Map.TERRAIN_TILES.SANDWATER_6] = make_image("img/tiles/sandwater_6.png");
+images[Map.TERRAIN_TILES.SANDWATER_8] = make_image("img/tiles/sandwater_8.png");
+images[Map.TERRAIN_TILES.SANDWATER_3] = make_image("img/tiles/sandwater_3.png");
+images[Map.TERRAIN_TILES.SANDWATER_2] = make_image("img/tiles/sandwater_2.png");
+images[Map.TERRAIN_TILES.SANDWATER_9] = make_image("img/tiles/sandwater_9.png");
+images[Map.TERRAIN_TILES.SANDWATER_1] = make_image("img/tiles/sandwater_1.png");
+images[Map.TERRAIN_TILES.SANDWATER_7] = make_image("img/tiles/sandwater_7.png");
+images[Map.TERRAIN_TILES.WATERSAND_7] = make_image("img/tiles/watersand_7.png");
+images[Map.TERRAIN_TILES.WATERSAND_1] = make_image("img/tiles/watersand_1.png");
+images[Map.TERRAIN_TILES.WATERSAND_3] = make_image("img/tiles/watersand_3.png");
+images[Map.TERRAIN_TILES.WATERSAND_9] = make_image("img/tiles/watersand_9.png");
 
-images.sand_00 = new Image();
-images.sand_00.src = "img/sand_00.png";
 
-images.water_00 = new Image();
-images.water_00.src = "img/water_00.png";
+
 
 export {
     GameViewer
