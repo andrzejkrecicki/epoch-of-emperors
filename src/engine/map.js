@@ -66,29 +66,17 @@ class RandomMap extends Map {
 
         for (let y = 0; y < size; ++y) {
             for (let x = 0; x < size; ++x) {
-                // water can be adjecent only to water or sand
-                if (this.terrain_tiles[x][y] == Map.TERRAIN_TILES.GRASS) {
-                    for (let i = 0, vector; vector = Map.ALL_NEIGHBOURS_DELTA[i++];) {
-                        let nx = x + vector.x;
-                        let ny = y + vector.y;
-
-                        if (nx < 0 || nx >= size || ny < 0 || ny >= size) continue;
-                        if (this.terrain_tiles[nx][ny] == Map.TERRAIN_TILES.WATER) {
-                            this.terrain_tiles[x][y] = Map.TERRAIN_TILES.SAND;
-                            break;
-                        }
-                    }
-                }
                 this.initial_tiles[x][y] = this.terrain_tiles[x][y];
             }
         }
+
 
         let changes_pending = true;
         while (changes_pending) {
             changes_pending = false;
             for (let y = 1; y < size - 1; ++y) {
                 for (let x = 1; x < size - 1; ++x) {
-                    if (this.initial_tiles[x][y] == Map.TERRAIN_TILES.SAND) {
+                    if (this.initial_tiles[x][y] != Map.TERRAIN_TILES.WATER) {
                         let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TILES.SAND, Map.TERRAIN_TILES.GRASS]);
 
                         let bitmask = Number.parseInt(neighbours_vector.join(""), 2);
@@ -111,12 +99,12 @@ class RandomMap extends Map {
 
         for (let y = 0; y < size; ++y) {
             for (let x = 0; x < size; ++x) {
-                if (this.initial_tiles[x][y] == Map.TERRAIN_TILES.SAND) {
+                if (this.initial_tiles[x][y] !== Map.TERRAIN_TILES.WATER) {
                     let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TILES.SAND, Map.TERRAIN_TILES.GRASS]);
 
                     let bitmask = Number.parseInt(neighbours_vector.join(""), 2);
 
-                    if (bitmask in RandomMap.SAND_TRANSFORMATIONS) {
+                    if (bitmask !== 255 && bitmask in RandomMap.SAND_TRANSFORMATIONS) {
                         this.terrain_tiles[x][y] = RandomMap.SAND_TRANSFORMATIONS[bitmask];
                     }
                 }
@@ -125,7 +113,6 @@ class RandomMap extends Map {
     }
 }
 RandomMap.SAND_TRANSFORMATIONS = {
-    255: Map.TERRAIN_TILES.SAND,
     254: Map.TERRAIN_TILES.SANDWATER_3,
     253: Map.TERRAIN_TILES.SANDWATER_8,
     252: Map.TERRAIN_TILES.SANDWATER_8,
