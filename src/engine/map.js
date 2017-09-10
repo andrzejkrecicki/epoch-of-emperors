@@ -8,7 +8,7 @@ class Map {
     }
 }
 Map.SIZES = [128, 256, 512];
-Map.TERRAIN_TILES = {
+Map.TERRAIN_TYPES = {
     WATER: 0,
     GRASS: 1,
     SAND: 2,
@@ -76,8 +76,8 @@ class RandomMap extends Map {
             changes_pending = false;
             for (let y = 1; y < size - 1; ++y) {
                 for (let x = 1; x < size - 1; ++x) {
-                    if (this.initial_tiles[x][y] != Map.TERRAIN_TILES.WATER) {
-                        let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TILES.SAND, Map.TERRAIN_TILES.GRASS]);
+                    if (this.initial_tiles[x][y] != Map.TERRAIN_TYPES.WATER) {
+                        let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
 
                         let bitmask = Number.parseInt(neighbours_vector.join(""), 2);
 
@@ -86,11 +86,11 @@ class RandomMap extends Map {
                             for (let i = 0, vec; vec = Map.ALL_NEIGHBOURS_DELTA[i++];) {
                                 let nx = x + vec.x;
                                 let ny = y + vec.y;
-                                this.terrain_tiles[nx][ny] = Map.TERRAIN_TILES.WATER;
-                                this.initial_tiles[nx][ny] = Map.TERRAIN_TILES.WATER;
+                                this.terrain_tiles[nx][ny] = Map.TERRAIN_TYPES.WATER;
+                                this.initial_tiles[nx][ny] = Map.TERRAIN_TYPES.WATER;
                             }
-                            this.terrain_tiles[x][y] = Map.TERRAIN_TILES.WATER;
-                            this.initial_tiles[x][y] = Map.TERRAIN_TILES.WATER;
+                            this.terrain_tiles[x][y] = Map.TERRAIN_TYPES.WATER;
+                            this.initial_tiles[x][y] = Map.TERRAIN_TYPES.WATER;
                         }
                     }
                 }
@@ -99,8 +99,8 @@ class RandomMap extends Map {
 
         for (let y = 0; y < size; ++y) {
             for (let x = 0; x < size; ++x) {
-                if (this.initial_tiles[x][y] !== Map.TERRAIN_TILES.WATER) {
-                    let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TILES.SAND, Map.TERRAIN_TILES.GRASS]);
+                if (this.initial_tiles[x][y] !== Map.TERRAIN_TYPES.WATER) {
+                    let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
 
                     let bitmask = Number.parseInt(neighbours_vector.join(""), 2);
 
@@ -113,42 +113,42 @@ class RandomMap extends Map {
     }
 }
 RandomMap.SAND_TRANSFORMATIONS = {
-    254: Map.TERRAIN_TILES.SANDWATER_3,
-    253: Map.TERRAIN_TILES.SANDWATER_8,
-    252: Map.TERRAIN_TILES.SANDWATER_8,
-    251: Map.TERRAIN_TILES.SANDWATER_1,
-    249: Map.TERRAIN_TILES.SANDWATER_8,
-    248: Map.TERRAIN_TILES.SANDWATER_8,
-    247: Map.TERRAIN_TILES.SANDWATER_4,
-    246: Map.TERRAIN_TILES.SANDWATER_4,
-    244: Map.TERRAIN_TILES.WATERSAND_7,
-    240: Map.TERRAIN_TILES.WATERSAND_7,
-    239: Map.TERRAIN_TILES.SANDWATER_6,
-    235: Map.TERRAIN_TILES.SANDWATER_6,
-    233: Map.TERRAIN_TILES.WATERSAND_9,
-    232: Map.TERRAIN_TILES.WATERSAND_9,
-    223: Map.TERRAIN_TILES.SANDWATER_9,
-    215: Map.TERRAIN_TILES.SANDWATER_4,
-    214: Map.TERRAIN_TILES.SANDWATER_4,
-    212: Map.TERRAIN_TILES.WATERSAND_7,
-    208: Map.TERRAIN_TILES.WATERSAND_7,
-    191: Map.TERRAIN_TILES.SANDWATER_2,
-    159: Map.TERRAIN_TILES.SANDWATER_2,
-    151: Map.TERRAIN_TILES.WATERSAND_1,
-    150: Map.TERRAIN_TILES.WATERSAND_1,
-    127: Map.TERRAIN_TILES.SANDWATER_7,
-    111: Map.TERRAIN_TILES.SANDWATER_6,
-    107: Map.TERRAIN_TILES.SANDWATER_6,
-    105: Map.TERRAIN_TILES.WATERSAND_9,
-    104: Map.TERRAIN_TILES.WATERSAND_9,
-    63: Map.TERRAIN_TILES.SANDWATER_2,
-    47: Map.TERRAIN_TILES.WATERSAND_3,
-    43: Map.TERRAIN_TILES.WATERSAND_3,
-    31: Map.TERRAIN_TILES.SANDWATER_2,
-    23: Map.TERRAIN_TILES.WATERSAND_1,
-    22: Map.TERRAIN_TILES.WATERSAND_1,
-    15: Map.TERRAIN_TILES.WATERSAND_3,
-    11: Map.TERRAIN_TILES.WATERSAND_3,
+    254: Map.TERRAIN_TYPES.SANDWATER_3,
+    253: Map.TERRAIN_TYPES.SANDWATER_8,
+    252: Map.TERRAIN_TYPES.SANDWATER_8,
+    251: Map.TERRAIN_TYPES.SANDWATER_1,
+    249: Map.TERRAIN_TYPES.SANDWATER_8,
+    248: Map.TERRAIN_TYPES.SANDWATER_8,
+    247: Map.TERRAIN_TYPES.SANDWATER_4,
+    246: Map.TERRAIN_TYPES.SANDWATER_4,
+    244: Map.TERRAIN_TYPES.WATERSAND_7,
+    240: Map.TERRAIN_TYPES.WATERSAND_7,
+    239: Map.TERRAIN_TYPES.SANDWATER_6,
+    235: Map.TERRAIN_TYPES.SANDWATER_6,
+    233: Map.TERRAIN_TYPES.WATERSAND_9,
+    232: Map.TERRAIN_TYPES.WATERSAND_9,
+    223: Map.TERRAIN_TYPES.SANDWATER_9,
+    215: Map.TERRAIN_TYPES.SANDWATER_4,
+    214: Map.TERRAIN_TYPES.SANDWATER_4,
+    212: Map.TERRAIN_TYPES.WATERSAND_7,
+    208: Map.TERRAIN_TYPES.WATERSAND_7,
+    191: Map.TERRAIN_TYPES.SANDWATER_2,
+    159: Map.TERRAIN_TYPES.SANDWATER_2,
+    151: Map.TERRAIN_TYPES.WATERSAND_1,
+    150: Map.TERRAIN_TYPES.WATERSAND_1,
+    127: Map.TERRAIN_TYPES.SANDWATER_7,
+    111: Map.TERRAIN_TYPES.SANDWATER_6,
+    107: Map.TERRAIN_TYPES.SANDWATER_6,
+    105: Map.TERRAIN_TYPES.WATERSAND_9,
+    104: Map.TERRAIN_TYPES.WATERSAND_9,
+    63: Map.TERRAIN_TYPES.SANDWATER_2,
+    47: Map.TERRAIN_TYPES.WATERSAND_3,
+    43: Map.TERRAIN_TYPES.WATERSAND_3,
+    31: Map.TERRAIN_TYPES.SANDWATER_2,
+    23: Map.TERRAIN_TYPES.WATERSAND_1,
+    22: Map.TERRAIN_TYPES.WATERSAND_1,
+    15: Map.TERRAIN_TYPES.WATERSAND_3,
+    11: Map.TERRAIN_TYPES.WATERSAND_3,
 };
 RandomMap.LEGAL_MASKS = Object.keys(RandomMap.SAND_TRANSFORMATIONS);
 
@@ -164,7 +164,7 @@ class CoastalMap extends RandomMap {
         let seed = {
             x: Math.floor(RandomMap.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
             y: Math.floor(RandomMap.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
-            terrain: Map.TERRAIN_TILES.GRASS
+            terrain: Map.TERRAIN_TYPES.GRASS
         }
 
         let that = this;
@@ -189,14 +189,14 @@ class CoastalMap extends RandomMap {
     }
     mutateTerrain(terrain, prob = .0275) {
         if (Math.random() < prob) {
-            if (terrain == Map.TERRAIN_TILES.GRASS) return Map.TERRAIN_TILES.SAND;
-            else return Map.TERRAIN_TILES.GRASS;
+            if (terrain == Map.TERRAIN_TYPES.GRASS) return Map.TERRAIN_TYPES.SAND;
+            else return Map.TERRAIN_TYPES.GRASS;
         } else {
             return terrain;
         }
     }
 }
-CoastalMap.DEFAULT_TILE = Map.TERRAIN_TILES.WATER;
+CoastalMap.DEFAULT_TILE = Map.TERRAIN_TYPES.WATER;
 
 
 function MapFactory(definition) {

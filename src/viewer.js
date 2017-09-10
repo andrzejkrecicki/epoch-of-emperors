@@ -89,21 +89,26 @@ MapDrawable.TILE_COL_OFFSET = {
 }
 
 let images = {};
-images[Map.TERRAIN_TILES.WATER] = make_image("img/tiles/water_00.png");
-images[Map.TERRAIN_TILES.GRASS] = make_image("img/tiles/grass_00.png");
-images[Map.TERRAIN_TILES.SAND] = make_image("img/tiles/sand_00.png");
-images[Map.TERRAIN_TILES.SANDWATER_4] = make_image("img/tiles/sandwater_4.png");
-images[Map.TERRAIN_TILES.SANDWATER_6] = make_image("img/tiles/sandwater_6.png");
-images[Map.TERRAIN_TILES.SANDWATER_8] = make_image("img/tiles/sandwater_8.png");
-images[Map.TERRAIN_TILES.SANDWATER_3] = make_image("img/tiles/sandwater_3.png");
-images[Map.TERRAIN_TILES.SANDWATER_2] = make_image("img/tiles/sandwater_2.png");
-images[Map.TERRAIN_TILES.SANDWATER_9] = make_image("img/tiles/sandwater_9.png");
-images[Map.TERRAIN_TILES.SANDWATER_1] = make_image("img/tiles/sandwater_1.png");
-images[Map.TERRAIN_TILES.SANDWATER_7] = make_image("img/tiles/sandwater_7.png");
-images[Map.TERRAIN_TILES.WATERSAND_7] = make_image("img/tiles/watersand_7.png");
-images[Map.TERRAIN_TILES.WATERSAND_1] = make_image("img/tiles/watersand_1.png");
-images[Map.TERRAIN_TILES.WATERSAND_3] = make_image("img/tiles/watersand_3.png");
-images[Map.TERRAIN_TILES.WATERSAND_9] = make_image("img/tiles/watersand_9.png");
+images[Map.TERRAIN_TYPES.WATER] = make_image("img/tiles/water_00.png");
+images[Map.TERRAIN_TYPES.GRASS] = make_image("img/tiles/grass_00.png");
+images[Map.TERRAIN_TYPES.SAND] = make_image("img/tiles/sand_00.png");
+images[Map.TERRAIN_TYPES.SANDWATER_4] = make_image("img/tiles/sandwater_4.png");
+images[Map.TERRAIN_TYPES.SANDWATER_6] = make_image("img/tiles/sandwater_6.png");
+images[Map.TERRAIN_TYPES.SANDWATER_8] = make_image("img/tiles/sandwater_8.png");
+images[Map.TERRAIN_TYPES.SANDWATER_3] = make_image("img/tiles/sandwater_3.png");
+images[Map.TERRAIN_TYPES.SANDWATER_2] = make_image("img/tiles/sandwater_2.png");
+images[Map.TERRAIN_TYPES.SANDWATER_9] = make_image("img/tiles/sandwater_9.png");
+images[Map.TERRAIN_TYPES.SANDWATER_1] = make_image("img/tiles/sandwater_1.png");
+images[Map.TERRAIN_TYPES.SANDWATER_7] = make_image("img/tiles/sandwater_7.png");
+images[Map.TERRAIN_TYPES.WATERSAND_7] = make_image("img/tiles/watersand_7.png");
+images[Map.TERRAIN_TYPES.WATERSAND_1] = make_image("img/tiles/watersand_1.png");
+images[Map.TERRAIN_TYPES.WATERSAND_3] = make_image("img/tiles/watersand_3.png");
+images[Map.TERRAIN_TYPES.WATERSAND_9] = make_image("img/tiles/watersand_9.png");
+
+
+
+
+
 
 
 
