@@ -66,6 +66,15 @@ var to_binary = function(num) {
     return "00000000".substr(bin.length) + bin;
 }
 
+var leftpad = function(val, width, pad) {
+    let str = val.toString();
+    return Array(width + 1).join(pad).substr(str.length) + val;
+}
+
+var rand_choice = function(choices) {
+    return choices[Math.floor(Math.random() * choices.length)];
+}
+
 export {
-    PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES, make_image, to_binary
+    PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES, make_image, to_binary, leftpad, rand_choice
 }
