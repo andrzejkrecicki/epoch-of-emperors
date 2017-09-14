@@ -1,6 +1,6 @@
 import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
-import { make_image } from './utils.js';
+import { make_image, leftpad, rand_choice } from './utils.js';
 
 
 class GameViewer {
@@ -60,7 +60,7 @@ class MapDrawable extends Konva.Group {
                 y: -(Map.SIZES[this.map.definition.size] * MapDrawable.TILE_ROW_OFFSET.y) + (y * MapDrawable.TILE_COL_OFFSET.y)
             };
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
-                tmpCtx.drawImage(images[this.map.terrain_tiles[x][y]], origin.x, origin.y);
+                tmpCtx.drawImage(rand_choice(images[this.map.terrain_tiles[x][y]]), origin.x, origin.y);
 
                 origin.x += MapDrawable.TILE_ROW_OFFSET.x;
                 origin.y += MapDrawable.TILE_ROW_OFFSET.y;
@@ -89,40 +89,47 @@ MapDrawable.TILE_COL_OFFSET = {
 }
 
 let images = {};
-images[Map.TERRAIN_TYPES.WATER] = make_image("img/tiles/water_00.png");
-images[Map.TERRAIN_TYPES.GRASS] = make_image("img/tiles/grass_00.png");
-images[Map.TERRAIN_TYPES.SAND] = make_image("img/tiles/sand_00.png");
-images[Map.TERRAIN_TYPES.SANDWATER_4] = make_image("img/tiles/sandwater_4.png");
-images[Map.TERRAIN_TYPES.SANDWATER_6] = make_image("img/tiles/sandwater_6.png");
-images[Map.TERRAIN_TYPES.SANDWATER_8] = make_image("img/tiles/sandwater_8.png");
-images[Map.TERRAIN_TYPES.SANDWATER_3] = make_image("img/tiles/sandwater_3.png");
-images[Map.TERRAIN_TYPES.SANDWATER_2] = make_image("img/tiles/sandwater_2.png");
-images[Map.TERRAIN_TYPES.SANDWATER_9] = make_image("img/tiles/sandwater_9.png");
-images[Map.TERRAIN_TYPES.SANDWATER_1] = make_image("img/tiles/sandwater_1.png");
-images[Map.TERRAIN_TYPES.SANDWATER_7] = make_image("img/tiles/sandwater_7.png");
-images[Map.TERRAIN_TYPES.WATERSAND_7] = make_image("img/tiles/watersand_7.png");
-images[Map.TERRAIN_TYPES.WATERSAND_1] = make_image("img/tiles/watersand_1.png");
-images[Map.TERRAIN_TYPES.WATERSAND_3] = make_image("img/tiles/watersand_3.png");
-images[Map.TERRAIN_TYPES.WATERSAND_9] = make_image("img/tiles/watersand_9.png");
+images[Map.TERRAIN_TYPES.WATER] = [make_image("img/tiles/water_00.png")];
+images[Map.TERRAIN_TYPES.GRASS] = [];
+for (let i = 0; i < 15; ++i) images[Map.TERRAIN_TYPES.GRASS].push(
+    make_image("img/tiles/grass_" + leftpad(i, 2, "0") + ".png")
+)
+images[Map.TERRAIN_TYPES.SAND] = [];
+for (let i = 0; i < 15; ++i) images[Map.TERRAIN_TYPES.SAND].push(
+    make_image("img/tiles/sand_" + leftpad(i, 2, "0") + ".png")
+)
+
+images[Map.TERRAIN_TYPES.SANDWATER_4] = [make_image("img/tiles/sandwater_4.png")];
+images[Map.TERRAIN_TYPES.SANDWATER_6] = [make_image("img/tiles/sandwater_6.png")];
+images[Map.TERRAIN_TYPES.SANDWATER_8] = [make_image("img/tiles/sandwater_8.png")];
+images[Map.TERRAIN_TYPES.SANDWATER_3] = [make_image("img/tiles/sandwater_3.png")];
+images[Map.TERRAIN_TYPES.SANDWATER_2] = [make_image("img/tiles/sandwater_2.png")];
+images[Map.TERRAIN_TYPES.SANDWATER_9] = [make_image("img/tiles/sandwater_9.png")];
+images[Map.TERRAIN_TYPES.SANDWATER_1] = [make_image("img/tiles/sandwater_1.png")];
+images[Map.TERRAIN_TYPES.SANDWATER_7] = [make_image("img/tiles/sandwater_7.png")];
+images[Map.TERRAIN_TYPES.WATERSAND_7] = [make_image("img/tiles/watersand_7.png")];
+images[Map.TERRAIN_TYPES.WATERSAND_1] = [make_image("img/tiles/watersand_1.png")];
+images[Map.TERRAIN_TYPES.WATERSAND_3] = [make_image("img/tiles/watersand_3.png")];
+images[Map.TERRAIN_TYPES.WATERSAND_9] = [make_image("img/tiles/watersand_9.png")];
 
 
-images[Map.TERRAIN_TYPES.GRASSSAND_1] = make_image("img/tiles/grasssand_1.png");
-images[Map.TERRAIN_TYPES.GRASSSAND_2] = make_image("img/tiles/grasssand_2.png");
-images[Map.TERRAIN_TYPES.GRASSSAND_3] = make_image("img/tiles/grasssand_3.png");
-images[Map.TERRAIN_TYPES.GRASSSAND_4] = make_image("img/tiles/grasssand_4.png");
-images[Map.TERRAIN_TYPES.GRASSSAND_6] = make_image("img/tiles/grasssand_6.png");
-images[Map.TERRAIN_TYPES.GRASSSAND_7] = make_image("img/tiles/grasssand_7.png");
-images[Map.TERRAIN_TYPES.GRASSSAND_8] = make_image("img/tiles/grasssand_8.png");
-images[Map.TERRAIN_TYPES.GRASSSAND_9] = make_image("img/tiles/grasssand_9.png");
+images[Map.TERRAIN_TYPES.GRASSSAND_1] = [make_image("img/tiles/grasssand_1.png")];
+images[Map.TERRAIN_TYPES.GRASSSAND_2] = [make_image("img/tiles/grasssand_2.png")];
+images[Map.TERRAIN_TYPES.GRASSSAND_3] = [make_image("img/tiles/grasssand_3.png")];
+images[Map.TERRAIN_TYPES.GRASSSAND_4] = [make_image("img/tiles/grasssand_4.png")];
+images[Map.TERRAIN_TYPES.GRASSSAND_6] = [make_image("img/tiles/grasssand_6.png")];
+images[Map.TERRAIN_TYPES.GRASSSAND_7] = [make_image("img/tiles/grasssand_7.png")];
+images[Map.TERRAIN_TYPES.GRASSSAND_8] = [make_image("img/tiles/grasssand_8.png")];
+images[Map.TERRAIN_TYPES.GRASSSAND_9] = [make_image("img/tiles/grasssand_9.png")];
 
 
-images[Map.TERRAIN_TYPES.SANDGRASS_0] = make_image("img/tiles/sandgrass_0.png");
-images[Map.TERRAIN_TYPES.SANDGRASS_2] = make_image("img/tiles/sandgrass_2.png");
-images[Map.TERRAIN_TYPES.SANDGRASS_2_8] = make_image("img/tiles/sandgrass_2_8.png");
-images[Map.TERRAIN_TYPES.SANDGRASS_4] = make_image("img/tiles/sandgrass_4.png");
-images[Map.TERRAIN_TYPES.SANDGRASS_4_6] = make_image("img/tiles/sandgrass_4_6.png");
-images[Map.TERRAIN_TYPES.SANDGRASS_6] = make_image("img/tiles/sandgrass_6.png");
-images[Map.TERRAIN_TYPES.SANDGRASS_8] = make_image("img/tiles/sandgrass_8.png");
+images[Map.TERRAIN_TYPES.SANDGRASS_0] = [make_image("img/tiles/sandgrass_0.png")];
+images[Map.TERRAIN_TYPES.SANDGRASS_2] = [make_image("img/tiles/sandgrass_2.png")];
+images[Map.TERRAIN_TYPES.SANDGRASS_2_8] = [make_image("img/tiles/sandgrass_2_8.png")];
+images[Map.TERRAIN_TYPES.SANDGRASS_4] = [make_image("img/tiles/sandgrass_4.png")];
+images[Map.TERRAIN_TYPES.SANDGRASS_4_6] = [make_image("img/tiles/sandgrass_4_6.png")];
+images[Map.TERRAIN_TYPES.SANDGRASS_6] = [make_image("img/tiles/sandgrass_6.png")];
+images[Map.TERRAIN_TYPES.SANDGRASS_8] = [make_image("img/tiles/sandgrass_8.png")];
 
 
 
