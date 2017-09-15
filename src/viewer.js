@@ -54,6 +54,12 @@ class MapDrawable extends Konva.Group {
         tmpCanvas.setAttribute("height", Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.height);
         var tmpCtx = tmpCanvas.getContext('2d');
 
+        var miniCanv = document.createElement("canvas");
+        miniCanv.setAttribute("width", Map.SIZES[this.map.definition.size]);
+        miniCanv.setAttribute("height", Map.SIZES[this.map.definition.size]);
+        var miniCtx = miniCanv.getContext('2d');
+
+
         for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
             let origin = {
                 x: y * MapDrawable.TILE_COL_OFFSET.x,
@@ -62,10 +68,14 @@ class MapDrawable extends Konva.Group {
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
                 tmpCtx.drawImage(rand_choice(images[this.map.terrain_tiles[x][y]]), origin.x, origin.y);
 
+                miniCtx.fillStyle = minimap_pixel_color[this.map.terrain_tiles[x][y]];
+                miniCtx.fillRect(x, y, 1, 1);
                 origin.x += MapDrawable.TILE_ROW_OFFSET.x;
                 origin.y += MapDrawable.TILE_ROW_OFFSET.y;
             }
         }
+        miniCanv.className = "tmpMiniMap";
+        document.body.appendChild(miniCanv);
         this.add(new Konva.Image({
             x: 0,
             y: 0,
@@ -134,6 +144,22 @@ images[Map.TERRAIN_TYPES.SANDGRASS_8] = [make_image("img/tiles/sandgrass_8.png")
 
 
 
+let minimap_pixel_color = {};
+minimap_pixel_color[Map.TERRAIN_TYPES.WATER] = 'blue';
+minimap_pixel_color[Map.TERRAIN_TYPES.GRASS] = 'green';
+minimap_pixel_color[Map.TERRAIN_TYPES.SAND] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_4] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_6] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_8] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_3] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_2] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_9] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_1] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.SANDWATER_7] = 'yellow';
+minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_7] = 'blue';
+minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_1] = 'blue';
+minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_3] = 'blue';
+minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_9] = 'blue';
 
 
 
