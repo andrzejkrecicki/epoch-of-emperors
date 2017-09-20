@@ -85,6 +85,24 @@ class MapDrawable extends Konva.Group {
         }));
         this.cache();
     }
+    tileCoordsToScreen(tx, ty) {
+        let H = MapDrawable.TILE_SIZE.height;
+        let W = MapDrawable.TILE_SIZE.width;
+        let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
+
+        let x = tx * W * 0.5 + ty * W * 0.5;
+        let y = 0.5 * UH - tx * 0.5 * H + ty * 0.5 * H;
+        return { x, y };
+    }
+    screenCoordsToTile(sx, sy) {
+        let H = MapDrawable.TILE_SIZE.height;
+        let W = MapDrawable.TILE_SIZE.width;
+        let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
+
+        let x = Math.floor((sx * H - W * sy + 0.5 * W * UH) / (W * H));
+        let y = Math.floor((sy - 0.5 * UH) / (0.5 * H) + (sx * H - W * sy + 0.5 * UH * W) / (H * W));
+        return { x, y };
+    }
 }
 MapDrawable.TILE_SIZE = {
     width: 64, height: 32
@@ -140,7 +158,6 @@ images[Map.TERRAIN_TYPES.SANDGRASS_4] = [make_image("img/tiles/sandgrass_4.png")
 images[Map.TERRAIN_TYPES.SANDGRASS_4_6] = [make_image("img/tiles/sandgrass_4_6.png")];
 images[Map.TERRAIN_TYPES.SANDGRASS_6] = [make_image("img/tiles/sandgrass_6.png")];
 images[Map.TERRAIN_TYPES.SANDGRASS_8] = [make_image("img/tiles/sandgrass_8.png")];
-
 
 
 
