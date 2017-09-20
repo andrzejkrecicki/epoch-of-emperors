@@ -75,6 +75,14 @@ var rand_choice = function(choices) {
     return choices[Math.floor(Math.random() * choices.length)];
 }
 
+var rect_intersection = function(x1, y1, w1, h1, x2, y2, w2, h2) {
+    return !(
+        x1 + w1 < x2 || x1 > x2 + w2 ||
+        y1 + h1 < y2 || y1 > y2 + h2
+    );
+}
+
 export {
-    PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES, make_image, to_binary, leftpad, rand_choice
+    PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
+    make_image, to_binary, leftpad, rand_choice, rect_intersection
 }
