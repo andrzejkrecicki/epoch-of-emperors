@@ -15,11 +15,13 @@ class Game {
 
         this.layers = {
             terrain_layer: new Konva.Layer(),
+            entities: new Konva.Layer(),
             interface_layer: new Konva.Layer()
         };
         // this.layers.terrain_layer.hitGraphEnabled(false);
 
         this.stage.add(this.layers.terrain_layer);
+        this.stage.add(this.layers.entities);
 
         this.stage.add(this.layers.interface_layer);
 
