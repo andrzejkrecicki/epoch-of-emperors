@@ -13,16 +13,18 @@ class GameViewer {
 
         let size = Map.SIZES[this.engine.map.definition.size];
         this.viewPort = {
-            x: -Math.round(size * MapDrawable.TILE_SIZE.width / 2 - this.stage.width() / 2),
-            y: -Math.round(size * MapDrawable.TILE_SIZE.height / 2 - this.stage.height() / 2)
+            x: Math.round(size * MapDrawable.TILE_SIZE.width / 2 - this.stage.width() / 2),
+            y: Math.round(size * MapDrawable.TILE_SIZE.height / 2 - this.stage.height() / 2),
+            w: this.stage.width(),
+            h: this.stage.height(),
         }
 
         this.mapDrawable = new MapDrawable(this.engine.map, this.stage, this.viewPort);
         this.layers.terrain_layer.add(this.mapDrawable);
 
         this.entitiesHolder = new Konva.Group({
-            x: this.viewPort.x,
-            y: this.viewPort.y
+            x: -this.viewPort.x,
+            y: -this.viewPort.y
         });
         this.layers.entities.add(this.entitiesHolder);
 
@@ -30,6 +32,7 @@ class GameViewer {
 
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
             entity.position(this.mapDrawable.tileCoordsToScreen(entity.tile_x, entity.tile_y));
+            entity.resetBoundingBox();
             this.entitiesHolder.add(
                 entity
             );
@@ -39,10 +42,7 @@ class GameViewer {
     }
     setEntitiesVisibility() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            if (!rect_intersection(
-                entity.x(), entity.y(), entity.width(), entity.height(),
-                -this.viewPort.x, -this.viewPort.y, this.stage.width(), this.stage.height()
-            )) {
+            if (!rect_intersection(entity.getBoundingBox(), this.viewPort)) {
                 entity.hide();
             } else {
                 entity.show();
@@ -53,26 +53,26 @@ class GameViewer {
         this.stage.on("mousemove", (e) => {
             let moved = false;
             if (e.evt.layerX < 30) {
-                this.viewPort.x += 20;
-                this.mapDrawable.x(this.viewPort.x);
-                this.entitiesHolder.x(this.viewPort.x);
+                this.viewPort.x -= 20;
+                this.mapDrawable.x(-this.viewPort.x);
+                this.entitiesHolder.x(-this.viewPort.x);
                 moved = true;
             } else if (e.evt.layerX > this.stage.width() - 30) {
-                this.viewPort.x -= 20;
-                this.mapDrawable.x(this.viewPort.x);
-                this.entitiesHolder.x(this.viewPort.x);
+                this.viewPort.x += 20;
+                this.mapDrawable.x(-this.viewPort.x);
+                this.entitiesHolder.x(-this.viewPort.x);
                 moved = true;
             }
 
             if (e.evt.layerY < 30) {
-                this.viewPort.y += 20;
-                this.mapDrawable.y(this.viewPort.y);
-                this.entitiesHolder.y(this.viewPort.y);
+                this.viewPort.y -= 20;
+                this.mapDrawable.y(-this.viewPort.y);
+                this.entitiesHolder.y(-this.viewPort.y);
                 moved = true;
             } else if (e.evt.layerY > this.stage.height() - 30) {
-                this.viewPort.y -= 20;
-                this.mapDrawable.y(this.viewPort.y);
-                this.entitiesHolder.y(this.viewPort.y);
+                this.viewPort.y += 20;
+                this.mapDrawable.y(-this.viewPort.y);
+                this.entitiesHolder.y(-this.viewPort.y);
                 moved = true;
             }
 
@@ -88,8 +88,8 @@ class GameViewer {
 class MapDrawable extends Konva.Group {
     constructor(map, stage, viewPort) {
         super({
-            x: viewPort.x,
-            y: viewPort.y
+            x: -viewPort.x,
+            y: -viewPort.y
         });
         this.map = map;
         this.insertTiles();

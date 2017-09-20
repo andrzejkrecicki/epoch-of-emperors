@@ -11,18 +11,30 @@ class Tree extends Entity {
         this.hp = Tree.HP;
         this.max_hp = Tree.HP;
         this.setImage();
+        this.resetBoundingBox();
     }
     setImage() {
-        let choice = Math.floor(Math.random() * this.constructor.IMAGES.length);
+        this.imgChoice = Math.floor(Math.random() * this.constructor.IMAGES.length);
         window.TREE_OFFSETS = this.constructor.IMAGE_OFFSETS;
         this.image = new Konva.Image({
-            x: -this.constructor.IMAGE_OFFSETS[choice].x + MapDrawable.TILE_SIZE.width / 2,
-            y: -this.constructor.IMAGE_OFFSETS[choice].y + MapDrawable.TILE_SIZE.height / 2,
-            image: this.constructor.IMAGES[choice],
-            width: this.constructor.IMAGES[choice].width,
-            height: this.constructor.IMAGES[choice].height
+            x: -this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
+            y: -this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
+            image: this.constructor.IMAGES[this.imgChoice],
+            width: this.constructor.IMAGES[this.imgChoice].width,
+            height: this.constructor.IMAGES[this.imgChoice].height
         });
         this.add(this.image);
+    }
+    resetBoundingBox() {
+        this.boundingBox = {
+            x: this.x() - this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
+            y: this.y() - this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
+            w: this.image.width(),
+            h: this.image.height()
+        }
+    }
+    getBoundingBox() {
+        return this.boundingBox;
     }
     height() {
         return this.image.height();
