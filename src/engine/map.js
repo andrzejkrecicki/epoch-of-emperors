@@ -9,6 +9,25 @@ class Map {
         this.definition = definition;
         this.entities = [];
     }
+    isShore(x, y) {
+        return (
+            this.initial_tiles[x][y] == Map.TERRAIN_TYPES.SAND ||
+            this.initial_tiles[x][y] == Map.TERRAIN_TYPES.WATER
+        ) && (
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_4 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_6 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_8 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_3 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_2 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_9 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_1 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.SANDWATER_7 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.WATERSAND_7 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.WATERSAND_1 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.WATERSAND_3 ||
+            this.terrain_tiles[x][y] == Map.TERRAIN_TYPES.WATERSAND_9
+        )
+    }
 }
 Map.SIZES = [128, 256, 512];
 Map.TERRAIN_TYPES = {
@@ -84,12 +103,12 @@ class RandomMap extends Map {
         let size = Map.SIZES[this.definition.size];
         for (let y = 0; y < size; ++y) {
             for (let x = 0; x < size; ++x) {
-                if (this.initial_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && Math.random() < .1) {
+                if (this.initial_tiles[x][y] != Map.TERRAIN_TYPES.WATER &&
+                    !this.isShore(x, y) && Math.random() < .1) {
                     this.entities.push(new LeafTree(x, y));
                 }
             }
         }
-
     }
     normalizeNeighbouringTiles() {
         let size = Map.SIZES[this.definition.size];

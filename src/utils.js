@@ -75,10 +75,10 @@ var rand_choice = function(choices) {
     return choices[Math.floor(Math.random() * choices.length)];
 }
 
-var rect_intersection = function(x1, y1, w1, h1, x2, y2, w2, h2) {
+var rect_intersection = function(r1, r2) {
     return !(
-        x1 + w1 < x2 || x1 > x2 + w2 ||
-        y1 + h1 < y2 || y1 > y2 + h2
+        (r1.x + r1.w < r2.x || r1.x > r2.x + r2.w) &&
+        (r1.y + r1.h < r2.y || r1.y > r2.y + r2.h)
     );
 }
 

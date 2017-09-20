@@ -6,6 +6,10 @@ class Entity extends Konva.Group {
         this.hp = 0;
         this.max_hp = 0;
     }
+    resetBoundingBox() {
+    }
+    boundingBox() {
+    }
     setImage() {
     }
 }
