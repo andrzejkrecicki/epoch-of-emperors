@@ -1,10 +1,13 @@
 import Konva from 'konva';
 import { BFSWalker, MultiSlotQueue } from './algorithms.js';
 import { to_binary } from '../utils.js';
+import { LeafTree } from './trees.js';
+import { MapDrawable } from '../viewer.js';
 
 class Map {
     constructor(definition) {
         this.definition = definition;
+        this.entities = [];
     }
 }
 Map.SIZES = [128, 256, 512];
@@ -63,6 +66,7 @@ class RandomMap extends Map {
 
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
+        this.plantTrees();
 
     }
     getNeighboursIdentityVector(x, y, synonyms=[]) {
@@ -75,6 +79,17 @@ class RandomMap extends Map {
             neighbours_vector[i] = +(synonyms.indexOf(this.initial_tiles[nx][ny]) != -1);
         }
         return neighbours_vector
+    }
+    plantTrees() {
+        let size = Map.SIZES[this.definition.size];
+        for (let y = 0; y < size; ++y) {
+            for (let x = 0; x < size; ++x) {
+                if (this.initial_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && Math.random() < .1) {
+                    this.entities.push(new LeafTree(x, y));
+                }
+            }
+        }
+
     }
     normalizeNeighbouringTiles() {
         let size = Map.SIZES[this.definition.size];

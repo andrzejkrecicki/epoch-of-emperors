@@ -1,7 +1,7 @@
 import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
-import { make_image, leftpad, rand_choice } from './utils.js';
-
+import { make_image, leftpad, rand_choice, rect_intersection } from './utils.js';
+import { LeafTree } from './engine/trees.js';
 
 class GameViewer {
     constructor(definition, navigator, layers) {
@@ -19,9 +19,35 @@ class GameViewer {
 
         this.mapDrawable = new MapDrawable(this.engine.map, this.stage, this.viewPort);
         this.layers.terrain_layer.add(this.mapDrawable);
-        this.stage.draw();
 
+        this.entitiesHolder = new Konva.Group({
+            x: this.viewPort.x,
+            y: this.viewPort.y
+        });
+        this.layers.entities.add(this.entitiesHolder);
+
+        this.setEntitiesVisibility();
+
+        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
+            entity.position(this.mapDrawable.tileCoordsToScreen(entity.tile_x, entity.tile_y));
+            this.entitiesHolder.add(
+                entity
+            );
+        }
+        this.stage.draw();
         this.initializeTemporaryScrolling();
+    }
+    setEntitiesVisibility() {
+        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
+            if (!rect_intersection(
+                entity.x(), entity.y(), entity.width(), entity.height(),
+                -this.viewPort.x, -this.viewPort.y, this.stage.width(), this.stage.height()
+            )) {
+                entity.hide();
+            } else {
+                entity.show();
+            }
+        }
     }
     initializeTemporaryScrolling() {
         this.stage.on("mousemove", (e) => {
@@ -79,7 +105,6 @@ class MapDrawable extends Konva.Group {
         miniCanv.setAttribute("height", Map.SIZES[this.map.definition.size]);
         var miniCtx = miniCanv.getContext('2d');
 
-
         for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
             let origin = {
                 x: y * MapDrawable.TILE_COL_OFFSET.x,
@@ -88,7 +113,9 @@ class MapDrawable extends Konva.Group {
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
                 tmpCtx.drawImage(rand_choice(images[this.map.terrain_tiles[x][y]]), origin.x, origin.y);
 
+
                 miniCtx.fillStyle = minimap_pixel_color[this.map.terrain_tiles[x][y]];
+
                 miniCtx.fillRect(x, y, 1, 1);
                 origin.x += MapDrawable.TILE_ROW_OFFSET.x;
                 origin.y += MapDrawable.TILE_ROW_OFFSET.y;
