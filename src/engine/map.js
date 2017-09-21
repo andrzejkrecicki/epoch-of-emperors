@@ -75,12 +75,9 @@ class RandomMap extends Map {
         this.generate();
     }
     generate() {
-        this.terrain_tiles = new Array(RandomMap.SIZES[this.definition.size]);
-        this.terrain_tiles.fill(null);
-        this.terrain_tiles = this.terrain_tiles.map(() => {
-            let arr = new Array(RandomMap.SIZES[this.definition.size]);
-            arr.fill(this.constructor.DEFAULT_TILE);
-            return arr;
+        let size = Map.SIZES[this.definition.size];
+        this.terrain_tiles = new Array(size).fill(null).map(() => {
+            return new Array(size).fill(this.constructor.DEFAULT_TILE);
         });
 
         this.randomizeTerrain();
@@ -112,14 +109,13 @@ class RandomMap extends Map {
     }
     normalizeNeighbouringTiles() {
         let size = Map.SIZES[this.definition.size];
-        this.initial_tiles = (new Array(size)).fill(null).map(() => (new Array(size).fill(0)));
 
+        this.initial_tiles = new Array(size).fill(null).map(() => new Array(size).fill(0));
         for (let y = 0; y < size; ++y) {
             for (let x = 0; x < size; ++x) {
                 this.initial_tiles[x][y] = this.terrain_tiles[x][y];
             }
         }
-
 
         let changes_pending = true;
         while (changes_pending) {
@@ -350,14 +346,14 @@ RandomMap.GRASS_TRANSFORMATIONS = {
 
 class CoastalMap extends RandomMap {
     randomizeTerrain() {
-        let total_surface = RandomMap.SIZES[this.definition.size] * RandomMap.SIZES[this.definition.size];
+        let total_surface = Map.SIZES[this.definition.size] * Map.SIZES[this.definition.size];
         // 60% - 80% of land
         let desired_land_surface = Math.floor(total_surface * (Math.random() * 2 + 6) / 10);
         let current_surface = 1;
 
         let seed = {
-            x: Math.floor(RandomMap.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
-            y: Math.floor(RandomMap.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
+            x: Math.floor(Map.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
+            y: Math.floor(Map.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
             terrain: Map.TERRAIN_TYPES.GRASS
         }
 
@@ -377,7 +373,7 @@ class CoastalMap extends RandomMap {
                 }
             }, function() {
                 return current_surface > desired_land_surface
-            }, 2, RandomMap.SIZES[this.definition.size] - 2 - 1
+            }, 2, Map.SIZES[this.definition.size] - 2 - 1
         );
         walker.run();
     }

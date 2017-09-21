@@ -20,7 +20,7 @@ class GameViewer {
         }
 
         this.mapDrawable = new MapDrawable(this.engine.map, this.stage, this.viewPort);
-        this.layers.terrain_layer.add(this.mapDrawable);
+        this.layers.terrain.add(this.mapDrawable);
 
         this.entitiesHolder = new Konva.Group({
             x: -this.viewPort.x,
