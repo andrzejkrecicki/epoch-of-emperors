@@ -14,16 +14,16 @@ class Game {
         });
 
         this.layers = {
-            terrain_layer: new Konva.Layer(),
+            terrain: new Konva.Layer(),
             entities: new Konva.Layer(),
-            interface_layer: new Konva.Layer()
+            interface: new Konva.Layer()
         };
-        // this.layers.terrain_layer.hitGraphEnabled(false);
+        // this.layers.terrain.hitGraphEnabled(false);
 
-        this.stage.add(this.layers.terrain_layer);
+        this.stage.add(this.layers.terrain);
         this.stage.add(this.layers.entities);
 
-        this.stage.add(this.layers.interface_layer);
+        this.stage.add(this.layers.interface);
 
         this.navigator = new MenuNavigator(this.stage, this.layers);
     }
