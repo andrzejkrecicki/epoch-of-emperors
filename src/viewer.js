@@ -1,7 +1,7 @@
 import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
 import { make_image, leftpad, rand_choice, rect_intersection } from './utils.js';
-import { LeafTree } from './engine/trees.js';
+import { Tree, LeafTree } from './engine/trees.js';
 
 class GameViewer {
     constructor(definition, navigator, layers) {
@@ -115,6 +115,7 @@ class MapDrawable extends Konva.Group {
 
 
                 miniCtx.fillStyle = minimap_pixel_color[this.map.terrain_tiles[x][y]];
+                if (this.map.entities_map[x][y] instanceof Tree) miniCtx.fillStyle = minimap_pixel_color.TREE;
 
                 miniCtx.fillRect(x, y, 1, 1);
                 origin.x += MapDrawable.TILE_ROW_OFFSET.x;
@@ -224,6 +225,7 @@ minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_7] = 'blue';
 minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_1] = 'blue';
 minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_3] = 'blue';
 minimap_pixel_color[Map.TERRAIN_TYPES.WATERSAND_9] = 'blue';
+minimap_pixel_color.TREE = '#003c00';
 
 
 

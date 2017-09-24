@@ -80,6 +80,10 @@ class RandomMap extends Map {
             return new Array(size).fill(this.constructor.DEFAULT_TILE);
         });
 
+        this.entities_map = new Array(size).fill(null).map(() => {
+            return new Array(size).fill(null);
+        });
+
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
         this.plantTrees();
@@ -96,15 +100,50 @@ class RandomMap extends Map {
         }
         return neighbours_vector
     }
+    isSuitableForTree(x, y) {
+        return this.entities_map[x][y] == null && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
+    }
     plantTrees() {
         let size = Map.SIZES[this.definition.size];
-        for (let y = 0; y < size; ++y) {
-            for (let x = 0; x < size; ++x) {
-                if (this.initial_tiles[x][y] != Map.TERRAIN_TYPES.WATER &&
-                    !this.isShore(x, y) && Math.random() < .1) {
-                    this.entities.push(new LeafTree(x, y));
+        let that = this;
+
+        let desired_total_forest_surface = Math.floor(.3 * this.land_surface);
+        let total_forest_surface = 0;
+
+
+        while (total_forest_surface < desired_total_forest_surface) {
+            let seed = {
+                x: Math.floor(Math.random() * size),
+                y: Math.floor(Math.random() * size)
+            }
+            while (!this.isSuitableForTree(seed.x, seed.y)) {
+                seed = {
+                    x: Math.floor(Math.random() * size),
+                    y: Math.floor(Math.random() * size)
                 }
             }
+            let current_forest_surface = 0;
+            let desired_current_forest_surface = Math.floor((Math.random() * .1 + .025) * desired_total_forest_surface);
+
+            let ForestType = LeafTree; // make randomized choice
+
+            let walker = new BFSWalker(seed, new MultiSlotQueue(2), function(node) {
+                    if (Math.random() > .8) return;
+                    if (!that.isSuitableForTree(node.x, node.y)) return;
+
+                    let tree = new ForestType(node.x, node.y);
+                    that.entities_map[node.x][node.y] = tree;
+                    that.entities.push(tree);
+                    ++current_forest_surface;
+                    ++total_forest_surface;
+                }, function(x, y, node) {
+                    return { x: x, y: y }
+                }, function() {
+                    return current_forest_surface > desired_current_forest_surface ||
+                        total_forest_surface > desired_total_forest_surface
+                }, 0, size - 1
+            );
+            walker.run();
         }
     }
     normalizeNeighbouringTiles() {
@@ -349,7 +388,7 @@ class CoastalMap extends RandomMap {
         let total_surface = Map.SIZES[this.definition.size] * Map.SIZES[this.definition.size];
         // 60% - 80% of land
         let desired_land_surface = Math.floor(total_surface * (Math.random() * 2 + 6) / 10);
-        let current_surface = 1;
+        this.land_surface = 1;
 
         let seed = {
             x: Math.floor(Map.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
@@ -365,14 +404,14 @@ class CoastalMap extends RandomMap {
                         if (Math.abs(x - tile.x) + Math.abs(y - tile.y) != 4) that.terrain_tiles[x][y] = tile.terrain;
                     }
             }, function(x, y, tile) {
-                ++current_surface;
+                ++that.land_surface;
                 return {
                     x: x,
                     y: y,
                     terrain: tile.terrain
                 }
             }, function() {
-                return current_surface > desired_land_surface
+                return that.land_surface > desired_land_surface
             }, 2, Map.SIZES[this.definition.size] - 2 - 1
         );
         walker.run();
