@@ -110,7 +110,8 @@ class RandomMap extends Map {
         let desired_total_forest_surface = Math.floor(.3 * this.land_surface);
         let total_forest_surface = 0;
 
-        let is_within_forest = new Array(size).fill(null).map(() => new Array(size).fill(false));
+        let forest_surface_id = new Array(size).fill(null).map(() => new Array(size).fill(1e9));
+        let forest_id = 0;
 
         while (total_forest_surface < desired_total_forest_surface) {
             let seed = {
@@ -130,13 +131,20 @@ class RandomMap extends Map {
 
             let walker = new BFSWalker(seed, new MultiSlotQueue(2), function(node) {
                     if (Math.random() > .8) return;
-                    if (is_within_forest[node.x][node.y]) return;
+                    if (forest_surface_id[node.x][node.y] < forest_id) return;
                     if (!that.isSuitableForTree(node.x, node.y)) return;
 
                     let tree = new ForestType(node.x, node.y);
                     that.entities_map[node.x][node.y] = tree;
                     that.entities.push(tree);
-                    is_within_forest[node.x][node.y] = true;
+
+                    for (let x = node.x - 2; x <= node.x + 2; ++x) {
+                        for (let y = node.y - 2; y <= node.y + 2; ++y) {
+                            if (x >= 0 && x < size && y >= 0 && y < size && forest_surface_id[x][y] >= forest_id)
+                                forest_surface_id[x][y] = forest_id;
+                        }
+                    }
+
                     ++current_forest_surface;
                     ++total_forest_surface;
                 }, function(x, y, node) {
@@ -147,6 +155,7 @@ class RandomMap extends Map {
                 }, 0, size - 1
             );
             walker.run();
+            ++forest_id;
         }
 
     }
