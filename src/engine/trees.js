@@ -70,4 +70,46 @@ LeafTree.IMAGE_OFFSETS = [
 ];
 
 
-export { Tree, LeafTree }
+class PalmTree extends Tree {
+    constructor(x, y) {
+        super(...arguments);
+    }
+}
+PalmTree.NAME = "Palm";
+PalmTree.IMAGES = [
+    make_image("img/trees/palm_00.png"),
+    make_image("img/trees/palm_01.png"),
+    make_image("img/trees/palm_02.png"),
+    make_image("img/trees/palm_03.png"),
+];
+PalmTree.IMAGE_OFFSETS = [
+    { x: 22, y: 63 },
+    { x: 34, y: 57 },
+    { x: 37, y: 48 },
+    { x: 30, y: 49 }
+];
+
+
+class PineTree extends Tree {
+    constructor(x, y) {
+        super(...arguments);
+    }
+}
+PineTree.NAME = "Pine";
+PineTree.IMAGES = [
+    make_image("img/trees/pine_00.png"),
+    make_image("img/trees/pine_01.png"),
+    make_image("img/trees/pine_02.png"),
+    make_image("img/trees/pine_03.png"),
+    make_image("img/trees/pine_04.png"),
+];
+PineTree.IMAGE_OFFSETS = [
+    { x: 24, y: 75 },
+    { x: 32, y: 62 },
+    { x: 24, y: 68 },
+    { x: 28, y: 56 },
+    { x: 26, y: 78 }
+];
+
+
+export { Tree, LeafTree, PalmTree, PineTree }

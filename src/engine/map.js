@@ -1,7 +1,7 @@
 import Konva from 'konva';
 import { BFSWalker, MultiSlotQueue } from './algorithms.js';
-import { to_binary } from '../utils.js';
-import { LeafTree } from './trees.js';
+import { rand_choice, to_binary } from '../utils.js';
+import { PineTree, LeafTree, PalmTree } from './trees.js';
 import { MapDrawable } from '../viewer.js';
 
 class Map {
@@ -110,6 +110,7 @@ class RandomMap extends Map {
         let desired_total_forest_surface = Math.floor(.3 * this.land_surface);
         let total_forest_surface = 0;
 
+        let is_within_forest = new Array(size).fill(null).map(() => new Array(size).fill(false));
 
         while (total_forest_surface < desired_total_forest_surface) {
             let seed = {
@@ -125,15 +126,17 @@ class RandomMap extends Map {
             let current_forest_surface = 0;
             let desired_current_forest_surface = Math.floor((Math.random() * .1 + .025) * desired_total_forest_surface);
 
-            let ForestType = LeafTree; // make randomized choice
+            let ForestType = rand_choice([LeafTree, PalmTree, PineTree]);
 
             let walker = new BFSWalker(seed, new MultiSlotQueue(2), function(node) {
                     if (Math.random() > .8) return;
+                    if (is_within_forest[node.x][node.y]) return;
                     if (!that.isSuitableForTree(node.x, node.y)) return;
 
                     let tree = new ForestType(node.x, node.y);
                     that.entities_map[node.x][node.y] = tree;
                     that.entities.push(tree);
+                    is_within_forest[node.x][node.y] = true;
                     ++current_forest_surface;
                     ++total_forest_surface;
                 }, function(x, y, node) {
@@ -145,6 +148,7 @@ class RandomMap extends Map {
             );
             walker.run();
         }
+
     }
     normalizeNeighbouringTiles() {
         let size = Map.SIZES[this.definition.size];
