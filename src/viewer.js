@@ -2,6 +2,7 @@ import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
 import { make_image, leftpad, rand_choice, rect_intersection } from './utils.js';
 import { Tree, LeafTree } from './engine/trees.js';
+import { Villager } from './engine/units/villager.js';
 
 class GameViewer {
     constructor(definition, navigator, layers) {

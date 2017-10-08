@@ -3,6 +3,7 @@ import { BFSWalker, MultiSlotQueue } from './algorithms.js';
 import { rand_choice, to_binary } from '../utils.js';
 import { PineTree, LeafTree, PalmTree } from './trees.js';
 import { MapDrawable } from '../viewer.js';
+import { Villager } from './units/villager.js';
 
 class Map {
     constructor(definition) {
@@ -89,7 +90,7 @@ class RandomMap extends Map {
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
         this.plantTrees();
-
+        this.addSampleUnits();
     }
     getNeighboursIdentityVector(x, y, synonyms=[]) {
         let neighbours_vector = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -123,6 +124,23 @@ class RandomMap extends Map {
         if (x < 200 && x > 160 && y < 200 && y > 160) return false;
         return this.areSubtilesEmpty(x * 2, y * 2, 2) && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
     }
+    addSampleUnits() {
+        let villager = new Villager(256, 256);
+        this.fillSubtilesWith(256, 256, Villager.SUBTILE_WIDTH, villager);
+        this.entities.push(villager);
+
+        villager = new Villager(257, 256);
+        this.fillSubtilesWith(257, 256, Villager.SUBTILE_WIDTH, villager);
+        this.entities.push(villager);
+
+        villager = new Villager(256, 257);
+        this.fillSubtilesWith(256, 257, Villager.SUBTILE_WIDTH, villager);
+        this.entities.push(villager);
+
+        villager = new Villager(257, 257);
+        this.fillSubtilesWith(257, 257, Villager.SUBTILE_WIDTH, villager);
+        this.entities.push(villager);
+
     }
     plantTrees() {
         let size = Map.SIZES[this.definition.size];
@@ -154,6 +172,7 @@ class RandomMap extends Map {
                     if (Math.random() > .8) return;
                     if (forest_surface_id[node.x][node.y] < forest_id) return;
                     if (!that.isSuitableForTree(node.x, node.y)) return;
+                    if (node.x == 128 && node.y == 128) return;
 
                     let tree = new ForestType(node.x * 2, node.y * 2);
                     that.fillSubtilesWith(node.x * 2, node.y * 2, ForestType.SUBTILE_WIDTH, tree);
