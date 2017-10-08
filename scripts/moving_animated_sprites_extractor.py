@@ -16,21 +16,28 @@ def extract_difference_as_image(start, frame1, frame2, canvas, draw):
     # works by launching BFS walk started at `start` parameter
     # for object-tracking purposes, it returns x, y coordinates of minimal bounding box
     # third returned value is a sprite itself
-    queue = deque([(start.x, start.y)])
+    queue = deque([(start.x, start.y, 5)])
 
     width, height = frame1.size
     min_x, min_y = width, height
     max_x, max_y = 0, 0
 
     while len(queue):
-        x, y = queue.popleft()
+        x, y, counter = queue.popleft()
         if not visited.get((x, y)):
+            if counter == 0:
+                continue
+
             visited[(x, y)] = True
 
             pix1 = frame1.getpixel((x, y))
             pix2 = frame2.getpixel((x, y))
 
+            if pix1 == pix2:
+                counter -= 1
+
             if pix1 != pix2:
+                counter = 5
                 min_x = min(min_x, x)
                 min_y = min(min_y, y)
                 max_x = max(max_x, x)
@@ -38,17 +45,18 @@ def extract_difference_as_image(start, frame1, frame2, canvas, draw):
 
                 canvas.putpixel((x, y), frame2.getpixel((x, y)))
 
+            if True:
                 if x-1 >= 0:
-                    queue.append((x-1, y))
+                    queue.append((x-1, y, counter))
 
                 if x+1 < width:
-                    queue.append((x+1, y))
+                    queue.append((x+1, y, counter))
 
                 if y-1 >= 0:
-                    queue.append((x, y-1))
+                    queue.append((x, y-1, counter))
 
                 if y+1 < height:
-                    queue.append((x, y+1))
+                    queue.append((x, y+1, counter))
 
     visited[(start.x, start.y)] = True
     sprite = canvas.crop((min_x, min_y, max_x+1, max_y+1))
@@ -129,7 +137,7 @@ if __name__ == "__main__":
                             candidate_tx, candidate_ty = ntx, nty
 
         if candidate_tx is not None and candidate_ty is not None:
-            tx, ty = ctx, candidate_ty
+            tx, ty = candidate_tx, candidate_ty
 
         prev = curr
         visited = {}
