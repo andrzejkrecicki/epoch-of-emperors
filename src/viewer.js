@@ -31,7 +31,7 @@ class GameViewer {
         this.setEntitiesVisibility();
 
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            entity.position(this.mapDrawable.tileCoordsToScreen(entity.tile_x, entity.tile_y));
+            entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
             entity.resetBoundingBox();
             this.entitiesHolder.add(
                 entity
@@ -113,9 +113,8 @@ class MapDrawable extends Konva.Group {
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
                 tmpCtx.drawImage(rand_choice(images[this.map.terrain_tiles[x][y]]), origin.x, origin.y);
 
-
                 miniCtx.fillStyle = minimap_pixel_color[this.map.terrain_tiles[x][y]];
-                if (this.map.entities_map[x][y] instanceof Tree) miniCtx.fillStyle = minimap_pixel_color.TREE;
+                if (this.map.getEntityAtSubtile(x * 2, y * 2) instanceof Tree) miniCtx.fillStyle = minimap_pixel_color.TREE;
 
                 miniCtx.fillRect(x, y, 1, 1);
                 origin.x += MapDrawable.TILE_ROW_OFFSET.x;

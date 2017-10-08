@@ -3,7 +3,7 @@ import { make_image, rand_choice } from '../utils.js';
 import { MapDrawable } from '../viewer.js';
 
 class Tree extends Entity {
-    constructor(x, y) {
+    constructor(subtile_x, subtile_y) {
         super(...arguments);
         this.resources = {
             wood: 75
@@ -44,7 +44,7 @@ class Tree extends Entity {
     }
 }
 Tree.HP = 25;
-
+Tree.SUBTILE_WIDTH = 2;
 
 class LeafTree extends Tree {
     constructor(x, y) {

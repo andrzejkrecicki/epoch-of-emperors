@@ -80,9 +80,11 @@ class RandomMap extends Map {
             return new Array(size).fill(this.constructor.DEFAULT_TILE);
         });
 
-        this.entities_map = new Array(size).fill(null).map(() => {
-            return new Array(size).fill(null);
-        });
+        // subtiles represent map tiles divided into 4 subtiles to allow
+        // support for objects smaller than whole tile.
+        this.subtiles_map = new Array(size * 2).fill(null).map(() => {
+            return new Array(size * 2).fill(null);
+        }); 
 
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
@@ -100,8 +102,27 @@ class RandomMap extends Map {
         }
         return neighbours_vector
     }
+    areSubtilesEmpty(subtile_x, subtile_y, width) {
+        for (let x = subtile_x; x < subtile_x + width; ++x)
+            for (let y = subtile_y; y < subtile_y + width; ++y)
+                if (this.subtiles_map[x][y] != null) return false;
+        return true;
+    }
+    fillSubtilesWith(x, y, width, obj) {
+        for (let _x = x; _x < x + width; ++_x)
+            for (let _y = y; _y < y + width; ++_y) {
+                if (obj instanceof Villager) console.log(_x, _y);
+                this.subtiles_map[_x][_y] = obj;
+            }
+    }
+    getEntityAtSubtile(x, y) {
+        return this.subtiles_map[x][y];
+    }
     isSuitableForTree(x, y) {
-        return this.entities_map[x][y] == null && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
+        // values are multiplied by 2 to get recalculated to subtiles coordinates
+        if (x < 200 && x > 160 && y < 200 && y > 160) return false;
+        return this.areSubtilesEmpty(x * 2, y * 2, 2) && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
+    }
     }
     plantTrees() {
         let size = Map.SIZES[this.definition.size];
@@ -134,8 +155,8 @@ class RandomMap extends Map {
                     if (forest_surface_id[node.x][node.y] < forest_id) return;
                     if (!that.isSuitableForTree(node.x, node.y)) return;
 
-                    let tree = new ForestType(node.x, node.y);
-                    that.entities_map[node.x][node.y] = tree;
+                    let tree = new ForestType(node.x * 2, node.y * 2);
+                    that.fillSubtilesWith(node.x * 2, node.y * 2, ForestType.SUBTILE_WIDTH, tree);
                     that.entities.push(tree);
 
                     for (let x = node.x - 2; x <= node.x + 2; ++x) {
