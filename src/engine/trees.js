@@ -10,12 +10,13 @@ class Tree extends Entity {
         };
         this.hp = Tree.HP;
         this.max_hp = Tree.HP;
+        this.imgChoice = Math.floor(Math.random() * this.constructor.IMAGES.length);
+
+        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }
     setImage() {
-        this.imgChoice = Math.floor(Math.random() * this.constructor.IMAGES.length);
-        window.TREE_OFFSETS = this.constructor.IMAGE_OFFSETS;
         this.image = new Konva.Image({
             x: -this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
             y: -this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
@@ -24,6 +25,15 @@ class Tree extends Entity {
             height: this.constructor.IMAGES[this.imgChoice].height
         });
         this.add(this.image);
+    }
+    createSelectionRect() {
+        let referenceSprite = this.constructor.IMAGES[this.imgChoice];
+        super.createSelectionRect({
+            x: Math.round(-this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2),
+            y: Math.round(-this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2),
+            width: referenceSprite.width,
+            height: referenceSprite.height
+        })
     }
     resetBoundingBox() {
         this.boundingBox = {

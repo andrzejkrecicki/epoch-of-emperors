@@ -9,6 +9,7 @@ class Unit extends Entity {
         this.state = this.STATE.IDLE;
         this.rotation = rotation || Math.floor(Math.random() * 8);
         this.frame = 0;
+        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }
@@ -21,6 +22,15 @@ class Unit extends Entity {
             height: this.IMAGES[this.state][this.rotation][this.frame].height
         });
         this.add(this.image);
+    }
+    createSelectionRect() {
+        let referenceSprite = this.IMAGES[this.STATE.IDLE][this.ROTATION.N][0];
+        super.createSelectionRect({
+            x: Math.round(-this.IMAGE_OFFSETS[this.STATE.IDLE].x + MapDrawable.TILE_SIZE.width / 4),
+            y: Math.round(-this.IMAGE_OFFSETS[this.STATE.IDLE].y + MapDrawable.TILE_SIZE.height / 4),
+            width: referenceSprite.width,
+            height: referenceSprite.height
+        })
     }
     resetBoundingBox() {
         this.boundingBox = {
