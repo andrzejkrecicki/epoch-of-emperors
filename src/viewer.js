@@ -11,6 +11,9 @@ class GameViewer {
         this.layers = layers;
 
         this.engine = new Engine(definition);
+        this.loop = null;
+        this.mouseX = this.stage.width() / 2;
+        this.mouseY = this.stage.height() / 2;
 
         let size = Map.SIZES[this.engine.map.definition.size];
         this.viewPort = {
@@ -29,17 +32,16 @@ class GameViewer {
         });
         this.layers.entities.add(this.entitiesHolder);
 
-        this.setEntitiesVisibility();
+        this.layers.entities.on("click", this.handleLeftClick.bind(this));
 
-        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
-            entity.resetBoundingBox();
-            this.entitiesHolder.add(
-                entity
-            );
+
+        this.setEntitiesVisibility();
+        this.resetEntitiesCoords();
+        this.stage.on("mousemove", this.handleMouseMove.bind(this));
+
+        this.startLoop();
+    }
         }
-        this.stage.draw();
-        this.initializeTemporaryScrolling();
     }
     setEntitiesVisibility() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
@@ -50,40 +52,56 @@ class GameViewer {
             }
         }
     }
-    initializeTemporaryScrolling() {
-        this.stage.on("mousemove", (e) => {
-            let moved = false;
-            if (e.evt.layerX < 30) {
-                this.viewPort.x -= 20;
-                this.mapDrawable.x(-this.viewPort.x);
-                this.entitiesHolder.x(-this.viewPort.x);
-                moved = true;
-            } else if (e.evt.layerX > this.stage.width() - 30) {
-                this.viewPort.x += 20;
-                this.mapDrawable.x(-this.viewPort.x);
-                this.entitiesHolder.x(-this.viewPort.x);
-                moved = true;
-            }
+    resetEntitiesCoords() {
+        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
+            entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
+            entity.resetBoundingBox();
+            this.entitiesHolder.add(
+                entity
+            );
+        }
+    }
+    startLoop() {
+        this.loop = window.setInterval(this.processLoop.bind(this), 1000 / this.frameRate);
+    }
+    processLoop() {
+        this.handleScroll();
+        this.stage.draw();
+    }
+    handleMouseMove(e) {
+        this.mouseX = e.evt.layerX;
+        this.mouseY = e.evt.layerY;
+    }
+    handleScroll() {
+        let moved = false;
+        if (this.mouseX < 30) {
+            this.viewPort.x -= 20;
+            this.mapDrawable.x(-this.viewPort.x);
+            this.entitiesHolder.x(-this.viewPort.x);
+            moved = true;
+        } else if (this.mouseX > this.stage.width() - 30) {
+            this.viewPort.x += 20;
+            this.mapDrawable.x(-this.viewPort.x);
+            this.entitiesHolder.x(-this.viewPort.x);
+            moved = true;
+        }
 
-            if (e.evt.layerY < 30) {
-                this.viewPort.y -= 20;
-                this.mapDrawable.y(-this.viewPort.y);
-                this.entitiesHolder.y(-this.viewPort.y);
-                moved = true;
-            } else if (e.evt.layerY > this.stage.height() - 30) {
-                this.viewPort.y += 20;
-                this.mapDrawable.y(-this.viewPort.y);
-                this.entitiesHolder.y(-this.viewPort.y);
-                moved = true;
-            }
+        if (this.mouseY < 30) {
+            this.viewPort.y -= 20;
+            this.mapDrawable.y(-this.viewPort.y);
+            this.entitiesHolder.y(-this.viewPort.y);
+            moved = true;
+        } else if (this.mouseY > this.stage.height() - 30) {
+            this.viewPort.y += 20;
+            this.mapDrawable.y(-this.viewPort.y);
+            this.entitiesHolder.y(-this.viewPort.y);
+            moved = true;
+        }
 
-            if (moved) {
-                this.setEntitiesVisibility();
-                this.stage.draw();
-            }
-        });
+        if (moved) this.setEntitiesVisibility();
     }
 }
+GameViewer.prototype.frameRate = 25;
 
 
 class MapDrawable extends Konva.Group {
