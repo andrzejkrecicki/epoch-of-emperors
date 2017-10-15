@@ -41,7 +41,15 @@ class GameViewer {
 
         this.startLoop();
     }
+    handleLeftClick(e) {
+        if (this.engine.selectedEntity) {
+            this.engine.selectedEntity.setSelected(false);
+            this.engine.selectedEntity = null;
         }
+
+        let entity = e.target.parent;
+        this.engine.selectedEntity = entity;
+        entity.setSelected(true);
     }
     setEntitiesVisibility() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {

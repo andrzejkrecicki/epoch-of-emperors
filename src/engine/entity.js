@@ -5,12 +5,29 @@ class Entity extends Konva.Group {
         this.subtile_y = subtile_y;
         this.hp = 0;
         this.max_hp = 0;
+        this.selected = false;
+    }
+    createSelectionRect(options) {
+        this.selectionRect = new Konva.Rect(Object.assign({}, {
+            stroke: 'white',
+            strokeWidth: 1,
+            opacity: 1,
+            alpha: 0,
+            visible: false,
+            perfectDrawEnabled: false,
+            shadowForStrokeEnabled: false,
+        }, options));
+        this.add(this.selectionRect);
     }
     resetBoundingBox() {
     }
     boundingBox() {
     }
     setImage() {
+    }
+    setSelected(value) {
+        this.selected = !!value;
+        this.selectionRect.setVisible(this.selected);
     }
 }
 
