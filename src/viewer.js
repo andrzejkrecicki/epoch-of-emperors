@@ -169,8 +169,25 @@ class MapDrawable extends Konva.Group {
         return { x, y };
     }
     screenCoordsToTile(sx, sy) {
+        // tiles coordinates, while drawing them, are bassed on upper left corner
+        // of their bounding box but formula below uses left corner of
+        // diamond-shaped tile which is located at half of its height
+        // thus we take into account this difference
+        sy -= MapDrawable.TILE_SIZE.height / 2;
+
         let H = MapDrawable.TILE_SIZE.height;
         let W = MapDrawable.TILE_SIZE.width;
+        let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
+
+        let x = Math.floor((sx * H - W * sy + 0.5 * W * UH) / (W * H));
+        let y = Math.floor((sy - 0.5 * UH) / (0.5 * H) + (sx * H - W * sy + 0.5 * UH * W) / (H * W));
+        return { x, y };
+    }
+    screenCoordsToSubtile(sx, sy) {
+        sy -= MapDrawable.TILE_SIZE.height / 2;
+
+        let H = MapDrawable.TILE_SIZE.height / 2;
+        let W = MapDrawable.TILE_SIZE.width / 2;
         let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
 
         let x = Math.floor((sx * H - W * sy + 0.5 * W * UH) / (W * H));
