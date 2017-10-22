@@ -34,5 +34,6 @@ class Game {
 Game.STAGE_WIDTH = 800;
 Game.STAGE_HEIGHT = 600;
 
+document.body.oncontextmenu = function() { return false; };
 let game = new Game('container');
 game.draw();
