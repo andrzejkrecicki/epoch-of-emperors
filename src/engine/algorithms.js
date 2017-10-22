@@ -70,6 +70,86 @@ class MultiSlotQueue {
 }
 
 
+class StandardQueue {
+    constructor() {
+        this.values = [];
+        this.head = 0;
+    }
+    empty() {
+        return !(this.values.length > this.head);
+    }
+    push(value) {
+        this.values.push(value);
+    }
+    pop() {
+        return this.values[this.head++];
+    }
+}
+
+
+class UnitPathFinder {
+    constructor(unit, subtiles_map, target) {
+        this.unit = unit;
+        this.subtiles_map = subtiles_map;
+        this.visited = new Array(subtiles_map.length).fill(null).map(() => new Array(subtiles_map.length).fill(null));
+        this.target = target;
+        this.queue = new StandardQueue();
+        this.queue.push({
+            x: target.x,
+            y: target.y,
+            dist: 0
+        });
+        this.setVisited(target.x, target.y, { from_x: null, from_y: null });
+    }
+    run() {
+        let done = false;
+        while (!this.queue.empty() && !done) {
+            var subtile = this.queue.pop();
+            if (subtile.x == this.unit.subtile_x && subtile.y == this.unit.subtile_y) {
+                done = true;
+            } else for (let i = 0, delta; delta = UnitPathFinder.NEIGHBOURS_DELTA[i++];) {
+                let nx = subtile.x + delta.x, ny = subtile.y + delta.y;
+                if (this.checkSubtiles(nx, ny) && !this.isVisited(nx, ny)) {
+                    this.queue.push({
+                        x: nx,
+                        y: ny
+                    });
+                    this.setVisited(nx, ny, {
+                        from_x: subtile.x,
+                        from_y: subtile.y
+                    });
+                }
+            }
+        }
+        let path = [], step = this.visited[subtile.x][subtile.y];
+        while (step.from_x !== null) {
+            path.push({
+                x: step.from_x,
+                y: step.from_y
+            });
+            step = this.visited[step.from_x][step.from_y];
+        }
+        return path;
+    }
+    checkSubtiles(subtile_x, subtile_y) {
+        for (let x = subtile_x; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; ++x)
+            for (let y = subtile_y; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; ++y)
+                if (this.subtiles_map[x][y] != null && this.subtiles_map[x][y] != this.unit) return false;
+        return true;
+    }
+    isVisited(x, y) {
+        return this.visited[x][y] !== null;
+    }
+    setVisited(x, y, data) {
+        this.visited[x][y] = data || true;
+    }
+}
+UnitPathFinder.NEIGHBOURS_DELTA = [
+    { x: 0, y: -1 }, { x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
+    { x: 0, y: 1 }, { x: -1, y: 1 }, { x: -1, y: 0 }, { x: -1, y: -1 }
+];
+
+
 export {
-    BFSWalker, MultiSlotQueue
+    BFSWalker, UnitPathFinder, MultiSlotQueue
 }

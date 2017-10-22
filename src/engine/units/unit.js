@@ -12,6 +12,8 @@ class Unit extends Entity {
         this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
+        this.path = null;
+        this.path_progress = 0;
     }
     setImage() {
         this.image = new Konva.Image({
@@ -34,10 +36,10 @@ class Unit extends Entity {
     }
     resetBoundingBox() {
         this.boundingBox = {
-            x: this.x() -this.IMAGE_OFFSETS[this.state].x + MapDrawable.TILE_SIZE.width / 4,
-            y: this.y() -this.IMAGE_OFFSETS[this.state].y + MapDrawable.TILE_SIZE.height / 4,
-            w: this.IMAGES[this.state][this.rotation][this.frame].width,
-            h: this.IMAGES[this.state][this.rotation][this.frame].height
+            x: this.x() -this.IMAGE_OFFSETS[0/*this.state*/].x + MapDrawable.TILE_SIZE.width / 4,
+            y: this.y() -this.IMAGE_OFFSETS[0/*this.state*/].y + MapDrawable.TILE_SIZE.height / 4,
+            w: this.IMAGES[0/*this.state*/][this.rotation][this.frame].width,
+            h: this.IMAGES[0/*this.state*/][this.rotation][this.frame].height
         }
     }
     getBoundingBox() {

@@ -89,7 +89,7 @@ class RandomMap extends Map {
 
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
-        this.plantTrees();
+        // this.plantTrees();
         this.addSampleUnits();
     }
     getNeighboursIdentityVector(x, y, synonyms=[]) {
@@ -125,22 +125,17 @@ class RandomMap extends Map {
         return this.areSubtilesEmpty(x * 2, y * 2, 2) && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
     }
     addSampleUnits() {
-        let villager = new Villager(256, 256);
-        this.fillSubtilesWith(256, 256, Villager.SUBTILE_WIDTH, villager);
-        this.entities.push(villager);
+        let d = { x: Math.floor(Map.SIZES[this.definition.size]), y: Math.floor(Map.SIZES[this.definition.size]) }
+        let villager;
+        for (let i = -10; i < 10; ++i) {
+            villager = new Villager(d.x + i, d.y);
+            this.fillSubtilesWith(d.x + i, d.y, Villager.SUBTILE_WIDTH, villager);
+            this.entities.push(villager);
+        }
 
-        villager = new Villager(257, 256);
-        this.fillSubtilesWith(257, 256, Villager.SUBTILE_WIDTH, villager);
+        villager = new Villager(d.x, d.y - 3);
+        this.fillSubtilesWith(d.x, d.y - 3, Villager.SUBTILE_WIDTH, villager);
         this.entities.push(villager);
-
-        villager = new Villager(256, 257);
-        this.fillSubtilesWith(256, 257, Villager.SUBTILE_WIDTH, villager);
-        this.entities.push(villager);
-
-        villager = new Villager(257, 257);
-        this.fillSubtilesWith(257, 257, Villager.SUBTILE_WIDTH, villager);
-        this.entities.push(villager);
-
     }
     plantTrees() {
         let size = Map.SIZES[this.definition.size];
