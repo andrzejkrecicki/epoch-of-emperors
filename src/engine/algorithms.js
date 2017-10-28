@@ -87,6 +87,67 @@ class StandardQueue {
 }
 
 
+class HeapQueue {
+    constructor() {
+        this.nodes = {};
+        this.size = 0;
+    }
+    push(obj) {
+        ++this.size;
+        this.nodes[this.size] = obj;
+        if (this.size > 1) this.fix_up(this.size);
+    }
+    fix_up(idx) {
+        let parent_idx = Math.floor(idx / 2);
+        if (this.nodes[parent_idx].priority > this.nodes[idx].priority) {
+            this.swap(parent_idx, idx);
+            if (parent_idx > 1) this.fix_up(parent_idx);
+        }
+    }
+    fix_down(idx) {
+        let hasLeft = idx * 2 <= this.size;
+        let hasRight = idx * 2 + 1 <= this.size;
+
+        if (hasLeft) {
+            if (hasRight) {
+                if (this.nodes[idx * 2].priority < this.nodes[idx * 2 + 1].priority) {
+                    if (this.nodes[idx * 2].priority < this.nodes[idx].priority) {
+                        this.swap(idx * 2, idx);
+                        this.fix_down(idx * 2);
+                    }
+                } else if (this.nodes[idx * 2 + 1].priority < this.nodes[idx].priority) {
+                    this.swap(idx * 2 + 1, idx);
+                    this.fix_down(idx * 2 + 1);
+                }
+            } else {
+                if (this.nodes[idx * 2].priority < this.nodes[idx].priority) {
+                    this.swap(idx * 2, idx);
+                }
+            }
+        }
+    }
+    swap(first, second) {
+        let h = this.nodes[first];
+        this.nodes[first] = this.nodes[second];
+        this.nodes[second] = h;
+    }
+    pop() {
+        let val = this.nodes[1];
+        if (this.size > 1) {
+            this.nodes[1] = this.nodes[this.size];
+            delete this.nodes[this.size--];
+            this.fix_down(1);
+        } else {
+            delete this.nodes[this.size--];
+        }
+        return val;
+    }
+    empty() {
+        return this.size == 0;
+    }
+}
+
+
 class UnitPathFinder {
     constructor(unit, subtiles_map, target) {
         this.unit = unit;
