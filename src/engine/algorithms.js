@@ -148,6 +148,90 @@ class HeapQueue {
 }
 
 
+class AStarPathFinder {
+    constructor(unit, subtiles_map, target) {
+        this.unit = unit;
+        this.subtiles_map = subtiles_map;
+        this.visited = {};
+        this.target = target;
+        this.queue = new HeapQueue();
+        this.queue.push({
+            x: target.x,
+            y: target.y,
+            priority: 0
+        });
+        this.iterations = 0;
+        this.setCost(target.x, target.y, { from_x: null, from_y: null, cost: 0 });
+    }
+    run() {
+        let done = false;
+        while (!this.queue.empty() && !done) {
+            ++this.iterations;
+            var subtile = this.queue.pop();
+            if (subtile.x == this.unit.subtile_x && subtile.y == this.unit.subtile_y) {
+                done = true;
+            } else for (let i = 0, delta; delta = AStarPathFinder.NEIGHBOURS_DELTA[i]; ++i) {
+                let nx = subtile.x + delta.x, ny = subtile.y + delta.y;
+                let new_cost = this.currentCost(subtile.x, subtile.y) + this.neighbourCost(i);
+                if (this.checkSubtiles(nx, ny) && this.currentCost(nx, ny) > new_cost) {
+                    this.queue.push({
+                        x: nx,
+                        y: ny,
+                        priority: new_cost + this.heuristic(nx, ny)
+                    });
+                    this.setCost(nx, ny, {
+                        from_x: subtile.x,
+                        from_y: subtile.y,
+                        cost: new_cost
+                    });
+                }
+            }
+        }
+        let path = [], step = this.visited[subtile.x][subtile.y];
+        while (step.from_x !== null) {
+            path.push({
+                x: step.from_x,
+                y: step.from_y
+            });
+            step = this.visited[step.from_x][step.from_y];
+        }
+        return path;
+    }
+    neighbourCost(index) {
+        return index % 2 == 0 ? 1 : 1.41;
+    }
+    currentCost(x, y) {
+        try {
+            return this.visited[x][y].cost;
+        } catch (e) {
+            return Infinity
+        }
+    }
+    heuristic(x, y) {
+        return Math.sqrt(
+            Math.pow(x - this.unit.subtile_x, 2) +
+            Math.pow(y - this.unit.subtile_y, 2)
+        );
+    }
+    setCost(x, y, data) {
+        if (this.visited[x] == null) this.visited[x] = {};
+        this.visited[x][y] = data;
+    }
+    checkSubtiles(subtile_x, subtile_y) {
+        for (let x = subtile_x; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; ++x)
+            for (let y = subtile_y; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; ++y)
+                if (this.subtiles_map[x][y] != null && this.subtiles_map[x][y] != this.unit) return false;
+        return true;
+    }
+}
+AStarPathFinder.NEIGHBOURS_DELTA = [
+    { x: 0, y: -1 }, { x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
+    { x: 0, y: 1 }, { x: -1, y: 1 }, { x: -1, y: 0 }, { x: -1, y: -1 }
+];
+
+
+
+
 class UnitPathFinder {
     constructor(unit, subtiles_map, target) {
         this.unit = unit;
@@ -157,8 +241,7 @@ class UnitPathFinder {
         this.queue = new StandardQueue();
         this.queue.push({
             x: target.x,
-            y: target.y,
-            dist: 0
+            y: target.y
         });
         this.setVisited(target.x, target.y, { from_x: null, from_y: null });
     }
@@ -212,5 +295,5 @@ UnitPathFinder.NEIGHBOURS_DELTA = [
 
 
 export {
-    BFSWalker, UnitPathFinder, MultiSlotQueue
+    BFSWalker, UnitPathFinder, MultiSlotQueue, AStarPathFinder
 }
