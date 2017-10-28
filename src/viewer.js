@@ -5,7 +5,7 @@ import { Tree, LeafTree } from './engine/trees.js';
 import { Villager } from './engine/units/villager.js';
 import { Unit } from './engine/units/unit.js';
 import { Entity } from './engine/entity.js';
-import { UnitPathFinder } from './engine/algorithms.js';
+import { UnitPathFinder, AStarPathFinder } from './engine/algorithms.js';
 
 class GameViewer {
     constructor(definition, navigator, layers) {
@@ -71,7 +71,7 @@ class GameViewer {
             let sy = (e.evt.layerY - this.mapDrawable.y());
             let { x, y } = this.mapDrawable.screenCoordsToSubtile(sx, sy);
             console.log(`Order to move to ${x}, ${y}`);
-            let finder = new UnitPathFinder(this.engine.selectedEntity, this.engine.map.subtiles_map, { x, y });
+            let finder = new AStarPathFinder(this.engine.selectedEntity, this.engine.map.subtiles_map, { x, y });
             let path = finder.run();
             console.log(path);
             this.engine.selectedEntity.path = path;
