@@ -187,6 +187,7 @@ class AStarPathFinder {
                 }
             }
         }
+        if (!done) return [];
         let path = [], step = this.visited[subtile.x][subtile.y];
         while (step.from_x !== null) {
             path.push({
@@ -218,6 +219,11 @@ class AStarPathFinder {
         this.visited[x][y] = data;
     }
     checkSubtiles(subtile_x, subtile_y) {
+        if (
+            subtile_x < 0 || subtile_x > this.map.edge_size * 2 - 1 ||
+            subtile_y < 0 || subtile_y > this.map.edge_size * 2 - 1
+        ) return false;
+
         for (let x = subtile_x & -2; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; x += 2) {
             for (let y = subtile_y & -2; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; y += 2) {
                 if (!this.unit.SUPPORTED_TERRAIN.has(this.map.initial_tiles[Math.floor(x / 2)][Math.floor(y / 2)])) return false;

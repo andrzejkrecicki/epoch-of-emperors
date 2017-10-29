@@ -10,6 +10,7 @@ class Map {
     constructor(definition) {
         this.definition = definition;
         this.entities = [];
+        this.edge_size = Map.SIZES[this.definition.size];
     }
     isShore(x, y) {
         return (
