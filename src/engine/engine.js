@@ -18,8 +18,10 @@ class Engine {
         if (this.framesCount % 5 == 0) {
             for (let entity, i = 0; entity = this.map.entities[i++];) {
                 if (entity.state == Unit.prototype.STATE.MOVING) {
+                    this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, null);
                     entity.subtile_x = entity.path[entity.path_progress].x;
                     entity.subtile_y = entity.path[entity.path_progress].y;
+                    this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, entity);
                     ++entity.path_progress;
                     if (entity.path.length == entity.path_progress) {
                         entity.path_progress = 0;
@@ -28,6 +30,7 @@ class Engine {
                     }
                     entity.position(this.viewer.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
                     entity.resetBoundingBox();
+                    this.viewer.setEntityVisibility(entity);
                 }
             }
         }
