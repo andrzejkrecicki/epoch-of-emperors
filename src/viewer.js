@@ -71,9 +71,8 @@ class GameViewer {
             let sy = (e.evt.layerY - this.mapDrawable.y());
             let { x, y } = this.mapDrawable.screenCoordsToSubtile(sx, sy);
             console.log(`Order to move to ${x}, ${y}`);
-            let finder = new AStarPathFinder(this.engine.selectedEntity, this.engine.map.subtiles_map, { x, y });
+            let finder = new AStarPathFinder(this.engine.selectedEntity, this.engine.map, { x, y });
             let path = finder.run();
-            console.log(path);
             this.engine.selectedEntity.path = path;
             this.engine.selectedEntity.state = Unit.prototype.STATE.MOVING;
         }

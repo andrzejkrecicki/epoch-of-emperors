@@ -1,5 +1,6 @@
 import { Unit } from './unit.js';
 import { make_image } from '../../utils.js';
+import { TERRAIN_TYPES } from '../terrain.js';
 
 class Villager extends Unit {
 }
@@ -19,5 +20,7 @@ Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = [
 ];
 Villager.prototype.IMAGE_OFFSETS = {};
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 11, y: 23 };
+Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
+
 
 export { Villager }
