@@ -3,7 +3,6 @@ import { BFSWalker, MultiSlotQueue } from './algorithms.js';
 import { rand_choice, to_binary } from '../utils.js';
 import { PineTree, LeafTree, PalmTree } from './trees.js';
 import { MapDrawable } from '../viewer.js';
-import { Villager } from './units/villager.js';
 import { TERRAIN_TYPES, SAND_TRANSFORMATIONS, GRASS_TRANSFORMATIONS } from './terrain.js'
 
 class Map {
@@ -60,7 +59,6 @@ class RandomMap extends Map {
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
         // this.plantTrees();
-        this.addSampleUnits();
     }
     getNeighboursIdentityVector(x, y, synonyms=[]) {
         let neighbours_vector = [0, 0, 0, 0, 0, 0, 0, 0];
@@ -82,7 +80,6 @@ class RandomMap extends Map {
     fillSubtilesWith(x, y, width, obj) {
         for (let _x = x; _x < x + width; ++_x)
             for (let _y = y; _y < y + width; ++_y) {
-                if (obj instanceof Villager) console.log(_x, _y);
                 this.subtiles_map[_x][_y] = obj;
             }
     }
@@ -93,19 +90,6 @@ class RandomMap extends Map {
         // values are multiplied by 2 to get recalculated to subtiles coordinates
         if (x < 200 && x > 160 && y < 200 && y > 160) return false;
         return this.areSubtilesEmpty(x * 2, y * 2, 2) && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
-    }
-    addSampleUnits() {
-        let d = { x: Math.floor(Map.SIZES[this.definition.size]), y: Math.floor(Map.SIZES[this.definition.size]) }
-        let villager;
-        for (let i = -10; i < 10; ++i) {
-            villager = new Villager(d.x + i, d.y);
-            this.fillSubtilesWith(d.x + i, d.y, Villager.SUBTILE_WIDTH, villager);
-            this.entities.push(villager);
-        }
-
-        villager = new Villager(d.x, d.y - 3);
-        this.fillSubtilesWith(d.x, d.y - 3, Villager.SUBTILE_WIDTH, villager);
-        this.entities.push(villager);
     }
     plantTrees() {
         let size = Map.SIZES[this.definition.size];

@@ -5,7 +5,6 @@ import { Tree, LeafTree } from './engine/trees.js';
 import { Villager } from './engine/units/villager.js';
 import { Unit } from './engine/units/unit.js';
 import { Entity } from './engine/entity.js';
-import { UnitPathFinder, AStarPathFinder } from './engine/algorithms.js';
 
 class GameViewer {
     constructor(definition, navigator, layers) {
@@ -13,9 +12,7 @@ class GameViewer {
         this.stage = navigator.stage;
         this.layers = layers;
 
-        this.engine = new Engine(definition);
-        this.loop = null;
-        this.framesCount = 0;
+        this.engine = new Engine(this, definition);
 
         this.mouseX = this.stage.width() / 2;
         this.mouseY = this.stage.height() / 2;
@@ -44,7 +41,7 @@ class GameViewer {
         this.layers.entities.on("click", this.handleClick.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
 
-        this.startLoop();
+        this.engine.startLoop();
     }
     handleClick(e) {
         if (e.evt.button == 2 || e.evt.which == 3) this.handleRightClick(e);
@@ -69,23 +66,21 @@ class GameViewer {
         if (this.engine.selectedEntity) {
             let sx = (e.evt.layerX - this.mapDrawable.x());
             let sy = (e.evt.layerY - this.mapDrawable.y());
-            let { x, y } = this.mapDrawable.screenCoordsToSubtile(sx, sy);
-            console.log(`Order to move to ${x}, ${y}`);
-            let finder = new AStarPathFinder(this.engine.selectedEntity, this.engine.map, { x, y });
-            let path = finder.run();
-            this.engine.selectedEntity.path = path;
-            this.engine.selectedEntity.state = Unit.prototype.STATE.MOVING;
+            this.engine.handleRightClick(this.mapDrawable.screenCoordsToSubtile(sx, sy));
         }
         e.evt.preventDefault();
         return false;
     }
+    setEntityVisibility(entity) {
+        if (!rect_intersection(entity.getBoundingBox(), this.viewPort)) {
+            entity.hide();
+        } else {
+            entity.show();
+        }
+    }
     setEntitiesVisibility() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            if (!rect_intersection(entity.getBoundingBox(), this.viewPort)) {
-                entity.hide();
-            } else {
-                entity.show();
-            }
+            this.setEntityVisibility(entity);
         }
     }
     resetEntitiesCoords() {
@@ -96,33 +91,6 @@ class GameViewer {
                 entity
             );
         }
-    }
-    processEntities() {
-        if (this.framesCount % 5 == 0) {
-            for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-                if (entity.state == Unit.prototype.STATE.MOVING) {
-                    entity.subtile_x = entity.path[entity.path_progress].x;
-                    entity.subtile_y = entity.path[entity.path_progress].y;
-                    ++entity.path_progress;
-                    if (entity.path.length == entity.path_progress) {
-                        entity.path_progress = 0;
-                        entity.path = null;
-                        entity.state = Unit.prototype.STATE.IDLE;
-                    }
-                    entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
-                    entity.resetBoundingBox();
-                }
-            }
-        }
-    }
-    startLoop() {
-        this.loop = window.setInterval(this.processLoop.bind(this), 1000 / this.frameRate);
-    }
-    processLoop() {
-        ++this.framesCount;
-        this.handleScroll();
-        this.processEntities();
-        this.stage.draw();
     }
     handleMouseMove(e) {
         this.mouseX = e.evt.layerX;
@@ -157,7 +125,6 @@ class GameViewer {
         if (moved) this.setEntitiesVisibility();
     }
 }
-GameViewer.prototype.frameRate = 25;
 
 
 class MapDrawable extends Konva.Group {
