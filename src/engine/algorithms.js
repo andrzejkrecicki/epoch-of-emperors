@@ -149,9 +149,9 @@ class HeapQueue {
 
 
 class AStarPathFinder {
-    constructor(unit, subtiles_map, target) {
+    constructor(unit, map, target) {
         this.unit = unit;
-        this.subtiles_map = subtiles_map;
+        this.map = map;
         this.visited = {};
         this.target = target;
         this.queue = new HeapQueue();
@@ -218,9 +218,16 @@ class AStarPathFinder {
         this.visited[x][y] = data;
     }
     checkSubtiles(subtile_x, subtile_y) {
-        for (let x = subtile_x; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; ++x)
-            for (let y = subtile_y; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; ++y)
-                if (this.subtiles_map[x][y] != null && this.subtiles_map[x][y] != this.unit) return false;
+        for (let x = subtile_x & -2; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; x += 2) {
+            for (let y = subtile_y & -2; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; y += 2) {
+                if (!this.unit.SUPPORTED_TERRAIN.has(this.map.initial_tiles[Math.floor(x / 2)][Math.floor(y / 2)])) return false;
+            }
+        }
+        for (let x = subtile_x; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; ++x) {
+            for (let y = subtile_y; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; ++y) {
+                if (this.map.subtiles_map[x][y] != null && this.map.subtiles_map[x][y] != this.unit) return false;
+            }
+        }
         return true;
     }
 }
@@ -233,10 +240,10 @@ AStarPathFinder.NEIGHBOURS_DELTA = [
 
 
 class UnitPathFinder {
-    constructor(unit, subtiles_map, target) {
+    constructor(unit, map, target) {
         this.unit = unit;
-        this.subtiles_map = subtiles_map;
-        this.visited = new Array(subtiles_map.length).fill(null).map(() => new Array(subtiles_map.length).fill(null));
+        this.map = map;
+        this.visited = new Array(this.map.subtiles_map.length).fill(null).map(() => new Array(this.map.subtiles_map.length).fill(null));
         this.target = target;
         this.queue = new StandardQueue();
         this.queue.push({
@@ -278,7 +285,7 @@ class UnitPathFinder {
     checkSubtiles(subtile_x, subtile_y) {
         for (let x = subtile_x; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; ++x)
             for (let y = subtile_y; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; ++y)
-                if (this.subtiles_map[x][y] != null && this.subtiles_map[x][y] != this.unit) return false;
+                if (this.map.subtiles_map[x][y] != null && this.map.subtiles_map[x][y] != this.unit) return false;
         return true;
     }
     isVisited(x, y) {
