@@ -156,28 +156,37 @@ class AStarPathFinder {
         this.target = target;
         this.queue = new HeapQueue();
         this.queue.push({
-            x: target.x,
-            y: target.y,
+            x: unit.subtile_x,
+            y: unit.subtile_y,
             priority: 0
         });
         this.iterations = 0;
-        this.setCost(target.x, target.y, { from_x: null, from_y: null, cost: 0 });
+        this.setCost(unit.subtile_x, unit.subtile_y, { from_x: null, from_y: null, cost: 0 });
     }
     run() {
         let done = false;
-        while (!this.queue.empty() && !done) {
+        let nearest = {
+            x: null, y: null, dist: Infinity
+        };
+        while (!this.queue.empty() && !done && this.iterations < AStarPathFinder.MAX_ITERATIONS) {
             ++this.iterations;
             var subtile = this.queue.pop();
-            if (subtile.x == this.unit.subtile_x && subtile.y == this.unit.subtile_y) {
+            if (subtile.x == this.target.x && subtile.y == this.target.y) {
                 done = true;
             } else for (let i = 0, delta; delta = AStarPathFinder.NEIGHBOURS_DELTA[i]; ++i) {
                 let nx = subtile.x + delta.x, ny = subtile.y + delta.y;
                 let new_cost = this.currentCost(subtile.x, subtile.y) + this.neighbourCost(i);
                 if (this.checkSubtiles(nx, ny) && this.currentCost(nx, ny) > new_cost) {
+                    let dist = this.heuristic(nx, ny);
+                    if (dist < nearest.dist) nearest = {
+                        x: nx,
+                        y: ny,
+                        dist: dist
+                    };
                     this.queue.push({
                         x: nx,
                         y: ny,
-                        priority: new_cost + this.heuristic(nx, ny)
+                        priority: new_cost + dist
                     });
                     this.setCost(nx, ny, {
                         from_x: subtile.x,
@@ -187,8 +196,9 @@ class AStarPathFinder {
                 }
             }
         }
-        if (!done) return [];
-        let path = [], step = this.visited[subtile.x][subtile.y];
+
+        if (!done && nearest.dist == Infinity) return [];
+        let path = [], step = this.visited[nearest.x][nearest.y];
         while (step.from_x !== null) {
             path.push({
                 x: step.from_x,
@@ -196,7 +206,7 @@ class AStarPathFinder {
             });
             step = this.visited[step.from_x][step.from_y];
         }
-        return path;
+        return path.reverse();
     }
     neighbourCost(index) {
         return index % 2 == 0 ? 1 : 1.41;
@@ -210,8 +220,8 @@ class AStarPathFinder {
     }
     heuristic(x, y) {
         return Math.sqrt(
-            Math.pow(x - this.unit.subtile_x, 2) +
-            Math.pow(y - this.unit.subtile_y, 2)
+            Math.pow(x - this.target.x, 2) +
+            Math.pow(y - this.target.y, 2)
         );
     }
     setCost(x, y, data) {
@@ -241,7 +251,7 @@ AStarPathFinder.NEIGHBOURS_DELTA = [
     { x: 0, y: -1 }, { x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
     { x: 0, y: 1 }, { x: -1, y: 1 }, { x: -1, y: 0 }, { x: -1, y: -1 }
 ];
-
+AStarPathFinder.MAX_ITERATIONS = 128 * 128;
 
 
 
