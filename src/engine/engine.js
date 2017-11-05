@@ -3,6 +3,7 @@ import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
 import { AStarPathFinder } from './algorithms.js';
 import { Map } from './map.js';
+import { distance } from '../utils.js'
 
 class Engine {
     constructor(viewer, definition) {
@@ -15,23 +16,40 @@ class Engine {
         this.addSampleUnits();
     }
     processEntities() {
-        if (this.framesCount % 5 == 0) {
-            for (let entity, i = 0; entity = this.map.entities[i++];) {
-                if (entity.state == Unit.prototype.STATE.MOVING) {
+        for (let entity, i = 0; entity = this.map.entities[i++];) {
+            if (entity.state == Unit.prototype.STATE.MOVING) {
+
+                let tmp_target = this.viewer.mapDrawable.tileCoordsToScreen(
+                    entity.path[entity.path_progress].x / 2,
+                    entity.path[entity.path_progress].y / 2
+                );
+                if (distance(entity.realPosition, tmp_target) < entity.SPEED) {
                     this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, null);
                     entity.subtile_x = entity.path[entity.path_progress].x;
                     entity.subtile_y = entity.path[entity.path_progress].y;
                     this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, entity);
                     ++entity.path_progress;
-                    if (entity.path.length == entity.path_progress) {
-                        entity.path_progress = 0;
-                        entity.path = null;
-                        entity.state = Unit.prototype.STATE.IDLE;
-                    }
-                    entity.position(this.viewer.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
-                    entity.resetBoundingBox();
-                    this.viewer.setEntityVisibility(entity);
                 }
+                if (entity.path.length == entity.path_progress) {
+                    entity.path_progress = 0;
+                    entity.path = null;
+                    entity.frame = 0;
+                    entity.state = Unit.prototype.STATE.IDLE;
+                    entity.position(this.viewer.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
+                } else {
+                    let old_rotation = entity.rotation;
+                    entity.rotateToSubtile(entity.path[entity.path_progress]);
+                    if (old_rotation != entity.rotation) entity.frame = 0;
+
+                    entity.position({
+                        x: entity.realPosition.x + entity.SPEED * entity.DIRECTIONS_DELTA[entity.rotation].x,
+                        y: entity.realPosition.y + entity.SPEED * entity.DIRECTIONS_DELTA[entity.rotation].y
+                    });
+                }
+                entity.updateSprite();
+                entity.resetBoundingBox();
+                this.viewer.setEntityVisibility(entity);
+                if (this.framesCount % 2) ++entity.frame;
             }
         }
     }
@@ -54,6 +72,7 @@ class Engine {
             this.selectedEntity.path = path;
             this.selectedEntity.path_progress = 0;
             this.selectedEntity.state = Unit.prototype.STATE.MOVING;
+            this.selectedEntity.rotateToSubtile(this.selectedEntity.path[0]);
         }
     }
     addSampleUnits() {
@@ -96,7 +115,7 @@ class Engine {
         this.map.entities.push(villager);
     }
 }
-Engine.prototype.frameRate = 25;
+Engine.prototype.frameRate = 35;
 
 export {
     Engine

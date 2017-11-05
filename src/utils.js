@@ -75,6 +75,10 @@ var rand_choice = function(choices) {
     return choices[Math.floor(Math.random() * choices.length)];
 }
 
+var distance = function(p1, p2) {
+    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+}
+
 var rect_intersection = function(r1, r2) {
     return !(
         r1.x + r1.w < r2.x || r1.x > r2.x + r2.w ||
@@ -84,5 +88,5 @@ var rect_intersection = function(r1, r2) {
 
 export {
     PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
-    make_image, to_binary, leftpad, rand_choice, rect_intersection
+    make_image, to_binary, leftpad, rand_choice, rect_intersection, distance
 }

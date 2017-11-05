@@ -199,7 +199,7 @@ class AStarPathFinder {
 
         if (!done && nearest.dist == Infinity) return [];
         let path = [], step = this.visited[nearest.x][nearest.y];
-        while (step.from_x !== null) {
+        while (step.from_x !== this.unit.subtile_x || step.from_y !== this.unit.subtile_y) {
             path.push({
                 x: step.from_x,
                 y: step.from_y

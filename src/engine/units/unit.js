@@ -17,13 +17,19 @@ class Unit extends Entity {
     }
     setImage() {
         this.image = new Konva.Image({
-            x: -this.IMAGE_OFFSETS[this.state].x + MapDrawable.TILE_SIZE.width / 4,
-            y: -this.IMAGE_OFFSETS[this.state].y + MapDrawable.TILE_SIZE.height / 4,
+            x: -this.IMAGE_OFFSETS[0].x + MapDrawable.TILE_SIZE.width / 4,
+            y: -this.IMAGE_OFFSETS[0].y + MapDrawable.TILE_SIZE.height / 4,
             image: this.IMAGES[this.state][this.rotation][this.frame],
             width: this.IMAGES[this.state][this.rotation][this.frame].width,
             height: this.IMAGES[this.state][this.rotation][this.frame].height
         });
         this.add(this.image);
+    }
+    updateSprite() {
+        this.frame %= this.IMAGES[this.state][this.rotation].length;
+        this.image.image(this.IMAGES[this.state][this.rotation][this.frame]);
+        this.image.width(this.IMAGES[this.state][this.rotation][this.frame].width);
+        this.image.height(this.IMAGES[this.state][this.rotation][this.frame].height);
     }
     createSelectionRect() {
         let referenceSprite = this.IMAGES[this.STATE.IDLE][this.ROTATION.N][0];
@@ -36,10 +42,16 @@ class Unit extends Entity {
     }
     resetBoundingBox() {
         this.boundingBox = {
-            x: this.x() -this.IMAGE_OFFSETS[0/*this.state*/].x + MapDrawable.TILE_SIZE.width / 4,
-            y: this.y() -this.IMAGE_OFFSETS[0/*this.state*/].y + MapDrawable.TILE_SIZE.height / 4,
-            w: this.IMAGES[0/*this.state*/][this.rotation][this.frame].width,
-            h: this.IMAGES[0/*this.state*/][this.rotation][this.frame].height
+            x: this.x() -this.IMAGE_OFFSETS[0].x + MapDrawable.TILE_SIZE.width / 4,
+            y: this.y() -this.IMAGE_OFFSETS[0].y + MapDrawable.TILE_SIZE.height / 4,
+            w: this.IMAGES[this.state][this.rotation][this.frame].width,
+            h: this.IMAGES[this.state][this.rotation][this.frame].height
+        }
+    }
+    rotateToSubtile(subtile) {
+        let index = (subtile.y - this.subtile_y + 1) * 3 + (subtile.x - this.subtile_x) + 1
+        if (index !== 4) {
+            this.rotation = this.DIFF_TO_ROTATION[index];
         }
     }
     getBoundingBox() {
@@ -52,10 +64,17 @@ class Unit extends Entity {
         return this.image.width();
     }
 }
+
+Unit.prototype.DIFF_TO_ROTATION = [6, 7, 0, 5, null, 1, 4, 3, 2];
 Unit.prototype.ROTATION = {
     N: 0, NE: 1, E: 2, SE: 3,
     S: 4, SW: 5, W: 6, NW: 7
 }
+Unit.prototype.DIRECTIONS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+Unit.prototype.DIRECTIONS_DELTA = [
+    { x: 0, y: -0.5656854249491516 }, { x: .8, y: -.4 }, { x: 1.1313708498983033, y: 0 }, { x: .8, y: .4 },
+    { x: 0, y: 0.5656854249491516 }, { x: -.8, y: .4 }, { x: -1.1313708498983033, y: 0 }, { x: -.8, y: -.4 }
+];
 Unit.prototype.STATE = {
     IDLE: 0,
     MOVING: 1
