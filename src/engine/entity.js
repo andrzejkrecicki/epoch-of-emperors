@@ -3,6 +3,7 @@ class Entity extends Konva.Group {
         super({ x: 0, y: 0 });
         this.subtile_x = subtile_x;
         this.subtile_y = subtile_y;
+        this.realPosition = { x: null, y: null };
         this.hp = 0;
         this.max_hp = 0;
         this.selected = false;
@@ -18,6 +19,13 @@ class Entity extends Konva.Group {
             shadowForStrokeEnabled: false,
         }, options));
         this.add(this.selectionRect);
+    }
+    position(pos) {
+        this.realPosition = pos;
+        super.position({
+            x: Math.round(this.realPosition.x),
+            y: Math.round(this.realPosition.y)
+        });
     }
     resetBoundingBox() {
     }
