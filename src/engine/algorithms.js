@@ -209,7 +209,7 @@ class AStarPathFinder {
         return path.reverse();
     }
     neighbourCost(index) {
-        return index % 2 == 0 ? 1 : 1.41;
+        return index % 2 == 0 ? 1 : Math.SQRT2;
     }
     currentCost(x, y) {
         try {
@@ -219,9 +219,9 @@ class AStarPathFinder {
         }
     }
     heuristic(x, y) {
-        return Math.sqrt(
-            Math.pow(x - this.target.x, 2) +
-            Math.pow(y - this.target.y, 2)
+        return (
+            Math.abs(x - this.target.x) +
+            Math.abs(y - this.target.y)
         );
     }
     setCost(x, y, data) {

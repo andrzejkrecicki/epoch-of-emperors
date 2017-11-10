@@ -69,10 +69,10 @@ class Engine {
         let finder = new AStarPathFinder(unit, this.map, point);
         let path = finder.run();
         if (path.length > 0) {
-            this.selectedEntity.path = path;
-            this.selectedEntity.path_progress = 0;
-            this.selectedEntity.state = Unit.prototype.STATE.MOVING;
-            this.selectedEntity.rotateToSubtile(this.selectedEntity.path[0]);
+            unit.path = path;
+            unit.path_progress = 0;
+            unit.state = Unit.prototype.STATE.MOVING;
+            unit.rotateToSubtile(unit.path[0]);
         }
     }
     addSampleUnits() {
