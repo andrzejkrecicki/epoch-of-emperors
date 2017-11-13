@@ -3,27 +3,62 @@ import time
 import sys
 
 from autopy import mouse, key
+from collections import namedtuple
+from itertools import product
+
+EMP_DIR = os.environ['HOME'] + '/.wine/drive_c/Program Files (x86)/Age of Empires complete/'
+FFMPEG_CMD = (
+    "ffmpeg -video_size 1024x768 -framerate 30 "
+    "-f x11grab -i :0.0 -c:v libx264 -qp 0 "
+    "-preset ultrafast "
+)
 
 
-DESELECT = True
-EMP_DIR = '~/.wine/drive_c/Program Files (x86)/Age of Empires complete/'
-
-def go_and_click(x, y, delay=.2):
+def go_and_click(x, y, delay=.1):
     mouse.move(x, y)
     mouse.click(mouse.LEFT_BUTTON)
     time.sleep(delay)
 
 
-def go_and_rclick(x, y, delay=.2):
+def go_and_rclick(x, y, delay=.1):
     mouse.move(x, y)
     mouse.click(mouse.RIGHT_BUTTON)
     time.sleep(delay)
+
+
+def start_recording(unit, deselect):
+    res = os.popen2(FFMPEG_CMD + "vids/{}-{}.mkv".format(
+        unit, 'deselect' if deselect else 'select'
+    ))
+    time.sleep(1)
+    return res
+
+def stop_recording(stdin):
+    stdin.write('q')
+    stdin.write('Q')
+    stdin.flush()
+    time.sleep(1)
+
+
+UnitMeta = namedtuple('UnitMeta', ['key', 'count'])
+UNITS_META = {
+    'centurion': UnitMeta('C', 6),
+    'villager': UnitMeta('V', 1),
+    'short-sword': UnitMeta('S', 5),
+}
+
+def pick_unit(name):
+    for i in xrange(UNITS_META[name].count):
+        key.tap(UNITS_META[name].key)
+
+UNITS = ('villager', 'short-sword') #('centurion', 'villager')
+
 
 if __name__ == '__main__':
     os.chdir(EMP_DIR)
     os.popen2('wine "{}EMPIRESX.EXE"'.format(EMP_DIR))
 
-    # initial delay
+    # initial delay 
     time.sleep(3)
 
 
@@ -37,127 +72,128 @@ if __name__ == '__main__':
     # loading
     time.sleep(2)
 
-    # units tab
-    go_and_click(385, 10)
-    # Academy - first list element
-    go_and_click(45, 85)
+    for unit, deselect in product(UNITS, (False, True)):
+        # units tab
+        go_and_click(385, 10)
+        # Academy - first list element
+        go_and_click(45, 85)
 
-    # for i in xrange(91):
-    #     key.tap(key.K_DOWN)
-    #     time.sleep(.05)
-    time.sleep(.05)
-    key.tap('V')
+        time.sleep(.05)
+        pick_unit(unit)
 
-    # place unit
-    go_and_click(570, 357)
+        # place unit
+        go_and_click(570, 357)
 
-    # menu
-    go_and_click(995, 30)
+        # menu
+        go_and_click(995, 30)
 
-    # test
-    go_and_click(512, 475)
+        # test
+        go_and_click(512, 475)
 
-    time.sleep(2)
+        time.sleep(2)
 
-    key.tap(key.K_RETURN)
-    time.sleep(.05)
-    key.type_string('reveal map')
-    time.sleep(.05)
-    key.tap(key.K_RETURN)
-    time.sleep(.05)
-    key.tap(key.K_RETURN)
-    time.sleep(.05)
-    key.type_string('no fog')
-    time.sleep(.05)
-    key.tap(key.K_RETURN)
+        key.tap(key.K_RETURN)
+        time.sleep(.05)
+        key.type_string('reveal map')
+        time.sleep(.05)
+        key.tap(key.K_RETURN)
+        time.sleep(.05)
+        key.tap(key.K_RETURN)
+        time.sleep(.05)
+        key.type_string('no fog')
+        time.sleep(.05)
+        key.tap(key.K_RETURN)
 
-    time.sleep(1)
+        time.sleep(1)
 
-    # select unit
-    go_and_click(480, 275)
+        stdin, stdout = start_recording(unit, deselect)
 
-    go_and_rclick(805, 105)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(9)
-    go_and_click(805, 105)
+        # select unit
+        go_and_click(480, 275)
 
-
-    go_and_rclick(412, 345)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(12)
-    go_and_click(412, 345)
+        go_and_rclick(805, 105)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(9)
+        go_and_click(805, 105)
 
 
-    go_and_rclick(205, 185)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(7)
-    go_and_click(180, 175)
+        go_and_rclick(412, 345)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(12)
+        go_and_click(412, 345)
 
 
-    go_and_rclick(625, 488)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(15)
-    go_and_click(605, 460)
+        go_and_rclick(205, 185)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(7)
+        go_and_click(180, 175)
 
 
-    go_and_rclick(620, 90)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(14)
-    go_and_click(605, 90)
+        go_and_rclick(625, 488)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(15)
+        go_and_click(605, 460)
 
 
-    go_and_rclick(625, 485)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(15)
-    go_and_click(620, 465)
+        go_and_rclick(620, 90)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(14)
+        go_and_click(605, 90)
 
 
-    go_and_rclick(185, 470)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(10)
-    go_and_click(195, 465)
+        go_and_rclick(625, 485)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(15)
+        go_and_click(620, 465)
 
 
-    go_and_rclick(760, 490)
-    if DESELECT:
-        mouse.click()
-    mouse.move(500, 725)
-    time.sleep(14)
-    go_and_click(760, 490)
+        go_and_rclick(185, 470)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(10)
+        go_and_click(195, 465)
 
 
-    # menu
-    go_and_click(975, 10)
-    # quit
-    go_and_click(512, 210)
-    # yes
-    go_and_click(420, 410)
-    time.sleep(1)
+        go_and_rclick(760, 490)
+        if deselect:
+            mouse.click()
+        mouse.move(500, 725)
+        time.sleep(14)
+        go_and_click(760, 490)
 
-    # units tab
-    go_and_click(385, 10)
+        stop_recording(stdin)
 
-    # delte checkbox
-    go_and_click(175, 690)
+        # menu
+        go_and_click(975, 10)
+        # quit
+        go_and_click(512, 210)
+        # yes
+        go_and_click(420, 410)
+        time.sleep(1)
 
-    # delete unit
-    go_and_click(570, 357)
+        # units tab
+        go_and_click(385, 10)
 
-    # place checkbox
-    go_and_click(175, 660)
+        # delte checkbox
+        go_and_click(175, 690)
+
+        # delete unit
+        go_and_click(570, 357)
+
+        # place checkbox
+        go_and_click(175, 660)
 
 
