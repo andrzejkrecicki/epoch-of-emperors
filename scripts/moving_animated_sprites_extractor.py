@@ -80,6 +80,7 @@ if __name__ == "__main__":
     parser.add_argument('-tx', '--target_x', default=None, type=int)
     parser.add_argument('-ty', '--target_y', default=None, type=int)
     parser.add_argument('-mb', '--magic_background', default=None, type=str)
+    parser.add_argument('-o', '--out', default=None, type=str)
 
     args = parser.parse_args()
 
@@ -116,6 +117,7 @@ if __name__ == "__main__":
         candidate_diff = 100000
 
         curr = Image.fromarray(curr)
+
         for y in xrange(ty - 60, ty + 60):
             for x in xrange(tx - 60, tx + 60):
                 if visited.get((x, y)) is None and curr.getpixel((x, y)) != first.getpixel((x, y)):
@@ -127,7 +129,7 @@ if __name__ == "__main__":
                     w, h = sprite.size
                     # exclude small glitches
                     if w > 6 and h > 6:
-                        sprite.save("sprites/{:03d}.png".format(total_sprites))
+                        sprite.save("{}/{:06d}.png".format(args.out, total_sprites))
                         total_sprites += 1
 
                         # if current bounding box is closer than best candidate

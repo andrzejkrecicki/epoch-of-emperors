@@ -49,6 +49,7 @@ def entity_bounding_rect(img, start, BG_COL):
 argpar = argparse.ArgumentParser()
 argpar.add_argument('img1')
 argpar.add_argument('img2')
+argpar.add_argument('out')
 argpar.add_argument('--crop_x', default=None, type=int)
 argpar.add_argument('--crop_y', default=None, type=int)
 argpar.add_argument('--crop_w', default=None, type=int)
@@ -69,9 +70,9 @@ for y in xrange(height):
         if img1.getpixel((x, y)) == img2.getpixel((x, y)):
             img2.putpixel((x, y), (0, 0, 0, 0))
 
-num_tiles = len(glob.glob("./extracted/*.png"))
+num_tiles = len(glob.glob("./{}/*.png".format(args.out)))
 
-img2.save("./tmp.png")
+# img2.save("./tmp.png")
 img2_draw = ImageDraw.Draw(img2)
 
 for y in xrange(height):
@@ -81,6 +82,6 @@ for y in xrange(height):
             if p2.x - p1.x > 0 and p2.y - p1.y > 0:
                 print p1, p2
                 entity = img2.crop((p1 + p2))
-                entity.save("./extracted/{:02d}.png".format(num_tiles));
+                entity.save("./{}/{:02d}.png".format(args.out, num_tiles))
                 num_tiles += 1
                 img2_draw.rectangle((p1, p2), fill=(0, 0, 0, 0))
