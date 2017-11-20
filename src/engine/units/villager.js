@@ -8,6 +8,8 @@ Villager.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = "Villager";
 Villager.prototype.HP = 25;
 Villager.prototype.SPEED = 1;
+Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
+
 Villager.prototype.IMAGES = {};
 Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = [
     [make_image("img/units/villager/idle/N.png")],
@@ -27,9 +29,10 @@ for (let dir = 0; dir < 8; ++dir) {
         )
     }
 }
+
 Villager.prototype.IMAGE_OFFSETS = {};
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 11, y: 23 };
-Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 0, y: 35 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MOVING] = { x: 9, y: 35 };
 
 
 export { Villager }
