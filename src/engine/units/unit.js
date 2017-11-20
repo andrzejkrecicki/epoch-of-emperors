@@ -17,8 +17,8 @@ class Unit extends Entity {
     }
     setImage() {
         this.image = new Konva.Image({
-            x: -this.IMAGE_OFFSETS[0].x + MapDrawable.TILE_SIZE.width / 4,
-            y: -this.IMAGE_OFFSETS[0].y + MapDrawable.TILE_SIZE.height / 4,
+            x: -this.IMAGE_OFFSETS[this.state].x,
+            y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.rotation][this.frame],
             width: this.IMAGES[this.state][this.rotation][this.frame].width,
             height: this.IMAGES[this.state][this.rotation][this.frame].height
@@ -28,22 +28,23 @@ class Unit extends Entity {
     updateSprite() {
         this.frame %= this.IMAGES[this.state][this.rotation].length;
         this.image.image(this.IMAGES[this.state][this.rotation][this.frame]);
+        this.image.x(-this.IMAGE_OFFSETS[this.state].x);
+        this.image.y(-this.IMAGE_OFFSETS[this.state].y);
         this.image.width(this.IMAGES[this.state][this.rotation][this.frame].width);
         this.image.height(this.IMAGES[this.state][this.rotation][this.frame].height);
     }
     createSelectionRect() {
-        let referenceSprite = this.IMAGES[this.STATE.IDLE][this.ROTATION.N][0];
         super.createSelectionRect({
-            x: Math.round(-this.IMAGE_OFFSETS[this.STATE.IDLE].x + MapDrawable.TILE_SIZE.width / 4),
-            y: Math.round(-this.IMAGE_OFFSETS[this.STATE.IDLE].y + MapDrawable.TILE_SIZE.height / 4),
-            width: referenceSprite.width,
-            height: referenceSprite.height
+            x: Math.round(-this.IMAGE_OFFSETS[this.state].x),
+            y: Math.round(-this.IMAGE_OFFSETS[this.state].y),
+            width: this.IMAGES[this.state][this.rotation][this.frame].width,
+            height: this.IMAGES[this.state][this.rotation][this.frame].height
         })
     }
     resetBoundingBox() {
         this.boundingBox = {
-            x: this.x() -this.IMAGE_OFFSETS[0].x + MapDrawable.TILE_SIZE.width / 4,
-            y: this.y() -this.IMAGE_OFFSETS[0].y + MapDrawable.TILE_SIZE.height / 4,
+            x: this.x() -this.IMAGE_OFFSETS[this.state].x,
+            y: this.y() -this.IMAGE_OFFSETS[this.state].y,
             w: this.IMAGES[this.state][this.rotation][this.frame].width,
             h: this.IMAGES[this.state][this.rotation][this.frame].height
         }
