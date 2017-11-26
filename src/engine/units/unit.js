@@ -78,7 +78,8 @@ Unit.prototype.DIRECTIONS_DELTA = [
 ];
 Unit.prototype.STATE = {
     IDLE: 0,
-    MOVING: 1
+    MOVING: 1,
+    WAITING: 2
 }
 
 export { Unit }

@@ -206,6 +206,10 @@ class AStarPathFinder {
             });
             step = this.visited[step.from_x][step.from_y];
         }
+        path.push({
+            x: step.from_x,
+            y: step.from_y
+        });
         return path.reverse();
     }
     neighbourCost(index) {
