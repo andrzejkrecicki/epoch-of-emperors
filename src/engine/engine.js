@@ -28,7 +28,9 @@ class Engine {
             entity.path[entity.path_progress].y / 2
         );
         if (distance(entity.realPosition, tmp_target) < entity.SPEED) {
+            // transition between two subtiles is done which can be considered as done step
             if (entity.path_progress > 0) {
+                // if first step was already done, we have to release previously occupied area
                 this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, null);
             }
             entity.subtile_x = entity.path[entity.path_progress].x;
@@ -36,25 +38,33 @@ class Engine {
             this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, entity);
             ++entity.path_progress;
 
-            let entrance = this.canEnterSubtile(
-                entity.path[entity.path_progress].x,
-                entity.path[entity.path_progress].y,
-                entity
-            );
 
-            if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.GO) {
-                this.map.fillSubtilesWith(
+            if (entity.path_progress < entity.path.length) {
+                // if there are further steps check if next area is unoccupied
+                let entrance = this.canEnterSubtile(
                     entity.path[entity.path_progress].x,
                     entity.path[entity.path_progress].y,
-                    entity.constructor.SUBTILE_WIDTH,
                     entity
                 );
-            } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT) {
-                entity.state = Unit.prototype.STATE.IDLE;
-                entity.path = [];
-                entity.path_progress = 0;
-            }
 
+                if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.GO) {
+                    // if destination area is not occupied allocate it
+                    this.map.fillSubtilesWith(
+                        entity.path[entity.path_progress].x,
+                        entity.path[entity.path_progress].y,
+                        entity.constructor.SUBTILE_WIDTH,
+                        entity
+                    );
+                } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT) {
+                    // if area is temporarily taken wait until it frees
+                    // TODO - handle awaiting instead permanently stopping
+                    entity.state = Unit.prototype.STATE.IDLE;
+                    entity.path = [];
+                    entity.path_progress = 0;
+                } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
+                    // calculate bypass
+                }
+            }
         }
         if (entity.path.length == entity.path_progress) {
             entity.path_progress = 0;
