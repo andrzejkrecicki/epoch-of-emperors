@@ -19,6 +19,8 @@ class Engine {
         for (let entity, i = 0; entity = this.map.entities[i++];) {
             if (entity.state == Unit.prototype.STATE.MOVING) {
                 this.processMovingUnit(entity);
+            } else if (entity.state == Unit.prototype.STATE.IDLE && entity.path != null) {
+                this.processWaitingUnit(entity);
             }
         }
     }
@@ -57,10 +59,7 @@ class Engine {
                     );
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT) {
                     // if area is temporarily taken wait until it frees
-                    // TODO - handle awaiting instead permanently stopping
                     entity.state = Unit.prototype.STATE.IDLE;
-                    entity.path = [];
-                    entity.path_progress = 0;
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
                     // calculate bypass
                 }
@@ -87,16 +86,28 @@ class Engine {
         this.viewer.setEntityVisibility(entity);
         if (this.framesCount % 2) ++entity.frame;
     }
+    processWaitingUnit(entity) {
+        // process unit which is waiting for another unit to release currently desired area
+        let entrance = this.canEnterSubtile(
+            entity.path[entity.path_progress].x,
+            entity.path[entity.path_progress].y,
+            entity
+        );
+
+        if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.GO) {
+            entity.state = Unit.prototype.STATE.MOVING;
+        } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
+            // calculate bypass
+        }
+    }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
         for (let x = subtile_x; x < subtile_x + entity.constructor.SUBTILE_WIDTH; ++x) {
             for (let y = subtile_y; y < subtile_y + entity.constructor.SUBTILE_WIDTH; ++y) {
                 if (this.map.subtiles_map[x][y] != null && this.map.subtiles_map[x][y] != entity) {
-                    if (
-                        this.map.subtiles_map[x][y].state == Unit.prototype.STATE.MOVING ||
-                        this.map.subtiles_map[x][y].state == Unit.prototype.STATE.WAITING
-                    ) return Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT
-                    else if (this.map.subtiles_map[x][y].state == Unit.prototype.STATE.IDLE) {
+                    if (this.map.subtiles_map[x][y].path != null) {
+                        return Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT
+                    } else if (this.map.subtiles_map[x][y].state == Unit.prototype.STATE.IDLE) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS
                     }
                 }
