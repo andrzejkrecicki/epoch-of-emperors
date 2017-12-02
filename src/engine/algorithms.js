@@ -216,9 +216,9 @@ class AStarPathFinder {
         return index % 2 == 0 ? 1 : Math.SQRT2;
     }
     currentCost(x, y) {
-        try {
+        if (this.visited[x] != null && this.visited[x][y] != null) {
             return this.visited[x][y].cost;
-        } catch (e) {
+        } else {
             return Infinity
         }
     }
