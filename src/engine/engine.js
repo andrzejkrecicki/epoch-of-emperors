@@ -61,7 +61,7 @@ class Engine {
                     // if area is temporarily taken wait until it frees
                     entity.state = Unit.prototype.STATE.IDLE;
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
-                    // calculate bypass
+                    this.moveOrder(entity, entity.path[entity.path.length - 1]);
                 }
             }
         }
@@ -103,7 +103,14 @@ class Engine {
                 entity
             );
         } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
-            // calculate bypass
+            this.moveOrder(entity, entity.path[entity.path.length - 1]);
+        } else {
+            // if unit is waiting for too long use randomized way of computing new route
+            if (Math.random() > .85) ++entity.ticks_waited;
+            if (entity.ticks_waited > Engine.prototype.UNIT_MAX_WAIT_TIME && Math.random() > .85) {
+                entity.ticks_waited = 0;
+                this.moveOrder(entity, entity.path[entity.path.length - 1]);
+            }
         }
     }
     // check if subtile is not occupied by other entity
@@ -213,7 +220,8 @@ Engine.prototype.AREA_ENTRANCE_RESOLUTION = {
     GO: 0, // area is not occupied - free to go
     WAIT: 1, // area is temporarily occupied - wait until it's free
     BYPASS: 2 // area was permanently taken - bypass needed
-}
+};
+Engine.prototype.UNIT_MAX_WAIT_TIME = 15;
 
 export {
     Engine
