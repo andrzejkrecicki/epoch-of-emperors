@@ -96,6 +96,12 @@ class Engine {
 
         if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.GO) {
             entity.state = Unit.prototype.STATE.MOVING;
+            this.map.fillSubtilesWith(
+                entity.path[entity.path_progress].x,
+                entity.path[entity.path_progress].y,
+                entity.constructor.SUBTILE_WIDTH,
+                entity
+            );
         } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
             // calculate bypass
         }
