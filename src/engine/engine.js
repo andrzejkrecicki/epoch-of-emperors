@@ -40,7 +40,6 @@ class Engine {
             this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, entity);
             ++entity.path_progress;
 
-
             if (entity.path_progress < entity.path.length) {
                 // if there are further steps check if next area is unoccupied
                 let entrance = this.canEnterSubtile(
@@ -144,8 +143,22 @@ class Engine {
         let finder = new AStarPathFinder(unit, this.map, point);
         let path = finder.run();
         if (path.length > 0) {
-            unit.path = path;
-            unit.path_progress = 0;
+            if (unit.path == null) {
+                // if unit currently has no path, just assign found path;
+                unit.path = path;
+                unit.path_progress = 0;
+            } else {
+                if (path[1].x == unit.path[unit.path_progress].x && path[1].y == unit.path[unit.path_progress].y) {
+                    // use new path if it starts with the subtile which is current target of our step
+                    unit.path = path;
+                } else {
+                    // otherwise go back to subtile which was beggining of our step and continue from there
+                    unit.subtile_x = unit.path[unit.path_progress].x;
+                    unit.subtile_y = unit.path[unit.path_progress].y;
+                    unit.path = [unit.path[unit.path_progress]].concat(path);
+                }
+                unit.path_progress = 1;
+            }
             unit.state = Unit.prototype.STATE.MOVING;
             unit.rotateToSubtile(unit.path[0]);
         }
