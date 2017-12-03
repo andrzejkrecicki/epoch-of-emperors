@@ -27,12 +27,12 @@ class BFSWalker {
         }
     }
     isVisited(x, y) {
-        if (this.visited[x + ";" + y]) return true;
+        if (this.visited[(x << 16) | y]) return true;
         if (x > this.upperBound || x < this.lowerBound || y < this.lowerBound || y > this.upperBound) return true;
         return false;
     }
     setVisited(x, y) {
-        this.visited[x + ";" + y] = true;
+        this.visited[(x << 16) | y] = true;
     }
 }
 BFSWalker.NEIGHBOURS_DELTA = [{ x: -1, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
@@ -198,13 +198,13 @@ class AStarPathFinder {
         }
 
         if (!done && nearest.dist == Infinity) return [];
-        let path = [], step = this.visited[nearest.x][nearest.y];
+        let path = [], step = this.getStep(nearest.x, nearest.y);
         while (step.from_x !== this.unit.subtile_x || step.from_y !== this.unit.subtile_y) {
             path.push({
                 x: step.from_x,
                 y: step.from_y
             });
-            step = this.visited[step.from_x][step.from_y];
+            step = this.getStep(step.from_x, step.from_y);
         }
         path.push({
             x: step.from_x,
@@ -215,9 +215,12 @@ class AStarPathFinder {
     neighbourCost(index) {
         return index % 2 == 0 ? 1 : Math.SQRT2;
     }
+    getStep(x, y) {
+        return this.visited[(x << 16) | y];
+    }
     currentCost(x, y) {
-        if (this.visited[x] != null && this.visited[x][y] != null) {
-            return this.visited[x][y].cost;
+        if (this.visited[(x << 16) | y] != null) {
+            return this.visited[(x << 16) | y].cost;
         } else {
             return Infinity
         }
@@ -229,8 +232,7 @@ class AStarPathFinder {
         );
     }
     setCost(x, y, data) {
-        if (this.visited[x] == null) this.visited[x] = {};
-        this.visited[x][y] = data;
+        this.visited[(x << 16) | y] = data;
     }
     checkSubtiles(subtile_x, subtile_y) {
         if (
