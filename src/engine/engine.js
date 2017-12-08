@@ -1,6 +1,8 @@
 import { MapFactory } from './map.js';
 import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
+import { TownCenter } from './buildings/town_center.js';
+import { Barracks } from './buildings/barracks.js';
 import { AStarPathFinder } from './algorithms.js';
 import { Map } from './map.js';
 import { distance } from '../utils.js'
@@ -13,10 +15,12 @@ class Engine {
         this.definition = Object.assign({}, definition);
         
         this.map = MapFactory(this.definition.map);
+        this.units = [];
+        this.buildings = [];
         this.addSampleUnits();
     }
-    processEntities() {
-        for (let entity, i = 0; entity = this.map.entities[i++];) {
+    processUnits() {
+        for (let entity, i = 0; entity = this.units[i++];) {
             if (entity.state == Unit.prototype.STATE.MOVING) {
                 this.processMovingUnit(entity);
             } else if (entity.state == Unit.prototype.STATE.IDLE && entity.path != null) {
@@ -133,7 +137,7 @@ class Engine {
     processLoop() {
         ++this.framesCount;
         this.viewer.handleScroll();
-        this.processEntities();
+        this.processUnits();
         this.viewer.stage.draw();
     }
     handleRightClick(point) {
@@ -163,8 +167,30 @@ class Engine {
             unit.rotateToSubtile(unit.path[0]);
         }
     }
+    addUnit(unit) {
+        this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.constructor.SUBTILE_WIDTH, unit);
+        this.map.entities.push(unit);
+        this.units.push(unit);
+    }
+    addBuilding(building) {
+        this.map.fillSubtilesWith(building.subtile_x, building.subtile_y, building.constructor.SUBTILE_WIDTH, building);
+        this.map.entities.push(building);
+        this.buildings.push(building);
+    }
     addSampleUnits() {
 
+        let d = { x: Math.floor(Map.SIZES[this.map.definition.size]), y: Math.floor(Map.SIZES[this.map.definition.size]) }
+        this.addUnit(new Villager(d.x, d.y ));
+
+        let towncenter = new TownCenter(d.x + 3, d.y + 3 );
+        towncenter.state = 1;
+        towncenter.setImage();
+        this.addBuilding(towncenter);
+
+        let barracks = new Barracks(d.x + 3, d.y + 12 );
+        barracks.state = 1;
+        barracks.setImage();
+        this.addBuilding(barracks);
     }
 }
 Engine.prototype.frameRate = 35;
