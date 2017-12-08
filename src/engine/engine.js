@@ -164,67 +164,6 @@ class Engine {
         }
     }
     addSampleUnits() {
-        let d = { x: Math.floor(Map.SIZES[this.map.definition.size]), y: Math.floor(Map.SIZES[this.map.definition.size]) }
-        let villager;
-        // for (let i = -10; i < 10; ++i) {
-        //     villager = new Villager(d.x + i, d.y);
-        //     this.map.fillSubtilesWith(d.x + i, d.y, Villager.SUBTILE_WIDTH, villager);
-        //     this.map.entities.push(villager);
-        // }
-        // for (let i = -10; i < 10; ++i) {
-        //     villager = new Villager(d.x + i, d.y+1);
-        //     this.map.fillSubtilesWith(d.x + i, d.y+1, Villager.SUBTILE_WIDTH, villager);
-        //     this.map.entities.push(villager);
-        // }
-        // for (let i = -10; i < 10; ++i) {
-        //     villager = new Villager(d.x + i, d.y + 2);
-        //     this.map.fillSubtilesWith(d.x + i, d.y + 2, Villager.SUBTILE_WIDTH, villager);
-        //     this.map.entities.push(villager);
-        // }
-
-        // for (let i = -10; i < 10; ++i) {
-        //     villager = new Villager(d.x + i, d.y+5);
-        //     this.map.fillSubtilesWith(d.x + i, d.y+5, Villager.SUBTILE_WIDTH, villager);
-        //     this.map.entities.push(villager);
-        // }
-        // for (let i = -10; i < 10; ++i) {
-        //     villager = new Villager(d.x + i, d.y+6);
-        //     this.map.fillSubtilesWith(d.x + i, d.y+6, Villager.SUBTILE_WIDTH, villager);
-        //     this.map.entities.push(villager);
-        // }
-        // for (let i = -10; i < 10; ++i) {
-        //     villager = new Villager(d.x + i, d.y+7);
-        //     this.map.fillSubtilesWith(d.x + i, d.y+7, Villager.SUBTILE_WIDTH, villager);
-        //     this.map.entities.push(villager);
-        // }
-
-        villager = new Villager(d.x - 8, d.y );
-        this.map.fillSubtilesWith(d.x - 8, d.y , Villager.SUBTILE_WIDTH, villager);
-        this.map.entities.push(villager);
-
-        setTimeout(this.moveOrder.bind(this, villager, {
-            x: villager.subtile_x + 40,
-            y: villager.subtile_y
-        }), 1000);
-
-
-        villager = new Villager(d.x, d.y + 8 );
-        this.map.fillSubtilesWith(d.x, d.y + 8 , Villager.SUBTILE_WIDTH, villager);
-        this.map.entities.push(villager);
-
-        setTimeout(this.moveOrder.bind(this, villager, {
-            x: villager.subtile_x,
-            y: villager.subtile_y - 40
-        }), 1000);
-
-        // villager = new Villager(d.x - 1, d.y - 1 );
-        // this.map.fillSubtilesWith(d.x - 1, d.y - 1 , Villager.SUBTILE_WIDTH, villager);
-        // this.map.entities.push(villager);
-
-        // setTimeout(this.moveOrder.bind(this, villager, {
-        //     x: villager.subtile_x + 2,
-        //     y: villager.subtile_y + 2
-        // }), 1000);
 
     }
 }
