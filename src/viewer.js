@@ -265,17 +265,21 @@ class BottomBar extends Konva.Group {
         this.entityDetails = new EntityDetails();
         this.entityDetails.hide();
         this.add(this.entityDetails);
+        this.entityActions = new EntityActions({ x: 136, y: 5 });
+        this.add(this.entityActions);
     }
     showDetails(entity) {
         this.entityDetails.setEntity(entity);
         this.entityDetails.show();
+        this.entityActions.setEntity(entity);
+        this.entityActions.show();
     }
     hideDetails() {
         this.entityDetails.hide();
+        this.entityActions.hide();
     }
 }
 BottomBar.IMAGE = make_image("img/interface/greek/bottombar.png");
-
 
 
 class EntityDetails extends Konva.Group {
@@ -363,6 +367,54 @@ class HealthBarBig extends Konva.Group {
 }
 HealthBarBig.BAR_GREEN = make_image('img/interface/details/health_green_big.png');
 HealthBarBig.BAR_RED = make_image('img/interface/details/health_red_big.png');
+
+
+class EntityActions extends Konva.Group {
+    constructor() {
+        super(...arguments);
+        this.states = [];
+    }
+    setEntity(entity) {
+        if (this.states.length) {
+            this.states = [];
+            this.removeChildren();
+        }
+        if (entity.ACTIONS) this.pushActions(entity.ACTIONS);
+    }
+    pushActions(actions) {
+        if (this.states.length) this.removeChildren();
+        this.actions_set = new ActionsSet(actions);
+        this.states.push(this.actions_set);
+
+        this.add(this.actions_set);
+    }
+}
+EntityActions.ACTION_SIZE = 50;
+EntityActions.MARGIN = 2;
+
+
+class ActionsSet extends Konva.Group {
+    constructor(actions) {
+        super();
+        this.action_buttons = [];
+        let x = EntityActions.MARGIN, y = 0;
+        for (let i = 0, action; action = actions[i]; ++i) {
+            let btn = new Konva.Image({
+                image: action.prototype.IMAGE,
+                x: x, y: y,
+                width: action.prototype.IMAGE.width,
+                height: action.prototype.IMAGE.height
+            });
+            this.add(btn);
+            this.action_buttons.push(btn);
+            x += EntityActions.ACTION_SIZE + EntityActions.MARGIN * 2;
+            if (i % 5 == 4) {
+                x = EntityActions.MARGIN;
+                y += EntityActions.ACTION_SIZE + EntityActions.MARGIN * 2;
+            }
+        }
+    }
+}
 
 
 export {

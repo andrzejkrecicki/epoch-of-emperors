@@ -1,6 +1,7 @@
 import { Unit } from './unit.js';
 import { make_image, leftpad } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
+import { Actions } from '../actions.js';
 
 class Villager extends Unit {
 }
@@ -10,6 +11,11 @@ Villager.prototype.AVATAR = make_image("img/interface/avatars/villager.png");
 Villager.prototype.HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
+Villager.prototype.ACTIONS = [
+    Actions.Build,
+    Actions.Repair,
+    Actions.Stop
+];
 
 Villager.prototype.IMAGES = {};
 Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = [
