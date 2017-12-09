@@ -1,6 +1,6 @@
 import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
-import { rand_choice, rect_intersection } from './utils.js';
+import { make_image, rand_choice, rect_intersection } from './utils.js';
 import { Tree, LeafTree } from './engine/trees.js';
 import { Villager } from './engine/units/villager.js';
 import { Unit } from './engine/units/unit.js';
@@ -42,6 +42,11 @@ class GameViewer {
         this.layers.entities.on("click", this.handleClick.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
 
+        this.topbar = new TopBar();
+        this.layers.interface.add(this.topbar);
+        this.bottombar = new BottomBar(0, this.stage.height() - BottomBar.IMAGE.height);
+        this.layers.interface.add(this.bottombar);
+
         this.engine.startLoop();
     }
     handleClick(e) {
@@ -55,12 +60,14 @@ class GameViewer {
         if (this.engine.selectedEntity) {
             this.engine.selectedEntity.setSelected(false);
             this.engine.selectedEntity = null;
+            this.bottombar.hideDetails();
         }
 
         let entity = e.target.parent;
         if (entity instanceof Entity) {
             this.engine.selectedEntity = entity;
             entity.setSelected(true);
+            this.bottombar.showDetails(entity);
         }
     }
     handleRightClick(e) {
@@ -225,6 +232,128 @@ MapDrawable.TILE_COL_OFFSET = {
 }
 MapDrawable.TERRAIN_IMAGES = TERRAIN_IMAGES;
 MapDrawable.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
+
+
+class TopBar extends Konva.Group {
+    constructor() {
+        super({ x: 0, y: 0 });
+        this.image = new Konva.Image({
+            x: 0,
+            y: 0,
+            image: TopBar.IMAGE,
+            width: TopBar.IMAGE.width,
+            height: TopBar.IMAGE.height
+        });
+        this.add(this.image);
+    }
+}
+TopBar.IMAGE = make_image("img/interface/greek/topbar.png");
+
+
+class BottomBar extends Konva.Group {
+    constructor(x=0, y=0) {
+        super({ x: x, y: y });
+        this.image = new Konva.Image({
+            x: 0,
+            y: 0,
+            image: BottomBar.IMAGE,
+            width: BottomBar.IMAGE.width,
+            height: BottomBar.IMAGE.height
+        });
+        this.add(this.image);
+
+        this.entityDetails = new Konva.Group();
+        this.entityDetails.hide();
+        this.entityDetails.add(new Konva.Rect({
+            x: 7, y: 8,
+            fill: '#000',
+            width: 123,
+            height: 111
+        }));
+        this.entityDetails.name = new Konva.Text(Object.assign({
+            x: 10, y: 16
+        }, BottomBar.ENTITY_DETAILS_TEXT_OPTIONS))
+        this.entityDetails.add(this.entityDetails.name);
+
+        this.entityDetails.avatar = new Konva.Image({ x: 10, y: 37 });
+        this.entityDetails.add(this.entityDetails.avatar);
+
+        this.entityDetails.healthBar = new HealthBarBig({ x: 10, y: 91 });
+        this.entityDetails.add(this.entityDetails.healthBar);
+
+        this.entityDetails.hp = new Konva.Text(Object.assign({
+            x: 10, y: 102
+        }, BottomBar.ENTITY_DETAILS_TEXT_OPTIONS))
+        this.entityDetails.add(this.entityDetails.hp);
+
+
+        this.add(this.entityDetails);
+    }
+    showDetails(entity) {
+        if (entity.AVATAR) {
+            this.entityDetails.avatar.image(entity.AVATAR);
+            this.entityDetails.avatar.width(entity.AVATAR.width);
+            this.entityDetails.avatar.height(entity.AVATAR.height);
+            this.entityDetails.avatar.show();
+        } else {
+            this.entityDetails.avatar.hide();
+        }
+        this.entityDetails.name.text(entity.NAME);
+        this.entityDetails.healthBar.setValue(entity.hp / entity.max_hp);
+        this.entityDetails.hp.text(`${entity.hp}/${entity.max_hp}`);
+        this.entityDetails.show();
+    }
+    hideDetails() {
+        this.entityDetails.hide();
+    }
+}
+BottomBar.IMAGE = make_image("img/interface/greek/bottombar.png");
+BottomBar.ENTITY_DETAILS_TEXT_OPTIONS = {
+    fontSize: 12,
+    fontFamily: 'helvetica',
+    fill: '#ffffff',
+};
+
+class HealthBarBig extends Konva.Group {
+    constructor() {
+        super(...arguments);
+        this.init();
+    }
+    init() {
+        this.red = new Konva.Image({
+            image: HealthBarBig.BAR_RED,
+            width: HealthBarBig.BAR_RED.width,
+            height: HealthBarBig.BAR_RED.height
+        });
+        this.add(this.red);
+
+        var _bar = document.createElement("canvas");
+        _bar.setAttribute("width", HealthBarBig.BAR_GREEN.width);
+        _bar.setAttribute("height", HealthBarBig.BAR_GREEN.height);
+        this._barCtx = _bar.getContext('2d');
+        this.setValue(1);
+
+        this.green = new Konva.Image({
+            image: _bar,
+            width: _bar.width,
+            height: _bar.height
+        });
+        this.add(this.green);
+    }
+    setValue(value) {
+        this._barCtx.clearRect(0, 0, HealthBarBig.BAR_GREEN.width, HealthBarBig.BAR_GREEN.height);
+        this._barCtx.drawImage(
+            HealthBarBig.BAR_GREEN,
+            0, 0,
+            Math.floor(HealthBarBig.BAR_GREEN.width * value), HealthBarBig.BAR_GREEN.height,
+            0, 0,
+            Math.floor(HealthBarBig.BAR_GREEN.width * value), HealthBarBig.BAR_GREEN.height
+        );
+    }
+}
+HealthBarBig.BAR_GREEN = make_image('img/interface/details/health_green_big.png');
+HealthBarBig.BAR_RED = make_image('img/interface/details/health_red_big.png');
+
 
 export {
     GameViewer, MapDrawable
