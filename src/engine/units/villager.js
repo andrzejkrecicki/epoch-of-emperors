@@ -6,6 +6,7 @@ class Villager extends Unit {
 }
 Villager.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = "Villager";
+Villager.prototype.AVATAR = make_image("img/interface/avatars/villager.png");
 Villager.prototype.HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);

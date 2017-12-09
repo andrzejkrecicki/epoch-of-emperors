@@ -5,6 +5,7 @@ import { make_image, leftpad } from '../../utils.js';
 class Barracks extends Building {
 }
 Barracks.prototype.NAME = "Barracks";
+Barracks.prototype.AVATAR = make_image("img/interface/avatars/barracks_all_1.png");
 Barracks.prototype.HP = 350;
 Barracks.SUBTILE_WIDTH = 6;
 
