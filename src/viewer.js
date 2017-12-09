@@ -262,45 +262,12 @@ class BottomBar extends Konva.Group {
         });
         this.add(this.image);
 
-        this.entityDetails = new Konva.Group();
+        this.entityDetails = new EntityDetails();
         this.entityDetails.hide();
-        this.entityDetails.add(new Konva.Rect({
-            x: 7, y: 8,
-            fill: '#000',
-            width: 123,
-            height: 111
-        }));
-        this.entityDetails.name = new Konva.Text(Object.assign({
-            x: 10, y: 16
-        }, BottomBar.ENTITY_DETAILS_TEXT_OPTIONS))
-        this.entityDetails.add(this.entityDetails.name);
-
-        this.entityDetails.avatar = new Konva.Image({ x: 10, y: 37 });
-        this.entityDetails.add(this.entityDetails.avatar);
-
-        this.entityDetails.healthBar = new HealthBarBig({ x: 10, y: 91 });
-        this.entityDetails.add(this.entityDetails.healthBar);
-
-        this.entityDetails.hp = new Konva.Text(Object.assign({
-            x: 10, y: 102
-        }, BottomBar.ENTITY_DETAILS_TEXT_OPTIONS))
-        this.entityDetails.add(this.entityDetails.hp);
-
-
         this.add(this.entityDetails);
     }
     showDetails(entity) {
-        if (entity.AVATAR) {
-            this.entityDetails.avatar.image(entity.AVATAR);
-            this.entityDetails.avatar.width(entity.AVATAR.width);
-            this.entityDetails.avatar.height(entity.AVATAR.height);
-            this.entityDetails.avatar.show();
-        } else {
-            this.entityDetails.avatar.hide();
-        }
-        this.entityDetails.name.text(entity.NAME);
-        this.entityDetails.healthBar.setValue(entity.hp / entity.max_hp);
-        this.entityDetails.hp.text(`${entity.hp}/${entity.max_hp}`);
+        this.entityDetails.setEntity(entity);
         this.entityDetails.show();
     }
     hideDetails() {
@@ -308,11 +275,54 @@ class BottomBar extends Konva.Group {
     }
 }
 BottomBar.IMAGE = make_image("img/interface/greek/bottombar.png");
-BottomBar.ENTITY_DETAILS_TEXT_OPTIONS = {
+
+
+
+class EntityDetails extends Konva.Group {
+    constructor() {
+        super(...arguments);
+        this.add(new Konva.Rect({
+            x: 7, y: 8,
+            fill: '#000',
+            width: 123,
+            height: 111
+        }));
+        this.name = new Konva.Text(Object.assign({
+            x: 10, y: 16
+        }, EntityDetails.TEXT_OPTIONS))
+        this.add(this.name);
+
+        this.avatar = new Konva.Image({ x: 10, y: 37 });
+        this.add(this.avatar);
+
+        this.healthBar = new HealthBarBig({ x: 10, y: 91 });
+        this.add(this.healthBar);
+
+        this.hp = new Konva.Text(Object.assign({
+            x: 10, y: 102
+        }, EntityDetails.TEXT_OPTIONS))
+        this.add(this.hp);
+    }
+    setEntity(entity) {
+        if (entity.AVATAR) {
+            this.avatar.image(entity.AVATAR);
+            this.avatar.width(entity.AVATAR.width);
+            this.avatar.height(entity.AVATAR.height);
+            this.avatar.show();
+        } else {
+            this.avatar.hide();
+        }
+        this.name.text(entity.NAME);
+        this.healthBar.setValue(entity.hp / entity.max_hp);
+        this.hp.text(`${entity.hp}/${entity.max_hp}`);
+    }
+}
+EntityDetails.TEXT_OPTIONS = {
     fontSize: 12,
     fontFamily: 'helvetica',
     fill: '#ffffff',
 };
+
 
 class HealthBarBig extends Konva.Group {
     constructor() {
