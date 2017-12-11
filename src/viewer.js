@@ -44,7 +44,7 @@ class GameViewer {
 
         this.topbar = new TopBar();
         this.layers.interface.add(this.topbar);
-        this.bottombar = new BottomBar(0, this.stage.height() - BottomBar.IMAGE.height);
+        this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
         this.layers.interface.add(this.bottombar);
 
         this.engine.startLoop();
@@ -251,7 +251,7 @@ TopBar.IMAGE = make_image("img/interface/greek/topbar.png");
 
 
 class BottomBar extends Konva.Group {
-    constructor(x=0, y=0) {
+    constructor(viewer, x=0, y=0) {
         super({ x: x, y: y });
         this.image = new Konva.Image({
             x: 0,
@@ -262,10 +262,11 @@ class BottomBar extends Konva.Group {
         });
         this.add(this.image);
 
+        this.viewer = viewer;
         this.entityDetails = new EntityDetails();
         this.entityDetails.hide();
         this.add(this.entityDetails);
-        this.entityActions = new EntityActions({ x: 136, y: 5 });
+        this.entityActions = new EntityActions(this.viewer, { x: 136, y: 5 });
         this.add(this.entityActions);
     }
     showDetails(entity) {
@@ -370,8 +371,9 @@ HealthBarBig.BAR_RED = make_image('img/interface/details/health_red_big.png');
 
 
 class EntityActions extends Konva.Group {
-    constructor() {
-        super(...arguments);
+    constructor(viewer, options) {
+        super(options);
+        this.viewer = viewer;
         this.states = [];
     }
     setEntity(entity) {
@@ -383,34 +385,56 @@ class EntityActions extends Konva.Group {
     }
     pushActions(actions) {
         if (this.states.length) this.removeChildren();
-        this.actions_set = new ActionsSet(actions);
+        this.actions_set = new ActionsSet(this.viewer, actions);
         this.states.push(this.actions_set);
 
         this.add(this.actions_set);
     }
+    popActions() {
+        if (this.states.length) {
+            this.states.pop();
+            this.removeChildren();
+            if (this.states.length) {
+                this.actions_set = this.states[this.states.length - 1];
+                this.add(this.actions_set);
+            }
+        }
+    }
+    goToFirst() {
+        if (this.states.length) {
+            this.states = [this.states[0]];
+            this.actions_set = this.states[0];
+            this.removeChildren();
+            this.add(this.actions_set);
+        }
+    }
 }
-EntityActions.ACTION_SIZE = 50;
-EntityActions.MARGIN = 2;
 
 
 class ActionsSet extends Konva.Group {
-    constructor(actions) {
+    constructor(viewer, actions) {
         super();
+        this.viewer = viewer;
         this.action_buttons = [];
-        let x = EntityActions.MARGIN, y = 0;
-        for (let i = 0, action; action = actions[i]; ++i) {
+        let x = actions[0].prototype.MARGIN, y = 0;
+        for (let i = 0, Action; Action = actions[i]; ++i) {
+            let pos = Action.prototype.POS || { x: x, y: y };
             let btn = new Konva.Image({
-                image: action.prototype.IMAGE,
-                x: x, y: y,
-                width: action.prototype.IMAGE.width,
-                height: action.prototype.IMAGE.height
+                image: Action.prototype.IMAGE,
+                x: pos.x, y: pos.y,
+                width: Action.prototype.IMAGE.width,
+                height: Action.prototype.IMAGE.height
+            });
+            btn.action = new Action(this, viewer);
+            btn.on("click", function(e) {
+                this.action.execute();
             });
             this.add(btn);
             this.action_buttons.push(btn);
-            x += EntityActions.ACTION_SIZE + EntityActions.MARGIN * 2;
+            x += Action.prototype.SIZE + Action.prototype.MARGIN * 2;
             if (i % 5 == 4) {
-                x = EntityActions.MARGIN;
-                y += EntityActions.ACTION_SIZE + EntityActions.MARGIN * 2;
+                x = Action.prototype.MARGIN;
+                y += Action.prototype.SIZE + Action.prototype.MARGIN * 2;
             }
         }
     }
