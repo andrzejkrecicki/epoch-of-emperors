@@ -93,12 +93,13 @@ class GameViewer {
     }
     resetEntitiesCoords() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
-            entity.resetBoundingBox();
-            this.entitiesHolder.add(
-                entity
-            );
+            this.addEntity(entity);
         }
+    }
+    addEntity(entity) {
+        entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
+        entity.resetBoundingBox();
+        this.entitiesHolder.add(entity);
     }
     handleMouseMove(e) {
         this.mouseX = e.evt.layerX;

@@ -17,8 +17,4 @@ Barracks.prototype.IMAGE_OFFSETS = {};
 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 2, y: 45 };
 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 5, y: 82 };
 
-Building.prototype.AVAILABLE_UNITS = [
-    Villager
-];
-
 export { Barracks }
