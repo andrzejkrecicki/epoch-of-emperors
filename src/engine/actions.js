@@ -3,6 +3,7 @@ import { TownCenter } from './buildings/town_center';
 import { Barracks } from './buildings/barracks.js';
 import { Villager } from './units/villager.js';
 import { rand_choice } from '../utils.js';
+import { MapDrawable } from '../viewer.js';
 
 class Action {
     constructor(action_set, viewer) {
@@ -16,14 +17,43 @@ Action.prototype.SIZE = 50;
 Action.prototype.MARGIN = 2;
 
 
+class RejectConstructionPlan extends Action {
+    execute() {
+        this.viewer.indicator.removeChildren();
+        this.viewer.bottombar.entityActions.popActions();
+        this.viewer.isPlanningConstruction = false;
+    }
+}
+RejectConstructionPlan.prototype.IMAGE = make_image("img/interface/command/cancel.png");
+RejectConstructionPlan.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN) * 5,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+
+
 let CreateBuildingFactory = function(Building) {
     class CreateBuilding extends Action {
         execute() {
-            console.log(this.BUILDING.prototype.NAME);
+            this.viewer.isPlanningConstruction = true;
+            this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
+            this.viewer.indicator.add(new Konva.Image({
+                x: (
+                    - Math.round(this.BUILDING.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width)
+                    - this.BUILDING.prototype.IMAGE_OFFSETS[this.BUILDING.prototype.STATE.DONE].x
+                ),
+                y: -this.BUILDING.prototype.IMAGE_OFFSETS[this.BUILDING.prototype.STATE.DONE].y,
+                image: this.BUILDING.prototype.IMAGES[this.BUILDING.prototype.STATE.DONE],
+                width: this.BUILDING.prototype.IMAGES[this.BUILDING.prototype.STATE.DONE].width,
+                height: this.BUILDING.prototype.IMAGES[this.BUILDING.prototype.STATE.DONE].height,
+                opacity: .65
+            }));
         }
     }
     CreateBuilding.prototype.IMAGE = Building.prototype.AVATAR;
     CreateBuilding.prototype.BUILDING = Building;
+    CreateBuilding.prototype.ACTIONS = [
+        RejectConstructionPlan
+    ];
     return CreateBuilding;
 }
 

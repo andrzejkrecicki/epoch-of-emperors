@@ -41,6 +41,12 @@ class GameViewer {
         this.layers.terrain.on("click", this.handleClick.bind(this));
         this.layers.entities.on("click", this.handleClick.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
+        this.stage.on("mousemove", this.moveIndicator.bind(this));
+
+        this.indicator = new Konva.Group();
+        this.indicator.hide();
+        this.layers.interface.add(this.indicator);
+        this.isPlanningConstruction = false;
 
         this.topbar = new TopBar();
         this.layers.interface.add(this.topbar);
@@ -104,6 +110,30 @@ class GameViewer {
     handleMouseMove(e) {
         this.mouseX = e.evt.layerX;
         this.mouseY = e.evt.layerY;
+    }
+    moveIndicator(e) {
+        if (!this.isPlanningConstruction) return;
+        // construction preview coordinates must be adjisted to subtile size
+        // therefore we compute position of subtile under cursor and use it
+        // to compute screen coordinates of its corner
+        let sub = this.mapDrawable.screenCoordsToSubtile(
+            this.mouseX + this.viewPort.x + MapDrawable.TILE_SIZE.width / 2,
+            this.mouseY + this.viewPort.y + MapDrawable.TILE_SIZE.height / 2
+        );
+        let screen = this.mapDrawable.tileCoordsToScreen(
+            (sub.x / 2),
+            (sub.y / 2)
+        );
+        this.indicator.position({
+            x: screen.x - this.viewPort.x,
+            y: screen.y - this.viewPort.y
+        });
+
+        if (
+            this.mouseY > this.stage.height() - this.bottombar.image.height() ||
+            this.mouseY < this.topbar.image.height()
+        ) this.indicator.hide();
+        else this.indicator.show();
     }
     handleScroll() {
         let moved = false;
