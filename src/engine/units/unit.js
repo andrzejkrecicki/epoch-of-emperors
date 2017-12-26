@@ -14,6 +14,7 @@ class Unit extends Entity {
         this.resetBoundingBox();
         this.path = null;
         this.path_progress = 0;
+        this.ticks_waited = 0;
     }
     setImage() {
         this.image = new Konva.Image({
