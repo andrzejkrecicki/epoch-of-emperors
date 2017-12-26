@@ -47,7 +47,11 @@ let CreateBuildingFactory = function(Building) {
                 height: this.BUILDING.prototype.IMAGES[this.BUILDING.prototype.STATE.DONE].height,
                 opacity: .65
             }));
-            this.viewer.indicator.children[0].on("click", this.confirmConstruction.bind(this));
+            this.viewer.indicator.children[0].on("click", this.handleClick.bind(this));
+        }
+        handleClick(e) {
+            if (e.evt.button == 2 || e.evt.which == 3) this.rejectConstruction(e);
+            else this.confirmConstruction(e);
         }
         confirmConstruction(e) {
             // y coordinate needs to get an extra half of MapDrawable.TILE_SIZE.height
@@ -64,6 +68,11 @@ let CreateBuildingFactory = function(Building) {
             this.viewer.addEntity(building);
             this.viewer.indicator.removeChildren();
             this.viewer.bottombar.entityActions.goToFirst();
+            this.viewer.isPlanningConstruction = false;
+        }
+        rejectConstruction(e) {
+            this.viewer.indicator.removeChildren();
+            this.viewer.bottombar.entityActions.popActions();
             this.viewer.isPlanningConstruction = false;
         }
     }
