@@ -136,7 +136,7 @@ class Engine {
     }
     processLoop() {
         ++this.framesCount;
-        this.viewer.handleScroll();
+        this.viewer.process();
         this.processUnits();
         this.viewer.stage.draw();
     }

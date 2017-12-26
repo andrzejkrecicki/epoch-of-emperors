@@ -139,6 +139,10 @@ class GameViewer {
 
         if (moved) this.setEntitiesVisibility();
     }
+    process() {
+        this.handleScroll();
+        this.indicator.opacityPulse();
+    }
 }
 
 
@@ -452,6 +456,8 @@ class ConstructionIndicator extends Konva.Group {
     constructor(viewer, options) {
         super(options);
         this.viewer = viewer;
+        this.current_opacity = .65;
+        this.opacity_delta = .01;
     }
     move() {
         if (!this.viewer.isPlanningConstruction) return;
@@ -478,6 +484,7 @@ class ConstructionIndicator extends Konva.Group {
         else this.show();
     }
     setBuilding(building) {
+        this.move();
         this.add(new Konva.Image({
             x: (
                 - Math.round(building.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width)
@@ -487,10 +494,16 @@ class ConstructionIndicator extends Konva.Group {
             image: building.prototype.IMAGES[building.prototype.STATE.DONE],
             width: building.prototype.IMAGES[building.prototype.STATE.DONE].width,
             height: building.prototype.IMAGES[building.prototype.STATE.DONE].height,
-            opacity: .65
         }));
     }
+    opacityPulse() {
+        if (this.current_opacity > this.MAX_OPACITY || this.current_opacity < this.MIN_OPACITY) this.opacity_delta *= -1;
+        this.current_opacity += this.opacity_delta;
+        this.opacity(this.current_opacity);
+    }
 }
+ConstructionIndicator.prototype.MAX_OPACITY = .75;
+ConstructionIndicator.prototype.MIN_OPACITY = .55;
 
 
 export {
