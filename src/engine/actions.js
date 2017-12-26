@@ -36,17 +36,7 @@ let CreateBuildingFactory = function(Building) {
         execute() {
             this.viewer.isPlanningConstruction = true;
             this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
-            this.viewer.indicator.add(new Konva.Image({
-                x: (
-                    - Math.round(this.BUILDING.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width)
-                    - this.BUILDING.prototype.IMAGE_OFFSETS[this.BUILDING.prototype.STATE.DONE].x
-                ),
-                y: -this.BUILDING.prototype.IMAGE_OFFSETS[this.BUILDING.prototype.STATE.DONE].y,
-                image: this.BUILDING.prototype.IMAGES[this.BUILDING.prototype.STATE.DONE],
-                width: this.BUILDING.prototype.IMAGES[this.BUILDING.prototype.STATE.DONE].width,
-                height: this.BUILDING.prototype.IMAGES[this.BUILDING.prototype.STATE.DONE].height,
-                opacity: .65
-            }));
+            this.viewer.indicator.setBuilding(this.BUILDING);
             this.viewer.indicator.children[0].on("click", this.handleClick.bind(this));
         }
         handleClick(e) {

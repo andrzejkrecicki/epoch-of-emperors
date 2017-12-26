@@ -41,11 +41,11 @@ class GameViewer {
         this.layers.terrain.on("click", this.handleClick.bind(this));
         this.layers.entities.on("click", this.handleClick.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
-        this.stage.on("mousemove", this.moveIndicator.bind(this));
 
-        this.indicator = new Konva.Group();
+        this.indicator = new ConstructionIndicator(this);
         this.indicator.hide();
         this.layers.interface.add(this.indicator);
+        this.stage.on("mousemove", this.indicator.move.bind(this.indicator));
         this.isPlanningConstruction = false;
 
         this.topbar = new TopBar();
@@ -110,30 +110,6 @@ class GameViewer {
     handleMouseMove(e) {
         this.mouseX = e.evt.layerX;
         this.mouseY = e.evt.layerY;
-    }
-    moveIndicator(e) {
-        if (!this.isPlanningConstruction) return;
-        // construction preview coordinates must be adjisted to subtile size
-        // therefore we compute position of subtile under cursor and use it
-        // to compute screen coordinates of its corner
-        let sub = this.mapDrawable.screenCoordsToSubtile(
-            this.mouseX + this.viewPort.x + MapDrawable.TILE_SIZE.width / 2,
-            this.mouseY + this.viewPort.y + MapDrawable.TILE_SIZE.height / 2
-        );
-        let screen = this.mapDrawable.tileCoordsToScreen(
-            (sub.x / 2),
-            (sub.y / 2)
-        );
-        this.indicator.position({
-            x: screen.x - this.viewPort.x,
-            y: screen.y - this.viewPort.y
-        });
-
-        if (
-            this.mouseY > this.stage.height() - this.bottombar.image.height() ||
-            this.mouseY < this.topbar.image.height()
-        ) this.indicator.hide();
-        else this.indicator.show();
     }
     handleScroll() {
         let moved = false;
@@ -468,6 +444,51 @@ class ActionsSet extends Konva.Group {
                 y += Action.prototype.SIZE + Action.prototype.MARGIN * 2;
             }
         }
+    }
+}
+
+
+class ConstructionIndicator extends Konva.Group {
+    constructor(viewer, options) {
+        super(options);
+        this.viewer = viewer;
+    }
+    move() {
+        if (!this.viewer.isPlanningConstruction) return;
+        // construction preview coordinates must be adjisted to subtile size
+        // therefore we compute position of subtile under cursor and use it
+        // to compute screen coordinates of its corner
+        let sub = this.viewer.mapDrawable.screenCoordsToSubtile(
+            this.viewer.mouseX + this.viewer.viewPort.x + MapDrawable.TILE_SIZE.width / 2,
+            this.viewer.mouseY + this.viewer.viewPort.y + MapDrawable.TILE_SIZE.height / 2
+        );
+        let screen = this.viewer.mapDrawable.tileCoordsToScreen(
+            (sub.x / 2),
+            (sub.y / 2)
+        );
+        this.position({
+            x: screen.x - this.viewer.viewPort.x,
+            y: screen.y - this.viewer.viewPort.y
+        });
+
+        if (
+            this.viewer.mouseY > this.viewer.stage.height() - this.viewer.bottombar.image.height() ||
+            this.viewer.mouseY < this.viewer.topbar.image.height()
+        ) this.hide();
+        else this.show();
+    }
+    setBuilding(building) {
+        this.add(new Konva.Image({
+            x: (
+                - Math.round(building.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width)
+                - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x
+            ),
+            y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
+            image: building.prototype.IMAGES[building.prototype.STATE.DONE],
+            width: building.prototype.IMAGES[building.prototype.STATE.DONE].width,
+            height: building.prototype.IMAGES[building.prototype.STATE.DONE].height,
+            opacity: .65
+        }));
     }
 }
 
