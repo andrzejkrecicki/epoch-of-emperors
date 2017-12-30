@@ -163,6 +163,9 @@ class AStarPathFinder {
         this.iterations = 0;
         this.setCost(unit.subtile_x, unit.subtile_y, { from_x: null, from_y: null, cost: 0 });
     }
+    isTarget(subtile) {
+        return subtile.x == this.target.x && subtile.y == this.target.y;
+    }
     run() {
         let done = false;
         let nearest = {
@@ -171,7 +174,7 @@ class AStarPathFinder {
         while (!this.queue.empty() && !done && this.iterations < AStarPathFinder.MAX_ITERATIONS) {
             ++this.iterations;
             var subtile = this.queue.pop();
-            if (subtile.x == this.target.x && subtile.y == this.target.y) {
+            if (this.isTarget(subtile)) {
                 done = true;
             } else for (let i = 0, delta; delta = AStarPathFinder.NEIGHBOURS_DELTA[i]; ++i) {
                 let nx = subtile.x + delta.x, ny = subtile.y + delta.y;
@@ -261,6 +264,45 @@ AStarPathFinder.MAX_ITERATIONS = 128 * 128;
 
 
 
+// works exactly as AStarPathFinder but it treats every subtile around
+// chosen entity as a valid target therefore avoids needless computations
+class AStarToEntity extends AStarPathFinder {
+    constructor(unit, map, target) {
+        super(...arguments);
+        this.setupTargets();
+        this.target = {
+            x: Math.floor(this.target.subtile_x + this.target.constructor.SUBTILE_WIDTH / 2),
+            y: Math.floor(this.target.subtile_y + this.target.constructor.SUBTILE_WIDTH / 2),
+        }
+    }
+    setupTargets() {
+        this.targets = {};
+        let start, curr;
+        start = curr = {
+            x: this.target.subtile_x - this.unit.constructor.SUBTILE_WIDTH,
+            y: this.target.subtile_y - this.unit.constructor.SUBTILE_WIDTH
+        };
+        let directions = [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: -1, y: 0 }, { x: 0, y: -1 }];
+        let curr_dir = 0;
+        do {
+            let dir = directions[curr_dir];
+            let dest = {
+                x: curr.x + (this.unit.constructor.SUBTILE_WIDTH + this.target.constructor.SUBTILE_WIDTH) * dir.x,
+                y: curr.y + (this.unit.constructor.SUBTILE_WIDTH + this.target.constructor.SUBTILE_WIDTH) * dir.y
+            }
+            do {
+                this.targets[(curr.x << 16) | curr.y] = true;
+                curr = { x: curr.x + dir.x, y: curr.y + dir.y };
+            } while (curr.x != dest.x || curr.y != dest.y);
+            ++curr_dir;
+        } while (curr_dir < directions.length);
+    }
+    isTarget(subtile) {
+        return !!this.targets[(subtile.x << 16) | subtile.y];
+    }
+}
+
+
 class UnitPathFinder {
     constructor(unit, map, target) {
         this.unit = unit;
@@ -324,5 +366,5 @@ UnitPathFinder.NEIGHBOURS_DELTA = [
 
 
 export {
-    BFSWalker, UnitPathFinder, MultiSlotQueue, AStarPathFinder
+    BFSWalker, UnitPathFinder, MultiSlotQueue, AStarPathFinder, AStarToEntity
 }
