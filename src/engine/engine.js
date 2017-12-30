@@ -1,9 +1,10 @@
 import { MapFactory } from './map.js';
 import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
+import { Entity } from './entity.js';
 import { TownCenter } from './buildings/town_center.js';
 import { Barracks } from './buildings/barracks.js';
-import { AStarPathFinder } from './algorithms.js';
+import { AStarPathFinder, AStarToEntity } from './algorithms.js';
 import { Map } from './map.js';
 import { distance } from '../utils.js'
 
@@ -141,30 +142,30 @@ class Engine {
         this.viewer.stage.draw();
     }
     handleRightClick(point) {
-        if (this.selectedEntity instanceof Unit) this.moveOrder(this.selectedEntity, point);
+        if (this.selectedEntity instanceof Unit) {
+            if (this.map.subtiles_map[point.x][point.y] == null) {
+                this.moveOrder(this.selectedEntity, point);
+            } else if (this.map.subtiles_map[point.x][point.y] instanceof Entity) {
+                this.interactOrder(this.selectedEntity, this.map.subtiles_map[point.x][point.y]);
+            }
+        }
     }
     moveOrder(unit, point) {
         let finder = new AStarPathFinder(unit, this.map, point);
         let path = finder.run();
         if (path.length > 0) {
-            if (unit.path == null) {
-                // if unit currently has no path, just assign found path;
-                unit.path = path;
-                unit.path_progress = 0;
-            } else {
-                if (path[1].x == unit.path[unit.path_progress].x && path[1].y == unit.path[unit.path_progress].y) {
-                    // use new path if it starts with the subtile which is current target of our step
-                    unit.path = path;
-                } else {
-                    // otherwise go back to subtile which was beggining of our step and continue from there
-                    unit.subtile_x = unit.path[unit.path_progress].x;
-                    unit.subtile_y = unit.path[unit.path_progress].y;
-                    unit.path = [unit.path[unit.path_progress]].concat(path);
-                }
-                unit.path_progress = 1;
-            }
+            unit.swapPath(path);
             unit.state = Unit.prototype.STATE.MOVING;
             unit.rotateToSubtile(unit.path[0]);
+        }
+    }
+    interactOrder(active, passive) {
+        let finder = new AStarToEntity(active, this.map, passive);
+        let path = finder.run();
+        if (path.length > 0) {
+            active.swapPath(path);
+            active.state = Unit.prototype.STATE.MOVING;
+            active.rotateToSubtile(active.path[0]);
         }
     }
     addUnit(unit) {

@@ -56,6 +56,24 @@ class Unit extends Entity {
             this.rotation = this.DIFF_TO_ROTATION[index];
         }
     }
+    swapPath(path) {
+        if (this.path == null) {
+            // if unit currently has no path, just assign found path;
+            this.path = path;
+            this.path_progress = 0;
+        } else {
+            if (path[1].x == this.path[this.path_progress].x && path[1].y == this.path[this.path_progress].y) {
+                // use new path if it starts with the subtile which is current target of our step
+                this.path = path;
+            } else {
+                // otherwise go back to subtile which was beggining of our step and continue from there
+                this.subtile_x = this.path[this.path_progress].x;
+                this.subtile_y = this.path[this.path_progress].y;
+                this.path = [this.path[this.path_progress]].concat(path);
+            }
+            this.path_progress = 1;
+        }
+    }
     getBoundingBox() {
         return this.boundingBox;
     }
