@@ -79,7 +79,7 @@ class GameViewer {
     handleRightClick(e) {
         if (this.engine.selectedEntity) {
             let sx = (e.evt.layerX - this.mapDrawable.x());
-            let sy = (e.evt.layerY - this.mapDrawable.y());
+            let sy = (e.evt.layerY - this.mapDrawable.y() + MapDrawable.TILE_SIZE.height / 2);
             this.engine.handleRightClick(this.mapDrawable.screenCoordsToSubtile(sx, sy));
         }
         e.evt.preventDefault();
