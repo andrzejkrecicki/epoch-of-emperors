@@ -4,8 +4,9 @@ import { Entity } from '../entity.js';
 class Building extends Entity {
     constructor(subtile_x, subtile_y) {
         super(...arguments);
-        this.hp = this.HP;
+        this.hp = 1;
         this.max_hp = this.HP;
+        this.isComplete = false;
         this.state = this.STATE.CONSTRUCTION;
         this.createSelectionRect();
         this.setImage();

@@ -26,6 +26,8 @@ class Engine {
                 this.processMovingUnit(entity);
             } else if (entity.state == Unit.prototype.STATE.IDLE && entity.path != null) {
                 this.processWaitingUnit(entity);
+            } else if (entity.state !== Unit.prototype.STATE.IDLE) {
+                this.processInteractingUnit(entity);
             }
         }
     }
@@ -73,7 +75,11 @@ class Engine {
             entity.path_progress = 0;
             entity.path = null;
             entity.frame = 0;
-            entity.state = Unit.prototype.STATE.IDLE;
+            if (entity.interactionObject === null) {
+                entity.state = Unit.prototype.STATE.IDLE;
+            } else {
+                entity.initInteraction();
+            }
             entity.position(this.viewer.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
         } else {
             let old_rotation = entity.rotation;
@@ -117,6 +123,11 @@ class Engine {
             }
         }
     }
+    processInteractingUnit(entity) {
+        entity.processInteraction(this.framesCount);
+        entity.updateSprite();
+        if (this.framesCount % 2) ++entity.frame;
+    }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
         for (let x = subtile_x; x < subtile_x + entity.constructor.SUBTILE_WIDTH; ++x) {
@@ -154,6 +165,7 @@ class Engine {
         let finder = new AStarPathFinder(unit, this.map, point);
         let path = finder.run();
         if (path.length > 0) {
+            unit.interactionObject = null;
             unit.swapPath(path);
             unit.state = Unit.prototype.STATE.MOVING;
             unit.rotateToSubtile(unit.path[0]);
@@ -166,6 +178,7 @@ class Engine {
             active.swapPath(path);
             active.state = Unit.prototype.STATE.MOVING;
             active.rotateToSubtile(active.path[0]);
+            active.interactionObject = passive;
         }
     }
     addUnit(unit) {
