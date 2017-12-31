@@ -14,6 +14,7 @@ class Unit extends Entity {
         this.resetBoundingBox();
         this.path = null;
         this.path_progress = 0;
+        this.interactionObject = null;
         this.ticks_waited = 0;
     }
     setImage() {
@@ -73,6 +74,16 @@ class Unit extends Entity {
             }
             this.path_progress = 1;
         }
+    }
+    initInteraction() {
+        if (false) {
+            // attack enymy unit
+        } else {
+            this.state = this.STATE.IDLE;
+        }
+    }
+    processInteraction() {
+        
     }
     getBoundingBox() {
         return this.boundingBox;
