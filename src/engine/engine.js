@@ -36,7 +36,7 @@ class Engine {
             entity.path[entity.path_progress].x / 2,
             entity.path[entity.path_progress].y / 2
         );
-        if (distance(entity.realPosition, tmp_target) < entity.SPEED) {
+        if (distance(entity.realPosition, tmp_target) < entity.SPEED * distance(entity.DIRECTIONS_DELTA[entity.rotation], { x: 0, y: 0 })) {
             // transition between two subtiles is done which can be considered as done step
             if (entity.path_progress > 0) {
                 // if first step was already done, we have to release previously occupied area
@@ -44,6 +44,7 @@ class Engine {
             }
             entity.subtile_x = entity.path[entity.path_progress].x;
             entity.subtile_y = entity.path[entity.path_progress].y;
+            entity.position(tmp_target);
             this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, entity);
             ++entity.path_progress;
 
@@ -75,18 +76,16 @@ class Engine {
                     }
 
                 }
+            } else if (entity.path.length == entity.path_progress) {
+                entity.path_progress = 0;
+                entity.path = null;
+                entity.frame = 0;
+                if (entity.interactionObject === null) {
+                    entity.state = Unit.prototype.STATE.IDLE;
+                } else {
+                    entity.initInteraction();
+                }
             }
-        }
-        if (entity.path.length == entity.path_progress) {
-            entity.path_progress = 0;
-            entity.path = null;
-            entity.frame = 0;
-            if (entity.interactionObject === null) {
-                entity.state = Unit.prototype.STATE.IDLE;
-            } else {
-                entity.initInteraction();
-            }
-            entity.position(this.viewer.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
         } else {
             let old_rotation = entity.rotation;
             entity.rotateToSubtile(entity.path[entity.path_progress]);
