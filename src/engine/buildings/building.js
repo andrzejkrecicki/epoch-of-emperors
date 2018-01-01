@@ -14,6 +14,7 @@ class Building extends Entity {
         this.tasks = [];
     }
     setImage() {
+        this.removeChildren();
         this.image = new Konva.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,

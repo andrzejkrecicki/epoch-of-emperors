@@ -13,7 +13,7 @@ class TownCenter extends Building {
 TownCenter.prototype.NAME = "Town Center";
 TownCenter.prototype.AVATAR = make_image("img/interface/avatars/town_center_01_all.png");
 TownCenter.prototype.HP = 600;
-TownCenter.SUBTILE_WIDTH = 6;
+TownCenter.SUBTILE_WIDTH = 5;
 
 
 
@@ -22,7 +22,7 @@ TownCenter.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = make_image(
 TownCenter.prototype.IMAGES[Building.prototype.STATE.DONE] = make_image("img/buildings/town_center/01_all.png");
 
 TownCenter.prototype.IMAGE_OFFSETS = {};
-TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 2, y: 45 };
+TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
 TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 3, y: 54 };
 
 export { TownCenter }
