@@ -40,6 +40,12 @@ class Building extends Entity {
             h: this.IMAGES[this.state].height
         }
     }
+    setComplete() {
+        this.hp = this.HP;
+        this.state = this.STATE.DONE;
+        this.isComplete = true;
+        this.setImage();
+    }
     getBoundingBox() {
         return this.boundingBox;
     }

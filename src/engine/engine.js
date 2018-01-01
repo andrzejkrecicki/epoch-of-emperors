@@ -68,13 +68,7 @@ class Engine {
                     // if area is temporarily taken wait until it frees
                     entity.state = Unit.prototype.STATE.IDLE;
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
-                    if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
-                    else {
-                        entity.path = null;
-                        entity.path_progress = 0;
-                        this.interactOrder(entity, entity.interactionObject);
-                    }
-
+                    this.bypassOrder(entity);
                 }
             } else if (entity.path.length == entity.path_progress) {
                 entity.path_progress = 0;
@@ -118,23 +112,13 @@ class Engine {
                 entity
             );
         } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
-            if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
-            else {
-                entity.path = null;
-                entity.path_progress = 0;
-                this.interactOrder(entity, entity.interactionObject);
-            }
+            this.bypassOrder(entity);
         } else {
             // if unit is waiting for too long use randomized way of computing new route
             if (Math.random() > .85) ++entity.ticks_waited;
             if (entity.ticks_waited > Engine.prototype.UNIT_MAX_WAIT_TIME && Math.random() > .85) {
                 entity.ticks_waited = 0;
-                if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
-                else {
-                    entity.path = null;
-                    entity.path_progress = 0;
-                    this.interactOrder(entity, entity.interactionObject);
-                }
+                this.bypassOrder(entity);
             }
         }
     }
@@ -201,6 +185,13 @@ class Engine {
                 active.initInteraction();
             }
         }
+    }
+    bypassOrder(entity) {
+        entity.path = null;
+        entity.path_progress = 0;
+
+        if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
+        else this.interactOrder(entity, entity.interactionObject);
     }
     addUnit(unit) {
         this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.constructor.SUBTILE_WIDTH, unit);
