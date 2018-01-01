@@ -24,15 +24,12 @@ class Villager extends Unit {
         if (this.interaction_type == this.INTERACTION_TYPE.BUILDING) {
             // TODO - check if interactionObject still exists
             if (this.interactionObject.hp >= this.interactionObject.HP) {
-                this.interactionObject.hp = this.interactionObject.HP;
-                this.interactionObject.state = this.interactionObject.STATE.DONE;
-                this.interactionObject.isComplete = true;
-                this.interactionObject.setImage();
+                this.interactionObject.setComplete();
                 this.state = this.STATE.IDLE;
                 this.frame = 0;
                 this.interactionObject = null;
             } else {
-                if (framesCount % 3 == 0) {
+                if (framesCount % this.BUILD_RATE == 0) {
                     ++this.interactionObject.hp;
                 }
             }
@@ -45,6 +42,7 @@ Villager.prototype.NAME = "Villager";
 Villager.prototype.AVATAR = make_image("img/interface/avatars/villager.png");
 Villager.prototype.HP = 25;
 Villager.prototype.SPEED = 1;
+Villager.prototype.BUILD_RATE = 3;
 Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 Villager.prototype.ACTIONS = [
     Actions.Build,
