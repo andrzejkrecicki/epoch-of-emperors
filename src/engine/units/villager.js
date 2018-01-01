@@ -11,6 +11,7 @@ class Villager extends Unit {
             // TODO - check if its our or enymy's building
             if (this.interactionObject.isComplete) {
                 // TODO - repair
+                this.state = this.STATE.IDLE;
             } else {
                 this.state = this.STATE.BUILDING;
                 this.interaction_type = this.INTERACTION_TYPE.BUILDING;

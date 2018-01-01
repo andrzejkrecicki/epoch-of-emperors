@@ -200,9 +200,15 @@ class AStarPathFinder {
             }
         }
 
-        if (!done && nearest.dist == Infinity) return [];
-        let path = [{ x: nearest.x, y: nearest.y }];
-        let step = done ? this.getStep(subtile.x, subtile.y) : this.getStep(nearest.x, nearest.y);
+        let path, step;
+        if (done) {
+            path = [{ x: subtile.x, y: subtile.y }];
+            step = this.getStep(subtile.x, subtile.y);
+        } else {
+            if (nearest.dist == Infinity) return null;
+            path = [{ x: nearest.x, y: nearest.y }];
+            step = this.getStep(nearest.x, nearest.y);
+        }
 
         if (step.from_x === null && step.from_y === null) return [];
 

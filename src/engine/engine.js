@@ -67,7 +67,13 @@ class Engine {
                     // if area is temporarily taken wait until it frees
                     entity.state = Unit.prototype.STATE.IDLE;
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
-                    this.moveOrder(entity, entity.path[entity.path.length - 1]);
+                    if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
+                    else {
+                        entity.path = null;
+                        entity.path_progress = 0;
+                        this.interactOrder(entity, entity.interactionObject);
+                    }
+
                 }
             }
         }
@@ -113,13 +119,23 @@ class Engine {
                 entity
             );
         } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
-            this.moveOrder(entity, entity.path[entity.path.length - 1]);
+            if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
+            else {
+                entity.path = null;
+                entity.path_progress = 0;
+                this.interactOrder(entity, entity.interactionObject);
+            }
         } else {
             // if unit is waiting for too long use randomized way of computing new route
             if (Math.random() > .85) ++entity.ticks_waited;
             if (entity.ticks_waited > Engine.prototype.UNIT_MAX_WAIT_TIME && Math.random() > .85) {
                 entity.ticks_waited = 0;
-                this.moveOrder(entity, entity.path[entity.path.length - 1]);
+                if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
+                else {
+                    entity.path = null;
+                    entity.path_progress = 0;
+                    this.interactOrder(entity, entity.interactionObject);
+                }
             }
         }
     }
@@ -135,7 +151,7 @@ class Engine {
                 if (this.map.subtiles_map[x][y] != null && this.map.subtiles_map[x][y] != entity) {
                     if (this.map.subtiles_map[x][y].path != null) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT
-                    } else if (this.map.subtiles_map[x][y].state == Unit.prototype.STATE.IDLE) {
+                    } else if (this.map.subtiles_map[x][y].state != Unit.prototype.STATE.MOVING) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS
                     }
                 }
@@ -164,7 +180,7 @@ class Engine {
     moveOrder(unit, point) {
         let finder = new AStarPathFinder(unit, this.map, point);
         let path = finder.run();
-        if (path.length > 0) {
+        if (path !== null && path.length > 0) {
             unit.interactionObject = null;
             unit.swapPath(path);
             unit.state = Unit.prototype.STATE.MOVING;
@@ -174,11 +190,17 @@ class Engine {
     interactOrder(active, passive) {
         let finder = new AStarToEntity(active, this.map, passive);
         let path = finder.run();
-        if (path.length > 0) {
-            active.swapPath(path);
-            active.state = Unit.prototype.STATE.MOVING;
-            active.rotateToSubtile(active.path[0]);
+        if (path !== null) {
             active.interactionObject = passive;
+            if (path.length) {
+                active.swapPath(path);
+                active.rotateToSubtile(active.path[0]);
+                active.state = Unit.prototype.STATE.MOVING;
+            } else {
+                active.path = null;
+                active.path_progress = 0;
+                active.initInteraction();
+            }
         }
     }
     addUnit(unit) {
