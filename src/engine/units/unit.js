@@ -57,6 +57,22 @@ class Unit extends Entity {
             this.rotation = this.DIFF_TO_ROTATION[index];
         }
     }
+    rotateToEntity(entity) {
+        let dx = this.subtile_x - entity.subtile_x, dy = this.subtile_y - entity.subtile_y;
+
+        if (dx + this.constructor.SUBTILE_WIDTH - 1 < 0) dx = 1;
+        else if (dx - entity.constructor.SUBTILE_WIDTH + 1 > 0) dx = -1;
+        else dx = 0;
+
+        if (dy + this.constructor.SUBTILE_WIDTH - 1 < 0) dy = 1;
+        else if (dy - entity.constructor.SUBTILE_WIDTH + 1 > 0) dy = -1;
+        else dy = 0;
+
+        let index = (dy + 1) * 3 + (dx) + 1
+        if (index !== 4) {
+            this.rotation = this.DIFF_TO_ROTATION[index];
+        }
+    }
     swapPath(path) {
         if (this.path == null) {
             // if unit currently has no path, just assign found path;
@@ -78,6 +94,7 @@ class Unit extends Entity {
     initInteraction() {
         if (false) {
             // attack enymy unit
+            this.rotateToEntity(this.interactionObject);
         } else {
             this.state = this.STATE.IDLE;
         }

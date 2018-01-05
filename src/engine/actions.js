@@ -59,6 +59,9 @@ let CreateBuildingFactory = function(Building) {
             this.viewer.indicator.removeChildren();
             this.viewer.bottombar.entityActions.goToFirst();
             this.viewer.isPlanningConstruction = false;
+            if (this.viewer.engine.selectedEntity) {
+                this.viewer.engine.interactOrder(this.viewer.engine.selectedEntity, building);
+            }
         }
         rejectConstruction(e) {
             this.viewer.indicator.removeChildren();
