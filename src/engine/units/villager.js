@@ -16,6 +16,7 @@ class Villager extends Unit {
                 this.state = this.STATE.BUILDING;
                 this.interaction_type = this.INTERACTION_TYPE.BUILDING;
             }
+            this.rotateToEntity(this.interactionObject);
         } else {
             super.initInteraction();
         }
