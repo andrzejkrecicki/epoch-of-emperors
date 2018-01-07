@@ -276,10 +276,6 @@ class AStarToEntity extends AStarPathFinder {
     constructor(unit, map, target) {
         super(...arguments);
         this.setupTargets();
-        this.target = {
-            x: Math.floor(this.target.subtile_x + this.target.constructor.SUBTILE_WIDTH / 2),
-            y: Math.floor(this.target.subtile_y + this.target.constructor.SUBTILE_WIDTH / 2),
-        }
     }
     setupTargets() {
         this.targets = {};
@@ -305,6 +301,39 @@ class AStarToEntity extends AStarPathFinder {
     }
     isTarget(subtile) {
         return !!this.targets[(subtile.x << 16) | subtile.y];
+    }
+    heuristic(x, y) {
+        let dx = this.unit.subtile_x - this.target.subtile_x, dy = this.unit.subtile_y - this.target.subtile_y;
+
+        if (dx + this.unit.constructor.SUBTILE_WIDTH - 1 < 0) dx = 1;
+        else if (dx - this.target.constructor.SUBTILE_WIDTH + 1 > 0) dx = -1;
+        else dx = 0;
+
+        if (dy + this.unit.constructor.SUBTILE_WIDTH - 1 < 0) dy = 1;
+        else if (dy - this.target.constructor.SUBTILE_WIDTH + 1 > 0) dy = -1;
+        else dy = 0;
+
+        if (dx != 0 && dy != 0) {
+            // diagonal case - distance to the nearest corner of interaction object
+            return Math.min(
+                Math.abs(x - this.target.subtile_x + this.unit.constructor.SUBTILE_WIDTH),
+                Math.abs(x - this.target.subtile_x - this.target.constructor.SUBTILE_WIDTH),
+            ) + Math.min(
+                Math.abs(y - this.target.subtile_y + this.unit.constructor.SUBTILE_WIDTH),
+                Math.abs(y - this.target.subtile_y - this.target.constructor.SUBTILE_WIDTH),
+            )
+        } else if (dx != 0) {
+            // non-diagonal case - distance to the nearest edge of interaction object
+            return Math.min(
+                Math.abs(x - this.target.subtile_x + this.unit.constructor.SUBTILE_WIDTH),
+                Math.abs(x - this.target.subtile_x - this.target.constructor.SUBTILE_WIDTH),
+            )
+        } else {
+            return Math.min(
+                Math.abs(y - this.target.subtile_y + this.unit.constructor.SUBTILE_WIDTH),
+                Math.abs(y - this.target.subtile_y - this.target.constructor.SUBTILE_WIDTH),
+            )
+        }
     }
 }
 
