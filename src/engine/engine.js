@@ -131,10 +131,10 @@ class Engine {
     canEnterSubtile(subtile_x, subtile_y, entity) {
         for (let x = subtile_x; x < subtile_x + entity.constructor.SUBTILE_WIDTH; ++x) {
             for (let y = subtile_y; y < subtile_y + entity.constructor.SUBTILE_WIDTH; ++y) {
-                if (this.map.subtiles_map[x][y] != null && this.map.subtiles_map[x][y] != entity) {
-                    if (this.map.subtiles_map[x][y].path != null) {
+                if (this.map.subtiles[x][y] != null && this.map.subtiles[x][y] != entity) {
+                    if (this.map.subtiles[x][y].path != null) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT
-                    } else if (this.map.subtiles_map[x][y].state != Unit.prototype.STATE.MOVING) {
+                    } else if (this.map.subtiles[x][y].state != Unit.prototype.STATE.MOVING) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS
                     }
                 }
@@ -153,10 +153,10 @@ class Engine {
     }
     handleRightClick(point) {
         if (this.selectedEntity instanceof Unit) {
-            if (this.map.subtiles_map[point.x][point.y] == null) {
+            if (this.map.subtiles[point.x][point.y] == null) {
                 this.moveOrder(this.selectedEntity, point);
-            } else if (this.map.subtiles_map[point.x][point.y] instanceof Entity) {
-                this.interactOrder(this.selectedEntity, this.map.subtiles_map[point.x][point.y]);
+            } else if (this.map.subtiles[point.x][point.y] instanceof Entity) {
+                this.interactOrder(this.selectedEntity, this.map.subtiles[point.x][point.y]);
             }
         }
     }

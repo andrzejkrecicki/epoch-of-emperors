@@ -52,7 +52,7 @@ class RandomMap extends Map {
 
         // subtiles represent map tiles divided into 4 subtiles to allow
         // support for objects smaller than whole tile.
-        this.subtiles_map = new Array(size * 2).fill(null).map(() => {
+        this.subtiles = new Array(size * 2).fill(null).map(() => {
             return new Array(size * 2).fill(null);
         }); 
 
@@ -74,7 +74,7 @@ class RandomMap extends Map {
     areSubtilesEmpty(subtile_x, subtile_y, width) {
         for (let x = subtile_x; x < subtile_x + width; ++x)
             for (let y = subtile_y; y < subtile_y + width; ++y)
-                if (this.subtiles_map[x][y] != null) return false;
+                if (this.subtiles[x][y] != null) return false;
         return true;
     }
     fillSubtilesWith(x, y, width, obj) {
@@ -84,7 +84,7 @@ class RandomMap extends Map {
             }
     }
     getEntityAtSubtile(x, y) {
-        return this.subtiles_map[x][y];
+        return this.subtiles[x][y];
     }
     isSuitableForTree(x, y) {
         // values are multiplied by 2 to get recalculated to subtiles coordinates
