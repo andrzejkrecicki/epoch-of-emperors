@@ -48,6 +48,9 @@ class GameViewer {
         this.stage.on("mousemove", this.indicator.move.bind(this.indicator));
         this.isPlanningConstruction = false;
 
+        this.orderIndicator = new MoverOrderIndicator(this);
+        this.layers.interface.add(this.orderIndicator);
+
         this.topbar = new TopBar();
         this.layers.interface.add(this.topbar);
         this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
@@ -80,7 +83,11 @@ class GameViewer {
         if (this.engine.selectedEntity) {
             let sx = (e.evt.layerX - this.mapDrawable.x());
             let sy = (e.evt.layerY - this.mapDrawable.y() + MapDrawable.TILE_SIZE.height / 2);
-            this.engine.handleRightClick(this.mapDrawable.screenCoordsToSubtile(sx, sy));
+            let subtile = this.mapDrawable.screenCoordsToSubtile(sx, sy);
+            if (!this.isPlanningConstruction && !this.engine.map.getEntityAtSubtile(subtile.x, subtile.y)) {
+                this.orderIndicator.show(e.evt.layerX, e.evt.layerY);
+            }
+            this.engine.handleRightClick(subtile);
         }
         e.evt.preventDefault();
         return false;
@@ -142,6 +149,7 @@ class GameViewer {
     process() {
         this.handleScroll();
         this.indicator.opacityPulse();
+        this.orderIndicator.process();
     }
 }
 
@@ -505,6 +513,44 @@ class ConstructionIndicator extends Konva.Group {
 ConstructionIndicator.prototype.MAX_OPACITY = .75;
 ConstructionIndicator.prototype.MIN_OPACITY = .55;
 
+
+class MoverOrderIndicator extends Konva.Group {
+    constructor() {
+        super(...arguments);
+        this.counter = 0;
+        this.frame = 0;
+        this.hide();
+        this.image = new Konva.Image({
+            x: -this.IMAGE_OFFSET.x,
+            y: -this.IMAGE_OFFSET.y,
+            image: this.FRAMES[0],
+            width: this.FRAMES[0].width,
+            height: this.FRAMES[0].height
+        });
+        this.add(this.image);
+    }
+    show(x, y) {
+        this.position({ x: x, y: y });
+        super.show();
+        this.frame = this.counter = 0;
+        this.image.image(this.FRAMES[this.frame]);
+    }
+    process() {
+        if (!this.isVisible()) return;
+        ++this.counter;
+        if (this.counter % 2 == 0) {
+            ++this.frame;
+            if (this.frame > this.FRAMES.length) {
+                this.hide();
+            } else {
+                this.image.image(this.FRAMES[this.frame]);
+            }
+        }
+    }
+}
+MoverOrderIndicator.prototype.IMAGE_OFFSET = { x: 24, y: 10 };
+MoverOrderIndicator.prototype.FRAMES = [];
+for (let i = 0; i < 6; ++i) MoverOrderIndicator.prototype.FRAMES.push(make_image(`img/interface/misc/move_order_${i}.png`));
 
 export {
     GameViewer, MapDrawable
