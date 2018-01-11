@@ -499,9 +499,9 @@ class ConstructionIndicator extends Konva.Group {
                 - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x
             ),
             y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
-            image: building.prototype.IMAGES[building.prototype.STATE.DONE],
-            width: building.prototype.IMAGES[building.prototype.STATE.DONE].width,
-            height: building.prototype.IMAGES[building.prototype.STATE.DONE].height,
+            image: building.prototype.IMAGES[building.prototype.STATE.DONE][0],
+            width: building.prototype.IMAGES[building.prototype.STATE.DONE][0].width,
+            height: building.prototype.IMAGES[building.prototype.STATE.DONE][0].height,
         }));
     }
     opacityPulse() {
