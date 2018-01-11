@@ -24,14 +24,13 @@ class Villager extends Unit {
     processInteraction(framesCount) {
         if (this.interaction_type == this.INTERACTION_TYPE.BUILDING) {
             // TODO - check if interactionObject still exists
-            if (this.interactionObject.hp >= this.interactionObject.HP) {
-                this.interactionObject.setComplete();
+            if (this.interactionObject.isComplete) {
                 this.state = this.STATE.IDLE;
                 this.frame = 0;
                 this.interactionObject = null;
             } else {
                 if (framesCount % this.BUILD_RATE == 0) {
-                    ++this.interactionObject.hp;
+                    this.interactionObject.constructionTick();
                 }
             }
         }

@@ -15,11 +15,8 @@ TownCenter.prototype.AVATAR = make_image("img/interface/avatars/town_center_01_a
 TownCenter.prototype.HP = 600;
 TownCenter.SUBTILE_WIDTH = 5;
 
-
-
-TownCenter.prototype.IMAGES = {};
-TownCenter.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = make_image("img/buildings/construction_big_00.png");
-TownCenter.prototype.IMAGES[Building.prototype.STATE.DONE] = make_image("img/buildings/town_center/01_all.png");
+TownCenter.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
+TownCenter.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/town_center/01_all.png")];
 
 TownCenter.prototype.IMAGE_OFFSETS = {};
 TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
