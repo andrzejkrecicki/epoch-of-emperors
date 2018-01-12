@@ -2,6 +2,7 @@ import { MapFactory } from './map.js';
 import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
 import { Entity } from './entity.js';
+import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
 import { Barracks } from './buildings/barracks.js';
 import { AStarPathFinder, AStarToEntity } from './algorithms.js';
@@ -134,7 +135,10 @@ class Engine {
                 if (this.map.subtiles[x][y] != null && this.map.subtiles[x][y] != entity) {
                     if (this.map.subtiles[x][y].path != null) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT
-                    } else if (this.map.subtiles[x][y].state != Unit.prototype.STATE.MOVING) {
+                    } else if (
+                        (this.map.subtiles[x][y] instanceof Unit && this.map.subtiles[x][y].state != Unit.prototype.STATE.MOVING) ||
+                        (this.map.subtiles[x][y] instanceof Building)
+                    ) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS
                     }
                 }
@@ -187,10 +191,11 @@ class Engine {
         }
     }
     bypassOrder(entity) {
+        let target = entity.path[entity.path.length - 1];
         entity.path = null;
         entity.path_progress = 0;
 
-        if (entity.interactionObject == null) this.moveOrder(entity, entity.path[entity.path.length - 1]);
+        if (entity.interactionObject == null) this.moveOrder(entity, target);
         else this.interactOrder(entity, entity.interactionObject);
     }
     addUnit(unit) {
