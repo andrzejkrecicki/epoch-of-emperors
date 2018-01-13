@@ -128,7 +128,7 @@ class Engine {
     processInteractingUnit(entity) {
         entity.processInteraction(this.framesCount);
         entity.updateSprite();
-        if (this.framesCount % 2) ++entity.frame;
+        if (this.framesCount % entity.FRAME_RATE[entity.state] == 0) ++entity.frame;
     }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {

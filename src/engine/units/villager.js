@@ -1,5 +1,6 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
+import { Bush } from '../resources/bush.js';
 import { make_image, leftpad } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
@@ -17,6 +18,10 @@ class Villager extends Unit {
                 this.interaction_type = this.INTERACTION_TYPE.BUILDING;
             }
             this.rotateToEntity(this.interactionObject);
+        } else if (this.interactionObject instanceof Bush) {
+            this.state = this.STATE.FORAGE;
+            this.interaction_type = this.INTERACTION_TYPE.FORAGE;
+            this.rotateToEntity(this.interactionObject);
         } else {
             super.initInteraction();
         }
@@ -33,6 +38,8 @@ class Villager extends Unit {
                     this.interactionObject.constructionTick();
                 }
             }
+        } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
+            //
         }
     }
 
@@ -50,8 +57,13 @@ Villager.prototype.ACTIONS = [
     Actions.Stop
 ];
 Villager.prototype.STATE = Object.assign({
-    BUILDING: 3
+    BUILDING: 3,
+    FORAGE: 4,
 }, Villager.prototype.STATE);
+
+Villager.prototype.FRAME_RATE = {}
+Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
+Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FORAGE] = 4;
 
 Villager.prototype.INTERACTION_TYPE = {
     BUILDING: 0
@@ -86,10 +98,20 @@ for (let dir = 0; dir < 8; ++dir) {
     }
 }
 
+Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 27; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE][dir].push(
+            make_image(`img/units/villager/forage/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
 Villager.prototype.IMAGE_OFFSETS = {};
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 0, y: 35 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MOVING] = { x: 9, y: 35 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING] = { x: 13, y: 37 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE] = { x: 21, y: 42 };
 
 
 export { Villager }
