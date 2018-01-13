@@ -5,9 +5,11 @@ import { Entity } from './entity.js';
 import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
 import { Barracks } from './buildings/barracks.js';
+import { Bush } from './resources/bush.js';
 import { AStarPathFinder, AStarToEntity } from './algorithms.js';
 import { Map } from './map.js';
 import { distance } from '../utils.js'
+
 
 class Engine {
     constructor(viewer, definition) {
