@@ -2,6 +2,7 @@ import { MapFactory } from './map.js';
 import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
 import { Entity } from './entity.js';
+import { Player } from './player.js';
 import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
 import { Barracks } from './buildings/barracks.js';
@@ -17,7 +18,13 @@ class Engine {
         this.loop = null;
         this.viewer = viewer;
         this.definition = Object.assign({}, definition);
-        
+
+        this.players = [];
+        for (let i = 0; i < this.definition.players.length; ++i) {
+            this.players.push(new Player(this.definition.players[i]));
+        }
+        this.current_player = this.players[0];
+
         this.map = MapFactory(this.definition.map);
         this.units = [];
         this.buildings = [];

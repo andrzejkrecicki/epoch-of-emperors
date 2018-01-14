@@ -15,6 +15,15 @@ class Bush extends Entity {
         this.setImage();
         this.resetBoundingBox();
     }
+    getFood() {
+        if (this.resources.food == 0) {
+            this.destroyed = true;
+            return 0;
+        } else {
+            --this.resources.food;
+            return 1;
+        }
+    }
     setImage() {
         this.image = new Konva.Image({
             x: -this.IMAGE_OFFSET.x,

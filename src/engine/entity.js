@@ -7,6 +7,7 @@ class Entity extends Konva.Group {
         this.hp = 0;
         this.max_hp = 0;
         this.selected = false;
+        this.resources = {};
     }
     createSelectionRect(options) {
         this.selectionRect = new Konva.Rect(Object.assign({}, {
