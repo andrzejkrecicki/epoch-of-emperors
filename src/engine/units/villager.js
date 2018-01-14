@@ -6,9 +6,18 @@ import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 
 class Villager extends Unit {
+    constructor() {
+        super(...arguments);
+        this.resources = {
+            food: 0,
+            wood: 0,
+            gold: 0,
+            stone: 0
+        }
+    }
     initInteraction() {
-        // TODO - check if interactionObject still exists
-        if (this.interactionObject instanceof Building) {
+        if (this.interactionObject.destroyed) this.terminateInteraction();
+        else if (this.interactionObject instanceof Building) {
             // TODO - check if its our or enymy's building
             if (this.interactionObject.isComplete) {
                 // TODO - repair
@@ -28,21 +37,26 @@ class Villager extends Unit {
     }
     processInteraction(framesCount) {
         if (this.interaction_type == this.INTERACTION_TYPE.BUILDING) {
-            // TODO - check if interactionObject still exists
-            if (this.interactionObject.isComplete) {
-                this.state = this.STATE.IDLE;
-                this.frame = 0;
-                this.interactionObject = null;
-            } else {
-                if (framesCount % this.BUILD_RATE == 0) {
-                    this.interactionObject.constructionTick();
+            if (this.interactionObject.isComplete || this.interactionObject.destroyed) this.terminateInteraction();
+            else if (framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
+        } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
+            if (framesCount % this.FORAGE_RATE == 0) {
+                if (this.interactionObject.destroyed) {
+                    this.terminateInteraction() // TODO: find next berry bush
+                } else {
+                    this.resources.food += this.interactionObject.getFood();
+                    if (this.resources.food == this.CAPACITY.FOOD) {
+                        this.terminateInteraction(); // TODO: return to Granary or TownCenter
+                    }
                 }
             }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
-            //
         }
     }
-
+    terminateInteraction() {
+        this.state = this.STATE.IDLE;
+        this.frame = 0;
+        this.interactionObject = null;
+    }
 }
 Villager.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = "Villager";
@@ -50,6 +64,13 @@ Villager.prototype.AVATAR = make_image("img/interface/avatars/villager.png");
 Villager.prototype.HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.BUILD_RATE = 3;
+Villager.prototype.FORAGE_RATE = 60;
+Villager.prototype.CAPACITY = {
+    FOOD: 10,
+    WOOD: 10,
+    STONE: 10,
+    GOLD: 10
+}
 Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 Villager.prototype.ACTIONS = [
     Actions.Build,

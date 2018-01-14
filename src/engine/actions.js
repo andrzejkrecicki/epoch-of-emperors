@@ -53,7 +53,7 @@ let CreateBuildingFactory = function(Building) {
             );
             let screen = this.viewer.mapDrawable.tileCoordsToScreen(sub.x / 2, sub.y / 2);
             sub = this.viewer.mapDrawable.screenCoordsToSubtile(screen.x, screen.y);
-            let building = new this.BUILDING(sub.x, sub.y);
+            let building = new this.BUILDING(sub.x, sub.y, this.viewer.engine.current_player);
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);
             this.viewer.indicator.removeChildren();

@@ -3,7 +3,7 @@ import { make_image } from '../../utils.js';
 
 
 class Building extends Entity {
-    constructor(subtile_x, subtile_y) {
+    constructor(subtile_x, subtile_y, player) {
         super(...arguments);
         this.hp = 1;
         this.max_hp = this.HP;
@@ -14,6 +14,8 @@ class Building extends Entity {
         this.setImage();
         this.resetBoundingBox();
         this.tasks = [];
+        this.player = player;
+        this.player.addBuilding(this);
     }
     setImage() {
         this.removeChildren();

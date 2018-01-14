@@ -2,7 +2,7 @@ import { Entity } from '../entity.js';
 import { MapDrawable } from '../../viewer.js';
 
 class Unit extends Entity {
-    constructor(subtile_x, subtile_y, rotation=null) {
+    constructor(subtile_x, subtile_y, player, rotation=null) {
         super(...arguments);
         this.hp = this.HP;
         this.max_hp = this.HP;
@@ -16,6 +16,8 @@ class Unit extends Entity {
         this.path_progress = 0;
         this.interactionObject = null;
         this.ticks_waited = 0;
+        this.player = player;
+        this.player.addUnit(this);
     }
     setImage() {
         this.image = new Konva.Image({
