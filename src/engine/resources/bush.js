@@ -5,7 +5,7 @@ import { MapDrawable } from '../../viewer.js';
 class Bush extends Entity {
     constructor(subtile_x, subtile_y) {
         super(...arguments);
-        this.resources = {
+        this.attributes = {
             food: 150
         };
         this.hp = Bush.prototype.HP;
@@ -16,11 +16,11 @@ class Bush extends Entity {
         this.resetBoundingBox();
     }
     getFood() {
-        if (this.resources.food == 0) {
+        if (this.attributes.food == 0) {
             this.destroyed = true;
             return 0;
         } else {
-            --this.resources.food;
+            --this.attributes.food;
             return 1;
         }
     }

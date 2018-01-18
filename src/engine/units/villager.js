@@ -8,7 +8,8 @@ import { Actions } from '../actions.js';
 class Villager extends Unit {
     constructor() {
         super(...arguments);
-        this.resources = {
+        this.attributes = {
+            attack: Villager.prototype.ATTRIBUTES.ATTACK,
             food: 0,
             wood: 0,
             gold: 0,
@@ -44,8 +45,8 @@ class Villager extends Unit {
                 if (this.interactionObject.destroyed) {
                     this.terminateInteraction() // TODO: find next berry bush
                 } else {
-                    this.resources.food += this.interactionObject.getFood();
-                    if (this.resources.food == this.CAPACITY.FOOD) {
+                    this.attributes.food += this.interactionObject.getFood();
+                    if (this.attributes.food == this.CAPACITY.FOOD) {
                         this.terminateInteraction(); // TODO: return to Granary or TownCenter
                     }
                 }
@@ -77,6 +78,9 @@ Villager.prototype.ACTIONS = [
     Actions.Repair,
     Actions.Stop
 ];
+Villager.prototype.ATTRIBUTES = {
+    ATTACK: 3
+}
 Villager.prototype.STATE = Object.assign({
     BUILDING: 3,
     FORAGE: 4,
