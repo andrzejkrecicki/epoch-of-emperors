@@ -143,7 +143,7 @@ let RecruitUnitFactory = function(Unit) {
         execute() {
             let pos = this.findEmptyArea(this.UNIT.SUBTILE_WIDTH);
             if (pos != null) {
-                let unit = new this.UNIT(pos.x, pos.y);
+                let unit = new this.UNIT(pos.x, pos.y, this.viewer.engine.current_player);
                 this.viewer.engine.addUnit(unit);
                 this.viewer.addEntity(unit);
             }

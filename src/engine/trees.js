@@ -5,7 +5,7 @@ import { MapDrawable } from '../viewer.js';
 class Tree extends Entity {
     constructor(subtile_x, subtile_y) {
         super(...arguments);
-        this.resources = {
+        this.attributes = {
             wood: 75
         };
         this.hp = Tree.HP;

@@ -148,6 +148,9 @@ class GameViewer {
     }
     process() {
         this.handleScroll();
+        if (this.bottombar.entityDetails.entity) {
+            this.bottombar.entityDetails.setEntity(this.bottombar.entityDetails.entity);
+        }
         this.indicator.opacityPulse();
         this.orderIndicator.process();
     }
@@ -326,19 +329,26 @@ class EntityDetails extends Konva.Group {
             x: 10, y: 102
         }, EntityDetails.TEXT_OPTIONS))
         this.add(this.hp);
+
+        this.attributes = new EntityAttributes({ x: 65, y: 35 });
+        this.add(this.attributes);
+
     }
     setEntity(entity) {
-        if (entity.AVATAR) {
-            this.avatar.image(entity.AVATAR);
-            this.avatar.width(entity.AVATAR.width);
-            this.avatar.height(entity.AVATAR.height);
+        this.entity = entity;
+        if (this.entity.AVATAR) {
+            this.avatar.image(this.entity.AVATAR);
+            this.avatar.width(this.entity.AVATAR.width);
+            this.avatar.height(this.entity.AVATAR.height);
             this.avatar.show();
         } else {
             this.avatar.hide();
         }
-        this.name.text(entity.NAME);
-        this.healthBar.setValue(entity.hp / entity.max_hp);
-        this.hp.text(`${entity.hp}/${entity.max_hp}`);
+        this.name.text(this.entity.NAME);
+        this.healthBar.setValue(this.entity.hp / this.entity.max_hp);
+        this.hp.text(`${this.entity.hp}/${this.entity.max_hp}`);
+
+        this.attributes.setEntity(entity);
     }
 }
 EntityDetails.TEXT_OPTIONS = {
@@ -347,6 +357,53 @@ EntityDetails.TEXT_OPTIONS = {
     fill: '#ffffff',
 };
 
+class EntityAttributes extends Konva.Group {
+    constructor() {
+        super(...arguments);
+        for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
+            this[attr] = new EntityAttribute(EntityAttributes.ATTRIBUTES[attr]);
+            this.add(this[attr]);
+        }
+    }
+    setEntity(entity) {
+        this.entity = entity;
+        let offset_y = 0;
+        for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
+            if (this.entity.attributes[attr]) {
+                this[attr].text(this.entity.attributes[attr]);
+                this[attr].position({ x: 0, y: offset_y });
+                this[attr].show();
+                offset_y += EntityAttributes.ATTRIBUTES[attr].height + 1;
+            } else this[attr].hide();
+        }
+
+    }
+}
+EntityAttributes.ALL_ATTRIBUTES = ["attack", "food"];
+EntityAttributes.ATTRIBUTES = {
+    attack: make_image("img/interface/details/attack.png"),
+    food: make_image("img/interface/details/food.png")
+}
+
+class EntityAttribute extends Konva.Group {
+    constructor(image) {
+        super();
+        this.hide();
+        this.value = new Konva.Text(Object.assign({
+            x: 3 + image.width, y: 5
+        }, EntityDetails.TEXT_OPTIONS));
+        this.add(this.value);
+        this.image = new Konva.Image({
+            image: image,
+            height: image.height,
+            width: image.width
+        });
+        this.add(this.image);
+    }
+    text() {
+        this.value.text(...arguments);
+    }
+}
 
 class HealthBarBig extends Konva.Group {
     constructor() {
