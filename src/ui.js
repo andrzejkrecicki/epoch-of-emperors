@@ -2,12 +2,15 @@ class TextButton extends Graphics.Group {
     constructor(x, y, textOptions, rectOptions) {
         super({ x, y });
         this.rectOptions = Object.assign({}, TextButton.DEFAULT_RECT_OPTIONS, rectOptions);
-        this.textOptions = Object.assign({}, TextButton.DEFAULT_TEXT_OPTIONS, textOptions);
+        this.textOptions = Object.assign({
+            x: this.rectOptions.width / 2,
+            y: this.rectOptions.height / 2
+        }, TextButton.DEFAULT_TEXT_OPTIONS, textOptions);
 
         this.rect = new Graphics.Rect(this.rectOptions);
         this.text = new Graphics.Text(this.textOptions);
-        this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
-        this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
+        // this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
+        // this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
         this.add(this.rect);
         this.add(this.text);
 
