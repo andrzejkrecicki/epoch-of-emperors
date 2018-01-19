@@ -1,4 +1,4 @@
-class Entity extends Konva.Group {
+class Entity extends Graphics.Group {
     constructor(subtile_x, subtile_y) {
         super({ x: 0, y: 0 });
         this.subtile_x = subtile_x;
@@ -10,7 +10,7 @@ class Entity extends Konva.Group {
         this.attributes = {};
     }
     createSelectionRect(options) {
-        this.selectionRect = new Konva.Rect(Object.assign({}, {
+        this.selectionRect = new Graphics.Rect(Object.assign({}, {
             stroke: 'white',
             strokeWidth: 1,
             opacity: 1,

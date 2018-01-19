@@ -20,7 +20,7 @@ class Unit extends Entity {
         this.player.addUnit(this);
     }
     setImage() {
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.rotation][this.frame],

@@ -1,11 +1,11 @@
-class TextButton extends Konva.Group {
+class TextButton extends Graphics.Group {
     constructor(x, y, textOptions, rectOptions) {
         super({ x, y });
         this.rectOptions = Object.assign({}, TextButton.DEFAULT_RECT_OPTIONS, rectOptions);
         this.textOptions = Object.assign({}, TextButton.DEFAULT_TEXT_OPTIONS, textOptions);
 
-        this.rect = new Konva.Rect(this.rectOptions);
-        this.text = new Konva.Text(this.textOptions);
+        this.rect = new Graphics.Rect(this.rectOptions);
+        this.text = new Graphics.Text(this.textOptions);
         this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
         this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
         this.add(this.rect);
@@ -55,16 +55,16 @@ TextButton.DEFAULT_RECT_OPTIONS = {
     moverFill: '#4c4137'
 }
 
-class DropDown extends Konva.Group {
+class DropDown extends Graphics.Group {
     constructor(x, y, width, values, chosenIndex) {
         super({ x, y });
         this.width = width;
         this.values = values;
         this.chosenIndex = chosenIndex;
 
-        this.chosen = new Konva.Group();
+        this.chosen = new Graphics.Group();
 
-        this.rect = new Konva.Rect(Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
+        this.rect = new Graphics.Rect(Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
             width: this.width
         }));
         this.chosen.add(this.rect);
@@ -76,7 +76,7 @@ class DropDown extends Konva.Group {
         this.chosen.add(this.valueText);
         this.add(this.chosen);
 
-        this.options = new Konva.Group({
+        this.options = new Graphics.Group({
             x: 0, y: this.rect.height(),
             visible: false
         });
@@ -142,12 +142,12 @@ DropDown.DEFAULT_TEXT_OPTIONS = {
 }
 
 
-class Option extends Konva.Group {
+class Option extends Graphics.Group {
     constructor(x, y, text, index, width) {
         super({ x, y });
         this.index = index;
         this.text = text;
-        this.rect = new Konva.Rect(Object.assign({}, Option.DEFAULT_RECT_OPTIONS, {
+        this.rect = new Graphics.Rect(Object.assign({}, Option.DEFAULT_RECT_OPTIONS, {
             width: width,
         }));
         this.add(this.rect);
@@ -217,15 +217,15 @@ MultiStateButton.DEFAULT_TEXT_OPTIONS = Object.assign({}, TextButton.DEFAULT_TEX
 });
 
 
-class CheckBox extends Konva.Group {
+class CheckBox extends Graphics.Group {
     constructor(x, y, checked, options) {
         super({ x, y });
         this.options = Object.assign({}, CheckBox.DEFAULT_OPTIONS, options);
 
         this.checked = checked;
 
-        this.rect = new Konva.Rect(this.options);
-        this.mark = new Konva.Path({
+        this.rect = new Graphics.Rect(this.options);
+        this.mark = new Graphics.Path({
             data: "M 50 100 L 100 50 L 250 200 L 400 50 L 450 100 L 300 250 L 450 400 L 400 450 L 250 300 L 100 450 L 50 400 L 200 250",
             fill: this.options.stroke,
             scale: { x: this.options.width / 500, y: this.options.height / 500 },
@@ -263,7 +263,7 @@ CheckBox.DEFAULT_OPTIONS = {
 }
 
 
-class Header extends Konva.Text {
+class Header extends Graphics.Text {
     constructor(options) {
         super(Object.assign({}, options, Header.DEFAULT_OPTIONS));
     }
@@ -275,7 +275,7 @@ Header.DEFAULT_OPTIONS = {
     align: 'center',
     strokeWidth: 2,
 }
-class Label extends Konva.Text {
+class Label extends Graphics.Text {
     constructor(options) {
         super(Object.assign({}, options, Label.DEFAULT_OPTIONS));
     }
