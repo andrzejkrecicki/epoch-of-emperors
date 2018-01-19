@@ -25,7 +25,7 @@ class Bush extends Entity {
         }
     }
     setImage() {
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSET.x,
             y: -this.IMAGE_OFFSET.y,
             image: this.IMAGE,

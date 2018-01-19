@@ -19,7 +19,7 @@ class Building extends Entity {
     }
     setImage() {
         this.removeChildren();
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.construction_stage],

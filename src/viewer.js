@@ -29,7 +29,7 @@ class GameViewer {
         this.mapDrawable = new MapDrawable(this.engine.map, this.stage, this.viewPort);
         this.layers.terrain.add(this.mapDrawable);
 
-        this.entitiesHolder = new Konva.Group({
+        this.entitiesHolder = new Graphics.Group({
             x: -this.viewPort.x,
             y: -this.viewPort.y
         });
@@ -157,7 +157,7 @@ class GameViewer {
 }
 
 
-class MapDrawable extends Konva.Group {
+class MapDrawable extends Graphics.Group {
     constructor(map, stage, viewPort) {
         super({
             x: -viewPort.x,
@@ -196,7 +196,7 @@ class MapDrawable extends Konva.Group {
 
         miniCanv.className = "tmpMiniMap";
         document.body.appendChild(miniCanv);
-        this.add(new Konva.Image({
+        this.add(new Graphics.Image({
             x: 0,
             y: 0,
             image: tmpCanvas,
@@ -256,10 +256,10 @@ MapDrawable.TERRAIN_IMAGES = TERRAIN_IMAGES;
 MapDrawable.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
 
 
-class TopBar extends Konva.Group {
+class TopBar extends Graphics.Group {
     constructor() {
         super({ x: 0, y: 0 });
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: 0,
             y: 0,
             image: TopBar.IMAGE,
@@ -272,10 +272,10 @@ class TopBar extends Konva.Group {
 TopBar.IMAGE = make_image("img/interface/greek/topbar.png");
 
 
-class BottomBar extends Konva.Group {
+class BottomBar extends Graphics.Group {
     constructor(viewer, x=0, y=0) {
         super({ x: x, y: y });
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: 0,
             y: 0,
             image: BottomBar.IMAGE,
@@ -305,27 +305,27 @@ class BottomBar extends Konva.Group {
 BottomBar.IMAGE = make_image("img/interface/greek/bottombar.png");
 
 
-class EntityDetails extends Konva.Group {
+class EntityDetails extends Graphics.Group {
     constructor() {
         super(...arguments);
-        this.add(new Konva.Rect({
+        this.add(new Graphics.Rect({
             x: 7, y: 8,
             fill: '#000',
             width: 123,
             height: 111
         }));
-        this.name = new Konva.Text(Object.assign({
+        this.name = new Graphics.Text(Object.assign({
             x: 10, y: 16
         }, EntityDetails.TEXT_OPTIONS))
         this.add(this.name);
 
-        this.avatar = new Konva.Image({ x: 10, y: 37 });
+        this.avatar = new Graphics.Image({ x: 10, y: 37 });
         this.add(this.avatar);
 
         this.healthBar = new HealthBarBig({ x: 10, y: 91 });
         this.add(this.healthBar);
 
-        this.hp = new Konva.Text(Object.assign({
+        this.hp = new Graphics.Text(Object.assign({
             x: 10, y: 102
         }, EntityDetails.TEXT_OPTIONS))
         this.add(this.hp);
@@ -357,7 +357,7 @@ EntityDetails.TEXT_OPTIONS = {
     fill: '#ffffff',
 };
 
-class EntityAttributes extends Konva.Group {
+class EntityAttributes extends Graphics.Group {
     constructor() {
         super(...arguments);
         for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
@@ -385,15 +385,15 @@ EntityAttributes.ATTRIBUTES = {
     food: make_image("img/interface/details/food.png")
 }
 
-class EntityAttribute extends Konva.Group {
+class EntityAttribute extends Graphics.Group {
     constructor(image) {
         super();
         this.hide();
-        this.value = new Konva.Text(Object.assign({
+        this.value = new Graphics.Text(Object.assign({
             x: 3 + image.width, y: 5
         }, EntityDetails.TEXT_OPTIONS));
         this.add(this.value);
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             image: image,
             height: image.height,
             width: image.width
@@ -405,13 +405,13 @@ class EntityAttribute extends Konva.Group {
     }
 }
 
-class HealthBarBig extends Konva.Group {
+class HealthBarBig extends Graphics.Group {
     constructor() {
         super(...arguments);
         this.init();
     }
     init() {
-        this.red = new Konva.Image({
+        this.red = new Graphics.Image({
             image: HealthBarBig.BAR_RED,
             width: HealthBarBig.BAR_RED.width,
             height: HealthBarBig.BAR_RED.height
@@ -424,7 +424,7 @@ class HealthBarBig extends Konva.Group {
         this._barCtx = _bar.getContext('2d');
         this.setValue(1);
 
-        this.green = new Konva.Image({
+        this.green = new Graphics.Image({
             image: _bar,
             width: _bar.width,
             height: _bar.height
@@ -446,7 +446,7 @@ HealthBarBig.BAR_GREEN = make_image('img/interface/details/health_green_big.png'
 HealthBarBig.BAR_RED = make_image('img/interface/details/health_red_big.png');
 
 
-class EntityActions extends Konva.Group {
+class EntityActions extends Graphics.Group {
     constructor(viewer, options) {
         super(options);
         this.viewer = viewer;
@@ -487,7 +487,7 @@ class EntityActions extends Konva.Group {
 }
 
 
-class ActionsSet extends Konva.Group {
+class ActionsSet extends Graphics.Group {
     constructor(viewer, actions) {
         super();
         this.viewer = viewer;
@@ -495,7 +495,7 @@ class ActionsSet extends Konva.Group {
         let x = actions[0].prototype.MARGIN, y = 0;
         for (let i = 0, Action; Action = actions[i]; ++i) {
             let pos = Action.prototype.POS || { x: x, y: y };
-            let btn = new Konva.Image({
+            let btn = new Graphics.Image({
                 image: Action.prototype.IMAGE,
                 x: pos.x, y: pos.y,
                 width: Action.prototype.IMAGE.width,
@@ -517,7 +517,7 @@ class ActionsSet extends Konva.Group {
 }
 
 
-class ConstructionIndicator extends Konva.Group {
+class ConstructionIndicator extends Graphics.Group {
     constructor(viewer, options) {
         super(options);
         this.viewer = viewer;
@@ -550,7 +550,7 @@ class ConstructionIndicator extends Konva.Group {
     }
     setBuilding(building) {
         this.move();
-        this.add(new Konva.Image({
+        this.add(new Graphics.Image({
             x: (
                 - Math.round(building.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width)
                 - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x
@@ -571,13 +571,13 @@ ConstructionIndicator.prototype.MAX_OPACITY = .75;
 ConstructionIndicator.prototype.MIN_OPACITY = .55;
 
 
-class MoverOrderIndicator extends Konva.Group {
+class MoverOrderIndicator extends Graphics.Group {
     constructor() {
         super(...arguments);
         this.counter = 0;
         this.frame = 0;
         this.hide();
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSET.x,
             y: -this.IMAGE_OFFSET.y,
             image: this.FRAMES[0],

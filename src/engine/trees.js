@@ -17,7 +17,7 @@ class Tree extends Entity {
         this.resetBoundingBox();
     }
     setImage() {
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
             y: -this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
             image: this.constructor.IMAGES[this.imgChoice],

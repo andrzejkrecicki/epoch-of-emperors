@@ -1,4 +1,3 @@
-import Konva from 'konva';
 import { BFSWalker, MultiSlotQueue } from './algorithms.js';
 import { rand_choice, to_binary } from '../utils.js';
 import { PineTree, LeafTree, PalmTree } from './trees.js';
