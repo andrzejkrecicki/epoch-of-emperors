@@ -21,20 +21,19 @@ class TextButton extends Graphics.Group {
     }
     mouseover() {
         if (this.rectOptions.moverFill) this.rect.setFill(this.rectOptions.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (this.rectOptions.fill) this.rect.setFill(this.rectOptions.fill);
         this.mouseup()
-        // this.fire("refresh", null, true);
     }
     mousedown() {
         if (this.textOptions.mdownFill) this.text.setFill(this.textOptions.mdownFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseup() {
         if (this.textOptions.fill) this.text.setFill(this.textOptions.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     click() {
         this.mouseout();
@@ -102,7 +101,7 @@ class DropDown extends Graphics.Group {
                 that.valueText.setText("" + values[this.index]);
                 that.options.hide();
                 that.fire("update");
-                that.fire("refresh", null, true);
+                that.fire("refresh");
             });
         }
         this.chosen.on("mouseover", this.mouseover.bind(this));
@@ -113,25 +112,25 @@ class DropDown extends Graphics.Group {
     }
     mouseover() {
         if (DropDown.DEFAULT_RECT_OPTIONS.moverFill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (DropDown.DEFAULT_RECT_OPTIONS.fill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.fill);
         this.mouseup()
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mousedown() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.mdownFill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.mdownFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseup() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.fill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     click() {
         this.moveToTop();
         this.options.show();
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
 }
 DropDown.DEFAULT_RECT_OPTIONS = {
@@ -174,20 +173,20 @@ class Option extends Graphics.Group {
     }
     mouseover() {
         if (Option.DEFAULT_RECT_OPTIONS.moverFill) this.rect.setFill(Option.DEFAULT_RECT_OPTIONS.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (Option.DEFAULT_RECT_OPTIONS.fill) this.rect.setFill(Option.DEFAULT_RECT_OPTIONS.fill);
         this.mouseup()
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mousedown() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.mdownFill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.mdownFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseup() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.fill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
 }
 Option.DEFAULT_RECT_OPTIONS = Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
@@ -213,7 +212,7 @@ class MultiStateButton extends TextButton {
             this.currentState = (this.currentState + 1) % this.states.length;
             this.text.setText(this.states[this.currentState]);
             this.fire("update");
-            this.fire("refresh", null, true);
+            this.fire("refresh");
         });
     }
 }
@@ -249,17 +248,17 @@ class CheckBox extends Graphics.Group {
     }
     mouseover() {
         if (this.options.moverFill) this.rect.setFill(this.options.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (this.options.fill) this.rect.setFill(this.options.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     click() {
         this.checked = !this.checked;
         this.mark.setVisible(this.checked);
         this.fire("update");
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
 }
 CheckBox.DEFAULT_OPTIONS = {
