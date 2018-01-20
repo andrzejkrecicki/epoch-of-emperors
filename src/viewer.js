@@ -203,7 +203,7 @@ class MapDrawable extends Graphics.Group {
             width: Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.width,
             height: Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.height
         }));
-        this.cache();
+        // this.cache();
     }
     tileCoordsToScreen(tx, ty) {
         let H = MapDrawable.TILE_SIZE.height;

@@ -9,8 +9,7 @@ class TextButton extends Graphics.Group {
 
         this.rect = new Graphics.Rect(this.rectOptions);
         this.text = new Graphics.Text(this.textOptions);
-        // this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
-        // this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
+
         this.add(this.rect);
         this.add(this.text);
 
@@ -73,9 +72,12 @@ class DropDown extends Graphics.Group {
         this.chosen.add(this.rect);
         this.valueText = new Label({
             text: "" + this.values[this.chosenIndex],
-            width: this.width
+            width: this.width,
+            align: "center",
+            textBaseline: "middle",
+            x: this.width / 2,
+            y: this.rect.height() / 2
         });
-        this.valueText.setY(this.rect.height() / 2 - this.valueText.fontSize() / 2);
         this.chosen.add(this.valueText);
         this.add(this.chosen);
 
@@ -89,7 +91,8 @@ class DropDown extends Graphics.Group {
             let option = new Option(
                 0, i * DropDown.DEFAULT_RECT_OPTIONS.height,
                 "" + values[i], i,
-                this.width
+                this.rect.width(),
+                this.rect.height()
             );
             this.options.add(option);
             let that = this;
@@ -146,19 +149,22 @@ DropDown.DEFAULT_TEXT_OPTIONS = {
 
 
 class Option extends Graphics.Group {
-    constructor(x, y, text, index, width) {
+    constructor(x, y, text, index, width, height) {
         super({ x, y });
         this.index = index;
         this.text = text;
         this.rect = new Graphics.Rect(Object.assign({}, Option.DEFAULT_RECT_OPTIONS, {
             width: width,
+            height: height
         }));
         this.add(this.rect);
         this.valueText = new Label({
             text: this.text,
-            width: width
+            x: this.rect.width() / 2,
+            y: this.rect.height() / 2,
+            align: "center",
+            textBaseline: "middle"
         });
-        this.valueText.setY(this.rect.height() / 2 - this.valueText.fontSize() / 2);
         this.add(this.valueText);
 
         this.on("mouseover", this.mouseover);
@@ -195,7 +201,9 @@ class MultiStateButton extends TextButton {
     constructor(x, y, states, currentState, textOptions, rectOptions) {
         let mergedRectOptions = Object.assign({}, MultiStateButton.DEFAULT_RECT_OPTIONS, rectOptions);
         let mergedTextOptions = Object.assign({}, MultiStateButton.DEFAULT_TEXT_OPTIONS, textOptions, {
-            text: states[currentState]
+            text: states[currentState],
+            width: mergedRectOptions.width,
+            height: mergedRectOptions.height
         });
         super(x, y, mergedTextOptions, mergedRectOptions);
         this.states = states;
@@ -204,8 +212,6 @@ class MultiStateButton extends TextButton {
         this.on("click", () => {
             this.currentState = (this.currentState + 1) % this.states.length;
             this.text.setText(this.states[this.currentState]);
-            this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
-            this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
             this.fire("update");
             this.fire("refresh", null, true);
         });
@@ -268,26 +274,27 @@ CheckBox.DEFAULT_OPTIONS = {
 
 class Header extends Graphics.Text {
     constructor(options) {
-        super(Object.assign({}, options, Header.DEFAULT_OPTIONS));
+        super(Object.assign({}, Header.DEFAULT_OPTIONS, options));
     }
 }
 Header.DEFAULT_OPTIONS = {
     fontSize: 17,
     fontFamily: 'helvetica',
     fill: '#c0dcc0',
-    align: 'center',
+    align: 'left',
     strokeWidth: 2,
 }
 class Label extends Graphics.Text {
     constructor(options) {
-        super(Object.assign({}, options, Label.DEFAULT_OPTIONS));
+        super(Object.assign({}, Label.DEFAULT_OPTIONS, options));
     }
 }
 Label.DEFAULT_OPTIONS = {
     fontSize: 14,
     fontFamily: 'helvetica',
     fill: '#c0dcc0',
-    align: 'center',
+    align: 'left',
+    textBaseline: "top",
     strokeWidth: 2,
 }
 
