@@ -9,7 +9,7 @@ class Menu extends Graphics.Group {
         this.on("refresh", this.refresh)
     }
     refresh(e) {
-        this.parent.draw();
+        if (this.parent) this.parent.draw();
         e.cancelBubble = true;
     }
 }

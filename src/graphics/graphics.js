@@ -1,43 +1,49 @@
 class Node {
     constructor(options) {
         this.attrs = {};
-        this.attrs.children = [];
+        this.children = [];
         this.events = {};
         this.index = 0;
         this.parent = null;
         this.layer = null;
 
-        if (options.width != null) this.attrs.width = options.width;
-        if (options.height != null) this.attrs.height = options.height;
-        this.attrs.x = options.x || 0;
-        this.attrs.y = options.y || 0;
-    }
-    attr(attr) {
-        if (this.attrs[attr] != null) return this.attrs[attr];
-        console.log(`seeking ${attr} at parent (${this.parent})`);
-        if (this.parent == null) return;
-        return this.parent.attr(attr);
+        this.attrs.height = options.height != null ? options.height : this.DEFAULT_ATTRS.height;
+        this.attrs.width = options.width != null ? options.width : this.DEFAULT_ATTRS.width;
+        this.attrs.x = options.x != null ? options.x : this.DEFAULT_ATTRS.x;
+        this.attrs.y = options.y != null ? options.y : this.DEFAULT_ATTRS.y;
+        this.attrs.visible = options.visible != null ? options.visible : this.DEFAULT_ATTRS.visible;
     }
     add(node) {
-        node.index = this.attrs.children.length;
-        this.attrs.children.push(node);
+        node.index = this.children.length;
+        this.children.push(node);
         node.parent = this;
         node.layer = this.layer;
     }
     remove() {
-        this.parent.attrs.children.splice(this.index, 1);
+        this.parent.children.splice(this.index, 1);
+        this.parent.resetIndices();
+        this.parent = null;
+    }
+    moveToTop() {
+        this.parent.children.splice(this.index, 1);
+        this.parent.children.push(this);
         this.parent.resetIndices();
     }
     resetIndices() {
-        for (let i = 0; i < this.attrs.children.length; ++i) this.attrs.children[i].index = i;
+        for (let i = 0; i < this.children.length; ++i) this.children[i].index = i;
     }
-    width(val) {
-        if (val == null) return this.attrs.width;
-        return this.attrs.width = val;
+    removeChildren() {
+        for (let child of this.children) {
+            child.parent = null;
+            child.index = 0;
+        }
+        this.children = [];
     }
-    height(val) {
-        if (val == null) return this.attrs.height;
-        return this.attrs.height = val;
+    position(val) {
+        if (val != null) return { x: this.x, y: this.y }
+        this.x = val.x;
+        this.y = val.y;
+        return val;
     }
     on(event, callback) {
         if (!(event in this.events)) this.events[event] = [];
@@ -45,19 +51,10 @@ class Node {
     }
     fire(event) {
         let e = {};
-        if (event in this.events) for (let callback, i = 0; callback = this.events[event][i]; ++i) {
+        if (event in this.events) for (let callback of this.events[event]) {
             callback.call(this, e);
         }
         if (!e.cancelBubble && this.parent) this.parent.fire(event);
-    }
-    setFill(val) {
-        this.attrs.fill = val;
-    }
-    getWidth() {
-        return this.attrs.width;
-    }
-    getHeight() {
-        return this.attrs.height;
     }
     x(val) {
         if (val != null) return this.attrs.x = val;
@@ -78,16 +75,69 @@ class Node {
     }
     setLayer(layer) {
         this.layer = layer;
-        for (let child, i = 0; child = this.attrs.children[i]; ++i) {
+        for (let child of this.children) {
             child.setLayer(layer);
         }
     }
-    draw() {
-        console.log(`Drawing ${this.constructor.name}`);
-        for (let child, i = 0; child = this.attrs.children[i]; ++i) {
-            child.draw();
-        }
+    show() {
+        this.attrs.visible = true;
     }
+    hide() {
+        this.attrs.visible = false;
+    }
+    draw() {
+        if (!this.attrs.visible) return;
+        for (let child of this.children) child.draw();
+    }
+}
+Node.prototype.DEFAULT_ATTRS = {
+    height: 0,
+    width: 0,
+    x: 0,
+    y: 0,
+    visible: true,
+    fill: "#ffffff",
+    strokeWidth: 1,
+    stroke: "#000000",
+    fill: "#ffffff",
+    // stroke: "#000000",
+    // strokeWidth: 1,
+    align: "left",
+    textBaseline: "middle",
+    fontFamily: "helvetica",
+    fontSize: 14
+};
+Node.prototype.GETSETERS = [
+    "width",
+    "height",
+    "fill",
+    "stroke",
+    "strokeWidth",
+    "fontSize",
+    "fontFamily",
+    "align",
+    "text",
+    "visible",
+];
+for (let attr of Node.prototype.GETSETERS) {
+    Node.prototype[attr] = (function(attr) {
+        return function(val) {
+            if (val != null) return this.attrs[attr] = val;
+            return this.attrs[attr];
+        }
+    })(attr);
+
+    let cap = attr.charAt(0).toUpperCase() + attr.slice(1);
+    Node.prototype["set" + cap] = (function(attr) {
+        return function(val) {
+            return this.attrs[attr] = val;
+        }
+    })(attr);
+    Node.prototype["get" + cap] = (function(attr) {
+        return function(val) {
+            return this.attrs[attr];
+        }
+    })(attr);
 }
 
 
@@ -116,7 +166,8 @@ class Layer extends Node {
         if (node.layer == null) {
             node.setLayer(this);
         }
-        this.attrs.children.push(node);
+        node.index = this.children.length;
+        this.children.push(node);
         node.parent = this;
     }
     x() {
@@ -134,11 +185,13 @@ class Group extends Node {
 class Rect extends Node {
     constructor(options) {
         super(options || {});
-        this.attrs.fill = options.fill;
-        this.attrs.strokeWidth = options.strokeWidth;
-        this.attrs.stroke = options.stroke;
+
+        this.attrs.fill = options.fill != null ? options.fill : this.DEFAULT_ATTRS.fill;
+        this.attrs.strokeWidth = options.strokeWidth != null ? options.strokeWidth : this.DEFAULT_ATTRS.strokeWidth;
+        this.attrs.stroke = options.stroke != null ? options.stroke : this.DEFAULT_ATTRS.stroke;
     }
     draw() {
+        if (!this.attrs.visible) return;
         this.layer.ctx.fillStyle = this.attrs.fill;
         this.layer.ctx.lineWidth = this.attrs.strokeWidth;
         this.layer.ctx.strokeStyle = this.attrs.stroke;
@@ -146,31 +199,31 @@ class Rect extends Node {
         this.layer.ctx.strokeRect(this.x(), this.y(), this.attrs.width, this.attrs.height);
     }
 }
+
+
 class Text extends Node {
     constructor(options) {
         super(options || {});
-        this.attrs.align = options.align;
-        this.attrs.fill = options.fill;
-        this.attrs.fontFamily = options.fontFamily;
-        this.attrs.fontSize = options.fontSize;
-        this.attrs.strokeWidth = options.strokeWidth;
+
+        this.attrs.fill = options.fill ? options.fill : this.DEFAULT_ATTRS.fill;
+        // this.attrs.stroke = options.stroke ? options.stroke : this.DEFAULT_ATTRS.stroke;
+        // this.attrs.strokeWidth = options.strokeWidth ? options.strokeWidth : this.DEFAULT_ATTRS.strokeWidth;
+        this.attrs.align = options.align ? options.align : this.DEFAULT_ATTRS.align;
+        this.attrs.textBaseline = options.textBaseline ? options.textBaseline : this.DEFAULT_ATTRS.textBaseline;
+        this.attrs.fontFamily = options.fontFamily ? options.fontFamily : this.DEFAULT_ATTRS.fontFamily;
+        this.attrs.fontSize = options.fontSize ? options.fontSize : this.DEFAULT_ATTRS.fontSize;
         this.attrs.text = options.text;
     }
     draw() {
+        if (!this.attrs.visible) return;
         this.layer.ctx.fillStyle = this.attrs.fill;
         this.layer.ctx.textAlign = this.attrs.align;
-        this.layer.ctx.textBaseline = "middle";
+        this.layer.ctx.textBaseline = this.attrs.textBaseline;
         this.layer.ctx.font = "" + this.attrs.fontSize + "px " + this.attrs.fontFamily;
         this.layer.ctx.fillText(this.attrs.text, this.x(), this.y());
     }
-    getFontSize() {
-        return this.attrs.fontSize;
-    }
-    fontSize(val) {
-        if (val == null) return this.attrs.fontSize;
-        return this.attrs.fontSize = val;
-    }
 }
+
 class Path extends Node {
     constructor(options) {
         super(options || {});
