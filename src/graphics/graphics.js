@@ -6,6 +6,9 @@ class Node {
         this.index = 0;
         this.parent = null;
         this.layer = null;
+        this.UUID = Node.TOTAL_NODES++;
+        this.hitColor = `#${this.UUID.toString(16).padStart(6, "0")}`;
+        Node.UUID_TO_NODE[this.UUID] = this;
 
         this.attrs.height = options.height != null ? options.height : this.DEFAULT_ATTRS.height;
         this.attrs.width = options.width != null ? options.width : this.DEFAULT_ATTRS.width;
@@ -49,12 +52,12 @@ class Node {
         if (!(event in this.events)) this.events[event] = [];
         this.events[event].push(callback);
     }
-    fire(event) {
-        let e = {};
+    fire(event, e) {
+        e = e || {};
         if (event in this.events) for (let callback of this.events[event]) {
             callback.call(this, e);
         }
-        if (!e.cancelBubble && this.parent) this.parent.fire(event);
+        if (!e.cancelBubble && this.parent) this.parent.fire(event, e);
     }
     x(val) {
         if (val != null) return this.attrs.x = val;
@@ -92,7 +95,12 @@ class Node {
         if (!this.attrs.visible) return;
         for (let child of this.children) child.draw();
     }
+    static getByUUID(id) {
+        return Node.UUID_TO_NODE[id];
+    }
 }
+Node.TOTAL_NODES = 0;
+Node.UUID_TO_NODE = {};
 Node.prototype.DEFAULT_ATTRS = {
     height: 0,
     width: 0,
@@ -165,16 +173,25 @@ class Stage extends Node {
         this.mouse = {
             x: 0, y: 0
         }
-        // this.lastHovered = this;
-        this.container.addEventListener("click", this.click.bind(this));
+        this.lastHovered = null;
+        this.container.addEventListener("mousedown", this.mousedown.bind(this));
+        this.container.addEventListener("mouseup", this.mouseup.bind(this));
         this.container.addEventListener("mousemove", this.mousemove.bind(this));
     }
-    click(e) {
+    mousedown(e) {
+        this.dispatch("mousedown", e);
+    }
+    mouseup(e) {
+        this.dispatch("mouseup", e);
+        this.dispatch("click", e);
+    }
+    dispatch(type, e) {
         let x = e.offsetX;
         let y = e.offsetY;
         for (let i = this.children.length - 1; i > -1; --i) {
-            if (this.children[i].hitmap[x][y] != null) {
-                this.children[i].hitmap[x][y].fire(e.type, e);
+            let node = this.children[i].getNodeAt(x, y);
+            if (node) {
+                node.fire(type, e);
                 break;
             }
         }
@@ -183,13 +200,12 @@ class Stage extends Node {
         let x = e.offsetX;
         let y = e.offsetY;
         for (let i = this.children.length - 1; i > -1; --i) {
-            let node = this.children[i].hitmap[x][y];
-            let lastHovered = this.children[i].hitmap[this.mouse.x][this.mouse.y];
+            let node = this.children[i].getNodeAt(x, y);
             this.mouse.x = x;
             this.mouse.y = y;
-            if (node != null && node != lastHovered) {
-                lastHovered.fire("mouseout", e);
-                lastHovered = node;
+            if (node != null && node != this.lastHovered) {
+                if (this.lastHovered) this.lastHovered.fire("mouseout", e);
+                this.lastHovered = node;
                 node.fire("mouseover", e);
                 break;
             }
@@ -214,13 +230,24 @@ class Layer extends Node {
         node.parent = this;
     }
     draw() {
-        this.makeHitmap();
+        this.hitmap.clearRect(0, 0, this.stage.width(), this.stage.height());
         super.draw(...arguments);
     }
     makeHitmap() {
-        this.hitmap = (new Array(this.stage.width())).fill(null).map(
-            () => (new Array(this.stage.height())).fill(null)
-        );
+        let canvas = document.createElement("canvas");
+        canvas.setAttribute("width", this.stage.width());
+        canvas.setAttribute("height", this.stage.height());
+        this.hitmap = canvas.getContext('2d');
+
+        this.hitmap.clearRect(0, 0, this.stage.width(), this.stage.height());
+    }
+    getNodeAt(x, y) {
+        let hit_pixel = this.hitmap.getImageData(x, y, 1, 1).data;
+        if (hit_pixel[3] != 0) {
+            let UUID = (hit_pixel[0] << 16) | (hit_pixel[1] << 8) | (hit_pixel[2]);
+            return Node.getByUUID(UUID);
+        }
+
     }
     x() {
         return 0;
@@ -255,12 +282,8 @@ class Rect extends Node {
         this.setHitmap();
     }
     setHitmap() {
-        // TODO - allow events disabling
-        for (let y = this.y(); y < this.y() + this.height(); ++y) {
-            for (let x = this.x(); x < this.x() + this.width(); ++x) {
-                this.layer.hitmap[x][y] = this;
-            }
-        }
+        this.layer.hitmap.fillStyle = this.hitColor;
+        this.layer.hitmap.fillRect(this.x(), this.y(), this.width(), this.height());
     }
 }
 
