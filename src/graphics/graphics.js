@@ -17,7 +17,7 @@ class Node {
         node.index = this.children.length;
         this.children.push(node);
         node.parent = this;
-        node.layer = this.layer;
+        node.setLayer(this.layer);
     }
     remove() {
         this.parent.children.splice(this.index, 1);
@@ -72,6 +72,9 @@ class Node {
     }
     setListening() {
         // TODO - remove
+    }
+    getLayer() {
+        return this.layer || (this.parent && this.parent.getLayer());
     }
     setLayer(layer) {
         this.layer = layer;
@@ -144,7 +147,8 @@ for (let attr of Node.prototype.GETSETERS) {
 class Stage extends Node {
     constructor(options) {
         super(options);
-        this.attrs.container = document.getElementById(options.container);
+        this.container = document.getElementById(options.container);
+        this.initEvents();
     }
     add(layer) {
         let canvas = document.createElement("canvas");
@@ -152,14 +156,53 @@ class Stage extends Node {
         canvas.setAttribute("height", this.attrs.height)
         layer.canvas = canvas;
         layer.ctx = canvas.getContext('2d');
-        this.attrs.container.appendChild(canvas);
+        this.container.appendChild(canvas);
+        layer.stage = this;
+        layer.makeHitmap();
+        this.children.push(layer);
+    }
+    initEvents() {
+        this.mouse = {
+            x: 0, y: 0
+        }
+        // this.lastHovered = this;
+        this.container.addEventListener("click", this.click.bind(this));
+        this.container.addEventListener("mousemove", this.mousemove.bind(this));
+    }
+    click(e) {
+        let x = e.offsetX;
+        let y = e.offsetY;
+        for (let i = this.children.length - 1; i > -1; --i) {
+            if (this.children[i].hitmap[x][y] != null) {
+                this.children[i].hitmap[x][y].fire(e.type, e);
+                break;
+            }
+        }
+    }
+    mousemove(e) {
+        let x = e.offsetX;
+        let y = e.offsetY;
+        for (let i = this.children.length - 1; i > -1; --i) {
+            let node = this.children[i].hitmap[x][y];
+            let lastHovered = this.children[i].hitmap[this.mouse.x][this.mouse.y];
+            this.mouse.x = x;
+            this.mouse.y = y;
+            if (node != null && node != lastHovered) {
+                lastHovered.fire("mouseout", e);
+                lastHovered = node;
+                node.fire("mouseover", e);
+                break;
+            }
+        }
     }
 }
 class Layer extends Node {
     constructor(options) {
         super(options || {});
+        this.stage = null;
         this.canvas = null;
         this.ctx = null;
+        this.hitmap = null;
         this.layer = this;
     }
     add(node) {
@@ -169,6 +212,15 @@ class Layer extends Node {
         node.index = this.children.length;
         this.children.push(node);
         node.parent = this;
+    }
+    draw() {
+        this.makeHitmap();
+        super.draw(...arguments);
+    }
+    makeHitmap() {
+        this.hitmap = (new Array(this.stage.width())).fill(null).map(
+            () => (new Array(this.stage.height())).fill(null)
+        );
     }
     x() {
         return 0;
@@ -192,11 +244,23 @@ class Rect extends Node {
     }
     draw() {
         if (!this.attrs.visible) return;
+        if (this.layer == null) return;
+
         this.layer.ctx.fillStyle = this.attrs.fill;
         this.layer.ctx.lineWidth = this.attrs.strokeWidth;
         this.layer.ctx.strokeStyle = this.attrs.stroke;
         this.layer.ctx.fillRect(this.x(), this.y(), this.attrs.width, this.attrs.height);
         this.layer.ctx.strokeRect(this.x(), this.y(), this.attrs.width, this.attrs.height);
+
+        this.setHitmap();
+    }
+    setHitmap() {
+        // TODO - allow events disabling
+        for (let y = this.y(); y < this.y() + this.height(); ++y) {
+            for (let x = this.x(); x < this.x() + this.width(); ++x) {
+                this.layer.hitmap[x][y] = this;
+            }
+        }
     }
 }
 

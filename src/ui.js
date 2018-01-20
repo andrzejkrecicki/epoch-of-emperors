@@ -26,7 +26,7 @@ class TextButton extends Graphics.Group {
     mouseout() {
         if (this.rectOptions.fill) this.rect.setFill(this.rectOptions.fill);
         this.mouseup()
-        this.fire("refresh", null, true);
+        // this.fire("refresh", null, true);
     }
     mousedown() {
         if (this.textOptions.mdownFill) this.text.setFill(this.textOptions.mdownFill);
