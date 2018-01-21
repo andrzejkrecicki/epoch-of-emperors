@@ -33,6 +33,7 @@ class MenuNavigator {
         this.currentMenu.remove();
         this.currentMenu.setListening(false);
         this.layers.interface.removeChildren();
+        this.layers.interface.clear();
         this.gameViewer = new GameViewer(gameDefinition, this, this.layers);
     }
 }

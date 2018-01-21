@@ -4,7 +4,14 @@
     <title>Epoch of Emperors</title>
     <style type="text/css">
         #container canvas {
-            border: solid 1px #ddd !important;
+            border: none !important;
+            position: absolute;
+        }
+        #container {
+           position: relative; 
+        }
+        #debugInfo {
+            white-space: pre;
         }
         body > canvas.tmpMiniMap {
             transform: rotateX(60deg) rotateZ(-45deg);
@@ -14,6 +21,7 @@
 </head>
 <body>
     <div id="container"></div>
+    <div id="debugInfo"></div>
     <script type="text/javascript" src="dist/bundle.js"></script>
 </body>
 </html>
