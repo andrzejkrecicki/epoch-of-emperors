@@ -7,11 +7,26 @@ class PlayerDefinition {
         } else {
             this.civ = civ;
         }
+        this.resources = {
+            wood: 400,
+            food: 400,
+            stone: 400,
+            gold: 400
+        };
         this.colour = colour;
         this.team = team;
         this.is_cpu = is_cpu;
     }
 }
+
+let RESOURCE_TYPES = {
+    NONE: 0,
+    FOOD: 1,
+    WOOD: 2,
+    STONE: 3,
+    GOLD: 4
+};
+
 
 let PLAYER_COLOURS = [
     "blue",
@@ -79,6 +94,10 @@ var distance = function(p1, p2) {
     return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
 }
 
+var manhatan_subtile_distance = function(p1, p2) {
+    return Math.abs(p1.subtile_x - p2.subtile_x) + Math.abs(p1.subtile_y - p2.subtile_y);
+}
+
 var rect_intersection = function(r1, r2) {
     return !(
         r1.x + r1.w < r2.x || r1.x > r2.x + r2.w ||
@@ -88,5 +107,6 @@ var rect_intersection = function(r1, r2) {
 
 export {
     PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
-    make_image, to_binary, leftpad, rand_choice, rect_intersection, distance
+    make_image, to_binary, leftpad, rand_choice, rect_intersection, distance,
+    manhatan_subtile_distance, RESOURCE_TYPES
 }

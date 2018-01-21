@@ -87,7 +87,7 @@ class Engine {
                 if (entity.interactionObject === null) {
                     entity.state = Unit.prototype.STATE.IDLE;
                 } else {
-                    entity.initInteraction();
+                    entity.initInteraction(this);
                 }
             }
         } else {
@@ -133,7 +133,7 @@ class Engine {
         }
     }
     processInteractingUnit(entity) {
-        entity.processInteraction(this.framesCount);
+        entity.processInteraction(this);
         entity.updateSprite();
         if (this.framesCount % entity.FRAME_RATE[entity.state] == 0) ++entity.frame;
     }
@@ -178,6 +178,7 @@ class Engine {
         let path = finder.run();
         if (path !== null && path.length > 0) {
             unit.interactionObject = null;
+            unit.prevInteractionObject = null;
             unit.swapPath(path);
             unit.state = Unit.prototype.STATE.MOVING;
             unit.rotateToSubtile(unit.path[0]);
@@ -195,7 +196,7 @@ class Engine {
             } else {
                 active.path = null;
                 active.path_progress = 0;
-                active.initInteraction();
+                active.initInteraction(this);
             }
         }
     }

@@ -1,3 +1,5 @@
+import { manhatan_subtile_distance } from '../utils.js';
+
 class Player {
     constructor(definition) {
         this.index = definition.index;
@@ -15,6 +17,23 @@ class Player {
     }
     addUnit(unit) {
         this.units.push(unit)
+    }
+    getNearestBuilding(entity, filters={}) {
+        let nearest = null;
+        let min_dist = Infinity;
+        for (let building of this.buildings) {
+            let match = true;
+            for (let attr in filters) if (building[attr] != filters[attr]) {
+                match = false;
+                break;
+            }
+            let curr_dist = manhatan_subtile_distance(entity, building);
+            if (match && min_dist > curr_dist) {
+                nearest = building;
+                min_dist = curr_dist;
+            }
+        }
+        return nearest;
     }
 }
 

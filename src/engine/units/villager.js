@@ -1,7 +1,7 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Bush } from '../resources/bush.js';
-import { make_image, leftpad } from '../../utils.js';
+import { make_image, leftpad, RESOURCE_TYPES } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 
@@ -15,12 +15,24 @@ class Villager extends Unit {
             gold: 0,
             stone: 0
         }
+        this.carriedResource = RESOURCE_TYPES.NONE;
     }
-    initInteraction() {
+    initInteraction(engine) {
         if (this.interactionObject.destroyed) this.terminateInteraction();
         else if (this.interactionObject instanceof Building) {
             // TODO - check if its our or enymy's building
-            if (this.interactionObject.isComplete) {
+            if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {
+                let res_name = this.RESOURCE_NAME[this.carriedResource];
+                this.player.resources[res_name] += this.attributes[res_name];
+                this.attributes[res_name] = 0;
+                this.carriedResource = RESOURCE_TYPES.NONE;
+
+                if (this.prevInteractionObject == null) {
+                    this.terminateInteraction();
+                    return;
+                } else engine.interactOrder(this, this.prevInteractionObject);
+                this.prevInteractionObject = null;
+            } else if (this.interactionObject.isComplete) {
                 // TODO - repair
                 this.state = this.STATE.IDLE;
             } else {
@@ -36,27 +48,32 @@ class Villager extends Unit {
             super.initInteraction();
         }
     }
-    processInteraction(framesCount) {
+    processInteraction(engine) {
         if (this.interaction_type == this.INTERACTION_TYPE.BUILDING) {
             if (this.interactionObject.isComplete || this.interactionObject.destroyed) this.terminateInteraction();
-            else if (framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
+            else if (engine.framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
         } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
-            if (framesCount % this.FORAGE_RATE == 0) {
+            if (engine.framesCount % this.FORAGE_RATE == 0) {
                 if (this.interactionObject.destroyed) {
                     this.terminateInteraction() // TODO: find next berry bush
                 } else {
                     this.attributes.food += this.interactionObject.getFood();
-                    if (this.attributes.food == this.CAPACITY.FOOD) {
-                        this.terminateInteraction(); // TODO: return to Granary or TownCenter
-                    }
+                    this.carriedResource = RESOURCE_TYPES.FOOD;
+                    if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
                 }
             }
         }
+    }
+    returnResources(engine) {
+        let building = this.player.getNearestBuilding(this, { NAME: "Town Center" });
+        this.prevInteractionObject = this.interactionObject;
+        engine.interactOrder(this, building);
     }
     terminateInteraction() {
         this.state = this.STATE.IDLE;
         this.frame = 0;
         this.interactionObject = null;
+        this.prevInteractionObject = null;
     }
 }
 Villager.SUBTILE_WIDTH = 1;
@@ -66,6 +83,12 @@ Villager.prototype.HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.BUILD_RATE = 3;
 Villager.prototype.FORAGE_RATE = 60;
+Villager.prototype.RESOURCE_NAME = ["", "", "", ""];
+Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.FOOD] = "food";
+Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.WOOD] = "wood";
+Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.STONE] = "stone";
+Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.GOLD] = "gold";
+
 Villager.prototype.CAPACITY = {
     FOOD: 10,
     WOOD: 10,

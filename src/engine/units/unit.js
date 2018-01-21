@@ -15,6 +15,7 @@ class Unit extends Entity {
         this.path = null;
         this.path_progress = 0;
         this.interactionObject = null;
+        this.prevInteractionObject = null;
         this.ticks_waited = 0;
         this.player = player;
         this.player.addUnit(this);

@@ -9,6 +9,9 @@ class TownCenter extends Building {
             Actions.RecruitUnitFactory(Villager)
         ];
     }
+    acceptsResource(type) {
+        return true;
+    }
 }
 TownCenter.prototype.NAME = "Town Center";
 TownCenter.prototype.AVATAR = make_image("img/interface/avatars/town_center_01_all.png");

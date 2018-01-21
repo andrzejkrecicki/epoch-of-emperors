@@ -59,6 +59,9 @@ class Building extends Entity {
             this.setImage();
         }
     }
+    acceptsResource(type) {
+        return false;
+    }
     getBoundingBox() {
         return this.boundingBox;
     }
