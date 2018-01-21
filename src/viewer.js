@@ -562,6 +562,7 @@ class ConstructionIndicator extends Graphics.Group {
         }));
     }
     opacityPulse() {
+        if (!this.viewer.isPlanningConstruction) return;
         if (this.current_opacity > this.MAX_OPACITY || this.current_opacity < this.MIN_OPACITY) this.opacity_delta *= -1;
         this.current_opacity += this.opacity_delta;
         this.opacity(this.current_opacity);
@@ -593,7 +594,7 @@ class MoverOrderIndicator extends Graphics.Group {
         this.image.image(this.FRAMES[this.frame]);
     }
     process() {
-        if (!this.isVisible()) return;
+        if (!this.getVisible()) return;
         ++this.counter;
         if (this.counter % 2 == 0) {
             ++this.frame;

@@ -1,6 +1,7 @@
 import { Entity } from '../entity.js';
 import { MapDrawable } from '../../viewer.js';
 
+
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, rotation=null) {
         super(...arguments);

@@ -43,9 +43,9 @@ class Node {
         this.children = [];
     }
     position(val) {
-        if (val != null) return { x: this.x, y: this.y }
-        this.x = val.x;
-        this.y = val.y;
+        if (val == null) return { x: this.attrs.x, y: this.attrs.y }
+        this.attrs.x = val.x;
+        this.attrs.y = val.y;
         return val;
     }
     on(event, callback) {
@@ -59,22 +59,14 @@ class Node {
         }
         if (!e.cancelBubble && this.parent) this.parent.fire(event, e);
     }
-    x(val) {
-        if (val != null) return this.attrs.x = val;
-        return (this.attrs.x || 0) + (this.parent ? this.parent.x() : 0);
+    absX() {
+        return (this.attrs.x || 0) + (this.parent ? this.parent.absX() : 0);
     }
-    y(val) {
-        if (val != null) return this.attrs.y = val;
-        return (this.attrs.y || 0) + (this.parent ? this.parent.y() : 0);
-    }
-    setX(val) {
-        this.attrs.x = val;
-    }
-    setY(val) {
-        this.attrs.y = val;
+    absY() {
+        return (this.attrs.y || 0) + (this.parent ? this.parent.absY() : 0);
     }
     setListening() {
-        // TODO - remove
+        // TODO - remove or implement
     }
     getLayer() {
         return this.layer || (this.parent && this.parent.getLayer());
@@ -119,6 +111,8 @@ Node.prototype.DEFAULT_ATTRS = {
     fontSize: 14
 };
 Node.prototype.GETSETERS = [
+    "x",
+    "y",
     "width",
     "height",
     "fill",
@@ -156,6 +150,8 @@ class Stage extends Node {
     constructor(options) {
         super(options);
         this.container = document.getElementById(options.container);
+        this.container.style.width = this.attrs.width + "px";
+        this.container.style.height = this.attrs.height + "px";
         this.initEvents();
     }
     add(layer) {
@@ -168,6 +164,9 @@ class Stage extends Node {
         layer.stage = this;
         layer.makeHitmap();
         this.children.push(layer);
+    }
+    on(event, callback) {
+        this.container.addEventListener(event, (e) => callback({ target: this, evt: e }));
     }
     initEvents() {
         this.mouse = {
@@ -191,7 +190,7 @@ class Stage extends Node {
         for (let i = this.children.length - 1; i > -1; --i) {
             let node = this.children[i].getNodeAt(x, y);
             if (node) {
-                node.fire(type, e);
+                node.fire(type, { target: node, evt: e });
                 break;
             }
         }
@@ -206,7 +205,7 @@ class Stage extends Node {
             if (node != null && node != this.lastHovered) {
                 if (this.lastHovered) this.lastHovered.fire("mouseout", e);
                 this.lastHovered = node;
-                node.fire("mouseover", e);
+                node.fire("mouseover", { target: node, evt: e });
                 break;
             }
         }
@@ -231,7 +230,11 @@ class Layer extends Node {
     }
     draw() {
         this.hitmap.clearRect(0, 0, this.stage.width(), this.stage.height());
+        this.ctx.clearRect(0, 0, this.stage.width(), this.stage.height());
         super.draw(...arguments);
+    }
+    clear() {
+        this.ctx.clearRect(0, 0, this.stage.width(), this.stage.height());
     }
     makeHitmap() {
         let canvas = document.createElement("canvas");
@@ -247,12 +250,11 @@ class Layer extends Node {
             let UUID = (hit_pixel[0] << 16) | (hit_pixel[1] << 8) | (hit_pixel[2]);
             return Node.getByUUID(UUID);
         }
-
     }
-    x() {
+    absX() {
         return 0;
     }
-    y() {
+    absY() {
         return 0;
     }
 }
@@ -276,14 +278,14 @@ class Rect extends Node {
         this.layer.ctx.fillStyle = this.attrs.fill;
         this.layer.ctx.lineWidth = this.attrs.strokeWidth;
         this.layer.ctx.strokeStyle = this.attrs.stroke;
-        this.layer.ctx.fillRect(this.x(), this.y(), this.attrs.width, this.attrs.height);
-        this.layer.ctx.strokeRect(this.x(), this.y(), this.attrs.width, this.attrs.height);
+        this.layer.ctx.fillRect(this.absX(), this.absY(), this.attrs.width, this.attrs.height);
+        this.layer.ctx.strokeRect(this.absX(), this.absY(), this.attrs.width, this.attrs.height);
 
         this.setHitmap();
     }
     setHitmap() {
         this.layer.hitmap.fillStyle = this.hitColor;
-        this.layer.hitmap.fillRect(this.x(), this.y(), this.width(), this.height());
+        this.layer.hitmap.fillRect(this.absX(), this.absY(), this.width(), this.height());
     }
 }
 
@@ -307,7 +309,7 @@ class Text extends Node {
         this.layer.ctx.textAlign = this.attrs.align;
         this.layer.ctx.textBaseline = this.attrs.textBaseline;
         this.layer.ctx.font = "" + this.attrs.fontSize + "px " + this.attrs.fontFamily;
-        this.layer.ctx.fillText(this.attrs.text, this.x(), this.y());
+        this.layer.ctx.fillText(this.attrs.text, this.absX(), this.absY());
     }
 }
 
@@ -319,6 +321,24 @@ class Path extends Node {
 class Image extends Node {
     constructor(options) {
         super(options || {});
+        this.image(options.image || null);
+    }
+    image(image) {
+        if (image != null) {
+            this.attrs.image = image;
+            this.attrs.width = this.attrs.image.width;
+            this.attrs.height = this.attrs.image.height;
+        }
+        return this.attrs.image;
+    }
+    draw() {
+        if (!this.attrs.visible) return;
+        this.layer.ctx.drawImage(this.attrs.image, this.absX(), this.absY());
+        this.setHitmap();
+    }
+    setHitmap() {
+        this.layer.hitmap.fillStyle = this.hitColor;
+        this.layer.hitmap.fillRect(this.absX(), this.absY(), this.width(), this.height());
     }
 }
 
