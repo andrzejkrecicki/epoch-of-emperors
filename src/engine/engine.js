@@ -189,6 +189,7 @@ class Engine {
         let path = finder.run();
         if (path !== null) {
             active.interactionObject = passive;
+            active.hasFullPath = finder.done;
             if (path.length) {
                 active.swapPath(path);
                 active.rotateToSubtile(active.path[0]);

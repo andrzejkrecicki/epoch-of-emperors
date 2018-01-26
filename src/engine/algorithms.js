@@ -161,21 +161,22 @@ class AStarPathFinder {
             priority: 0
         });
         this.iterations = 0;
+        this.done = false;
         this.setCost(unit.subtile_x, unit.subtile_y, { from_x: null, from_y: null, cost: 0 });
     }
     isTarget(subtile) {
         return subtile.x == this.target.x && subtile.y == this.target.y;
     }
     run() {
-        let done = false;
+        this.done = false;
         let nearest = {
             x: null, y: null, dist: Infinity
         };
-        while (!this.queue.empty() && !done && this.iterations < AStarPathFinder.MAX_ITERATIONS) {
+        while (!this.queue.empty() && !this.done && this.iterations < AStarPathFinder.MAX_ITERATIONS) {
             ++this.iterations;
             var subtile = this.queue.pop();
             if (this.isTarget(subtile)) {
-                done = true;
+                this.done = true;
             } else for (let i = 0, delta; delta = AStarPathFinder.NEIGHBOURS_DELTA[i]; ++i) {
                 let nx = subtile.x + delta.x, ny = subtile.y + delta.y;
                 let new_cost = this.currentCost(subtile.x, subtile.y) + this.neighbourCost(i);
@@ -200,9 +201,9 @@ class AStarPathFinder {
             }
         }
 
-        if (!done && nearest.dist == Infinity) return null;
+        if (!this.done && nearest.dist == Infinity) return null;
 
-        let path, step, begin = done ? subtile : nearest;
+        let path, step, begin = this.done ? subtile : nearest;
         path = [{ x: begin.x, y: begin.y }];
         step = this.getStep(begin.x, begin.y);
 

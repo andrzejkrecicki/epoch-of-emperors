@@ -80,7 +80,7 @@ class RandomMap extends Map {
     fillSubtilesWith(x, y, width, obj) {
         for (let _x = x; _x < x + width; ++_x)
             for (let _y = y; _y < y + width; ++_y) {
-                this.subtiles_map[_x][_y] = obj;
+                this.subtiles[_x][_y] = obj;
             }
     }
     getEntityAtSubtile(x, y) {
