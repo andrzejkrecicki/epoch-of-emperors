@@ -149,7 +149,7 @@ class HeapQueue {
 
 
 class AStarPathFinder {
-    constructor(unit, map, target) {
+    constructor(unit, map, target, limit=AStarPathFinder.MAX_ITERATIONS) {
         this.unit = unit;
         this.map = map;
         this.visited = {};
@@ -161,6 +161,7 @@ class AStarPathFinder {
             priority: 0
         });
         this.iterations = 0;
+        this.limit = Math.min(limit, AStarPathFinder.MAX_ITERATIONS);
         this.done = false;
         this.setCost(unit.subtile_x, unit.subtile_y, { from_x: null, from_y: null, cost: 0 });
     }
@@ -172,7 +173,7 @@ class AStarPathFinder {
         let nearest = {
             x: null, y: null, dist: Infinity
         };
-        while (!this.queue.empty() && !this.done && this.iterations < AStarPathFinder.MAX_ITERATIONS) {
+        while (!this.queue.empty() && !this.done && this.iterations < this.limit) {
             ++this.iterations;
             var subtile = this.queue.pop();
             if (this.isTarget(subtile)) {
@@ -274,7 +275,7 @@ AStarPathFinder.MAX_ITERATIONS = 128 * 128;
 // works exactly as AStarPathFinder but it treats every subtile around
 // chosen entity as a valid target therefore avoids needless computations
 class AStarToEntity extends AStarPathFinder {
-    constructor(unit, map, target) {
+    constructor(unit, map, target, limit=AStarPathFinder.MAX_ITERATIONS) {
         super(...arguments);
         this.setupTargets();
     }

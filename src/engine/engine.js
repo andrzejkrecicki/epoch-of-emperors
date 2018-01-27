@@ -9,7 +9,7 @@ import { Barracks } from './buildings/barracks.js';
 import { Bush } from './resources/bush.js';
 import { AStarPathFinder, AStarToEntity } from './algorithms.js';
 import { Map } from './map.js';
-import { distance } from '../utils.js'
+import { distance, manhatan_subtile_distance } from '../utils.js'
 
 
 class Engine {
@@ -38,6 +38,13 @@ class Engine {
                 this.processWaitingUnit(entity);
             } else if (entity.state !== Unit.prototype.STATE.IDLE) {
                 this.processInteractingUnit(entity);
+            } else if (!entity.hasFullPath && entity.interactionObject != null) {
+                if (Math.random() > .85) ++entity.ticks_waited;
+                if (entity.ticks_waited > Engine.prototype.UNIT_MAX_WAIT_TIME * 3 && Math.random() > .85) {
+                    entity.ticks_waited = 0;
+                    let dist = manhatan_subtile_distance(entity.getCenterSubtile(), entity.interactionObject.getCenterSubtile());
+                    this.interactOrder(entity, entity.interactionObject, Math.floor((dist + 5) ** 2));
+                }
             }
         }
     }
@@ -184,8 +191,8 @@ class Engine {
             unit.rotateToSubtile(unit.path[0]);
         }
     }
-    interactOrder(active, passive) {
-        let finder = new AStarToEntity(active, this.map, passive);
+    interactOrder(active, passive, subtilesLimit) {
+        let finder = new AStarToEntity(active, this.map, passive, subtilesLimit);
         let path = finder.run();
         if (path !== null) {
             active.interactionObject = passive;
@@ -202,12 +209,15 @@ class Engine {
         }
     }
     bypassOrder(entity) {
-        let target = entity.path[entity.path.length - 1];
+        let target = entity.path && entity.path[entity.path.length - 1];
         entity.path = null;
         entity.path_progress = 0;
 
         if (entity.interactionObject == null) this.moveOrder(entity, target);
-        else this.interactOrder(entity, entity.interactionObject);
+        else {
+            let dist = manhatan_subtile_distance(entity.getCenterSubtile(), entity.interactionObject.getCenterSubtile());
+            this.interactOrder(entity, entity.interactionObject, (dist + 5) ** 2);
+        }
     }
     addUnit(unit) {
         this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.constructor.SUBTILE_WIDTH, unit);

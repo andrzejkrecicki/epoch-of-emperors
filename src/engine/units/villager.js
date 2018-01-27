@@ -19,7 +19,7 @@ class Villager extends Unit {
     }
     initInteraction(engine) {
         if (this.interactionObject.destroyed) this.terminateInteraction();
-        else if (!this.hasFullPath) engine.interactOrder(this, this.interactionObject);
+        else if (!this.hasFullPath) this.state = this.STATE.IDLE;
         else if (this.interactionObject instanceof Building) {
             // TODO - check if its our or enymy's building
             if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {

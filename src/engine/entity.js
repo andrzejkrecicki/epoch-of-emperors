@@ -28,6 +28,12 @@ class Entity extends Konva.Group {
             y: Math.round(this.realPosition.y)
         });
     }
+    getCenterSubtile() {
+        return {
+            subtile_x: this.subtile_x + this.constructor.SUBTILE_WIDTH / 2 - .5,
+            subtile_y: this.subtile_y + this.constructor.SUBTILE_WIDTH / 2 - .5
+        }
+    }
     resetBoundingBox() {
     }
     boundingBox() {
