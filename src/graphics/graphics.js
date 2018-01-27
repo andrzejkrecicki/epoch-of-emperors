@@ -15,6 +15,7 @@ class Node {
         this.attrs.x = options.x != null ? options.x : this.DEFAULT_ATTRS.x;
         this.attrs.y = options.y != null ? options.y : this.DEFAULT_ATTRS.y;
         this.attrs.visible = options.visible != null ? options.visible : this.DEFAULT_ATTRS.visible;
+        this.attrs.opacity = this.attrs.opacity || this.DEFAULT_ATTRS.opacity;
     }
     add(node) {
         node.index = this.children.length;
@@ -85,7 +86,10 @@ class Node {
     }
     draw() {
         if (!this.attrs.visible) return;
+        let oldAlpha = this.layer.ctx.globalAlpha;
+        this.layer.ctx.globalAlpha *= this.attrs.opacity;
         for (let child of this.children) child.draw();
+        this.layer.ctx.globalAlpha = oldAlpha;
     }
     static getByUUID(id) {
         return Node.UUID_TO_NODE[id];
@@ -99,10 +103,11 @@ Node.prototype.DEFAULT_ATTRS = {
     x: 0,
     y: 0,
     visible: true,
+    opacity: 1,
     fill: "#ffffff",
     strokeWidth: 1,
     stroke: "#000000",
-    fill: "#ffffff",
+    fill: null,
     // stroke: "#000000",
     // strokeWidth: 1,
     align: "left",
@@ -122,6 +127,7 @@ Node.prototype.GETSETERS = [
     "fontFamily",
     "align",
     "text",
+    "opacity",
     "visible",
 ];
 for (let attr of Node.prototype.GETSETERS) {
@@ -167,6 +173,10 @@ class Stage extends Node {
     }
     on(event, callback) {
         this.container.addEventListener(event, (e) => callback({ target: this, evt: e }));
+    }
+    draw() {
+        if (!this.attrs.visible) return;
+        for (let child of this.children) child.draw();
     }
     initEvents() {
         this.mouse = {
@@ -278,8 +288,8 @@ class Rect extends Node {
         this.layer.ctx.fillStyle = this.attrs.fill;
         this.layer.ctx.lineWidth = this.attrs.strokeWidth;
         this.layer.ctx.strokeStyle = this.attrs.stroke;
-        this.layer.ctx.fillRect(this.absX(), this.absY(), this.attrs.width, this.attrs.height);
-        this.layer.ctx.strokeRect(this.absX(), this.absY(), this.attrs.width, this.attrs.height);
+        if (this.attrs.fill) this.layer.ctx.fillRect(this.absX(), this.absY(), this.attrs.width, this.attrs.height);
+        if (this.attrs.stroke) this.layer.ctx.strokeRect(Math.floor(this.absX()), Math.floor(this.absY()), this.attrs.width, this.attrs.height);
 
         this.setHitmap();
     }

@@ -354,6 +354,7 @@ class EntityDetails extends Graphics.Group {
 EntityDetails.TEXT_OPTIONS = {
     fontSize: 12,
     fontFamily: 'helvetica',
+    textBaseline: "top",
     fill: '#ffffff',
 };
 
