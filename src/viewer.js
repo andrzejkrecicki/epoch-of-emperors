@@ -29,14 +29,20 @@ class GameViewer {
         this.mapDrawable = new MapDrawable(this.engine.map, this.stage, this.viewPort);
         this.layers.terrain.add(this.mapDrawable);
 
-        this.entitiesHolder = new Graphics.Group({
+        this.resetEntitiesCoords();
+
+        this.entitiesHolder = new Graphics.EntitiesHolder({
             x: -this.viewPort.x,
             y: -this.viewPort.y
+        }, {
+            width: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.width,
+            height: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.height,
+            viewPortWidth: this.stage.width(),
+            viewPortHeight: this.stage.height() - BottomBar.IMAGE.height
         });
         this.layers.entities.add(this.entitiesHolder);
 
-        this.resetEntitiesCoords();
-        this.setEntitiesVisibility();
+        this.addEntities();
 
         this.layers.terrain.on("click", this.handleClick.bind(this));
         this.layers.entities.on("click", this.handleClick.bind(this));
@@ -92,27 +98,21 @@ class GameViewer {
         e.evt.preventDefault();
         return false;
     }
-    setEntityVisibility(entity) {
-        if (!rect_intersection(entity.getBoundingBox(), this.viewPort)) {
-            entity.hide();
-        } else {
-            entity.show();
-        }
-    }
-    setEntitiesVisibility() {
+    addEntities() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            this.setEntityVisibility(entity);
-        }
-    }
-    resetEntitiesCoords() {
-        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            this.addEntity(entity);
+            this.entitiesHolder.add(entity);
         }
     }
     addEntity(entity) {
         entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
         entity.resetBoundingBox();
         this.entitiesHolder.add(entity);
+    }
+    resetEntitiesCoords(entity) {
+        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
+            entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
+            entity.resetBoundingBox();
+        }
     }
     handleMouseMove(e) {
         this.mouseX = e.evt.layerX;
@@ -144,7 +144,6 @@ class GameViewer {
             moved = true;
         }
 
-        if (moved) this.setEntitiesVisibility();
     }
     process() {
         this.handleScroll();
