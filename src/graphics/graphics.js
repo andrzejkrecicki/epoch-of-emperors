@@ -1,3 +1,5 @@
+import { rect_intersection } from '../utils.js';
+
 class Node {
     constructor(options) {
         this.attrs = {};
@@ -352,6 +354,75 @@ class Image extends Node {
     }
 }
 
+// Class designed for fast retrieval of Nodes needed to be drawn at current viewport.
+// Instead of keeping children in array, it stores them in a two dimensional grid of arrays each of
+// size by default equal to one fifth of viewport width
+class EntitiesHolder extends Node {
+    constructor(options, grid_def) {
+        super(options);
+
+        this.cellSize = Math.round(grid_def.viewPortWidth / 5);
+        this.grid = new Array(Math.ceil(grid_def.width / this.cellSize)).fill(null).map(
+            () => new Array(Math.ceil(grid_def.height / this.cellSize)).fill(null).map(() => [])
+        );
+        this.viewPortWidth = grid_def.viewPortWidth;
+        this.viewPortHeight = grid_def.viewPortHeight;
+        this.visibleColls = Math.ceil(this.viewPortWidth / this.cellSize);
+        this.visibleRows = Math.ceil(this.viewPortHeight / this.cellSize);
+    }
+    add(entity) {
+        entity.parent = this;
+        entity.setLayer(this.layer);
+        let x = Math.floor(entity.attrs.x / this.cellSize);
+        let y = Math.floor(entity.attrs.y / this.cellSize);
+        entity.index = this.grid[x][y].length;
+        this.grid[x][y].push(entity);
+    }
+    draw() {
+        let total = 0;
+        let viewPort = {
+            x: -this.x(),
+            y: -this.y(),
+            w: this.viewPortWidth,
+            h: this.viewPortHeight
+        }
+
+        let first_x = Math.max(Math.floor(viewPort.x / this.cellSize - 1), 0);
+        let first_y = Math.max(Math.floor(viewPort.y / this.cellSize - 1), 0);
+
+        let last_x = Math.min(Math.floor((viewPort.x + viewPort.w) / this.cellSize + 1), this.grid.length);
+        let last_y = Math.min(Math.floor((viewPort.y + viewPort.h) / this.cellSize + 1), this.grid[0].length);
+
+        for (let x = first_x; x < last_x; ++x) {
+            for (let y = first_y; y < last_y; ++y) {
+                for (let i = 0; i < this.grid[x][y].length; ++i) {
+                    if (rect_intersection(this.grid[x][y][i].getBoundingBox(), viewPort)) this.grid[x][y][i].draw();
+                }
+            }
+        }
+    }
+    updateBucket(entity, old_pos) {
+        let old_bucket = {
+            x: Math.floor(old_pos.x / this.cellSize),
+            y: Math.floor(old_pos.y / this.cellSize)
+        };
+        let new_bucket = {
+            x: Math.floor(entity.attrs.x / this.cellSize),
+            y: Math.floor(entity.attrs.y / this.cellSize)
+        };
+        if (old_bucket.x != new_bucket.x || old_bucket.y != new_bucket.y) {
+            // put bucket's last element at index of element being removed and update its index
+            this.grid[old_bucket.x][old_bucket.y][entity.index] = this.grid[old_bucket.x][old_bucket.y][this.grid[old_bucket.x][old_bucket.y].length - 1];
+            this.grid[old_bucket.x][old_bucket.y][entity.index].index = entity.index;
+            --this.grid[old_bucket.x][old_bucket.y].length;
+
+            // add to new bucket and set new index
+            entity.index = this.grid[new_bucket.x][new_bucket.y].length;
+            this.grid[new_bucket.x][new_bucket.y].push(entity);
+        }
+    }
+}
+
 window.Graphics = {
     Node: Node,
     Stage: Stage,
@@ -361,6 +432,7 @@ window.Graphics = {
     Text: Text,
     Path: Path,
     Image: Image,
+    EntitiesHolder: EntitiesHolder
 };
 
 module.export = Graphics;

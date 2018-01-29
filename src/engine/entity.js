@@ -22,11 +22,17 @@ class Entity extends Graphics.Group {
         this.add(this.selectionRect);
     }
     position(pos) {
+        if (pos == null) return super.position();
+        let old = {
+            x: this.attrs.x,
+            y: this.attrs.y
+        };
         this.realPosition = pos;
         super.position({
             x: Math.round(this.realPosition.x),
             y: Math.round(this.realPosition.y)
         });
+        if (this.parent != null) this.parent.updateBucket(this, old);
     }
     resetBoundingBox() {
     }

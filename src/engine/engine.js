@@ -102,7 +102,6 @@ class Engine {
         }
         entity.updateSprite();
         entity.resetBoundingBox();
-        this.viewer.setEntityVisibility(entity);
         if (this.framesCount % 2) ++entity.frame;
     }
     processWaitingUnit(entity) {
