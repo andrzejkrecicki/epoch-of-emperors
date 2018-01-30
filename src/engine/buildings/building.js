@@ -73,6 +73,7 @@ class Building extends Entity {
 Building.prototype.STATE = {
     CONSTRUCTION: 0,
     DONE: 1,
+    DENIED: 100,
 }
 Building.prototype.IMAGES = {};
 Building.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = [

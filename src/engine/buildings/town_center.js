@@ -17,6 +17,7 @@ TownCenter.SUBTILE_WIDTH = 5;
 
 TownCenter.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 TownCenter.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/town_center/01_all.png")];
+TownCenter.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/town_center/01_all.png"))];
 
 TownCenter.prototype.IMAGE_OFFSETS = {};
 TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
