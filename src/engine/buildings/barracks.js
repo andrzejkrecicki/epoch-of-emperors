@@ -12,6 +12,8 @@ Barracks.SUBTILE_WIDTH = 5;
 Barracks.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 Barracks.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/barracks/01_all.png")];
 
+Barracks.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/barracks/01_all.png"))];
+
 Barracks.prototype.IMAGE_OFFSETS = {};
 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 11, y: 82 };
