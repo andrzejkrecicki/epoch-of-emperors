@@ -523,24 +523,43 @@ class ConstructionIndicator extends Graphics.Group {
         this.viewer = viewer;
         this.current_opacity = .65;
         this.opacity_delta = .01;
+        this.image = null;
+        this.building = null;
+        this.sub = null;
+        this.allow_construction = false;
     }
     move() {
         if (!this.viewer.isPlanningConstruction) return;
         // construction preview coordinates must be adjisted to subtile size
         // therefore we compute position of subtile under cursor and use it
         // to compute screen coordinates of its corner
-        let sub = this.viewer.mapDrawable.screenCoordsToSubtile(
+        this.sub = this.viewer.mapDrawable.screenCoordsToSubtile(
             this.viewer.mouseX + this.viewer.viewPort.x + MapDrawable.TILE_SIZE.width / 2,
             this.viewer.mouseY + this.viewer.viewPort.y + MapDrawable.TILE_SIZE.height / 2
         );
+        let W = this.building.SUBTILE_WIDTH;
+        this.sub.x -= Math.round(W / 2);
+        this.sub.y -= Math.round(W / 2);
         let screen = this.viewer.mapDrawable.tileCoordsToScreen(
-            (sub.x / 2),
-            (sub.y / 2)
+            (this.sub.x / 2),
+            (this.sub.y / 2)
         );
         this.position({
             x: screen.x - this.viewer.viewPort.x,
             y: screen.y - this.viewer.viewPort.y
         });
+
+        let map = this.viewer.engine.map;
+        if (this.sub.x >= 0 && this.sub.x + W <= map.edge_size * 2 &&
+            this.sub.y >= 0 && this.sub.y + W <= map.edge_size * 2 &&
+            map.areSubtilesEmpty(this.sub.x, this.sub.y, W) && map.areaIsLand(this.sub.x, this.sub.y, W)
+        ) {
+            this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0]);
+            this.allow_construction = true;
+        } else {
+            this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DENIED][0]);
+            this.allow_construction = false;
+        }
 
         if (
             this.viewer.mouseY > this.viewer.stage.height() - this.viewer.bottombar.image.height() ||
@@ -549,17 +568,15 @@ class ConstructionIndicator extends Graphics.Group {
         else this.show();
     }
     setBuilding(building) {
-        this.move();
-        this.add(new Graphics.Image({
-            x: (
-                - Math.round(building.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width)
-                - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x
-            ),
+        this.building = building;
+        this.add(this.image = new Graphics.Image({
+            x: - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x,
             y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
             image: building.prototype.IMAGES[building.prototype.STATE.DONE][0],
             width: building.prototype.IMAGES[building.prototype.STATE.DONE][0].width,
             height: building.prototype.IMAGES[building.prototype.STATE.DONE][0].height,
         }));
+        this.move();
     }
     opacityPulse() {
         if (!this.viewer.isPlanningConstruction) return;
