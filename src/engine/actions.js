@@ -44,15 +44,8 @@ let CreateBuildingFactory = function(Building) {
             else this.confirmConstruction(e);
         }
         confirmConstruction(e) {
-            // y coordinate needs to get an extra half of MapDrawable.TILE_SIZE.height
-            // see comment at screenCoordsToTile
-            let sub = this.viewer.mapDrawable.screenCoordsToSubtile(
-                this.viewer.mouseX + this.viewer.viewPort.x + MapDrawable.TILE_SIZE.width / 2
-                - Math.round(this.BUILDING.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width),
-                this.viewer.mouseY + this.viewer.viewPort.y + MapDrawable.TILE_SIZE.height
-            );
-            let screen = this.viewer.mapDrawable.tileCoordsToScreen(sub.x / 2, sub.y / 2);
-            sub = this.viewer.mapDrawable.screenCoordsToSubtile(screen.x, screen.y);
+            if (!this.viewer.indicator.allow_construction) return;
+            let sub = this.viewer.indicator.sub;
             let building = new this.BUILDING(sub.x, sub.y, this.viewer.engine.current_player);
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);
