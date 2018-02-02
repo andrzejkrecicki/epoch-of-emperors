@@ -181,17 +181,18 @@ class AStarPathFinder {
             } else for (let i = 0, delta; delta = AStarPathFinder.NEIGHBOURS_DELTA[i]; ++i) {
                 let nx = subtile.x + delta.x, ny = subtile.y + delta.y;
                 let new_cost = this.currentCost(subtile.x, subtile.y) + this.neighbourCost(i);
-                if (this.checkSubtiles(nx, ny) && this.currentCost(nx, ny) > new_cost) {
+
+                if (this.currentCost(nx, ny) > new_cost && this.checkSubtiles(nx, ny)) {
                     let dist = this.heuristic(nx, ny);
                     if (dist < nearest.dist) nearest = {
                         x: nx,
                         y: ny,
                         dist: dist
                     };
-                    this.queue.push({
+                    if (this.currentCost(nx, ny) == Infinity) this.queue.push({
                         x: nx,
                         y: ny,
-                        priority: new_cost + dist
+                        priority: this.neighbourCost(i) + dist
                     });
                     this.setCost(nx, ny, {
                         from_x: subtile.x,
