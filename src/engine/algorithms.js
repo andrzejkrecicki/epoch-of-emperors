@@ -278,65 +278,23 @@ AStarPathFinder.MAX_ITERATIONS = 128 * 128;
 class AStarToEntity extends AStarPathFinder {
     constructor(unit, map, target, limit=AStarPathFinder.MAX_ITERATIONS) {
         super(...arguments);
-        this.setupTargets();
-    }
-    setupTargets() {
-        this.targets = {};
-        let start, curr;
-        start = curr = {
-            x: this.target.subtile_x - this.unit.constructor.SUBTILE_WIDTH,
-            y: this.target.subtile_y - this.unit.constructor.SUBTILE_WIDTH
+        this.targetCenter = target.getCenterSubtile();
+        this.targetCenter = {
+            x: this.targetCenter.subtile_x,
+            y: this.targetCenter.subtile_y
         };
-        let directions = [{ x: 1, y: 0 }, { x: 0, y: 1 }, { x: -1, y: 0 }, { x: 0, y: -1 }];
-        let curr_dir = 0;
-        do {
-            let dir = directions[curr_dir];
-            let dest = {
-                x: curr.x + (this.unit.constructor.SUBTILE_WIDTH + this.target.constructor.SUBTILE_WIDTH) * dir.x,
-                y: curr.y + (this.unit.constructor.SUBTILE_WIDTH + this.target.constructor.SUBTILE_WIDTH) * dir.y
-            }
-            do {
-                this.targets[(curr.x << 16) | curr.y] = true;
-                curr = { x: curr.x + dir.x, y: curr.y + dir.y };
-            } while (curr.x != dest.x || curr.y != dest.y);
-            ++curr_dir;
-        } while (curr_dir < directions.length);
     }
     isTarget(subtile) {
-        return !!this.targets[(subtile.x << 16) | subtile.y];
+        return Math.max(
+            Math.abs(subtile.x + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.x),
+            Math.abs(subtile.y + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.y)
+        ) <= 0.01 + (this.unit.constructor.SUBTILE_WIDTH + this.target.constructor.SUBTILE_WIDTH) / 2;
     }
     heuristic(x, y) {
-        let dx = this.unit.subtile_x - this.target.subtile_x, dy = this.unit.subtile_y - this.target.subtile_y;
-
-        if (dx + this.unit.constructor.SUBTILE_WIDTH - 1 < 0) dx = 1;
-        else if (dx - this.target.constructor.SUBTILE_WIDTH + 1 > 0) dx = -1;
-        else dx = 0;
-
-        if (dy + this.unit.constructor.SUBTILE_WIDTH - 1 < 0) dy = 1;
-        else if (dy - this.target.constructor.SUBTILE_WIDTH + 1 > 0) dy = -1;
-        else dy = 0;
-
-        if (dx != 0 && dy != 0) {
-            // diagonal case - distance to the nearest corner of interaction object
-            return Math.min(
-                Math.abs(x - this.target.subtile_x + this.unit.constructor.SUBTILE_WIDTH),
-                Math.abs(x - this.target.subtile_x - this.target.constructor.SUBTILE_WIDTH),
-            ) + Math.min(
-                Math.abs(y - this.target.subtile_y + this.unit.constructor.SUBTILE_WIDTH),
-                Math.abs(y - this.target.subtile_y - this.target.constructor.SUBTILE_WIDTH),
-            )
-        } else if (dx != 0) {
-            // non-diagonal case - distance to the nearest edge of interaction object
-            return Math.min(
-                Math.abs(x - this.target.subtile_x + this.unit.constructor.SUBTILE_WIDTH),
-                Math.abs(x - this.target.subtile_x - this.target.constructor.SUBTILE_WIDTH),
-            )
-        } else {
-            return Math.min(
-                Math.abs(y - this.target.subtile_y + this.unit.constructor.SUBTILE_WIDTH),
-                Math.abs(y - this.target.subtile_y - this.target.constructor.SUBTILE_WIDTH),
-            )
-        }
+        return Math.max(
+            Math.abs(x + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.x),
+            Math.abs(y + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.y)
+        );
     }
 }
 
