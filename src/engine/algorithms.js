@@ -154,6 +154,7 @@ class AStarPathFinder {
         this.map = map;
         this.visited = {};
         this.target = target;
+        this.targetCenter = target;
         this.queue = new HeapQueue();
         this.queue.push({
             x: unit.subtile_x,
@@ -163,6 +164,10 @@ class AStarPathFinder {
         this.iterations = 0;
         this.limit = Math.min(limit, AStarPathFinder.MAX_ITERATIONS);
         this.done = false;
+
+        this.rings = new Array(AStarPathFinder.RINGS_COUNT).fill(0);
+        this.smallest_ring = AStarPathFinder.RINGS_COUNT;
+
         this.setCost(unit.subtile_x, unit.subtile_y, { from_x: null, from_y: null, cost: 0 });
     }
     isTarget(subtile) {
@@ -176,6 +181,9 @@ class AStarPathFinder {
         while (!this.queue.empty() && !this.done && this.iterations < this.limit) {
             ++this.iterations;
             var subtile = this.queue.pop();
+
+            this.checkRings(subtile);
+
             if (this.isTarget(subtile)) {
                 this.done = true;
             } else for (let i = 0, delta; delta = AStarPathFinder.NEIGHBOURS_DELTA[i]; ++i) {
@@ -246,6 +254,23 @@ class AStarPathFinder {
     setCost(x, y, data) {
         this.visited[(x << 16) | y] = data;
     }
+    checkRings(subtile) {
+        // in many cases target is unreachable because it's blocked from every side
+        // by another objects therefore every time we enter a subtile which distance
+        // from target is D (lower than RINGS_COUNT) we mark ring entrance.
+        // If a ring was entered N times (N is circumference) it means that we checked
+        // every subtile around it therefore the minimal number remaining subtiles to 
+        // check can be limited by number of subtiles inside the ring because path
+        // to target must be inside the ring
+        let ring = 2 * (Math.max(Math.abs(subtile.x - this.targetCenter.x), Math.abs(subtile.y - this.targetCenter.y)) - 0.5);
+        if (ring < AStarPathFinder.RINGS_COUNT) {
+            ++this.rings[ring];
+            if (this.rings[ring] == ring * 4 + 4 && ring < this.smallest_ring) {
+                this.smallest_ring = ring;
+                this.limit = this.iterations + ring * ring;
+            }
+        }
+    }
     checkSubtiles(subtile_x, subtile_y) {
         if (
             subtile_x < 0 || subtile_x > this.map.edge_size * 2 - 1 ||
@@ -270,7 +295,7 @@ AStarPathFinder.NEIGHBOURS_DELTA = [
     { x: 0, y: 1 }, { x: -1, y: 1 }, { x: -1, y: 0 }, { x: -1, y: -1 }
 ];
 AStarPathFinder.MAX_ITERATIONS = 128 * 128;
-
+AStarPathFinder.RINGS_COUNT = 30;
 
 
 // works exactly as AStarPathFinder but it treats every subtile around
