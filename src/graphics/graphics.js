@@ -369,6 +369,7 @@ class EntitiesHolder extends Node {
         this.viewPortHeight = grid_def.viewPortHeight;
         this.visibleColls = Math.ceil(this.viewPortWidth / this.cellSize);
         this.visibleRows = Math.ceil(this.viewPortHeight / this.cellSize);
+        this.mapSize = grid_def.mapSize;
     }
     add(entity) {
         entity.parent = this;
@@ -387,6 +388,11 @@ class EntitiesHolder extends Node {
             h: this.viewPortHeight
         }
 
+        let lowest_z = Infinity;
+        let highest_z = -1;
+
+        // take all buckets which intersect with current viewport
+        // calculate z-index of each object in them to designate min/max range
         let first_x = Math.max(Math.floor(viewPort.x / this.cellSize - 1), 0);
         let first_y = Math.max(Math.floor(viewPort.y / this.cellSize - 1), 0);
 
@@ -396,9 +402,33 @@ class EntitiesHolder extends Node {
         for (let x = first_x; x < last_x; ++x) {
             for (let y = first_y; y < last_y; ++y) {
                 for (let i = 0; i < this.grid[x][y].length; ++i) {
-                    if (rect_intersection(this.grid[x][y][i].getBoundingBox(), viewPort)) this.grid[x][y][i].draw();
+                    if (rect_intersection(this.grid[x][y][i].getBoundingBox(), viewPort)) {
+                        let z = this.mapSize - (this.grid[x][y][i].subtile_x - this.grid[x][y][i].subtile_y);
+                        lowest_z = Math.min(z, lowest_z);
+                        highest_z = Math.max(z, highest_z);
+                    }
                 }
             }
+        }
+
+        if (highest_z == -1) return;
+
+        // create layers for each z-index in calculated range
+        let z_layers = new Array(highest_z - lowest_z + 1).fill(null).map(() => []);
+
+        for (let x = first_x; x < last_x; ++x) {
+            for (let y = first_y; y < last_y; ++y) {
+                for (let i = 0; i < this.grid[x][y].length; ++i) {
+                    if (rect_intersection(this.grid[x][y][i].getBoundingBox(), viewPort)) {
+                        let z = this.mapSize - (this.grid[x][y][i].subtile_x - this.grid[x][y][i].subtile_y)
+                        z_layers[z - lowest_z].push(this.grid[x][y][i]);
+                    }
+                }
+            }
+        }
+
+        for (let i = 0; i < z_layers.length; ++i) for (let j = 0; j < z_layers[i].length; ++j) {
+            z_layers[i][j].draw();
         }
     }
     updateBucket(entity, old_pos) {

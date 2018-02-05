@@ -35,6 +35,7 @@ class GameViewer {
             x: -this.viewPort.x,
             y: -this.viewPort.y
         }, {
+            mapSize: size,
             width: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.width,
             height: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.height,
             viewPortWidth: this.stage.width(),
