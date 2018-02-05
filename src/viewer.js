@@ -88,7 +88,7 @@ class GameViewer {
     handleRightClick(e) {
         if (this.engine.selectedEntity) {
             let sx = (e.evt.layerX - this.mapDrawable.x());
-            let sy = (e.evt.layerY - this.mapDrawable.y() + MapDrawable.TILE_SIZE.height / 2);
+            let sy = (e.evt.layerY - this.mapDrawable.y());
             let subtile = this.mapDrawable.screenCoordsToSubtile(sx, sy);
             if (!this.isPlanningConstruction && !this.engine.map.getEntityAtSubtile(subtile.x, subtile.y)) {
                 this.orderIndicator.show(e.evt.layerX, e.evt.layerY);
@@ -179,7 +179,7 @@ class MapDrawable extends Graphics.Group {
         for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
             let origin = {
                 x: y * MapDrawable.TILE_COL_OFFSET.x,
-                y: -(Map.SIZES[this.map.definition.size] * MapDrawable.TILE_ROW_OFFSET.y) + (y * MapDrawable.TILE_COL_OFFSET.y)
+                y: -(Map.SIZES[this.map.definition.size] * MapDrawable.TILE_ROW_OFFSET.y) + (y * MapDrawable.TILE_COL_OFFSET.y) - MapDrawable.TILE_COL_OFFSET.y
             };
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
                 tmpCtx.drawImage(rand_choice(MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[x][y]]), origin.x, origin.y);
@@ -214,12 +214,6 @@ class MapDrawable extends Graphics.Group {
         return { x, y };
     }
     screenCoordsToTile(sx, sy) {
-        // tiles coordinates, while drawing them, are bassed on upper left corner
-        // of their bounding box but formula below uses left corner of
-        // diamond-shaped tile which is located at half of its height
-        // thus we take into account this difference
-        sy -= MapDrawable.TILE_SIZE.height / 2;
-
         let H = MapDrawable.TILE_SIZE.height;
         let W = MapDrawable.TILE_SIZE.width;
         let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
@@ -229,8 +223,6 @@ class MapDrawable extends Graphics.Group {
         return { x, y };
     }
     screenCoordsToSubtile(sx, sy) {
-        sy -= MapDrawable.TILE_SIZE.height / 2;
-
         let H = MapDrawable.TILE_SIZE.height / 2;
         let W = MapDrawable.TILE_SIZE.width / 2;
         let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
