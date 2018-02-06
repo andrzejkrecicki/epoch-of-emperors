@@ -164,46 +164,59 @@ class MapDrawable extends Graphics.Group {
             y: -viewPort.y
         });
         this.map = map;
+        this.stage = stage;
         this.insertTiles();
     }
-    insertTiles() {
-        var tmpCanvas = document.createElement("canvas");
-        tmpCanvas.setAttribute("width", Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.width);
-        tmpCanvas.setAttribute("height", Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.height);
-        var tmpCtx = tmpCanvas.getContext('2d');
+    draw() {
+        let corner_tile = this.screenCoordsToTile(-this.attrs.x, -this.attrs.y - MapDrawable.TILE_SIZE.height / 2);
+        let corner_pix = this.tileCoordsToScreen(corner_tile.x, corner_tile.y);
+        corner_pix.x = corner_pix.x + this.attrs.x;
+        corner_pix.y = corner_pix.y + this.attrs.y - MapDrawable.TILE_SIZE.height / 2;
 
+        let cur_tile = { x: corner_tile.x, y: corner_tile.y };
+        let cur_pix = { x: corner_pix.x, y: corner_pix.y };
+        let row = 0;
+        while (cur_pix.y < this.stage.height()) {
+            while (cur_pix.x < this.stage.width()) {
+                if (cur_tile.x > -1 && cur_tile.x < this.map.edge_size && cur_tile.y > -1 && cur_tile.y < this.map.edge_size) {
+                    let tileset = MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[cur_tile.x][cur_tile.y]];
+                    this.layer.ctx.drawImage(tileset[0], cur_pix.x, cur_pix.y);
+                }
+                cur_pix.x += MapDrawable.TILE_SIZE.width;
+                ++cur_tile.x;
+                ++cur_tile.y;
+            }
+            cur_pix.x = corner_pix.x + (row % 2 ? 0 : -1) * MapDrawable.TILE_SIZE.width / 2;
+            cur_pix.y = cur_pix.y + MapDrawable.TILE_SIZE.height / 2;
+            ++row;
+
+            cur_tile.x = corner_tile.x - Math.ceil(row / 2);
+            cur_tile.y = corner_tile.y + Math.floor(row / 2);
+        }
+        this.setHitmap();
+    }
+    setHitmap() {
+        this.layer.hitmap.fillStyle = this.hitColor;
+        this.layer.hitmap.fillRect(0, 0, this.stage.width(), this.stage.height());
+    }
+    insertTiles() {
         var miniCanv = document.createElement("canvas");
         miniCanv.setAttribute("width", Map.SIZES[this.map.definition.size]);
         miniCanv.setAttribute("height", Map.SIZES[this.map.definition.size]);
         var miniCtx = miniCanv.getContext('2d');
 
         for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
-            let origin = {
-                x: y * MapDrawable.TILE_COL_OFFSET.x,
-                y: -(Map.SIZES[this.map.definition.size] * MapDrawable.TILE_ROW_OFFSET.y) + (y * MapDrawable.TILE_COL_OFFSET.y) - MapDrawable.TILE_COL_OFFSET.y
-            };
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
-                tmpCtx.drawImage(rand_choice(MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[x][y]]), origin.x, origin.y);
 
                 miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
                 if (this.map.getEntityAtSubtile(x * 2, y * 2) instanceof Tree) miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS.TREE;
 
                 miniCtx.fillRect(x, y, 1, 1);
-                origin.x += MapDrawable.TILE_ROW_OFFSET.x;
-                origin.y += MapDrawable.TILE_ROW_OFFSET.y;
             }
         }
 
         miniCanv.className = "tmpMiniMap";
         document.body.appendChild(miniCanv);
-        this.add(new Graphics.Image({
-            x: 0,
-            y: 0,
-            image: tmpCanvas,
-            width: Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.width,
-            height: Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.height
-        }));
-        // this.cache();
     }
     tileCoordsToScreen(tx, ty) {
         let H = MapDrawable.TILE_SIZE.height;
