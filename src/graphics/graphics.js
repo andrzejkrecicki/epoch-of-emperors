@@ -277,6 +277,7 @@ class Layer extends Node {
 class HitlessLayer extends Layer {
     draw() {
         if (!this.attrs.visible) return;
+        this.ctx.clearRect(0, 0, this.stage.width(), this.stage.height());
         for (let child of this.children) child.draw();
     }
     getNodeAt(x, y) {

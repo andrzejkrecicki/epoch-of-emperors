@@ -26,7 +26,11 @@ class GameViewer {
             h: this.stage.height(),
         }
 
-        this.mapDrawable = new MapDrawable(this.engine.map, this.stage, this.viewPort);
+        this.mapDrawable = new MapDrawable(
+            this.engine.map, this.stage,
+            this.viewPort, { top: TopBar.IMAGE.height, bottom: BottomBar.IMAGE.height }
+        );
+
         this.layers.terrain.add(this.mapDrawable);
 
         this.resetEntitiesCoords();
@@ -158,17 +162,21 @@ class GameViewer {
 
 
 class MapDrawable extends Graphics.Group {
-    constructor(map, stage, viewPort) {
+    constructor(map, stage, viewPort, offset) {
         super({
             x: -viewPort.x,
             y: -viewPort.y
         });
+        this.offset = offset;
         this.map = map;
         this.stage = stage;
         this.insertTiles();
     }
     draw() {
-        let corner_tile = this.screenCoordsToTile(-this.attrs.x, -this.attrs.y - MapDrawable.TILE_SIZE.height / 2);
+        let corner_tile = this.screenCoordsToTile(
+            -this.attrs.x,
+            -this.attrs.y + this.offset.top - MapDrawable.TILE_SIZE.height / 2
+        );
         let corner_pix = this.tileCoordsToScreen(corner_tile.x, corner_tile.y);
         corner_pix.x = corner_pix.x + this.attrs.x;
         corner_pix.y = corner_pix.y + this.attrs.y - MapDrawable.TILE_SIZE.height / 2;
@@ -176,7 +184,7 @@ class MapDrawable extends Graphics.Group {
         let cur_tile = { x: corner_tile.x, y: corner_tile.y };
         let cur_pix = { x: corner_pix.x, y: corner_pix.y };
         let row = 0;
-        while (cur_pix.y < this.stage.height()) {
+        while (cur_pix.y < this.stage.height() - this.offset.bottom) {
             while (cur_pix.x < this.stage.width()) {
                 if (cur_tile.x > -1 && cur_tile.x < this.map.edge_size && cur_tile.y > -1 && cur_tile.y < this.map.edge_size) {
                     let tileset = MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[cur_tile.x][cur_tile.y]];
