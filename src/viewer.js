@@ -180,7 +180,8 @@ class MapDrawable extends Graphics.Group {
             while (cur_pix.x < this.stage.width()) {
                 if (cur_tile.x > -1 && cur_tile.x < this.map.edge_size && cur_tile.y > -1 && cur_tile.y < this.map.edge_size) {
                     let tileset = MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[cur_tile.x][cur_tile.y]];
-                    this.layer.ctx.drawImage(tileset[0], cur_pix.x, cur_pix.y);
+                    let choice = tileset.length > 1 ? this.rand_tile(cur_tile.x, cur_tile.y) % tileset.length : 0;
+                    this.layer.ctx.drawImage(tileset[choice], cur_pix.x, cur_pix.y);
                 }
                 cur_pix.x += MapDrawable.TILE_SIZE.width;
                 ++cur_tile.x;
@@ -194,6 +195,13 @@ class MapDrawable extends Graphics.Group {
             cur_tile.y = corner_tile.y + Math.floor(row / 2);
         }
         this.setHitmap();
+    }
+    rand_tile(x, y) {
+        let rnd = x * 7883 + y * 317;
+        rnd ^= rnd >> 13;
+        rnd ^= rnd << 17;
+        rnd ^= rnd >> 5;
+        return rnd;
     }
     setHitmap() {
         this.layer.hitmap.fillStyle = this.hitColor;
