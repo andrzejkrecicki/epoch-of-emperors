@@ -14,11 +14,10 @@ class Game {
         });
 
         this.layers = {
-            terrain: new Graphics.Layer(),
+            terrain: new Graphics.HitlessLayer(),
             entities: new Graphics.Layer(),
             interface: new Graphics.Layer()
         };
-        // this.layers.terrain.hitGraphEnabled(false);
 
         this.stage.add(this.layers.terrain);
         this.stage.add(this.layers.entities);

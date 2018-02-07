@@ -194,7 +194,6 @@ class MapDrawable extends Graphics.Group {
             cur_tile.x = corner_tile.x - Math.ceil(row / 2);
             cur_tile.y = corner_tile.y + Math.floor(row / 2);
         }
-        this.setHitmap();
     }
     rand_tile(x, y) {
         let rnd = x * 7883 + y * 317;
@@ -202,10 +201,6 @@ class MapDrawable extends Graphics.Group {
         rnd ^= rnd << 17;
         rnd ^= rnd >> 5;
         return rnd;
-    }
-    setHitmap() {
-        this.layer.hitmap.fillStyle = this.hitColor;
-        this.layer.hitmap.fillRect(0, 0, this.stage.width(), this.stage.height());
     }
     insertTiles() {
         var miniCanv = document.createElement("canvas");

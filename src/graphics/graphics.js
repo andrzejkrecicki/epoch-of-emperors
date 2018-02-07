@@ -270,6 +270,23 @@ class Layer extends Node {
         return 0;
     }
 }
+
+
+// class meant to draw objects which do not need hitmaps e.g. terrain
+// getNodeAt is mocked by returning reference to itself
+class HitlessLayer extends Layer {
+    draw() {
+        if (!this.attrs.visible) return;
+        for (let child of this.children) child.draw();
+    }
+    getNodeAt(x, y) {
+        return this;
+    }
+    makeHitmap() {}
+    clear() {}
+}
+
+
 class Group extends Node {
     constructor(options) {
         super(options || {});
@@ -475,6 +492,7 @@ window.Graphics = {
     Node: Node,
     Stage: Stage,
     Layer: Layer,
+    HitlessLayer: HitlessLayer,
     Group: Group,
     Rect: Rect,
     Text: Text,
