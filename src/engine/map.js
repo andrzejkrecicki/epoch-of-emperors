@@ -1,4 +1,3 @@
-import Konva from 'konva';
 import { BFSWalker, MultiSlotQueue } from './algorithms.js';
 import { rand_choice, to_binary } from '../utils.js';
 import { PineTree, LeafTree, PalmTree } from './trees.js';
@@ -82,6 +81,14 @@ class RandomMap extends Map {
             for (let _y = y; _y < y + width; ++_y) {
                 this.subtiles[_x][_y] = obj;
             }
+    }
+    areaIsLand(subtile_x, subtile_y, width) {
+        for (let x = Math.floor(subtile_x / 2); x < Math.round((subtile_x + width) / 2); ++x) {
+            for (let y = Math.floor(subtile_y / 2); y < Math.round((subtile_y + width) / 2); ++y) {
+                if (this.initial_tiles[x][y] == Map.TERRAIN_TYPES.WATER) return false;
+            }
+        }
+        return true;
     }
     getEntityAtSubtile(x, y) {
         return this.subtiles[x][y];

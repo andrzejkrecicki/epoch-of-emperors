@@ -11,9 +11,18 @@ Barracks.SUBTILE_WIDTH = 5;
 
 Barracks.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 Barracks.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/barracks/01_all.png")];
+Barracks.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/barracks/01_all.png"))];
 
-Barracks.prototype.IMAGE_OFFSETS = {};
-Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
+Barracks.prototype.IMAGE_OFFSETS = Object.assign({}, Building.prototype.IMAGE_OFFSETS);
 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 11, y: 82 };
+
+Barracks.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
+Barracks.prototype.HITMAP[Barracks.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(
+    make_image("img/buildings/base_hit_big.png"),
+    make_image("img/buildings/barracks/01_all.png"),
+    Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
+    Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
+);
+
 
 export { Barracks }

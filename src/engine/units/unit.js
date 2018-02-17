@@ -1,6 +1,7 @@
 import { Entity } from '../entity.js';
 import { MapDrawable } from '../../viewer.js';
 
+
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, rotation=null) {
         super(...arguments);
@@ -22,12 +23,13 @@ class Unit extends Entity {
         this.player.addUnit(this);
     }
     setImage() {
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.rotation][this.frame],
             width: this.IMAGES[this.state][this.rotation][this.frame].width,
-            height: this.IMAGES[this.state][this.rotation][this.frame].height
+            height: this.IMAGES[this.state][this.rotation][this.frame].height,
+            hasHitmap: true
         });
         this.add(this.image);
     }

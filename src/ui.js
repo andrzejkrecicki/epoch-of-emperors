@@ -1,13 +1,15 @@
-class TextButton extends Konva.Group {
+class TextButton extends Graphics.Group {
     constructor(x, y, textOptions, rectOptions) {
         super({ x, y });
         this.rectOptions = Object.assign({}, TextButton.DEFAULT_RECT_OPTIONS, rectOptions);
-        this.textOptions = Object.assign({}, TextButton.DEFAULT_TEXT_OPTIONS, textOptions);
+        this.textOptions = Object.assign({
+            x: this.rectOptions.width / 2,
+            y: this.rectOptions.height / 2
+        }, TextButton.DEFAULT_TEXT_OPTIONS, textOptions);
 
-        this.rect = new Konva.Rect(this.rectOptions);
-        this.text = new Konva.Text(this.textOptions);
-        this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
-        this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
+        this.rect = new Graphics.Rect(this.rectOptions);
+        this.text = new Graphics.Text(this.textOptions);
+
         this.add(this.rect);
         this.add(this.text);
 
@@ -19,20 +21,19 @@ class TextButton extends Konva.Group {
     }
     mouseover() {
         if (this.rectOptions.moverFill) this.rect.setFill(this.rectOptions.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (this.rectOptions.fill) this.rect.setFill(this.rectOptions.fill);
         this.mouseup()
-        this.fire("refresh", null, true);
     }
     mousedown() {
         if (this.textOptions.mdownFill) this.text.setFill(this.textOptions.mdownFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseup() {
         if (this.textOptions.fill) this.text.setFill(this.textOptions.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     click() {
         this.mouseout();
@@ -55,28 +56,31 @@ TextButton.DEFAULT_RECT_OPTIONS = {
     moverFill: '#4c4137'
 }
 
-class DropDown extends Konva.Group {
+class DropDown extends Graphics.Group {
     constructor(x, y, width, values, chosenIndex) {
         super({ x, y });
         this.width = width;
         this.values = values;
         this.chosenIndex = chosenIndex;
 
-        this.chosen = new Konva.Group();
+        this.chosen = new Graphics.Group();
 
-        this.rect = new Konva.Rect(Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
+        this.rect = new Graphics.Rect(Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
             width: this.width
         }));
         this.chosen.add(this.rect);
         this.valueText = new Label({
             text: "" + this.values[this.chosenIndex],
-            width: this.width
+            width: this.width,
+            align: "center",
+            textBaseline: "middle",
+            x: this.width / 2,
+            y: this.rect.height() / 2
         });
-        this.valueText.setY(this.rect.height() / 2 - this.valueText.fontSize() / 2);
         this.chosen.add(this.valueText);
         this.add(this.chosen);
 
-        this.options = new Konva.Group({
+        this.options = new Graphics.Group({
             x: 0, y: this.rect.height(),
             visible: false
         });
@@ -86,7 +90,8 @@ class DropDown extends Konva.Group {
             let option = new Option(
                 0, i * DropDown.DEFAULT_RECT_OPTIONS.height,
                 "" + values[i], i,
-                this.width
+                this.rect.width(),
+                this.rect.height()
             );
             this.options.add(option);
             let that = this;
@@ -96,7 +101,7 @@ class DropDown extends Konva.Group {
                 that.valueText.setText("" + values[this.index]);
                 that.options.hide();
                 that.fire("update");
-                that.fire("refresh", null, true);
+                that.fire("refresh");
             });
         }
         this.chosen.on("mouseover", this.mouseover.bind(this));
@@ -107,25 +112,25 @@ class DropDown extends Konva.Group {
     }
     mouseover() {
         if (DropDown.DEFAULT_RECT_OPTIONS.moverFill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (DropDown.DEFAULT_RECT_OPTIONS.fill) this.rect.setFill(DropDown.DEFAULT_RECT_OPTIONS.fill);
         this.mouseup()
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mousedown() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.mdownFill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.mdownFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseup() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.fill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     click() {
         this.moveToTop();
         this.options.show();
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
 }
 DropDown.DEFAULT_RECT_OPTIONS = {
@@ -142,20 +147,23 @@ DropDown.DEFAULT_TEXT_OPTIONS = {
 }
 
 
-class Option extends Konva.Group {
-    constructor(x, y, text, index, width) {
+class Option extends Graphics.Group {
+    constructor(x, y, text, index, width, height) {
         super({ x, y });
         this.index = index;
         this.text = text;
-        this.rect = new Konva.Rect(Object.assign({}, Option.DEFAULT_RECT_OPTIONS, {
+        this.rect = new Graphics.Rect(Object.assign({}, Option.DEFAULT_RECT_OPTIONS, {
             width: width,
+            height: height
         }));
         this.add(this.rect);
         this.valueText = new Label({
             text: this.text,
-            width: width
+            x: this.rect.width() / 2,
+            y: this.rect.height() / 2,
+            align: "center",
+            textBaseline: "middle"
         });
-        this.valueText.setY(this.rect.height() / 2 - this.valueText.fontSize() / 2);
         this.add(this.valueText);
 
         this.on("mouseover", this.mouseover);
@@ -165,20 +173,20 @@ class Option extends Konva.Group {
     }
     mouseover() {
         if (Option.DEFAULT_RECT_OPTIONS.moverFill) this.rect.setFill(Option.DEFAULT_RECT_OPTIONS.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (Option.DEFAULT_RECT_OPTIONS.fill) this.rect.setFill(Option.DEFAULT_RECT_OPTIONS.fill);
         this.mouseup()
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mousedown() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.mdownFill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.mdownFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseup() {
         if (DropDown.DEFAULT_TEXT_OPTIONS.fill) this.valueText.setFill(DropDown.DEFAULT_TEXT_OPTIONS.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
 }
 Option.DEFAULT_RECT_OPTIONS = Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
@@ -192,7 +200,9 @@ class MultiStateButton extends TextButton {
     constructor(x, y, states, currentState, textOptions, rectOptions) {
         let mergedRectOptions = Object.assign({}, MultiStateButton.DEFAULT_RECT_OPTIONS, rectOptions);
         let mergedTextOptions = Object.assign({}, MultiStateButton.DEFAULT_TEXT_OPTIONS, textOptions, {
-            text: states[currentState]
+            text: states[currentState],
+            width: mergedRectOptions.width,
+            height: mergedRectOptions.height
         });
         super(x, y, mergedTextOptions, mergedRectOptions);
         this.states = states;
@@ -201,10 +211,8 @@ class MultiStateButton extends TextButton {
         this.on("click", () => {
             this.currentState = (this.currentState + 1) % this.states.length;
             this.text.setText(this.states[this.currentState]);
-            this.text.setX(this.rect.getWidth() / 2 - this.text.getWidth() / 2);
-            this.text.setY(this.rect.getHeight() / 2 - this.text.getFontSize() / 2);
             this.fire("update");
-            this.fire("refresh", null, true);
+            this.fire("refresh");
         });
     }
 }
@@ -217,15 +225,15 @@ MultiStateButton.DEFAULT_TEXT_OPTIONS = Object.assign({}, TextButton.DEFAULT_TEX
 });
 
 
-class CheckBox extends Konva.Group {
+class CheckBox extends Graphics.Group {
     constructor(x, y, checked, options) {
         super({ x, y });
         this.options = Object.assign({}, CheckBox.DEFAULT_OPTIONS, options);
 
         this.checked = checked;
 
-        this.rect = new Konva.Rect(this.options);
-        this.mark = new Konva.Path({
+        this.rect = new Graphics.Rect(this.options);
+        this.mark = new Graphics.Path({
             data: "M 50 100 L 100 50 L 250 200 L 400 50 L 450 100 L 300 250 L 450 400 L 400 450 L 250 300 L 100 450 L 50 400 L 200 250",
             fill: this.options.stroke,
             scale: { x: this.options.width / 500, y: this.options.height / 500 },
@@ -240,17 +248,17 @@ class CheckBox extends Konva.Group {
     }
     mouseover() {
         if (this.options.moverFill) this.rect.setFill(this.options.moverFill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     mouseout() {
         if (this.options.fill) this.rect.setFill(this.options.fill);
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
     click() {
         this.checked = !this.checked;
         this.mark.setVisible(this.checked);
         this.fire("update");
-        this.fire("refresh", null, true);
+        this.fire("refresh");
     }
 }
 CheckBox.DEFAULT_OPTIONS = {
@@ -263,28 +271,29 @@ CheckBox.DEFAULT_OPTIONS = {
 }
 
 
-class Header extends Konva.Text {
+class Header extends Graphics.Text {
     constructor(options) {
-        super(Object.assign({}, options, Header.DEFAULT_OPTIONS));
+        super(Object.assign({}, Header.DEFAULT_OPTIONS, options));
     }
 }
 Header.DEFAULT_OPTIONS = {
     fontSize: 17,
     fontFamily: 'helvetica',
     fill: '#c0dcc0',
-    align: 'center',
+    align: 'left',
     strokeWidth: 2,
 }
-class Label extends Konva.Text {
+class Label extends Graphics.Text {
     constructor(options) {
-        super(Object.assign({}, options, Label.DEFAULT_OPTIONS));
+        super(Object.assign({}, Label.DEFAULT_OPTIONS, options));
     }
 }
 Label.DEFAULT_OPTIONS = {
     fontSize: 14,
     fontFamily: 'helvetica',
     fill: '#c0dcc0',
-    align: 'center',
+    align: 'left',
+    textBaseline: "top",
     strokeWidth: 2,
 }
 

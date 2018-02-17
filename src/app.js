@@ -1,4 +1,4 @@
-import Konva from 'konva';
+import './graphics/graphics.js';
 import { MenuNavigator } from './navigator.js';
 
 class Game {
@@ -7,18 +7,17 @@ class Game {
         this.stage_height = Game.STAGE_HEIGHT;
 
 
-        this.stage = new Konva.Stage({
+        this.stage = new Graphics.Stage({
             container: container,
             width: this.stage_width,
             height: this.stage_height
         });
 
         this.layers = {
-            terrain: new Konva.Layer(),
-            entities: new Konva.Layer(),
-            interface: new Konva.Layer()
+            terrain: new Graphics.HitlessLayer(),
+            entities: new Graphics.Layer(),
+            interface: new Graphics.Layer()
         };
-        // this.layers.terrain.hitGraphEnabled(false);
 
         this.stage.add(this.layers.terrain);
         this.stage.add(this.layers.entities);

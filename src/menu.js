@@ -1,7 +1,7 @@
 import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox } from './ui.js';
 import { PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
 
-class Menu extends Konva.Group {
+class Menu extends Graphics.Group {
     constructor(stage, nav) {
         super();
         this.stage = stage;
@@ -9,7 +9,7 @@ class Menu extends Konva.Group {
         this.on("refresh", this.refresh)
     }
     refresh(e) {
-        this.parent.draw();
+        if (this.parent) this.parent.draw();
         e.cancelBubble = true;
     }
 }
@@ -129,7 +129,7 @@ class RandomMapMenu extends Menu {
             x: row_offset, y: 80
         }));
 
-        this.playersSection = new Konva.Group({
+        this.playersSection = new Graphics.Group({
             x: 30,
             y: 120
         });

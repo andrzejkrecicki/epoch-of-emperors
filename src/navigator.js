@@ -6,7 +6,7 @@ class MenuNavigator {
     constructor(stage, layers) {
         this.stage = stage;
         this.layers = layers;
-        this.layers.interface.add(new Konva.Rect({
+        this.layers.interface.add(new Graphics.Rect({
             x: 0, y: 0,
             width: stage.width(),
             height: stage.height(),
@@ -33,6 +33,7 @@ class MenuNavigator {
         this.currentMenu.remove();
         this.currentMenu.setListening(false);
         this.layers.interface.removeChildren();
+        this.layers.interface.clear();
         this.gameViewer = new GameViewer(gameDefinition, this, this.layers);
     }
 }

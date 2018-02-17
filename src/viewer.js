@@ -26,17 +26,28 @@ class GameViewer {
             h: this.stage.height(),
         }
 
-        this.mapDrawable = new MapDrawable(this.engine.map, this.stage, this.viewPort);
+        this.mapDrawable = new MapDrawable(
+            this.engine.map, this.stage,
+            this.viewPort, { top: TopBar.IMAGE.height, bottom: BottomBar.IMAGE.height }
+        );
+
         this.layers.terrain.add(this.mapDrawable);
 
-        this.entitiesHolder = new Konva.Group({
+        this.resetEntitiesCoords();
+
+        this.entitiesHolder = new Graphics.EntitiesHolder({
             x: -this.viewPort.x,
             y: -this.viewPort.y
+        }, {
+            mapSize: size,
+            width: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.width,
+            height: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.height,
+            viewPortWidth: this.stage.width(),
+            viewPortHeight: this.stage.height() - BottomBar.IMAGE.height
         });
         this.layers.entities.add(this.entitiesHolder);
 
-        this.resetEntitiesCoords();
-        this.setEntitiesVisibility();
+        this.addEntities();
 
         this.layers.terrain.on("click", this.handleClick.bind(this));
         this.layers.entities.on("click", this.handleClick.bind(this));
@@ -82,7 +93,7 @@ class GameViewer {
     handleRightClick(e) {
         if (this.engine.selectedEntity) {
             let sx = (e.evt.layerX - this.mapDrawable.x());
-            let sy = (e.evt.layerY - this.mapDrawable.y() + MapDrawable.TILE_SIZE.height / 2);
+            let sy = (e.evt.layerY - this.mapDrawable.y());
             let subtile = this.mapDrawable.screenCoordsToSubtile(sx, sy);
             if (!this.isPlanningConstruction && !this.engine.map.getEntityAtSubtile(subtile.x, subtile.y)) {
                 this.orderIndicator.show(e.evt.layerX, e.evt.layerY);
@@ -92,27 +103,21 @@ class GameViewer {
         e.evt.preventDefault();
         return false;
     }
-    setEntityVisibility(entity) {
-        if (!rect_intersection(entity.getBoundingBox(), this.viewPort)) {
-            entity.hide();
-        } else {
-            entity.show();
-        }
-    }
-    setEntitiesVisibility() {
+    addEntities() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            this.setEntityVisibility(entity);
-        }
-    }
-    resetEntitiesCoords() {
-        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
-            this.addEntity(entity);
+            this.entitiesHolder.add(entity);
         }
     }
     addEntity(entity) {
         entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
         entity.resetBoundingBox();
         this.entitiesHolder.add(entity);
+    }
+    resetEntitiesCoords(entity) {
+        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
+            entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
+            entity.resetBoundingBox();
+        }
     }
     handleMouseMove(e) {
         this.mouseX = e.evt.layerX;
@@ -144,7 +149,6 @@ class GameViewer {
             moved = true;
         }
 
-        if (moved) this.setEntitiesVisibility();
     }
     process() {
         this.handleScroll();
@@ -157,53 +161,73 @@ class GameViewer {
 }
 
 
-class MapDrawable extends Konva.Group {
-    constructor(map, stage, viewPort) {
+class MapDrawable extends Graphics.Group {
+    constructor(map, stage, viewPort, offset) {
         super({
             x: -viewPort.x,
             y: -viewPort.y
         });
+        this.offset = offset;
         this.map = map;
+        this.stage = stage;
         this.insertTiles();
     }
-    insertTiles() {
-        var tmpCanvas = document.createElement("canvas");
-        tmpCanvas.setAttribute("width", Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.width);
-        tmpCanvas.setAttribute("height", Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.height);
-        var tmpCtx = tmpCanvas.getContext('2d');
+    draw() {
+        let corner_tile = this.screenCoordsToTile(
+            -this.attrs.x,
+            -this.attrs.y + this.offset.top - MapDrawable.TILE_SIZE.height / 2
+        );
+        let corner_pix = this.tileCoordsToScreen(corner_tile.x, corner_tile.y);
+        corner_pix.x = corner_pix.x + this.attrs.x;
+        corner_pix.y = corner_pix.y + this.attrs.y - MapDrawable.TILE_SIZE.height / 2;
 
+        let cur_tile = { x: corner_tile.x, y: corner_tile.y };
+        let cur_pix = { x: corner_pix.x, y: corner_pix.y };
+        let row = 0;
+        while (cur_pix.y < this.stage.height() - this.offset.bottom) {
+            while (cur_pix.x < this.stage.width()) {
+                if (cur_tile.x > -1 && cur_tile.x < this.map.edge_size && cur_tile.y > -1 && cur_tile.y < this.map.edge_size) {
+                    let tileset = MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[cur_tile.x][cur_tile.y]];
+                    let choice = tileset.length > 1 ? this.rand_tile(cur_tile.x, cur_tile.y) % tileset.length : 0;
+                    this.layer.ctx.drawImage(tileset[choice], cur_pix.x, cur_pix.y);
+                }
+                cur_pix.x += MapDrawable.TILE_SIZE.width;
+                ++cur_tile.x;
+                ++cur_tile.y;
+            }
+            cur_pix.x = corner_pix.x + (row % 2 ? 0 : -1) * MapDrawable.TILE_SIZE.width / 2;
+            cur_pix.y = cur_pix.y + MapDrawable.TILE_SIZE.height / 2;
+            ++row;
+
+            cur_tile.x = corner_tile.x - Math.ceil(row / 2);
+            cur_tile.y = corner_tile.y + Math.floor(row / 2);
+        }
+    }
+    rand_tile(x, y) {
+        let rnd = x * 7883 + y * 317;
+        rnd ^= rnd >> 13;
+        rnd ^= rnd << 17;
+        rnd ^= rnd >> 5;
+        return rnd;
+    }
+    insertTiles() {
         var miniCanv = document.createElement("canvas");
         miniCanv.setAttribute("width", Map.SIZES[this.map.definition.size]);
         miniCanv.setAttribute("height", Map.SIZES[this.map.definition.size]);
         var miniCtx = miniCanv.getContext('2d');
 
         for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
-            let origin = {
-                x: y * MapDrawable.TILE_COL_OFFSET.x,
-                y: -(Map.SIZES[this.map.definition.size] * MapDrawable.TILE_ROW_OFFSET.y) + (y * MapDrawable.TILE_COL_OFFSET.y)
-            };
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
-                tmpCtx.drawImage(rand_choice(MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[x][y]]), origin.x, origin.y);
 
                 miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
                 if (this.map.getEntityAtSubtile(x * 2, y * 2) instanceof Tree) miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS.TREE;
 
                 miniCtx.fillRect(x, y, 1, 1);
-                origin.x += MapDrawable.TILE_ROW_OFFSET.x;
-                origin.y += MapDrawable.TILE_ROW_OFFSET.y;
             }
         }
 
         miniCanv.className = "tmpMiniMap";
         document.body.appendChild(miniCanv);
-        this.add(new Konva.Image({
-            x: 0,
-            y: 0,
-            image: tmpCanvas,
-            width: Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.width,
-            height: Map.SIZES[this.map.definition.size] * MapDrawable.TILE_SIZE.height
-        }));
-        this.cache();
     }
     tileCoordsToScreen(tx, ty) {
         let H = MapDrawable.TILE_SIZE.height;
@@ -215,12 +239,6 @@ class MapDrawable extends Konva.Group {
         return { x, y };
     }
     screenCoordsToTile(sx, sy) {
-        // tiles coordinates, while drawing them, are bassed on upper left corner
-        // of their bounding box but formula below uses left corner of
-        // diamond-shaped tile which is located at half of its height
-        // thus we take into account this difference
-        sy -= MapDrawable.TILE_SIZE.height / 2;
-
         let H = MapDrawable.TILE_SIZE.height;
         let W = MapDrawable.TILE_SIZE.width;
         let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
@@ -230,8 +248,6 @@ class MapDrawable extends Konva.Group {
         return { x, y };
     }
     screenCoordsToSubtile(sx, sy) {
-        sy -= MapDrawable.TILE_SIZE.height / 2;
-
         let H = MapDrawable.TILE_SIZE.height / 2;
         let W = MapDrawable.TILE_SIZE.width / 2;
         let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
@@ -256,10 +272,10 @@ MapDrawable.TERRAIN_IMAGES = TERRAIN_IMAGES;
 MapDrawable.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
 
 
-class TopBar extends Konva.Group {
+class TopBar extends Graphics.Group {
     constructor() {
         super({ x: 0, y: 0 });
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: 0,
             y: 0,
             image: TopBar.IMAGE,
@@ -272,10 +288,10 @@ class TopBar extends Konva.Group {
 TopBar.IMAGE = make_image("img/interface/greek/topbar.png");
 
 
-class BottomBar extends Konva.Group {
+class BottomBar extends Graphics.Group {
     constructor(viewer, x=0, y=0) {
         super({ x: x, y: y });
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: 0,
             y: 0,
             image: BottomBar.IMAGE,
@@ -305,27 +321,27 @@ class BottomBar extends Konva.Group {
 BottomBar.IMAGE = make_image("img/interface/greek/bottombar.png");
 
 
-class EntityDetails extends Konva.Group {
+class EntityDetails extends Graphics.Group {
     constructor() {
         super(...arguments);
-        this.add(new Konva.Rect({
+        this.add(new Graphics.Rect({
             x: 7, y: 8,
             fill: '#000',
             width: 123,
             height: 111
         }));
-        this.name = new Konva.Text(Object.assign({
+        this.name = new Graphics.Text(Object.assign({
             x: 10, y: 16
         }, EntityDetails.TEXT_OPTIONS))
         this.add(this.name);
 
-        this.avatar = new Konva.Image({ x: 10, y: 37 });
+        this.avatar = new Graphics.Image({ x: 10, y: 37 });
         this.add(this.avatar);
 
         this.healthBar = new HealthBarBig({ x: 10, y: 91 });
         this.add(this.healthBar);
 
-        this.hp = new Konva.Text(Object.assign({
+        this.hp = new Graphics.Text(Object.assign({
             x: 10, y: 102
         }, EntityDetails.TEXT_OPTIONS))
         this.add(this.hp);
@@ -354,10 +370,11 @@ class EntityDetails extends Konva.Group {
 EntityDetails.TEXT_OPTIONS = {
     fontSize: 12,
     fontFamily: 'helvetica',
+    textBaseline: "top",
     fill: '#ffffff',
 };
 
-class EntityAttributes extends Konva.Group {
+class EntityAttributes extends Graphics.Group {
     constructor() {
         super(...arguments);
         for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
@@ -385,15 +402,15 @@ EntityAttributes.ATTRIBUTES = {
     food: make_image("img/interface/details/food.png")
 }
 
-class EntityAttribute extends Konva.Group {
+class EntityAttribute extends Graphics.Group {
     constructor(image) {
         super();
         this.hide();
-        this.value = new Konva.Text(Object.assign({
+        this.value = new Graphics.Text(Object.assign({
             x: 3 + image.width, y: 5
         }, EntityDetails.TEXT_OPTIONS));
         this.add(this.value);
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             image: image,
             height: image.height,
             width: image.width
@@ -405,13 +422,13 @@ class EntityAttribute extends Konva.Group {
     }
 }
 
-class HealthBarBig extends Konva.Group {
+class HealthBarBig extends Graphics.Group {
     constructor() {
         super(...arguments);
         this.init();
     }
     init() {
-        this.red = new Konva.Image({
+        this.red = new Graphics.Image({
             image: HealthBarBig.BAR_RED,
             width: HealthBarBig.BAR_RED.width,
             height: HealthBarBig.BAR_RED.height
@@ -424,7 +441,7 @@ class HealthBarBig extends Konva.Group {
         this._barCtx = _bar.getContext('2d');
         this.setValue(1);
 
-        this.green = new Konva.Image({
+        this.green = new Graphics.Image({
             image: _bar,
             width: _bar.width,
             height: _bar.height
@@ -446,7 +463,7 @@ HealthBarBig.BAR_GREEN = make_image('img/interface/details/health_green_big.png'
 HealthBarBig.BAR_RED = make_image('img/interface/details/health_red_big.png');
 
 
-class EntityActions extends Konva.Group {
+class EntityActions extends Graphics.Group {
     constructor(viewer, options) {
         super(options);
         this.viewer = viewer;
@@ -487,7 +504,7 @@ class EntityActions extends Konva.Group {
 }
 
 
-class ActionsSet extends Konva.Group {
+class ActionsSet extends Graphics.Group {
     constructor(viewer, actions) {
         super();
         this.viewer = viewer;
@@ -495,11 +512,12 @@ class ActionsSet extends Konva.Group {
         let x = actions[0].prototype.MARGIN, y = 0;
         for (let i = 0, Action; Action = actions[i]; ++i) {
             let pos = Action.prototype.POS || { x: x, y: y };
-            let btn = new Konva.Image({
+            let btn = new Graphics.Image({
                 image: Action.prototype.IMAGE,
                 x: pos.x, y: pos.y,
                 width: Action.prototype.IMAGE.width,
-                height: Action.prototype.IMAGE.height
+                height: Action.prototype.IMAGE.height,
+                hasHitmap: true
             });
             btn.action = new Action(this, viewer);
             btn.on("click", function(e) {
@@ -517,30 +535,49 @@ class ActionsSet extends Konva.Group {
 }
 
 
-class ConstructionIndicator extends Konva.Group {
+class ConstructionIndicator extends Graphics.Group {
     constructor(viewer, options) {
         super(options);
         this.viewer = viewer;
         this.current_opacity = .65;
         this.opacity_delta = .01;
+        this.image = null;
+        this.building = null;
+        this.sub = null;
+        this.allow_construction = false;
     }
     move() {
         if (!this.viewer.isPlanningConstruction) return;
         // construction preview coordinates must be adjisted to subtile size
         // therefore we compute position of subtile under cursor and use it
         // to compute screen coordinates of its corner
-        let sub = this.viewer.mapDrawable.screenCoordsToSubtile(
+        this.sub = this.viewer.mapDrawable.screenCoordsToSubtile(
             this.viewer.mouseX + this.viewer.viewPort.x + MapDrawable.TILE_SIZE.width / 2,
             this.viewer.mouseY + this.viewer.viewPort.y + MapDrawable.TILE_SIZE.height / 2
         );
+        let W = this.building.SUBTILE_WIDTH;
+        this.sub.x -= Math.round(W / 2);
+        this.sub.y -= Math.round(W / 2);
         let screen = this.viewer.mapDrawable.tileCoordsToScreen(
-            (sub.x / 2),
-            (sub.y / 2)
+            (this.sub.x / 2),
+            (this.sub.y / 2)
         );
         this.position({
             x: screen.x - this.viewer.viewPort.x,
             y: screen.y - this.viewer.viewPort.y
         });
+
+        let map = this.viewer.engine.map;
+        if (this.sub.x >= 0 && this.sub.x + W <= map.edge_size * 2 &&
+            this.sub.y >= 0 && this.sub.y + W <= map.edge_size * 2 &&
+            map.areSubtilesEmpty(this.sub.x, this.sub.y, W) && map.areaIsLand(this.sub.x, this.sub.y, W)
+        ) {
+            this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0]);
+            this.allow_construction = true;
+        } else {
+            this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DENIED][0]);
+            this.allow_construction = false;
+        }
 
         if (
             this.viewer.mouseY > this.viewer.stage.height() - this.viewer.bottombar.image.height() ||
@@ -549,19 +586,19 @@ class ConstructionIndicator extends Konva.Group {
         else this.show();
     }
     setBuilding(building) {
-        this.move();
-        this.add(new Konva.Image({
-            x: (
-                - Math.round(building.SUBTILE_WIDTH / 4 * MapDrawable.TILE_SIZE.width)
-                - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x
-            ),
+        this.building = building;
+        this.add(this.image = new Graphics.Image({
+            x: - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x,
             y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
             image: building.prototype.IMAGES[building.prototype.STATE.DONE][0],
             width: building.prototype.IMAGES[building.prototype.STATE.DONE][0].width,
             height: building.prototype.IMAGES[building.prototype.STATE.DONE][0].height,
+            hasHitmap: true
         }));
+        this.move();
     }
     opacityPulse() {
+        if (!this.viewer.isPlanningConstruction) return;
         if (this.current_opacity > this.MAX_OPACITY || this.current_opacity < this.MIN_OPACITY) this.opacity_delta *= -1;
         this.current_opacity += this.opacity_delta;
         this.opacity(this.current_opacity);
@@ -571,13 +608,13 @@ ConstructionIndicator.prototype.MAX_OPACITY = .75;
 ConstructionIndicator.prototype.MIN_OPACITY = .55;
 
 
-class MoverOrderIndicator extends Konva.Group {
+class MoverOrderIndicator extends Graphics.Group {
     constructor() {
         super(...arguments);
         this.counter = 0;
         this.frame = 0;
         this.hide();
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSET.x,
             y: -this.IMAGE_OFFSET.y,
             image: this.FRAMES[0],
@@ -593,7 +630,7 @@ class MoverOrderIndicator extends Konva.Group {
         this.image.image(this.FRAMES[this.frame]);
     }
     process() {
-        if (!this.isVisible()) return;
+        if (!this.getVisible()) return;
         ++this.counter;
         if (this.counter % 2 == 0) {
             ++this.frame;

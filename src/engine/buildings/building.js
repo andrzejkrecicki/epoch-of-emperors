@@ -19,7 +19,7 @@ class Building extends Entity {
     }
     setImage() {
         this.removeChildren();
-        this.image = new Konva.Image({
+        this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.construction_stage],
@@ -72,10 +72,12 @@ class Building extends Entity {
         return this.image.width();
     }
 }
+Building.prototype.HAS_BITMAP_HITMASK = true;
 
 Building.prototype.STATE = {
     CONSTRUCTION: 0,
     DONE: 1,
+    DENIED: 100,
 }
 Building.prototype.IMAGES = {};
 Building.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = [
@@ -84,5 +86,14 @@ Building.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = [
     make_image("img/buildings/construction_big_02.png"),
     make_image("img/buildings/construction_big_03.png")
 ];
+
+Building.prototype.IMAGE_OFFSETS = {};
+Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
+
+Building.prototype.HITMAP = {};
+Building.prototype.HITMAP[Building.prototype.STATE.CONSTRUCTION] = Graphics.Filters.BasicHitmask(
+    make_image("img/buildings/base_hit_big.png"),
+    Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION]
+);
 
 export { Building }
