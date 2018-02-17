@@ -352,6 +352,7 @@ class Image extends Node {
     constructor(options) {
         super(options || {});
         this.image(options.image || null);
+        this.attrs.hasHitmap = options.hasHitmap || false;
     }
     image(image) {
         if (image != null) {
@@ -364,7 +365,7 @@ class Image extends Node {
     draw() {
         if (!this.attrs.visible) return;
         this.layer.ctx.drawImage(this.attrs.image, this.absX(), this.absY());
-        this.setHitmap();
+        if (this.attrs.hasHitmap) this.setHitmap();
     }
     setHitmap() {
         this.layer.hitmap.fillStyle = this.hitColor;
@@ -489,6 +490,65 @@ function RedFilter(image) {
     return tmp;
 }
 
+
+function BasicHitmask(image, offset) {
+    let wrap = {
+        ctx: null,
+        imageData: null,
+        offset: offset
+    };
+
+    image.addEventListener("load", function() {
+        let tmp = document.createElement("canvas");
+        tmp.setAttribute("width", image.width);
+        tmp.setAttribute("height", image.height);
+        let ctx = tmp.getContext("2d");
+        ctx.drawImage(image, 0, 0);
+        let imageData = ctx.getImageData(0, 0, image.width, image.height);
+        wrap.ctx = ctx;
+        wrap.imageData = imageData;
+    });
+    return wrap;
+}
+
+
+function ComposeHitmask(img1, img2, offset1, offset2) {
+    let loaded = 0;
+    let wrap = {
+        ctx: null,
+        imageData: null,
+        offset: null
+    }
+
+    let callback = function() {
+        if (++loaded < 2) return;
+        let tmp = document.createElement("canvas");
+        tmp.setAttribute("width", Math.max(img1.width, img2.width));
+        tmp.setAttribute("height", Math.max(img1.height, img2.height));
+
+        let ctx = tmp.getContext("2d");
+        ctx.drawImage(img1,
+            Math.max(offset1.x, offset2.x) - offset1.x,
+            Math.max(offset1.y, offset2.y) - offset1.y
+        );
+        ctx.drawImage(img2,
+            Math.max(offset1.x, offset2.x) - offset2.x,
+            Math.max(offset1.y, offset2.y) - offset2.y
+        );
+        wrap.ctx = ctx;
+        wrap.imageData = ctx.getImageData(0, 0, tmp.width, tmp.height);
+        wrap.offset = {
+            x: Math.max(offset1.x, offset2.x),
+            y: Math.max(offset1.y, offset2.y)
+        }
+    }
+
+    img1.addEventListener("load", callback);
+    img2.addEventListener("load", callback);
+
+    return wrap;
+}
+
 window.Graphics = {
     Node: Node,
     Stage: Stage,
@@ -501,7 +561,9 @@ window.Graphics = {
     Image: Image,
     EntitiesHolder: EntitiesHolder,
     Filters: {
-        RedFilter
+        RedFilter,
+        ComposeHitmask,
+        BasicHitmask
     }
 };
 
