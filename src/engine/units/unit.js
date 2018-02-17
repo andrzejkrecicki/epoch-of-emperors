@@ -26,7 +26,8 @@ class Unit extends Entity {
             y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.rotation][this.frame],
             width: this.IMAGES[this.state][this.rotation][this.frame].width,
-            height: this.IMAGES[this.state][this.rotation][this.frame].height
+            height: this.IMAGES[this.state][this.rotation][this.frame].height,
+            hasHitmap: true
         });
         this.add(this.image);
     }

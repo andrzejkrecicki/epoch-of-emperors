@@ -516,7 +516,8 @@ class ActionsSet extends Graphics.Group {
                 image: Action.prototype.IMAGE,
                 x: pos.x, y: pos.y,
                 width: Action.prototype.IMAGE.width,
-                height: Action.prototype.IMAGE.height
+                height: Action.prototype.IMAGE.height,
+                hasHitmap: true
             });
             btn.action = new Action(this, viewer);
             btn.on("click", function(e) {
@@ -592,6 +593,7 @@ class ConstructionIndicator extends Graphics.Group {
             image: building.prototype.IMAGES[building.prototype.STATE.DONE][0],
             width: building.prototype.IMAGES[building.prototype.STATE.DONE][0].width,
             height: building.prototype.IMAGES[building.prototype.STATE.DONE][0].height,
+            hasHitmap: true
         }));
         this.move();
     }
