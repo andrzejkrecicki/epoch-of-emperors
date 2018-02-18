@@ -19,7 +19,7 @@ class Villager extends Unit {
     }
     initInteraction(engine) {
         if (this.interactionObject.destroyed) this.terminateInteraction();
-        else if (!this.hasFullPath) this.state = this.STATE.IDLE;
+        else if (!this.hasFullPath) this.setBaseState(this.STATE.IDLE);
         else if (this.interactionObject instanceof Building) {
             // TODO - check if its our or enymy's building
             if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {
@@ -35,9 +35,9 @@ class Villager extends Unit {
                 this.prevInteractionObject = null;
             } else if (this.interactionObject.isComplete) {
                 // TODO - repair
-                this.state = this.STATE.IDLE;
+                this.setBaseState(this.STATE.IDLE);
             } else {
-                this.state = this.STATE.BUILDING;
+                this.setBaseState(this.STATE.BUILDING);
                 this.interaction_type = this.INTERACTION_TYPE.BUILDING;
             }
             this.rotateToEntity(this.interactionObject);
@@ -71,7 +71,7 @@ class Villager extends Unit {
         engine.interactOrder(this, building);
     }
     terminateInteraction() {
-        this.state = this.STATE.IDLE;
+        this.setBaseState(this.STATE.IDLE);
         this.frame = 0;
         this.interactionObject = null;
         this.prevInteractionObject = null;
@@ -105,18 +105,15 @@ Villager.prototype.ACTIONS = [
 Villager.prototype.ATTRIBUTES = {
     ATTACK: 3
 }
-Villager.prototype.STATE = Object.assign({
-    BUILDING: 3,
-    FORAGE: 4,
-}, Villager.prototype.STATE);
+Villager.prototype.STATE = Object.assign({}, Villager.prototype.STATE);
+Villager.prototype.STATE.BUILDING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.FORAGE = 2 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.FORAGE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FORAGE;
+Villager.prototype.STATE.FORAGE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FORAGE;
 
 Villager.prototype.FRAME_RATE = {}
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FORAGE] = 4;
-
-Villager.prototype.INTERACTION_TYPE = {
-    BUILDING: 0
-}
 
 Villager.prototype.IMAGES = {};
 Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = [

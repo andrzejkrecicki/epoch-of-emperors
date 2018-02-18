@@ -15,6 +15,7 @@ class Unit extends Entity {
         this.resetBoundingBox();
         this.path = null;
         this.path_progress = 0;
+        this.interaction_type = Unit.prototype.INTERACTION_TYPE.NONE;
         this.interactionObject = null;
         this.prevInteractionObject = null;
         this.hasFullPath = false;
@@ -97,12 +98,16 @@ class Unit extends Entity {
             this.path_progress = 1;
         }
     }
+    setBaseState(state) {
+        this.state &= this.BASE_STATE_MASK;
+        this.state |= state;
+    }
     initInteraction() {
         if (false) {
             // attack enymy unit
             this.rotateToEntity(this.interactionObject);
         } else {
-            this.state = this.STATE.IDLE;
+            this.setBaseState(this.STATE.IDLE);
         }
     }
     processInteraction() {
@@ -130,9 +135,20 @@ Unit.prototype.DIRECTIONS_DELTA = [
     { x: 0, y: 0.5656854249491516 }, { x: -.8, y: .4 }, { x: -1.1313708498983033, y: 0 }, { x: -.8, y: -.4 }
 ];
 Unit.prototype.STATE = {
-    IDLE: 0,
-    MOVING: 1,
-    WAITING: 2
+    INTERACTION: 0,
+    IDLE: 1,
+    MOVING: 2
+}
+Unit.prototype.BASE_STATE_MASK_WIDTH = 10;
+Unit.prototype.BASE_STATE_MASK = (
+    (~0) >> Unit.prototype.BASE_STATE_MASK_WIDTH
+    << Unit.prototype.BASE_STATE_MASK_WIDTH
+);
+
+Unit.prototype.INTERACTION_TYPE = {
+    NONE: 0,
+    BUILDING: 1,
+    FORAGE: 2
 }
 
 export { Unit }

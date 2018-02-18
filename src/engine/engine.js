@@ -32,11 +32,11 @@ class Engine {
     }
     processUnits() {
         for (let entity, i = 0; entity = this.units[i++];) {
-            if (entity.state == Unit.prototype.STATE.MOVING) {
+            if (entity.state & Unit.prototype.STATE.MOVING) {
                 this.processMovingUnit(entity);
-            } else if (entity.state == Unit.prototype.STATE.IDLE && entity.path != null) {
+            } else if (entity.state & Unit.prototype.STATE.IDLE && entity.path != null) {
                 this.processWaitingUnit(entity);
-            } else if (entity.state !== Unit.prototype.STATE.IDLE) {
+            } else if (!(entity.state & Unit.prototype.STATE.IDLE)) {
                 this.processInteractingUnit(entity);
             } else if (!entity.hasFullPath && entity.interactionObject != null) {
                 if (Math.random() > .85) ++entity.ticks_waited;
@@ -83,7 +83,7 @@ class Engine {
                     );
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT) {
                     // if area is temporarily taken wait until it frees
-                    entity.state = Unit.prototype.STATE.IDLE;
+                    entity.setBaseState(Unit.prototype.STATE.IDLE);
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
                     this.bypassOrder(entity);
                 }
@@ -92,7 +92,7 @@ class Engine {
                 entity.path = null;
                 entity.frame = 0;
                 if (entity.interactionObject === null) {
-                    entity.state = Unit.prototype.STATE.IDLE;
+                    entity.setBaseState(Unit.prototype.STATE.IDLE);
                 } else {
                     entity.initInteraction(this);
                 }
@@ -120,7 +120,7 @@ class Engine {
         );
 
         if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.GO) {
-            entity.state = Unit.prototype.STATE.MOVING;
+            entity.setBaseState(Unit.prototype.STATE.MOVING);
             this.map.fillSubtilesWith(
                 entity.path[entity.path_progress].x,
                 entity.path[entity.path_progress].y,
@@ -141,7 +141,7 @@ class Engine {
     processInteractingUnit(entity) {
         entity.processInteraction(this);
         entity.updateSprite();
-        if (this.framesCount % entity.FRAME_RATE[entity.state] == 0) ++entity.frame;
+        if (this.framesCount % entity.FRAME_RATE[entity.state & Unit.prototype.BASE_STATE_MASK] == 0) ++entity.frame;
     }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
@@ -151,7 +151,7 @@ class Engine {
                     if (this.map.subtiles[x][y].path != null) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT
                     } else if (
-                        (this.map.subtiles[x][y] instanceof Unit && this.map.subtiles[x][y].state != Unit.prototype.STATE.MOVING) ||
+                        (this.map.subtiles[x][y] instanceof Unit && !(this.map.subtiles[x][y].state & Unit.prototype.STATE.MOVING)) ||
                         (this.map.subtiles[x][y] instanceof Building)
                     ) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS
@@ -186,7 +186,7 @@ class Engine {
             unit.interactionObject = null;
             unit.prevInteractionObject = null;
             unit.swapPath(path);
-            unit.state = Unit.prototype.STATE.MOVING;
+            unit.setBaseState(Unit.prototype.STATE.MOVING);
             unit.rotateToSubtile(unit.path[0]);
         }
     }
@@ -199,7 +199,7 @@ class Engine {
             if (path.length) {
                 active.swapPath(path);
                 active.rotateToSubtile(active.path[0]);
-                active.state = Unit.prototype.STATE.MOVING;
+                active.setBaseState(Unit.prototype.STATE.MOVING);
             } else {
                 active.path = null;
                 active.path_progress = 0;
