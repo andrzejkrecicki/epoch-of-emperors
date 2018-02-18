@@ -37,7 +37,7 @@ class Villager extends Unit {
                 // TODO - repair
                 this.setBaseState(this.STATE.IDLE);
             } else {
-                this.setBaseState(this.STATE.BUILDING);
+                this.state = this.STATE.BUILDING;
                 this.interaction_type = this.INTERACTION_TYPE.BUILDING;
             }
             this.rotateToEntity(this.interactionObject);
@@ -107,6 +107,9 @@ Villager.prototype.ATTRIBUTES = {
 }
 Villager.prototype.STATE = Object.assign({}, Villager.prototype.STATE);
 Villager.prototype.STATE.BUILDING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.BUILDING_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.BUILDING;
+Villager.prototype.STATE.BUILDING_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.BUILDING;
+
 Villager.prototype.STATE.FORAGE = 2 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.FORAGE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FORAGE;
 Villager.prototype.STATE.FORAGE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FORAGE;
@@ -126,6 +129,29 @@ Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = [
     [make_image("img/units/villager/idle/W.png")],
     [make_image("img/units/villager/idle/NW.png")],
 ];
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_IDLE] = [
+    [make_image("img/units/villager/builder_idle/N.png")],
+    [make_image("img/units/villager/builder_idle/NE.png")],
+    [make_image("img/units/villager/builder_idle/E.png")],
+    [make_image("img/units/villager/builder_idle/SE.png")],
+    [make_image("img/units/villager/builder_idle/S.png")],
+    [make_image("img/units/villager/builder_idle/SW.png")],
+    [make_image("img/units/villager/builder_idle/W.png")],
+    [make_image("img/units/villager/builder_idle/NW.png")],
+];
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE] = [
+    [make_image("img/units/villager/forage_idle/N.png")],
+    [make_image("img/units/villager/forage_idle/NE.png")],
+    [make_image("img/units/villager/forage_idle/E.png")],
+    [make_image("img/units/villager/forage_idle/SE.png")],
+    [make_image("img/units/villager/forage_idle/S.png")],
+    [make_image("img/units/villager/forage_idle/SW.png")],
+    [make_image("img/units/villager/forage_idle/W.png")],
+    [make_image("img/units/villager/forage_idle/NW.png")],
+];
+
 Villager.prototype.IMAGES[Villager.prototype.STATE.MOVING] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
     for (let i = 0; i < 15; ++i) {
@@ -144,6 +170,16 @@ for (let dir = 0; dir < 8; ++dir) {
     }
 }
 
+Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_MOVING][dir].push(
+            make_image(`img/units/villager/builder_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+
 Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
     for (let i = 0; i < 27; ++i) {
@@ -153,11 +189,27 @@ for (let dir = 0; dir < 8; ++dir) {
     }
 }
 
+Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_MOVING][dir].push(
+            make_image(`img/units/villager/forage_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+
 Villager.prototype.IMAGE_OFFSETS = {};
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 0, y: 35 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MOVING] = { x: 9, y: 35 };
+
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING] = { x: 13, y: 37 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_IDLE] = { x: -1, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_MOVING] = { x: 15, y: 33 };
+
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE] = { x: 21, y: 42 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_IDLE] = { x: 4, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_MOVING] = { x: 8, y: 32 };
 
 
 export { Villager }
