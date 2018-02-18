@@ -6,7 +6,7 @@ class Building extends Entity {
     constructor(subtile_x, subtile_y, player) {
         super(...arguments);
         this.hp = 1;
-        this.max_hp = this.HP;
+        this.max_hp = this.MAX_HP;
         this.construction_stage = 0;
         this.isComplete = false;
         this.state = this.STATE.CONSTRUCTION;
@@ -45,7 +45,7 @@ class Building extends Entity {
         }
     }
     setComplete() {
-        this.hp = this.HP;
+        this.hp = this.MAX_HP;
         this.state = this.STATE.DONE;
         this.isComplete = true;
         this.construction_stage = 0;
@@ -53,8 +53,8 @@ class Building extends Entity {
     }
     constructionTick() {
         ++this.hp;
-        if (this.hp == this.HP) this.setComplete();
-        else if (this.hp % Math.ceil(this.HP / this.IMAGES[Building.prototype.STATE.CONSTRUCTION].length) == 0) {
+        if (this.hp == this.MAX_HP) this.setComplete();
+        else if (this.hp % Math.ceil(this.MAX_HP / this.IMAGES[Building.prototype.STATE.CONSTRUCTION].length) == 0) {
             ++this.construction_stage;
             this.setImage();
         }

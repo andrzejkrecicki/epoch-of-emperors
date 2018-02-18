@@ -6,8 +6,8 @@ class Barracks extends Building {
 }
 Barracks.prototype.NAME = "Barracks";
 Barracks.prototype.AVATAR = make_image("img/interface/avatars/barracks_all_1.png");
-Barracks.prototype.HP = 350;
-Barracks.SUBTILE_WIDTH = 5;
+Barracks.prototype.MAX_HP = 350;
+Barracks.prototype.SUBTILE_WIDTH = 5;
 
 Barracks.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 Barracks.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/barracks/01_all.png")];

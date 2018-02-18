@@ -44,15 +44,14 @@ class RandomMap extends Map {
         this.generate();
     }
     generate() {
-        let size = Map.SIZES[this.definition.size];
-        this.terrain_tiles = new Array(size).fill(null).map(() => {
-            return new Array(size).fill(this.constructor.DEFAULT_TILE);
+        this.terrain_tiles = new Array(this.edge_size).fill(null).map(() => {
+            return new Array(this.edge_size).fill(this.constructor.DEFAULT_TILE);
         });
 
         // subtiles represent map tiles divided into 4 subtiles to allow
         // support for objects smaller than whole tile.
-        this.subtiles = new Array(size * 2).fill(null).map(() => {
-            return new Array(size * 2).fill(null);
+        this.subtiles = new Array(this.edge_size * 2).fill(null).map(() => {
+            return new Array(this.edge_size * 2).fill(null);
         }); 
 
         this.randomizeTerrain();
@@ -64,8 +63,8 @@ class RandomMap extends Map {
         for (let i = 0, delta; delta = Map.ALL_NEIGHBOURS_DELTA[i]; ++i) {
             let nx = x + delta.x;
             let ny = y + delta.y;
-            nx = Math.max(Math.min(Map.SIZES[this.definition.size] - 1, nx), 0);
-            ny = Math.max(Math.min(Map.SIZES[this.definition.size] - 1, ny), 0);
+            nx = Math.max(Math.min(this.edge_size - 1, nx), 0);
+            ny = Math.max(Math.min(this.edge_size - 1, ny), 0);
             neighbours_vector[i] = +(synonyms.indexOf(this.initial_tiles[nx][ny]) != -1);
         }
         return neighbours_vector
@@ -99,24 +98,23 @@ class RandomMap extends Map {
         return this.areSubtilesEmpty(x * 2, y * 2, 2) && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
     }
     plantTrees() {
-        let size = Map.SIZES[this.definition.size];
         let that = this;
 
         let desired_total_forest_surface = Math.floor(.3 * this.land_surface);
         let total_forest_surface = 0;
 
-        let forest_surface_id = new Array(size).fill(null).map(() => new Array(size).fill(1e9));
+        let forest_surface_id = new Array(this.edge_size).fill(null).map(() => new Array(this.edge_size).fill(1e9));
         let forest_id = 0;
 
         while (total_forest_surface < desired_total_forest_surface) {
             let seed = {
-                x: Math.floor(Math.random() * size),
-                y: Math.floor(Math.random() * size)
+                x: Math.floor(Math.random() * this.edge_size),
+                y: Math.floor(Math.random() * this.edge_size)
             }
             while (!this.isSuitableForTree(seed.x, seed.y)) {
                 seed = {
-                    x: Math.floor(Math.random() * size),
-                    y: Math.floor(Math.random() * size)
+                    x: Math.floor(Math.random() * this.edge_size),
+                    y: Math.floor(Math.random() * this.edge_size)
                 }
             }
             let current_forest_surface = 0;
@@ -131,12 +129,12 @@ class RandomMap extends Map {
                     if (node.x == 128 && node.y == 128) return;
 
                     let tree = new ForestType(node.x * 2, node.y * 2);
-                    that.fillSubtilesWith(node.x * 2, node.y * 2, ForestType.SUBTILE_WIDTH, tree);
+                    that.fillSubtilesWith(node.x * 2, node.y * 2, ForestType.prototype.SUBTILE_WIDTH, tree);
                     that.entities.push(tree);
 
                     for (let x = node.x - 2; x <= node.x + 2; ++x) {
                         for (let y = node.y - 2; y <= node.y + 2; ++y) {
-                            if (x >= 0 && x < size && y >= 0 && y < size && forest_surface_id[x][y] >= forest_id)
+                            if (x >= 0 && x < this.edge_size && y >= 0 && y < this.edge_size && forest_surface_id[x][y] >= forest_id)
                                 forest_surface_id[x][y] = forest_id;
                         }
                     }
@@ -148,7 +146,7 @@ class RandomMap extends Map {
                 }, function() {
                     return current_forest_surface > desired_current_forest_surface ||
                         total_forest_surface > desired_total_forest_surface
-                }, 0, size - 1
+                }, 0, this.edge_size - 1
             );
             walker.run();
             ++forest_id;
@@ -156,11 +154,9 @@ class RandomMap extends Map {
 
     }
     normalizeNeighbouringTiles() {
-        let size = Map.SIZES[this.definition.size];
-
-        this.initial_tiles = new Array(size).fill(null).map(() => new Array(size).fill(0));
-        for (let y = 0; y < size; ++y) {
-            for (let x = 0; x < size; ++x) {
+        this.initial_tiles = new Array(this.edge_size).fill(null).map(() => new Array(this.edge_size).fill(0));
+        for (let y = 0; y < this.edge_size; ++y) {
+            for (let x = 0; x < this.edge_size; ++x) {
                 this.initial_tiles[x][y] = this.terrain_tiles[x][y];
             }
         }
@@ -168,8 +164,8 @@ class RandomMap extends Map {
         let changes_pending = true;
         while (changes_pending) {
             changes_pending = false;
-            for (let y = 1; y < size - 1; ++y) {
-                for (let x = 1; x < size - 1; ++x) {
+            for (let y = 1; y < this.edge_size - 1; ++y) {
+                for (let x = 1; x < this.edge_size - 1; ++x) {
                     if (this.initial_tiles[x][y] != Map.TERRAIN_TYPES.WATER) {
                         let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
 
@@ -191,8 +187,8 @@ class RandomMap extends Map {
             }
         }
 
-        for (let y = 0; y < size; ++y) {
-            for (let x = 0; x < size; ++x) {
+        for (let y = 0; y < this.edge_size; ++y) {
+            for (let x = 0; x < this.edge_size; ++x) {
                 if (this.initial_tiles[x][y] !== Map.TERRAIN_TYPES.WATER) {
                     let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
 
@@ -208,8 +204,8 @@ class RandomMap extends Map {
             }
         }
 
-        for (let y = 0; y < size; ++y) {
-            for (let x = 0; x < size; ++x) {
+        for (let y = 0; y < this.edge_size; ++y) {
+            for (let x = 0; x < this.edge_size; ++x) {
                 if (this.initial_tiles[x][y] == Map.TERRAIN_TYPES.GRASS) {
                     let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.GRASS]);
 
@@ -233,14 +229,14 @@ RandomMap.GRASS_TRANSFORMATIONS = GRASS_TRANSFORMATIONS;
 
 class CoastalMap extends RandomMap {
     randomizeTerrain() {
-        let total_surface = Map.SIZES[this.definition.size] * Map.SIZES[this.definition.size];
+        let total_surface = this.edge_size ** 2;
         // 60% - 80% of land
         let desired_land_surface = Math.floor(total_surface * (Math.random() * 2 + 6) / 10);
         this.land_surface = 1;
 
         let seed = {
-            x: Math.floor(Map.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
-            y: Math.floor(Map.SIZES[this.definition.size] / 2),// + Math.random() * 30 - 60),
+            x: Math.floor(this.edge_size / 2),// + Math.random() * 30 - 60),
+            y: Math.floor(this.edge_size / 2),// + Math.random() * 30 - 60),
             terrain: Map.TERRAIN_TYPES.GRASS
         }
 
@@ -260,7 +256,7 @@ class CoastalMap extends RandomMap {
                 }
             }, function() {
                 return that.land_surface > desired_land_surface
-            }, 2, Map.SIZES[this.definition.size] - 2 - 1
+            }, 2, this.edge_size - 2 - 1
         );
         walker.run();
     }

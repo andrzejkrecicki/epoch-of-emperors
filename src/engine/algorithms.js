@@ -277,13 +277,13 @@ class AStarPathFinder {
             subtile_y < 0 || subtile_y > this.map.edge_size * 2 - 1
         ) return false;
 
-        for (let x = subtile_x & -2; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; x += 2) {
-            for (let y = subtile_y & -2; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; y += 2) {
+        for (let x = subtile_x & -2; x < subtile_x + this.unit.SUBTILE_WIDTH; x += 2) {
+            for (let y = subtile_y & -2; y < subtile_y + this.unit.SUBTILE_WIDTH; y += 2) {
                 if (!this.unit.SUPPORTED_TERRAIN.has(this.map.initial_tiles[Math.floor(x / 2)][Math.floor(y / 2)])) return false;
             }
         }
-        for (let x = subtile_x; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; ++x) {
-            for (let y = subtile_y; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; ++y) {
+        for (let x = subtile_x; x < subtile_x + this.unit.SUBTILE_WIDTH; ++x) {
+            for (let y = subtile_y; y < subtile_y + this.unit.SUBTILE_WIDTH; ++y) {
                 if (this.map.subtiles[x][y] != null && this.map.subtiles[x][y] != this.unit) return false;
             }
         }
@@ -311,14 +311,14 @@ class AStarToEntity extends AStarPathFinder {
     }
     isTarget(subtile) {
         return Math.max(
-            Math.abs(subtile.x + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.x),
-            Math.abs(subtile.y + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.y)
-        ) <= 0.01 + (this.unit.constructor.SUBTILE_WIDTH + this.target.constructor.SUBTILE_WIDTH) / 2;
+            Math.abs(subtile.x + this.unit.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.x),
+            Math.abs(subtile.y + this.unit.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.y)
+        ) <= 0.01 + (this.unit.SUBTILE_WIDTH + this.target.SUBTILE_WIDTH) / 2;
     }
     heuristic(x, y) {
         return Math.max(
-            Math.abs(x + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.x),
-            Math.abs(y + this.unit.constructor.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.y)
+            Math.abs(x + this.unit.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.x),
+            Math.abs(y + this.unit.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.y)
         );
     }
 }
@@ -368,8 +368,8 @@ class UnitPathFinder {
         return path;
     }
     checkSubtiles(subtile_x, subtile_y) {
-        for (let x = subtile_x; x < subtile_x + this.unit.constructor.SUBTILE_WIDTH; ++x)
-            for (let y = subtile_y; y < subtile_y + this.unit.constructor.SUBTILE_WIDTH; ++y)
+        for (let x = subtile_x; x < subtile_x + this.unit.SUBTILE_WIDTH; ++x)
+            for (let y = subtile_y; y < subtile_y + this.unit.SUBTILE_WIDTH; ++y)
                 if (this.map.subtiles[x][y] != null && this.map.subtiles[x][y] != this.unit) return false;
         return true;
     }

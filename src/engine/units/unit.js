@@ -5,8 +5,8 @@ import { MapDrawable } from '../../viewer.js';
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, rotation=null) {
         super(...arguments);
-        this.hp = this.HP;
-        this.max_hp = this.HP;
+        this.hp = this.MAX_HP;
+        this.max_hp = this.MAX_HP;
         this.state = this.STATE.IDLE;
         this.rotation = rotation || Math.floor(Math.random() * 8);
         this.frame = 0;
@@ -67,12 +67,12 @@ class Unit extends Entity {
     rotateToEntity(entity) {
         let dx = this.subtile_x - entity.subtile_x, dy = this.subtile_y - entity.subtile_y;
 
-        if (dx + this.constructor.SUBTILE_WIDTH - 1 < 0) dx = 1;
-        else if (dx - entity.constructor.SUBTILE_WIDTH + 1 > 0) dx = -1;
+        if (dx + this.SUBTILE_WIDTH - 1 < 0) dx = 1;
+        else if (dx - entity.SUBTILE_WIDTH + 1 > 0) dx = -1;
         else dx = 0;
 
-        if (dy + this.constructor.SUBTILE_WIDTH - 1 < 0) dy = 1;
-        else if (dy - entity.constructor.SUBTILE_WIDTH + 1 > 0) dy = -1;
+        if (dy + this.SUBTILE_WIDTH - 1 < 0) dy = 1;
+        else if (dy - entity.SUBTILE_WIDTH + 1 > 0) dy = -1;
         else dy = 0;
 
         let index = (dy + 1) * 3 + (dx) + 1

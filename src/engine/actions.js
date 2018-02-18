@@ -19,7 +19,7 @@ Action.prototype.MARGIN = 2;
 
 class RejectConstructionPlan extends Action {
     execute() {
-        this.viewer.indicator.removeChildren();
+        this.viewer.constructionIndicator.removeChildren();
         this.viewer.bottombar.entityActions.popActions();
         this.viewer.isPlanningConstruction = false;
     }
@@ -36,20 +36,20 @@ let CreateBuildingFactory = function(Building) {
         execute() {
             this.viewer.isPlanningConstruction = true;
             this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
-            this.viewer.indicator.setBuilding(this.BUILDING);
-            this.viewer.indicator.children[0].on("click", this.handleClick.bind(this));
+            this.viewer.constructionIndicator.setBuilding(this.BUILDING);
+            this.viewer.constructionIndicator.children[0].on("click", this.handleClick.bind(this));
         }
         handleClick(e) {
             if (e.evt.button == 2 || e.evt.which == 3) this.rejectConstruction(e);
             else this.confirmConstruction(e);
         }
         confirmConstruction(e) {
-            if (!this.viewer.indicator.allow_construction) return;
-            let sub = this.viewer.indicator.sub;
+            if (!this.viewer.constructionIndicator.allow_construction) return;
+            let sub = this.viewer.constructionIndicator.sub;
             let building = new this.BUILDING(sub.x, sub.y, this.viewer.engine.current_player);
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);
-            this.viewer.indicator.removeChildren();
+            this.viewer.constructionIndicator.removeChildren();
             this.viewer.bottombar.entityActions.goToFirst();
             this.viewer.isPlanningConstruction = false;
             if (this.viewer.engine.selectedEntity) {
@@ -57,7 +57,7 @@ let CreateBuildingFactory = function(Building) {
             }
         }
         rejectConstruction(e) {
-            this.viewer.indicator.removeChildren();
+            this.viewer.constructionIndicator.removeChildren();
             this.viewer.bottombar.entityActions.popActions();
             this.viewer.isPlanningConstruction = false;
         }
@@ -134,7 +134,7 @@ Stop.prototype.IMAGE = make_image("img/interface/command/stop.png");
 let RecruitUnitFactory = function(Unit) {
     class RecruitUnit extends Action {
         execute() {
-            let pos = this.findEmptyArea(this.UNIT.SUBTILE_WIDTH);
+            let pos = this.findEmptyArea(this.UNIT.prototype.SUBTILE_WIDTH);
             if (pos != null) {
                 let unit = new this.UNIT(pos.x, pos.y, this.viewer.engine.current_player);
                 this.viewer.engine.addUnit(unit);
@@ -155,8 +155,8 @@ let RecruitUnitFactory = function(Unit) {
             do {
                 let dir = directions[curr_dir];
                 let dest = {
-                    x: curr.x + (this.entity.constructor.SUBTILE_WIDTH + width) * dir.x,
-                    y: curr.y + (this.entity.constructor.SUBTILE_WIDTH + width) * dir.y
+                    x: curr.x + (this.entity.SUBTILE_WIDTH + width) * dir.x,
+                    y: curr.y + (this.entity.SUBTILE_WIDTH + width) * dir.y
                 }
                 do {
                     if (this.viewer.engine.map.areSubtilesEmpty(curr.x, curr.y, width)) {

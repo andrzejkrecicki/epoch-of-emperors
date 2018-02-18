@@ -53,10 +53,10 @@ class GameViewer {
         this.layers.entities.on("click", this.handleClick.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
 
-        this.indicator = new ConstructionIndicator(this);
-        this.indicator.hide();
-        this.layers.interface.add(this.indicator);
-        this.stage.on("mousemove", this.indicator.move.bind(this.indicator));
+        this.constructionIndicator = new ConstructionIndicator(this);
+        this.constructionIndicator.hide();
+        this.layers.interface.add(this.constructionIndicator);
+        this.stage.on("mousemove", this.constructionIndicator.move.bind(this.constructionIndicator));
         this.isPlanningConstruction = false;
 
         this.orderIndicator = new MoverOrderIndicator(this);
@@ -91,7 +91,7 @@ class GameViewer {
         }
     }
     handleRightClick(e) {
-        if (this.engine.selectedEntity) {
+        if (this.engine.selectedEntity instanceof Unit) {
             let sx = (e.evt.layerX - this.mapDrawable.x());
             let sy = (e.evt.layerY - this.mapDrawable.y());
             let subtile = this.mapDrawable.screenCoordsToSubtile(sx, sy);
@@ -155,7 +155,7 @@ class GameViewer {
         if (this.bottombar.entityDetails.entity) {
             this.bottombar.entityDetails.setEntity(this.bottombar.entityDetails.entity);
         }
-        this.indicator.opacityPulse();
+        this.constructionIndicator.opacityPulse();
         this.orderIndicator.process();
     }
 }
@@ -555,7 +555,7 @@ class ConstructionIndicator extends Graphics.Group {
             this.viewer.mouseX + this.viewer.viewPort.x + MapDrawable.TILE_SIZE.width / 2,
             this.viewer.mouseY + this.viewer.viewPort.y + MapDrawable.TILE_SIZE.height / 2
         );
-        let W = this.building.SUBTILE_WIDTH;
+        let W = this.building.prototype.SUBTILE_WIDTH;
         this.sub.x -= Math.round(W / 2);
         this.sub.y -= Math.round(W / 2);
         let screen = this.viewer.mapDrawable.tileCoordsToScreen(

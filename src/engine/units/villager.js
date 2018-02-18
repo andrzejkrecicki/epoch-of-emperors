@@ -1,7 +1,7 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Bush } from '../resources/bush.js';
-import { make_image, leftpad, RESOURCE_TYPES } from '../../utils.js';
+import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 
@@ -23,7 +23,7 @@ class Villager extends Unit {
         else if (this.interactionObject instanceof Building) {
             // TODO - check if its our or enymy's building
             if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {
-                let res_name = this.RESOURCE_NAME[this.carriedResource];
+                let res_name = RESOURCE_NAME[this.carriedResource];
                 this.player.resources[res_name] += this.attributes[res_name];
                 this.attributes[res_name] = 0;
                 this.carriedResource = RESOURCE_TYPES.NONE;
@@ -77,18 +77,13 @@ class Villager extends Unit {
         this.prevInteractionObject = null;
     }
 }
-Villager.SUBTILE_WIDTH = 1;
+Villager.prototype.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = "Villager";
 Villager.prototype.AVATAR = make_image("img/interface/avatars/villager.png");
-Villager.prototype.HP = 25;
+Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.BUILD_RATE = 3;
 Villager.prototype.FORAGE_RATE = 60;
-Villager.prototype.RESOURCE_NAME = ["", "", "", ""];
-Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.FOOD] = "food";
-Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.WOOD] = "wood";
-Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.STONE] = "stone";
-Villager.prototype.RESOURCE_NAME[RESOURCE_TYPES.GOLD] = "gold";
 
 Villager.prototype.CAPACITY = {
     FOOD: 10,
@@ -119,38 +114,28 @@ Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FORAGE] = 4;
 
 Villager.prototype.IMAGES = {};
-Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = [
-    [make_image("img/units/villager/idle/N.png")],
-    [make_image("img/units/villager/idle/NE.png")],
-    [make_image("img/units/villager/idle/E.png")],
-    [make_image("img/units/villager/idle/SE.png")],
-    [make_image("img/units/villager/idle/S.png")],
-    [make_image("img/units/villager/idle/SW.png")],
-    [make_image("img/units/villager/idle/W.png")],
-    [make_image("img/units/villager/idle/NW.png")],
-];
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_IDLE] = [
-    [make_image("img/units/villager/builder_idle/N.png")],
-    [make_image("img/units/villager/builder_idle/NE.png")],
-    [make_image("img/units/villager/builder_idle/E.png")],
-    [make_image("img/units/villager/builder_idle/SE.png")],
-    [make_image("img/units/villager/builder_idle/S.png")],
-    [make_image("img/units/villager/builder_idle/SW.png")],
-    [make_image("img/units/villager/builder_idle/W.png")],
-    [make_image("img/units/villager/builder_idle/NW.png")],
-];
+Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE][dir].push(
+        make_image(`img/units/villager/idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
+    );
+}
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE] = [
-    [make_image("img/units/villager/forage_idle/N.png")],
-    [make_image("img/units/villager/forage_idle/NE.png")],
-    [make_image("img/units/villager/forage_idle/E.png")],
-    [make_image("img/units/villager/forage_idle/SE.png")],
-    [make_image("img/units/villager/forage_idle/S.png")],
-    [make_image("img/units/villager/forage_idle/SW.png")],
-    [make_image("img/units/villager/forage_idle/W.png")],
-    [make_image("img/units/villager/forage_idle/NW.png")],
-];
+Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_IDLE][dir].push(
+        make_image(`img/units/villager/builder_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
+    );
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE][dir].push(
+        make_image(`img/units/villager/forage_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
+    );
+}
+
 
 Villager.prototype.IMAGES[Villager.prototype.STATE.MOVING] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {

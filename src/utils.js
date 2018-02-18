@@ -27,6 +27,7 @@ let RESOURCE_TYPES = {
     GOLD: 4
 };
 
+let RESOURCE_NAME = [null, "food", "wood", "stone", "gold"]
 
 let PLAYER_COLOURS = [
     "blue",
@@ -108,5 +109,5 @@ var rect_intersection = function(r1, r2) {
 export {
     PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
     make_image, to_binary, leftpad, rand_choice, rect_intersection, distance,
-    manhatan_subtile_distance, RESOURCE_TYPES
+    manhatan_subtile_distance, RESOURCE_TYPES, RESOURCE_NAME
 }

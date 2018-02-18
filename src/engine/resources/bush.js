@@ -8,8 +8,8 @@ class Bush extends Entity {
         this.attributes = {
             food: 150
         };
-        this.hp = Bush.prototype.HP;
-        this.max_hp = Bush.prototype.HP;
+        this.hp = Bush.prototype.MAX_HP;
+        this.max_hp = Bush.prototype.MAX_HP;
 
         this.createSelectionRect();
         this.setImage();
@@ -30,7 +30,8 @@ class Bush extends Entity {
             y: -this.IMAGE_OFFSET.y,
             image: this.IMAGE,
             width: this.IMAGE.width,
-            height: this.IMAGE.height
+            height: this.IMAGE.height,
+            hasHitmap: true,
         });
         this.add(this.image);
     }
@@ -60,8 +61,8 @@ class Bush extends Entity {
         return this.image.width();
     }
 }
-Bush.prototype.HP = 25;
-Bush.SUBTILE_WIDTH = 1;
+Bush.prototype.MAX_HP = 25;
+Bush.prototype.SUBTILE_WIDTH = 1;
 Bush.prototype.NAME = "Berry Bush";
 Bush.prototype.AVATAR = make_image("img/interface/avatars/bush.png");
 

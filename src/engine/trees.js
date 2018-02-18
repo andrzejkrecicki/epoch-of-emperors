@@ -8,9 +8,9 @@ class Tree extends Entity {
         this.attributes = {
             wood: 75
         };
-        this.hp = Tree.HP;
-        this.max_hp = Tree.HP;
-        this.imgChoice = Math.floor(Math.random() * this.constructor.IMAGES.length);
+        this.hp = Tree.prototype.MAX_HP;
+        this.max_hp = Tree.prototype.MAX_HP;
+        this.imgChoice = Math.floor(Math.random() * this.IMAGES.length);
 
         this.createSelectionRect();
         this.setImage();
@@ -18,27 +18,28 @@ class Tree extends Entity {
     }
     setImage() {
         this.image = new Graphics.Image({
-            x: -this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
-            y: -this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
-            image: this.constructor.IMAGES[this.imgChoice],
-            width: this.constructor.IMAGES[this.imgChoice].width,
-            height: this.constructor.IMAGES[this.imgChoice].height
+            x: -this.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
+            y: -this.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
+            image: this.IMAGES[this.imgChoice],
+            width: this.IMAGES[this.imgChoice].width,
+            height: this.IMAGES[this.imgChoice].height,
+            hasHitmap: true
         });
         this.add(this.image);
     }
     createSelectionRect() {
-        let referenceSprite = this.constructor.IMAGES[this.imgChoice];
+        let referenceSprite = this.IMAGES[this.imgChoice];
         super.createSelectionRect({
-            x: Math.round(-this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2),
-            y: Math.round(-this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2),
+            x: Math.round(-this.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2),
+            y: Math.round(-this.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2),
             width: referenceSprite.width,
             height: referenceSprite.height
         })
     }
     resetBoundingBox() {
         this.boundingBox = {
-            x: this.x() - this.constructor.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
-            y: this.y() - this.constructor.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
+            x: this.x() - this.IMAGE_OFFSETS[this.imgChoice].x + MapDrawable.TILE_SIZE.width / 2,
+            y: this.y() - this.IMAGE_OFFSETS[this.imgChoice].y + MapDrawable.TILE_SIZE.height / 2,
             w: this.image.width(),
             h: this.image.height()
         }
@@ -53,16 +54,16 @@ class Tree extends Entity {
         return this.image.width();
     }
 }
-Tree.HP = 25;
-Tree.SUBTILE_WIDTH = 2;
+Tree.prototype.MAX_HP = 25;
+Tree.prototype.SUBTILE_WIDTH = 2;
 
 class LeafTree extends Tree {
     constructor(x, y) {
         super(...arguments);
     }
 }
-LeafTree.NAME = "Deciduous";
-LeafTree.IMAGES = [
+LeafTree.prototype.NAME = "Deciduous";
+LeafTree.prototype.IMAGES = [
     make_image("img/trees/leaf_00.png"),
     make_image("img/trees/leaf_01.png"),
     make_image("img/trees/leaf_02.png"),
@@ -70,7 +71,7 @@ LeafTree.IMAGES = [
     make_image("img/trees/leaf_04.png"),
     make_image("img/trees/leaf_05.png"),
 ];
-LeafTree.IMAGE_OFFSETS = [
+LeafTree.prototype.IMAGE_OFFSETS = [
     { x: 31, y: 54 },
     { x: 22, y: 60 },
     { x: 35, y: 68 },
@@ -85,14 +86,14 @@ class PalmTree extends Tree {
         super(...arguments);
     }
 }
-PalmTree.NAME = "Palm";
-PalmTree.IMAGES = [
+PalmTree.prototype.NAME = "Palm";
+PalmTree.prototype.IMAGES = [
     make_image("img/trees/palm_00.png"),
     make_image("img/trees/palm_01.png"),
     make_image("img/trees/palm_02.png"),
     make_image("img/trees/palm_03.png"),
 ];
-PalmTree.IMAGE_OFFSETS = [
+PalmTree.prototype.IMAGE_OFFSETS = [
     { x: 22, y: 63 },
     { x: 34, y: 57 },
     { x: 37, y: 48 },
@@ -105,15 +106,15 @@ class PineTree extends Tree {
         super(...arguments);
     }
 }
-PineTree.NAME = "Pine";
-PineTree.IMAGES = [
+PineTree.prototype.NAME = "Pine";
+PineTree.prototype.IMAGES = [
     make_image("img/trees/pine_00.png"),
     make_image("img/trees/pine_01.png"),
     make_image("img/trees/pine_02.png"),
     make_image("img/trees/pine_03.png"),
     make_image("img/trees/pine_04.png"),
 ];
-PineTree.IMAGE_OFFSETS = [
+PineTree.prototype.IMAGE_OFFSETS = [
     { x: 24, y: 75 },
     { x: 32, y: 62 },
     { x: 24, y: 68 },

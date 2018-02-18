@@ -57,12 +57,12 @@ class Engine {
             // transition between two subtiles is done which can be considered as done step
             if (entity.path_progress > 0) {
                 // if first step was already done, we have to release previously occupied area
-                this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, null);
+                this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, null);
             }
             entity.subtile_x = entity.path[entity.path_progress].x;
             entity.subtile_y = entity.path[entity.path_progress].y;
             entity.position(tmp_target);
-            this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.constructor.SUBTILE_WIDTH, entity);
+            this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, entity);
             ++entity.path_progress;
 
             if (entity.path_progress < entity.path.length) {
@@ -78,7 +78,7 @@ class Engine {
                     this.map.fillSubtilesWith(
                         entity.path[entity.path_progress].x,
                         entity.path[entity.path_progress].y,
-                        entity.constructor.SUBTILE_WIDTH,
+                        entity.SUBTILE_WIDTH,
                         entity
                     );
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT) {
@@ -124,7 +124,7 @@ class Engine {
             this.map.fillSubtilesWith(
                 entity.path[entity.path_progress].x,
                 entity.path[entity.path_progress].y,
-                entity.constructor.SUBTILE_WIDTH,
+                entity.SUBTILE_WIDTH,
                 entity
             );
         } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
@@ -145,8 +145,8 @@ class Engine {
     }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
-        for (let x = subtile_x; x < subtile_x + entity.constructor.SUBTILE_WIDTH; ++x) {
-            for (let y = subtile_y; y < subtile_y + entity.constructor.SUBTILE_WIDTH; ++y) {
+        for (let x = subtile_x; x < subtile_x + entity.SUBTILE_WIDTH; ++x) {
+            for (let y = subtile_y; y < subtile_y + entity.SUBTILE_WIDTH; ++y) {
                 if (this.map.subtiles[x][y] != null && this.map.subtiles[x][y] != entity) {
                     if (this.map.subtiles[x][y].path != null) {
                         return Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT
@@ -219,12 +219,12 @@ class Engine {
         }
     }
     addUnit(unit) {
-        this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.constructor.SUBTILE_WIDTH, unit);
+        this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.SUBTILE_WIDTH, unit);
         this.map.entities.push(unit);
         this.units.push(unit);
     }
     addBuilding(building) {
-        this.map.fillSubtilesWith(building.subtile_x, building.subtile_y, building.constructor.SUBTILE_WIDTH, building);
+        this.map.fillSubtilesWith(building.subtile_x, building.subtile_y, building.SUBTILE_WIDTH, building);
         this.map.entities.push(building);
         this.buildings.push(building);
     }

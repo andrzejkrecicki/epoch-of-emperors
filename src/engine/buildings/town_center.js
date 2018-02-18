@@ -15,8 +15,8 @@ class TownCenter extends Building {
 }
 TownCenter.prototype.NAME = "Town Center";
 TownCenter.prototype.AVATAR = make_image("img/interface/avatars/town_center_01_all.png");
-TownCenter.prototype.HP = 600;
-TownCenter.SUBTILE_WIDTH = 5;
+TownCenter.prototype.MAX_HP = 600;
+TownCenter.prototype.SUBTILE_WIDTH = 5;
 
 TownCenter.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 TownCenter.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/town_center/01_all.png")];
