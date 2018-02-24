@@ -288,6 +288,51 @@ class HitlessLayer extends Layer {
 }
 
 
+class GridPreview extends Layer {
+    constructor(stage) {
+        super();
+        this.stage = stage;
+        this.buff = document.createElement("canvas");
+        this.buff.setAttribute("width", this.stage.width() + 32);
+        this.buff.setAttribute("height", this.stage.height() + 16);
+        this.buff_ctx = this.buff.getContext("2d");
+        this.attrs.visible = false;
+    }
+    init(md) {
+        this.attrs.visible = true;
+        this.md = md;
+
+        let begin_x = (-this.md.x()) - ((-this.md.x()) % 32);
+        let begin_y = (-this.md.y()) - ((-this.md.y()) % 16);
+
+        for (let x = begin_x; x < begin_x + 32 + this.stage.width(); ++x) {
+            for (let y = begin_y; y < begin_y + 16 + this.stage.height(); ++y) {
+                let point = this.md.screenCoordsToSubtile(x, y);
+                let cx = point.x;
+                let cy = point.y;
+
+                if (cx % 2 == cy % 2) {
+                    this.buff_ctx.fillStyle = "rgba(0, 0, 0, .25)";
+                    this.buff_ctx.fillRect(x - begin_x, y - begin_y, 1, 1);
+                }
+
+            }
+        }
+
+    }
+    draw() {
+        if (!this.attrs.visible) return;
+        this.ctx.clearRect(0, 0, this.stage.width(), this.stage.height());
+
+        this.ctx.drawImage(this.buff, -((-this.md.x()) % 32), -((-this.md.y()) % 16));
+
+    }
+    getNodeAt() {}
+    makeHitmap() {}
+    clear() {}
+}
+
+
 class Group extends Node {
     constructor(options) {
         super(options || {});
@@ -554,6 +599,7 @@ window.Graphics = {
     Stage: Stage,
     Layer: Layer,
     HitlessLayer: HitlessLayer,
+    GridPreview: GridPreview,
     Group: Group,
     Rect: Rect,
     Text: Text,

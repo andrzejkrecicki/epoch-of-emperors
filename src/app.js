@@ -16,12 +16,13 @@ class Game {
         this.layers = {
             terrain: new Graphics.HitlessLayer(),
             entities: new Graphics.Layer(),
+            grid: new Graphics.GridPreview(this.stage),
             interface: new Graphics.Layer()
         };
 
         this.stage.add(this.layers.terrain);
         this.stage.add(this.layers.entities);
-
+        this.stage.add(this.layers.grid);
         this.stage.add(this.layers.interface);
 
         this.navigator = new MenuNavigator(this.stage, this.layers);

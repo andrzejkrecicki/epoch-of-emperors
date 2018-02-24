@@ -67,6 +67,9 @@ class GameViewer {
         this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
         this.layers.interface.add(this.bottombar);
 
+        this.layers.grid.init(this.mapDrawable);
+
+
         this.engine.startLoop();
     }
     handleClick(e) {
