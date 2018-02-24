@@ -1,6 +1,7 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Bush } from '../resources/bush.js';
+import { Tree } from '../trees.js';
 import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
@@ -44,6 +45,10 @@ class Villager extends Unit {
         } else if (this.interactionObject instanceof Bush) {
             this.state = this.STATE.FORAGE;
             this.interaction_type = this.INTERACTION_TYPE.FORAGE;
+            this.rotateToEntity(this.interactionObject);
+        } else if (this.interactionObject instanceof Tree) {
+            this.state = this.STATE.LUMBER;
+            this.interaction_type = this.INTERACTION_TYPE.LUMBER;
             this.rotateToEntity(this.interactionObject);
         } else {
             super.initInteraction();
@@ -109,9 +114,20 @@ Villager.prototype.STATE.FORAGE = 2 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.FORAGE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FORAGE;
 Villager.prototype.STATE.FORAGE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FORAGE;
 
+Villager.prototype.STATE.LUMBER = 3 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.LUMBER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.LUMBER;
+Villager.prototype.STATE.LUMBER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.LUMBER;
+
+Villager.prototype.STATE.CHOP = 4 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+
+Villager.prototype.STATE.CARRY_WOOD = 5 << Unit.prototype.BASE_STATE_MASK_WIDTH | Villager.prototype.STATE.MOVING;
+
+
 Villager.prototype.FRAME_RATE = {}
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FORAGE] = 4;
+Villager.prototype.FRAME_RATE[Villager.prototype.STATE.LUMBER] = 3;
+Villager.prototype.FRAME_RATE[Villager.prototype.STATE.CHOP] = 3;
 
 Villager.prototype.IMAGES = {};
 
@@ -133,6 +149,13 @@ Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE] = new Array(8).f
 for (let dir = 0; dir < 8; ++dir) {
     Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE][dir].push(
         make_image(`img/units/villager/forage_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
+    );
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE][dir].push(
+        make_image(`img/units/villager/lumber_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
     );
 }
 
@@ -183,6 +206,46 @@ for (let dir = 0; dir < 8; ++dir) {
     }
 }
 
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 11; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER][dir].push(
+            make_image(`img/units/villager/lumber/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_MOVING][dir].push(
+            make_image(`img/units/villager/lumber_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP][dir].push(
+            make_image(`img/units/villager/chop/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD][dir].push(
+            make_image(`img/units/villager/carry_wood/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+
 Villager.prototype.IMAGE_OFFSETS = {};
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 0, y: 35 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MOVING] = { x: 6, y: 33 };
@@ -194,5 +257,14 @@ Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_MOVING] = { x
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE] = { x: 17, y: 39 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_IDLE] = { x: 4, y: 33 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_MOVING] = { x: 11, y: 34 };
+
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER] = { x: 12, y: 47 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_IDLE] = { x: 8, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_MOVING] = { x: 8, y: 33 };
+
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP] = { x: 17, y: 43 };
+
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD] = { x: 8, y: 33 };
+
 
 export { Villager }
