@@ -1,6 +1,5 @@
 import { Entity } from './entity.js';
 import { make_image, rand_choice } from '../utils.js';
-import { MapDrawable } from '../viewer.js';
 
 class Tree extends Entity {
     constructor(subtile_x, subtile_y) {

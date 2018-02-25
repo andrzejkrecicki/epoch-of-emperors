@@ -19,8 +19,8 @@ class Villager extends Unit {
         this.carriedResource = RESOURCE_TYPES.NONE;
     }
     preInitInteraction(object) {
-        if (object instanceof Building) {
-            if (object.hp < object.MAX_HP) this.state = Villager.prototype.STATE.BUILDING;
+        if (object instanceof Building && object.hp < object.MAX_HP) {
+            this.state = Villager.prototype.STATE.BUILDING;
         } else if (object instanceof Tree) {
             this.state = Villager.prototype.STATE.LUMBER;
             this.attributes.food = this.attributes.gold = this.attributes.stone = 0;
@@ -70,14 +70,11 @@ class Villager extends Unit {
             if (this.interactionObject.isComplete || this.interactionObject.destroyed) this.terminateInteraction();
             else if (engine.framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
         } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
-            if (engine.framesCount % this.FORAGE_RATE == 0) {
-                if (this.interactionObject.destroyed) {
-                    this.terminateInteraction() // TODO: find next berry bush
-                } else {
-                    this.attributes.food += this.interactionObject.getFood();
-                    this.carriedResource = RESOURCE_TYPES.FOOD;
-                    if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
-                }
+            if (this.interactionObject.destroyed) this.terminateInteraction() // TODO: find next berry bush
+            else if (engine.framesCount % this.FORAGE_RATE == 0) {
+                this.attributes.food += this.interactionObject.getFood();
+                this.carriedResource = RESOURCE_TYPES.FOOD;
+                if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.LUMBER) {
             if (this.interactionObject.destroyed) this.terminateInteraction(); // TODO: find next tree
@@ -87,9 +84,6 @@ class Villager extends Unit {
                 } else {
                     this.state = Villager.prototype.STATE.CHOP;
                     this.interaction_type = Villager.prototype.INTERACTION_TYPE.CHOP;
-                    this.attributes.wood += this.interactionObject.getWood();
-                    this.carriedResource = RESOURCE_TYPES.WOOD;
-                    if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
                 }
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.CHOP) {
@@ -100,14 +94,24 @@ class Villager extends Unit {
                 if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
             }
         }
+
     }
     returnResources(engine) {
         let building = this.player.getNearestBuilding(this, { NAME: "Town Center" });
         this.prevInteractionObject = this.interactionObject;
         engine.interactOrder(this, building);
     }
+    stopInteraction() {
+        if (this.interaction_type == this.INTERACTION_TYPE.CHOP) {
+            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_WOOD;
+            else this.state = this.STATE.LUMBER;
+        }
+    }
     terminateInteraction() {
+        if (this.interaction_type == this.INTERACTION_TYPE.NONE) return;
+        this.stopInteraction();
         this.setBaseState(this.STATE.IDLE);
+        this.INTERACTION_TYPE.NONE;
         this.frame = 0;
         this.interactionObject = null;
         this.prevInteractionObject = null;
@@ -152,8 +156,10 @@ Villager.prototype.STATE.LUMBER_IDLE = Villager.prototype.STATE.IDLE | Villager.
 Villager.prototype.STATE.LUMBER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.LUMBER;
 
 Villager.prototype.STATE.CHOP = 4 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.CHOP_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CHOP;
-Villager.prototype.STATE.CHOP_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CHOP;
+
+Villager.prototype.STATE.CARRY_WOOD = 5 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_WOOD_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_WOOD;
+Villager.prototype.STATE.CARRY_WOOD_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_WOOD;
 
 
 Villager.prototype.FRAME_RATE = {}
@@ -184,7 +190,7 @@ for (let dir = 0; dir < 8; ++dir) {
         make_image(`img/units/villager/forage_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
     );
 }
-
+    
 Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
     Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE][dir].push(
@@ -193,9 +199,9 @@ for (let dir = 0; dir < 8; ++dir) {
 }
 
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_IDLE] = new Array(8).fill(null).map(() => []);
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_IDLE] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_IDLE][dir].push(
+    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_IDLE][dir].push(
         make_image(`img/units/villager/carry_wood/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
     );
 }
@@ -277,10 +283,10 @@ for (let dir = 0; dir < 8; ++dir) {
 }
 
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_MOVING] = new Array(8).fill(null).map(() => []);
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_MOVING] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
     for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_MOVING][dir].push(
+        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_MOVING][dir].push(
             make_image(`img/units/villager/carry_wood/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
         )
     }
@@ -304,9 +310,8 @@ Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_IDLE] = { x: 8,
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_MOVING] = { x: 8, y: 33 };
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP] = { x: 17, y: 43 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP_MOVING] = { x: 8, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP_IDLE] = { x: 8, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_MOVING] = { x: 8, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_IDLE] = { x: 8, y: 33 };
 
 
 export { Villager }

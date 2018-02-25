@@ -103,7 +103,7 @@ class Unit extends Entity {
         this.state |= state;
     }
     preInitInteraction(object) {
-        
+
     }
     initInteraction() {
         if (false) {
@@ -115,6 +115,12 @@ class Unit extends Entity {
     }
     processInteraction() {
         
+    }
+    stopInteraction() {
+        
+    }
+    terminateInteraction() {
+
     }
     getBoundingBox() {
         return this.boundingBox;

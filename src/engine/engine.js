@@ -183,8 +183,7 @@ class Engine {
         let finder = new AStarPathFinder(unit, this.map, point);
         let path = finder.run();
         if (path !== null && path.length > 0) {
-            unit.interactionObject = null;
-            unit.prevInteractionObject = null;
+            unit.terminateInteraction();
             unit.swapPath(path);
             unit.setBaseState(Unit.prototype.STATE.MOVING);
             unit.rotateToSubtile(unit.path[0]);
@@ -194,6 +193,7 @@ class Engine {
         let finder = new AStarToEntity(active, this.map, passive, subtilesLimit);
         let path = finder.run();
         if (path !== null) {
+            active.stopInteraction();
             active.interactionObject = passive;
             active.hasFullPath = finder.done;
             if (path.length) {
