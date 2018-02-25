@@ -159,7 +159,9 @@ Unit.prototype.INTERACTION_TYPE = {
     BUILDING: 1,
     FORAGE: 2,
     LUMBER: 3,
-    CHOP: 4
+    CHOP: 4,
+    MINEGOLD: 5,
+    MINESTONE: 6
 }
 
 export { Unit }
