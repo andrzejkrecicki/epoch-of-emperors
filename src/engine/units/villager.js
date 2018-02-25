@@ -1,6 +1,7 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { GoldMine } from '../resources/gold.js';
+import { StoneMine } from '../resources/stone.js';
 import { Bush } from '../resources/bush.js';
 import { Tree } from '../trees.js';
 import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
@@ -31,6 +32,9 @@ class Villager extends Unit {
         } else if (object instanceof GoldMine) {
             this.state = Villager.prototype.STATE.MINE;
             this.attributes.food = this.attributes.wood = this.attributes.stone = 0;
+        } else if (object instanceof StoneMine) {
+            this.state = Villager.prototype.STATE.MINE;
+            this.attributes.food = this.attributes.wood = this.attributes.gold = 0;
         }
     }
     initInteraction(engine) {
@@ -68,6 +72,10 @@ class Villager extends Unit {
         } else if (this.interactionObject instanceof GoldMine) {
             this.state = this.STATE.MINE;
             this.interaction_type = this.INTERACTION_TYPE.MINEGOLD;
+            this.rotateToEntity(this.interactionObject);
+        } else if (this.interactionObject instanceof StoneMine) {
+            this.state = this.STATE.MINE;
+            this.interaction_type = this.INTERACTION_TYPE.MINESTONE;
             this.rotateToEntity(this.interactionObject);
         } else {
             super.initInteraction();
@@ -108,6 +116,13 @@ class Villager extends Unit {
                 this.carriedResource = RESOURCE_TYPES.GOLD;
                 if (this.attributes.gold == this.CAPACITY.GOLD) this.returnResources(engine);
             }
+        } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
+            if (this.interactionObject.destroyed) this.terminateInteraction() // TODO: find next stone mine
+            else if (engine.framesCount % this.MINE_RATE == 0) {
+                this.attributes.stone += this.interactionObject.getStone();
+                this.carriedResource = RESOURCE_TYPES.STONE;
+                if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
+            }
         }
 
     }
@@ -122,6 +137,9 @@ class Villager extends Unit {
             else this.state = this.STATE.LUMBER;
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINEGOLD) {
             if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_GOLD;
+            else this.state = this.STATE.MINE;
+        } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
+            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_STONE;
             else this.state = this.STATE.MINE;
         }
     }
@@ -188,6 +206,10 @@ Villager.prototype.STATE.CARRY_GOLD = 7 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_GOLD_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_GOLD;
 Villager.prototype.STATE.CARRY_GOLD_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_GOLD;
 
+Villager.prototype.STATE.CARRY_STONE = 8 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_STONE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_STONE;
+Villager.prototype.STATE.CARRY_STONE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_STONE;
+
 
 Villager.prototype.FRAME_RATE = {}
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
@@ -245,6 +267,13 @@ Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_GOLD_IDLE] = new Array(
 for (let dir = 0; dir < 8; ++dir) {
     Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_GOLD_IDLE][dir].push(
         make_image(`img/units/villager/carry_gold/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
+    );
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_IDLE][dir].push(
+        make_image(`img/units/villager/carry_stone/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
     );
 }
 
@@ -363,6 +392,15 @@ for (let dir = 0; dir < 8; ++dir) {
     }
 }
 
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_MOVING][dir].push(
+            make_image(`img/units/villager/carry_stone/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
 
 
 Villager.prototype.IMAGE_OFFSETS = {};
@@ -391,6 +429,9 @@ Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_MOVING] = { x: 10
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_MOVING] = { x: 5, y: 33 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_IDLE] = { x: 5, y: 33 };
+
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_MOVING] = { x: 5, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_IDLE] = { x: 5, y: 33 };
 
 
 export { Villager }

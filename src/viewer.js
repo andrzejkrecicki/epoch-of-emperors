@@ -399,12 +399,13 @@ class EntityAttributes extends Graphics.Group {
 
     }
 }
-EntityAttributes.ALL_ATTRIBUTES = ["attack", "food", "wood", "gold"];
+EntityAttributes.ALL_ATTRIBUTES = ["attack", "food", "wood", "gold", "stone"];
 EntityAttributes.ATTRIBUTES = {
     attack: make_image("img/interface/details/attack.png"),
     food: make_image("img/interface/details/food.png"),
     wood: make_image("img/interface/details/wood.png"),
     gold: make_image("img/interface/details/gold.png"),
+    stone: make_image("img/interface/details/stone.png"),
 }
 
 class EntityAttribute extends Graphics.Group {
