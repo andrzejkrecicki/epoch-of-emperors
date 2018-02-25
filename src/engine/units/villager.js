@@ -68,6 +68,26 @@ class Villager extends Unit {
                     if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
                 }
             }
+        } else if (this.interaction_type == this.INTERACTION_TYPE.LUMBER) {
+            if (this.interactionObject.destroyed) this.terminateInteraction(); // TODO: find next tree
+            else {
+                if (this.interactionObject.state == Tree.prototype.STATE.ALIVE) {
+                    if (engine.framesCount % this.LUMBER_RATE == 0) this.interactionObject.lumberTick();
+                } else {
+                    this.state = Villager.prototype.STATE.CHOP;
+                    this.interaction_type = Villager.prototype.INTERACTION_TYPE.CHOP;
+                    this.attributes.wood += this.interactionObject.getWood();
+                    this.carriedResource = RESOURCE_TYPES.WOOD;
+                    if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
+                }
+            }
+        } else if (this.interaction_type == this.INTERACTION_TYPE.CHOP) {
+            if (this.interactionObject.destroyed) this.terminateInteraction(); // TODO: find next tree
+            else if (engine.framesCount % this.CHOP_RATE == 0) {
+                this.attributes.wood += this.interactionObject.getWood();
+                this.carriedResource = RESOURCE_TYPES.WOOD;
+                if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
+            }
         }
     }
     returnResources(engine) {
@@ -89,6 +109,8 @@ Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.BUILD_RATE = 3;
 Villager.prototype.FORAGE_RATE = 60;
+Villager.prototype.LUMBER_RATE = 15;
+Villager.prototype.CHOP_RATE = 60;
 
 Villager.prototype.CAPACITY = {
     FOOD: 10,
@@ -119,8 +141,8 @@ Villager.prototype.STATE.LUMBER_IDLE = Villager.prototype.STATE.IDLE | Villager.
 Villager.prototype.STATE.LUMBER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.LUMBER;
 
 Villager.prototype.STATE.CHOP = 4 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-
-Villager.prototype.STATE.CARRY_WOOD = 5 << Unit.prototype.BASE_STATE_MASK_WIDTH | Villager.prototype.STATE.MOVING;
+Villager.prototype.STATE.CHOP_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CHOP;
+Villager.prototype.STATE.CHOP_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CHOP;
 
 
 Villager.prototype.FRAME_RATE = {}
@@ -156,6 +178,14 @@ Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE] = new Array(8).f
 for (let dir = 0; dir < 8; ++dir) {
     Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE][dir].push(
         make_image(`img/units/villager/lumber_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
+    );
+}
+
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_IDLE][dir].push(
+        make_image(`img/units/villager/carry_wood/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
     );
 }
 
@@ -236,10 +266,10 @@ for (let dir = 0; dir < 8; ++dir) {
 }
 
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD] = new Array(8).fill(null).map(() => []);
+Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_MOVING] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
     for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD][dir].push(
+        Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP_MOVING][dir].push(
             make_image(`img/units/villager/carry_wood/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
         )
     }
@@ -264,7 +294,8 @@ Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_MOVING] = { x: 
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP] = { x: 17, y: 43 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD] = { x: 8, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP_MOVING] = { x: 8, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP_IDLE] = { x: 8, y: 33 };
 
 
 export { Villager }

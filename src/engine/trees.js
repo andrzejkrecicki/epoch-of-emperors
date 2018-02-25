@@ -17,6 +17,27 @@ class Tree extends Entity {
         this.setImage();
         this.resetBoundingBox();
     }
+    lumberTick() {
+        --this.hp;
+        if (this.hp == 0) {
+            this.state = Tree.prototype.STATE.CUT;
+            this.imgChoice = Math.floor(Math.random() * this.IMAGES[this.state].length);
+            this.image.remove();
+            this.selectionRect.remove();
+            this.createSelectionRect();
+            this.setImage();
+            this.resetBoundingBox();
+        }
+    }
+    getWood() {
+        if (this.attributes.wood == 0) {
+            this.destroyed = true;
+            return 0;
+        } else {
+            --this.attributes.wood;
+            return 1;
+        }
+    }
     setImage() {
         this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state][this.imgChoice].x,

@@ -148,7 +148,9 @@ Unit.prototype.BASE_STATE_MASK = (
 Unit.prototype.INTERACTION_TYPE = {
     NONE: 0,
     BUILDING: 1,
-    FORAGE: 2
+    FORAGE: 2,
+    LUMBER: 3,
+    CHOP: 4
 }
 
 export { Unit }
