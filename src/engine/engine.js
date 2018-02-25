@@ -199,6 +199,7 @@ class Engine {
             if (path.length) {
                 active.swapPath(path);
                 active.rotateToSubtile(active.path[0]);
+                active.preInitInteraction(passive);
                 active.setBaseState(Unit.prototype.STATE.MOVING);
             } else {
                 active.path = null;

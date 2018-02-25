@@ -18,6 +18,17 @@ class Villager extends Unit {
         }
         this.carriedResource = RESOURCE_TYPES.NONE;
     }
+    preInitInteraction(object) {
+        if (object instanceof Building) {
+            if (object.hp < object.MAX_HP) this.state = Villager.prototype.STATE.BUILDING;
+        } else if (object instanceof Tree) {
+            this.state = Villager.prototype.STATE.LUMBER;
+            this.attributes.food = this.attributes.gold = this.attributes.stone = 0;
+        } else if (object instanceof Bush) {
+            this.state = Villager.prototype.STATE.FORAGE;
+            this.attributes.wood = this.attributes.gold = this.attributes.stone = 0;
+        }
+    }
     initInteraction(engine) {
         if (this.interactionObject.destroyed) this.terminateInteraction();
         else if (!this.hasFullPath) this.setBaseState(this.STATE.IDLE);

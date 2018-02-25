@@ -102,6 +102,9 @@ class Unit extends Entity {
         this.state &= this.BASE_STATE_MASK;
         this.state |= state;
     }
+    preInitInteraction(object) {
+        
+    }
     initInteraction() {
         if (false) {
             // attack enymy unit
