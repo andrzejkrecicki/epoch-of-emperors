@@ -115,7 +115,8 @@ Node.prototype.DEFAULT_ATTRS = {
     align: "left",
     textBaseline: "middle",
     fontFamily: "helvetica",
-    fontSize: 14
+    fontSize: 14,
+    fontWeight: "normal"
 };
 Node.prototype.GETSETERS = [
     "x",
@@ -376,6 +377,7 @@ class Text extends Node {
         this.attrs.textBaseline = options.textBaseline ? options.textBaseline : this.DEFAULT_ATTRS.textBaseline;
         this.attrs.fontFamily = options.fontFamily ? options.fontFamily : this.DEFAULT_ATTRS.fontFamily;
         this.attrs.fontSize = options.fontSize ? options.fontSize : this.DEFAULT_ATTRS.fontSize;
+        this.attrs.fontWeight = options.fontWeight ? options.fontWeight : this.DEFAULT_ATTRS.fontWeight;
         this.attrs.text = options.text;
     }
     draw() {
@@ -383,7 +385,7 @@ class Text extends Node {
         this.layer.ctx.fillStyle = this.attrs.fill;
         this.layer.ctx.textAlign = this.attrs.align;
         this.layer.ctx.textBaseline = this.attrs.textBaseline;
-        this.layer.ctx.font = "" + this.attrs.fontSize + "px " + this.attrs.fontFamily;
+        this.layer.ctx.font = `${this.attrs.fontWeight} ${this.attrs.fontSize}px ${this.attrs.fontFamily}`;
         this.layer.ctx.fillText(this.attrs.text, this.absX(), this.absY());
     }
 }

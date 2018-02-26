@@ -155,6 +155,7 @@ class GameViewer {
     }
     process() {
         this.handleScroll();
+        this.topbar.process(this.engine.current_player);
         if (this.bottombar.entityDetails.entity) {
             this.bottombar.entityDetails.setEntity(this.bottombar.entityDetails.entity);
         }
@@ -286,9 +287,34 @@ class TopBar extends Graphics.Group {
             height: TopBar.IMAGE.height
         });
         this.add(this.image);
+        this.wood = new Graphics.Text(Object.assign({ x: 34, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.add(this.wood);
+
+        this.food = new Graphics.Text(Object.assign({ x: 101, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.add(this.food);
+
+        this.gold = new Graphics.Text(Object.assign({ x: 168, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.add(this.gold);
+
+        this.stone = new Graphics.Text(Object.assign({ x: 235, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.add(this.stone);
+    }
+    process(player) {
+        this.wood.text(player.resources.wood);
+        this.food.text(player.resources.food);
+        this.gold.text(player.resources.gold);
+        this.stone.text(player.resources.stone);
     }
 }
 TopBar.IMAGE = make_image("img/interface/greek/topbar.png");
+TopBar.TEXT_OPTIONS = {
+    fontSize: 13,
+    fontFamily: 'helvetica',
+    fontWeight: "bold",
+    textBaseline: "top",
+    fill: '#000000',
+};
+
 
 
 class BottomBar extends Graphics.Group {
