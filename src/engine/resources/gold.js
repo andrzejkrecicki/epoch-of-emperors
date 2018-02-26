@@ -8,6 +8,8 @@ class GoldMine extends Entity {
             gold: 400
         };
         this.imgChoice = Math.floor(Math.random() * this.IMAGES.length);
+        this.hp = this.MAX_HP;
+        this.max_hp = this.MAX_HP;
 
         this.createSelectionRect();
         this.setImage();
@@ -61,8 +63,10 @@ class GoldMine extends Entity {
     }
 }
 GoldMine.prototype.SUBTILE_WIDTH = 2;
-
 GoldMine.prototype.NAME = "Gold mine";
+GoldMine.prototype.AVATAR = make_image("img/interface/avatars/gold.png");
+GoldMine.prototype.MAX_HP = 25;
+
 GoldMine.prototype.IMAGES = [
     make_image("img/resources/gold/00.png"),
     make_image("img/resources/gold/01.png"),

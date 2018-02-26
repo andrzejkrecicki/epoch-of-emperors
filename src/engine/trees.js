@@ -77,6 +77,7 @@ class Tree extends Entity {
 }
 Tree.prototype.MAX_HP = 25;
 Tree.prototype.SUBTILE_WIDTH = 1;
+Tree.prototype.AVATAR = make_image("img/interface/avatars/tree.png");
 
 Tree.prototype.STATE = {
     ALIVE: 0,

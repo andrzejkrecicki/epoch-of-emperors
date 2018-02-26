@@ -8,6 +8,8 @@ class StoneMine extends Entity {
             stone: 400
         };
         this.imgChoice = Math.floor(Math.random() * this.IMAGES.length);
+        this.hp = this.MAX_HP;
+        this.max_hp = this.MAX_HP;
 
         this.createSelectionRect();
         this.setImage();
@@ -61,8 +63,11 @@ class StoneMine extends Entity {
     }
 }
 StoneMine.prototype.SUBTILE_WIDTH = 2;
-
 StoneMine.prototype.NAME = "Stone mine";
+StoneMine.prototype.AVATAR = make_image("img/interface/avatars/stone.png");
+StoneMine.prototype.MAX_HP = 25;
+
+
 StoneMine.prototype.IMAGES = [
     make_image("img/resources/stone/00.png"),
     make_image("img/resources/stone/01.png"),
