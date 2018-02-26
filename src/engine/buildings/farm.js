@@ -8,8 +8,14 @@ class Farm extends Building {
             food: 250
         };
     }
-    acceptsResource(type) {
-        return true;
+    getFood() {
+        if (this.attributes.food == 0) {
+            this.destroyed = true;
+            return 0;
+        } else {
+            --this.attributes.food;
+            return 1;
+        }
     }
 }
 Farm.prototype.NAME = "Farm";
@@ -22,7 +28,7 @@ Farm.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/building
 Farm.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/farm/all.png"))];
 
 Farm.prototype.IMAGE_OFFSETS = Object.assign({}, Building.prototype.IMAGE_OFFSETS);
-Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 17, y: 48 };
+Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 17, y: 44 };
 
 Farm.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
 Farm.prototype.HITMAP[Farm.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(

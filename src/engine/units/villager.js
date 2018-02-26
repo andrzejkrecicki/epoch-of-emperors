@@ -1,5 +1,6 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
+import { Farm } from '../buildings/farm.js';
 import { GoldMine } from '../resources/gold.js';
 import { StoneMine } from '../resources/stone.js';
 import { Bush } from '../resources/bush.js';
@@ -21,7 +22,9 @@ class Villager extends Unit {
         this.carriedResource = RESOURCE_TYPES.NONE;
     }
     preInitInteraction(object) {
-        if (object instanceof Building && object.hp < object.MAX_HP) {
+        if (object instanceof Farm && object.isComplete) {
+            this.state = Villager.prototype.STATE.FARMER;
+        } else if (object instanceof Building && object.hp < object.MAX_HP) {
             this.state = Villager.prototype.STATE.BUILDING;
         } else if (object instanceof Tree) {
             this.state = Villager.prototype.STATE.LUMBER;
@@ -40,7 +43,11 @@ class Villager extends Unit {
     initInteraction(engine) {
         if (this.interactionObject.destroyed) this.terminateInteraction();
         else if (!this.hasFullPath) this.setBaseState(this.STATE.IDLE);
-        else if (this.interactionObject instanceof Building) {
+        else if (this.interactionObject instanceof Farm && this.interactionObject.isComplete) {
+            this.state = this.STATE.FARMER;
+            this.interaction_type = this.INTERACTION_TYPE.FARMING;
+            this.rotateToEntity(this.interactionObject);
+        } else if (this.interactionObject instanceof Building) {
             // TODO - check if its our or enymy's building
             if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {
                 let res_name = RESOURCE_NAME[this.carriedResource];
@@ -123,6 +130,13 @@ class Villager extends Unit {
                 this.carriedResource = RESOURCE_TYPES.STONE;
                 if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
             }
+        } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
+            if (this.interactionObject.destroyed) this.terminateInteraction()
+            else if (engine.framesCount % this.FARM_RATE == 0) {
+                this.attributes.food += this.interactionObject.getFood();
+                this.carriedResource = RESOURCE_TYPES.FOOD;
+                if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
+            }
         }
 
     }
@@ -141,6 +155,9 @@ class Villager extends Unit {
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
             if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_STONE;
             else this.state = this.STATE.MINE;
+        } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
+            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_FARM;
+            else this.state = this.STATE.FARMER;
         }
     }
     terminateInteraction() {
@@ -163,6 +180,8 @@ Villager.prototype.FORAGE_RATE = 60;
 Villager.prototype.LUMBER_RATE = 15;
 Villager.prototype.CHOP_RATE = 60;
 Villager.prototype.MINE_RATE = 60;
+Villager.prototype.FARM_RATE = 60;
+
 
 Villager.prototype.CAPACITY = {
     FOOD: 10,
@@ -210,6 +229,15 @@ Villager.prototype.STATE.CARRY_STONE = 8 << Unit.prototype.BASE_STATE_MASK_WIDTH
 Villager.prototype.STATE.CARRY_STONE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_STONE;
 Villager.prototype.STATE.CARRY_STONE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_STONE;
 
+Villager.prototype.STATE.FARMER = 9 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.FARMER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FARMER;
+Villager.prototype.STATE.FARMER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FARMER;
+
+Villager.prototype.STATE.CARRY_FARM = 10 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_FARM_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_FARM;
+Villager.prototype.STATE.CARRY_FARM_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_FARM;
+
+
 
 Villager.prototype.FRAME_RATE = {}
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
@@ -217,6 +245,7 @@ Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FORAGE] = 4;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.LUMBER] = 3;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.CHOP] = 3;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.MINE] = 3;
+Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FARMER] = 3;
 
 Villager.prototype.IMAGES = {};
 
@@ -274,6 +303,20 @@ Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_IDLE] = new Array
 for (let dir = 0; dir < 8; ++dir) {
     Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_IDLE][dir].push(
         make_image(`img/units/villager/carry_stone/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
+    );
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_IDLE][dir].push(
+        make_image(`img/units/villager/farmer_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
+    );
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_IDLE][dir].push(
+        make_image(`img/units/villager/carry_farm/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
     );
 }
 
@@ -402,6 +445,34 @@ for (let dir = 0; dir < 8; ++dir) {
 }
 
 
+Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 29; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER][dir].push(
+            make_image(`img/units/villager/farming/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_MOVING][dir].push(
+            make_image(`img/units/villager/farmer_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_MOVING][dir].push(
+            make_image(`img/units/villager/carry_farm/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+
 
 Villager.prototype.IMAGE_OFFSETS = {};
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 0, y: 35 };
@@ -433,5 +504,11 @@ Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_IDLE] = { x
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_MOVING] = { x: 5, y: 33 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_IDLE] = { x: 5, y: 33 };
 
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER] = { x: 19, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_IDLE] = { x: -1, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_MOVING] = { x: 14, y: 35 };
+
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_IDLE] = { x: 11, y: 37 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_MOVING] = { x: 11, y: 37 };
 
 export { Villager }
