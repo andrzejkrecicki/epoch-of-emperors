@@ -1,6 +1,7 @@
 import { make_image } from '../utils.js';
 import { TownCenter } from './buildings/town_center';
 import { Barracks } from './buildings/barracks.js';
+import { Farm } from './buildings/farm.js';
 import { Villager } from './units/villager.js';
 import { rand_choice } from '../utils.js';
 import { MapDrawable } from '../viewer.js';
@@ -117,6 +118,7 @@ Build.prototype.IMAGE = make_image("img/interface/command/build.png");
 Build.prototype.ACTIONS = [
     CreateBuildingFactory(Barracks),
     CreateBuildingFactory(TownCenter),
+    CreateBuildingFactory(Farm),
     NextBuildingsPage,
     FirstPage
 ];
