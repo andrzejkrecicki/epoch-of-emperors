@@ -10,7 +10,7 @@ class TownCenter extends Building {
         ];
     }
     acceptsResource(type) {
-        return true;
+        return this.isComplete;
     }
 }
 TownCenter.prototype.NAME = "Town Center";

@@ -141,7 +141,11 @@ class Villager extends Unit {
 
     }
     returnResources(engine) {
-        let building = this.player.getNearestBuilding(this, { NAME: "Town Center" });
+        let types = [];
+        if (this.carriedResource == RESOURCE_TYPES.FOOD) types = ["Town Center", "Granary"];
+        else types = ["Town Center", "Storage Pit"];
+
+        let building = this.player.getNearestBuilding(this, { NAME: types, isComplete: [true] });
         this.prevInteractionObject = this.interactionObject;
         engine.interactOrder(this, building);
     }

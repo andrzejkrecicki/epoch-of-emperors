@@ -1,11 +1,9 @@
 import { Building } from './building.js';
-import { make_image, leftpad } from '../../utils.js';
+import { make_image, RESOURCE_TYPES } from '../../utils.js';
 
 class Granary extends Building {
     acceptsResource(type) {
-        return (
-            type == RESOURCE_TYPES.FOOD
-        );
+        return this.isComplete && type == RESOURCE_TYPES.FOOD;
     }
 }
 Granary.prototype.NAME = "Granary";

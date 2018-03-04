@@ -1,9 +1,9 @@
 import { Building } from './building.js';
-import { make_image, leftpad } from '../../utils.js';
+import { make_image, RESOURCE_TYPES } from '../../utils.js';
 
 class StoragePit extends Building {
     acceptsResource(type) {
-        return (
+        return this.isComplete && (
             type == RESOURCE_TYPES.WOOD ||
             type == RESOURCE_TYPES.STONE ||
             type == RESOURCE_TYPES.GOLD

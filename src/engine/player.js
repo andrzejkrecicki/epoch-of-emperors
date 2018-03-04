@@ -23,9 +23,18 @@ class Player {
         let min_dist = Infinity;
         for (let building of this.buildings) {
             let match = true;
-            for (let attr in filters) if (building[attr] != filters[attr]) {
-                match = false;
-                break;
+            for (let attr in filters) {
+                let attr_match = false;
+                for (let attr_val of filters[attr]) {
+                    if (building[attr] == attr_val) {
+                        attr_match = true;
+                        break;
+                    }
+                }
+                if (!attr_match) {
+                    match = false;
+                    break;
+                }
             }
             let curr_dist = manhatan_subtile_distance(entity, building);
             if (match && min_dist > curr_dist) {
