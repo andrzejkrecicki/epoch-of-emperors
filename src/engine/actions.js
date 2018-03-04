@@ -3,6 +3,7 @@ import { TownCenter } from './buildings/town_center';
 import { Barracks } from './buildings/barracks.js';
 import { Farm } from './buildings/farm.js';
 import { StoragePit } from './buildings/storage_pit.js';
+import { Granary } from './buildings/granary.js';
 import { Villager } from './units/villager.js';
 import { rand_choice } from '../utils.js';
 import { MapDrawable } from '../viewer.js';
@@ -121,6 +122,7 @@ Build.prototype.ACTIONS = [
     CreateBuildingFactory(TownCenter),
     CreateBuildingFactory(Farm),
     CreateBuildingFactory(StoragePit),
+    CreateBuildingFactory(Granary),
     NextBuildingsPage,
     FirstPage
 ];
