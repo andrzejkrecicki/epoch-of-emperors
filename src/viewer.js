@@ -156,10 +156,15 @@ class GameViewer {
     process() {
         this.handleScroll();
         this.topbar.process(this.engine.current_player);
-        if (this.bottombar.entityDetails.entity) {
-            this.bottombar.entityDetails.setEntity(this.bottombar.entityDetails.entity);
+        if (this.engine.selectedEntity != null) {
+            this.bottombar.entityDetails.setEntity(this.engine.selectedEntity);
+
+            if (this.engine.selectedEntity.actions_changed) {
+                this.engine.selectedEntity.actions_changed = false;
+                this.bottombar.entityActions.setEntity(this.engine.selectedEntity);
+            }
         }
-        this.constructionIndicator.opacityPulse();
+        this.constructionIndicator.process();
         this.orderIndicator.process();
     }
 }
@@ -599,6 +604,16 @@ class ConstructionIndicator extends Graphics.Group {
             y: screen.y - this.viewer.viewPort.y
         });
 
+        this.checkSubtiles();
+
+        if (
+            this.viewer.mouseY > this.viewer.stage.height() - this.viewer.bottombar.image.height() ||
+            this.viewer.mouseY < this.viewer.topbar.image.height()
+        ) this.hide();
+        else this.show();
+    }
+    checkSubtiles() {
+        let W = this.building.prototype.SUBTILE_WIDTH;
         let map = this.viewer.engine.map;
         if (this.sub.x >= 0 && this.sub.x + W <= map.edge_size * 2 &&
             this.sub.y >= 0 && this.sub.y + W <= map.edge_size * 2 &&
@@ -610,12 +625,11 @@ class ConstructionIndicator extends Graphics.Group {
             this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DENIED][0]);
             this.allow_construction = false;
         }
-
-        if (
-            this.viewer.mouseY > this.viewer.stage.height() - this.viewer.bottombar.image.height() ||
-            this.viewer.mouseY < this.viewer.topbar.image.height()
-        ) this.hide();
-        else this.show();
+    }
+    process() {
+        if (!this.viewer.isPlanningConstruction) return;
+        this.checkSubtiles();
+        this.opacityPulse();
     }
     setBuilding(building) {
         this.building = building;
@@ -630,7 +644,6 @@ class ConstructionIndicator extends Graphics.Group {
         this.move();
     }
     opacityPulse() {
-        if (!this.viewer.isPlanningConstruction) return;
         if (this.current_opacity > this.MAX_OPACITY || this.current_opacity < this.MIN_OPACITY) this.opacity_delta *= -1;
         this.current_opacity += this.opacity_delta;
         this.opacity(this.current_opacity);

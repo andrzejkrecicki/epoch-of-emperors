@@ -8,6 +8,7 @@ class Entity extends Graphics.Group {
         this.max_hp = 0;
         this.selected = false;
         this.attributes = {};
+        this.actions_changed = false;
     }
     createSelectionRect(options) {
         this.selectionRect = new Graphics.Rect(Object.assign({}, {

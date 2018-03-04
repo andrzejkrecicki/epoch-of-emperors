@@ -5,9 +5,9 @@ import { make_image, leftpad } from '../../utils.js';
 
 class TownCenter extends Building {
     get ACTIONS() {
-        return [
+        if (this.isComplete) return [
             Actions.RecruitUnitFactory(Villager)
-        ];
+        ]; else return null;
     }
     acceptsResource(type) {
         return this.isComplete;

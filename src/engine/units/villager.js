@@ -90,7 +90,10 @@ class Villager extends Unit {
     }
     processInteraction(engine) {
         if (this.interaction_type == this.INTERACTION_TYPE.BUILDING) {
-            if (this.interactionObject.isComplete || this.interactionObject.destroyed) this.terminateInteraction();
+            if (this.interactionObject.destroyed) this.terminateInteraction();
+            else if (this.interactionObject.isComplete && this.interactionObject.INTERACT_WHEN_COMPLETE) {
+                this.initInteraction(this.interactionObject);
+            } else if (this.interactionObject.isComplete) this.terminateInteraction();
             else if (engine.framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
         } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
             if (this.interactionObject.destroyed) this.terminateInteraction() // TODO: find next berry bush

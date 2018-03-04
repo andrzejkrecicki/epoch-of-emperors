@@ -22,6 +22,7 @@ Farm.prototype.NAME = "Farm";
 Farm.prototype.AVATAR = make_image("img/interface/avatars/farm.png");
 Farm.prototype.MAX_HP = 50;
 Farm.prototype.SUBTILE_WIDTH = 5;
+Farm.prototype.INTERACT_WHEN_COMPLETE = true;
 
 Farm.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 Farm.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/farm/all.png")];

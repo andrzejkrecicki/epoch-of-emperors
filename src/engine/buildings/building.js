@@ -50,6 +50,7 @@ class Building extends Entity {
         this.isComplete = true;
         this.construction_stage = 0;
         this.setImage();
+        this.actions_changed = true;
     }
     constructionTick() {
         ++this.hp;
@@ -73,6 +74,7 @@ class Building extends Entity {
     }
 }
 Building.prototype.HAS_BITMAP_HITMASK = true;
+Building.prototype.INTERACT_WHEN_COMPLETE = false;
 
 Building.prototype.STATE = {
     CONSTRUCTION: 0,
