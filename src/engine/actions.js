@@ -19,7 +19,7 @@ class Action {
 }
 Action.prototype.SIZE = 50;
 Action.prototype.MARGIN = 2;
-
+Action.prototype.ACTIONS_PER_ROW = 5;
 
 class RejectConstructionPlan extends Action {
     execute() {
@@ -30,7 +30,7 @@ class RejectConstructionPlan extends Action {
 }
 RejectConstructionPlan.prototype.IMAGE = make_image("img/interface/command/cancel.png");
 RejectConstructionPlan.prototype.POS = {
-    x: (Action.prototype.SIZE + Action.prototype.MARGIN) * 5,
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
 }
 
@@ -81,7 +81,7 @@ class PreviousPage extends Action {
 }
 PreviousPage.prototype.IMAGE = make_image("img/interface/command/next.png");
 PreviousPage.prototype.POS = {
-    x: (Action.prototype.SIZE + Action.prototype.MARGIN) * 5,
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: 0
 }
 
@@ -92,7 +92,7 @@ class FirstPage extends Action {
 }
 FirstPage.prototype.IMAGE = make_image("img/interface/command/cancel.png");
 FirstPage.prototype.POS = {
-    x: (Action.prototype.SIZE + Action.prototype.MARGIN) * 5,
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
 }
 
@@ -103,7 +103,7 @@ class NextBuildingsPage extends Action {
 }
 NextBuildingsPage.prototype.IMAGE = make_image("img/interface/command/next.png");
 NextBuildingsPage.prototype.POS = {
-    x: (Action.prototype.SIZE + Action.prototype.MARGIN) * 5,
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: 0
 }
 NextBuildingsPage.prototype.ACTIONS = [
@@ -119,12 +119,12 @@ class Build extends Action {
 }
 Build.prototype.IMAGE = make_image("img/interface/command/build.png");
 Build.prototype.ACTIONS = [
-    CreateBuildingFactory(Barracks),
-    CreateBuildingFactory(TownCenter),
-    CreateBuildingFactory(Farm),
-    CreateBuildingFactory(StoragePit),
-    CreateBuildingFactory(Granary),
     CreateBuildingFactory(House),
+    CreateBuildingFactory(Barracks),
+    CreateBuildingFactory(Granary),
+    CreateBuildingFactory(StoragePit),
+    CreateBuildingFactory(Farm),
+    CreateBuildingFactory(TownCenter),
     NextBuildingsPage,
     FirstPage
 ];
