@@ -4,6 +4,7 @@ import { Barracks } from './buildings/barracks.js';
 import { Farm } from './buildings/farm.js';
 import { StoragePit } from './buildings/storage_pit.js';
 import { Granary } from './buildings/granary.js';
+import { House } from './buildings/house.js';
 import { Villager } from './units/villager.js';
 import { rand_choice } from '../utils.js';
 import { MapDrawable } from '../viewer.js';
@@ -123,6 +124,7 @@ Build.prototype.ACTIONS = [
     CreateBuildingFactory(Farm),
     CreateBuildingFactory(StoragePit),
     CreateBuildingFactory(Granary),
+    CreateBuildingFactory(House),
     NextBuildingsPage,
     FirstPage
 ];
