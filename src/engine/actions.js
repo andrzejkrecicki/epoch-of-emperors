@@ -17,7 +17,7 @@ class Action {
     }
     execute() { }
 }
-Action.prototype.SIZE = 50;
+Action.prototype.SIZE = 54;
 Action.prototype.MARGIN = 2;
 Action.prototype.ACTIONS_PER_ROW = 5;
 

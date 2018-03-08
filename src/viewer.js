@@ -549,27 +549,71 @@ class ActionsSet extends Graphics.Group {
         let x = actions[0].prototype.MARGIN, y = 0;
         for (let i = 0, Action; Action = actions[i]; ++i) {
             let pos = Action.prototype.POS || { x: x, y: y };
-            let btn = new Graphics.Image({
-                image: Action.prototype.IMAGE,
-                x: pos.x, y: pos.y,
-                width: Action.prototype.IMAGE.width,
-                height: Action.prototype.IMAGE.height,
-                hasHitmap: true
-            });
-            btn.action = new Action(this, viewer);
-            btn.on("click", function(e) {
-                this.action.execute();
-            });
+            let btn = new ActionButton(Action, pos, viewer);
+
             this.add(btn);
             this.action_buttons.push(btn);
+
             x += Action.prototype.SIZE + Action.prototype.MARGIN * 2;
-            if (i % 5 == 4) {
+            if (i % Action.prototype.ACTIONS_PER_ROW == Action.prototype.ACTIONS_PER_ROW - 1) {
                 x = Action.prototype.MARGIN;
                 y += Action.prototype.SIZE + Action.prototype.MARGIN * 2;
             }
         }
     }
 }
+
+
+class ActionButton extends Graphics.Group {
+    constructor(Action, pos, viewer) {
+        super();
+        this.pressed = false;
+        this.bg = new Graphics.Image({
+            image: ActionButton.prototype.BACKGROUND_IMAGE,
+            x: pos.x, y: pos.y,
+            width: ActionButton.prototype.BACKGROUND_IMAGE,
+            height: ActionButton.prototype.BACKGROUND_IMAGE,
+        })
+        this.add(this.bg);
+
+        this.img = new Graphics.Image({
+            image: Action.prototype.IMAGE,
+            x: pos.x + ActionButton.prototype.BORDER_WIDTH,
+            y: pos.y + ActionButton.prototype.BORDER_WIDTH,
+            width: Action.prototype.IMAGE.width,
+            height: Action.prototype.IMAGE.height,
+            hasHitmap: true
+        });
+        this.img.action = new Action(this, viewer);
+        this.img.on("click", function(e) {
+            this.action.execute();
+        });
+        this.img.on("mousedown", (e) => {
+            this.pressed = true;
+        });
+        this.img.on("mouseup", (e) => {
+            this.pressed = false;
+        });
+        this.add(this.img);
+    }
+    draw() {
+        if (!this.attrs.visible) return;
+        this.layer.ctx.drawImage(this.bg.attrs.image, this.bg.absX(), this.bg.absY());
+        this.layer.ctx.drawImage(
+            this.img.attrs.image,
+            0, 0,
+            this.img.attrs.image.width - this.pressed,
+            this.img.attrs.image.height - this.pressed,
+            this.img.absX() + this.pressed,
+            this.img.absY() + this.pressed,
+            this.img.attrs.image.width - this.pressed,
+            this.img.attrs.image.height - this.pressed
+        );
+        this.img.setHitmap();
+    }
+}
+ActionButton.prototype.BORDER_WIDTH = 2;
+ActionButton.prototype.BACKGROUND_IMAGE = make_image("img/interface/greek/button_frame.png")
 
 
 class ConstructionIndicator extends Graphics.Group {
