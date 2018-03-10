@@ -29,6 +29,7 @@ class RejectConstructionPlan extends Action {
     }
 }
 RejectConstructionPlan.prototype.IMAGE = make_image("img/interface/command/cancel.png");
+RejectConstructionPlan.prototype.TOOLTIP = "Cancel";
 RejectConstructionPlan.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -68,6 +69,7 @@ let CreateBuildingFactory = function(Building) {
     }
     CreateBuilding.prototype.IMAGE = Building.prototype.AVATAR;
     CreateBuilding.prototype.BUILDING = Building;
+    CreateBuilding.prototype.TOOLTIP = `Build ${Building.prototype.NAME}.`;
     CreateBuilding.prototype.ACTIONS = [
         RejectConstructionPlan
     ];
@@ -80,6 +82,7 @@ class PreviousPage extends Action {
     }
 }
 PreviousPage.prototype.IMAGE = make_image("img/interface/command/next.png");
+PreviousPage.prototype.TOOLTIP = "Previous";
 PreviousPage.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: 0
@@ -91,6 +94,7 @@ class FirstPage extends Action {
     }
 }
 FirstPage.prototype.IMAGE = make_image("img/interface/command/cancel.png");
+FirstPage.prototype.TOOLTIP = "Cancel";
 FirstPage.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -102,6 +106,7 @@ class NextBuildingsPage extends Action {
     }
 }
 NextBuildingsPage.prototype.IMAGE = make_image("img/interface/command/next.png");
+NextBuildingsPage.prototype.TOOLTIP = "Next";
 NextBuildingsPage.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: 0
@@ -118,6 +123,7 @@ class Build extends Action {
     }
 }
 Build.prototype.IMAGE = make_image("img/interface/command/build.png");
+Build.prototype.TOOLTIP = "Build";
 Build.prototype.ACTIONS = [
     CreateBuildingFactory(House),
     CreateBuildingFactory(Barracks),
@@ -133,10 +139,12 @@ Build.prototype.ACTIONS = [
 class Repair extends Action {
 }
 Repair.prototype.IMAGE = make_image("img/interface/command/repair.png");
+Repair.prototype.TOOLTIP = "Repair";
 
 class Stop extends Action {
 }
 Stop.prototype.IMAGE = make_image("img/interface/command/stop.png");
+Stop.prototype.TOOLTIP = "Stop";
 
 
 let RecruitUnitFactory = function(Unit) {
@@ -179,6 +187,7 @@ let RecruitUnitFactory = function(Unit) {
         }
     }
     RecruitUnit.prototype.IMAGE = Unit.prototype.AVATAR;
+    RecruitUnit.prototype.TOOLTIP = `Create ${Unit.prototype.NAME}.`;
     RecruitUnit.prototype.UNIT = Unit;
     return RecruitUnit;
 }

@@ -51,6 +51,8 @@ class GameViewer {
 
         this.layers.terrain.on("click", this.handleClick.bind(this));
         this.layers.entities.on("click", this.handleClick.bind(this));
+        this.layers.entities.on("mouseover", this.handleMouseOver.bind(this));
+        this.layers.entities.on("mouseout", this.handleMouseOut.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
 
         this.constructionIndicator = new ConstructionIndicator(this);
@@ -66,6 +68,20 @@ class GameViewer {
         this.layers.interface.add(this.topbar);
         this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
         this.layers.interface.add(this.bottombar);
+
+        this.tooltip = new Graphics.StrokedText({
+            fontSize: 15,
+            fontFamily: 'helvetica',
+            fontWeight: "bold",
+            textBaseline: "bottom",
+            fill: 'white',
+            strokeStyle: 'black',
+            lineWidth: 3,
+            x: 7,
+            y: this.stage.height() - BottomBar.IMAGE.height - 7
+        });
+        this.tooltip.hide();
+        this.layers.interface.add(this.tooltip);
 
         this.layers.grid.init(this.mapDrawable);
 
@@ -105,6 +121,15 @@ class GameViewer {
         }
         e.evt.preventDefault();
         return false;
+    }
+    handleMouseOver(e) {
+        if (e.target.parent instanceof Entity) {
+            this.tooltip.text(e.target.parent.TOOLTIP);
+            this.tooltip.show();
+        }
+    }
+    handleMouseOut(e) {
+        this.tooltip.hide();
     }
     addEntities() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
@@ -292,16 +317,16 @@ class TopBar extends Graphics.Group {
             height: TopBar.IMAGE.height
         });
         this.add(this.image);
-        this.wood = new Graphics.Text(Object.assign({ x: 34, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.wood = new Graphics.StrokedText(Object.assign({ x: 34, y: 2 }, TopBar.TEXT_OPTIONS));
         this.add(this.wood);
 
-        this.food = new Graphics.Text(Object.assign({ x: 101, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.food = new Graphics.StrokedText(Object.assign({ x: 101, y: 2 }, TopBar.TEXT_OPTIONS));
         this.add(this.food);
 
-        this.gold = new Graphics.Text(Object.assign({ x: 168, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.gold = new Graphics.StrokedText(Object.assign({ x: 168, y: 2 }, TopBar.TEXT_OPTIONS));
         this.add(this.gold);
 
-        this.stone = new Graphics.Text(Object.assign({ x: 235, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.stone = new Graphics.StrokedText(Object.assign({ x: 235, y: 2 }, TopBar.TEXT_OPTIONS));
         this.add(this.stone);
     }
     process(player) {
@@ -318,6 +343,8 @@ TopBar.TEXT_OPTIONS = {
     fontWeight: "bold",
     textBaseline: "top",
     fill: '#000000',
+    strokeStyle: 'white',
+    lineWidth: 1
 };
 
 
@@ -594,6 +621,14 @@ class ActionButton extends Graphics.Group {
         this.img.on("mouseup", (e) => {
             this.pressed = false;
         });
+        this.img.on("mouseover", (e) => {
+            viewer.tooltip.text(Action.prototype.TOOLTIP);
+            viewer.tooltip.show();
+        });
+        this.img.on("mouseout", (e) => {
+            viewer.tooltip.hide();
+        });
+
         this.add(this.img);
     }
     draw() {

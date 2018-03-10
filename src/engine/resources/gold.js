@@ -63,9 +63,11 @@ class GoldMine extends Entity {
     }
 }
 GoldMine.prototype.SUBTILE_WIDTH = 2;
-GoldMine.prototype.NAME = "Gold mine";
+GoldMine.prototype.NAME = "Gold Mine";
 GoldMine.prototype.AVATAR = make_image("img/interface/avatars/gold.png");
 GoldMine.prototype.MAX_HP = 25;
+GoldMine.prototype.TOOLTIP = "Mine here for gold.";
+
 
 GoldMine.prototype.IMAGES = [
     make_image("img/resources/gold/00.png"),

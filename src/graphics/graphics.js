@@ -220,7 +220,7 @@ class Stage extends Node {
                 this.lastHovered = node;
                 node.fire("mouseover", { target: node, evt: e });
                 break;
-            }
+            } else if (node != null) break;
         }
     }
 }
@@ -389,6 +389,26 @@ class Text extends Node {
         this.layer.ctx.fillText(this.attrs.text, this.absX(), this.absY());
     }
 }
+
+class StrokedText extends Text {
+    constructor(options) {
+        super(options);
+        this.attrs.strokeStyle = options.strokeStyle ? options.strokeStyle : this.DEFAULT_ATTRS.strokeStyle;
+        this.attrs.lineWidth = options.lineWidth ? options.lineWidth : this.DEFAULT_ATTRS.lineWidth;
+    }
+    draw() {
+        if (!this.attrs.visible) return;
+        this.layer.ctx.fillStyle = this.attrs.fill;
+        this.layer.ctx.textAlign = this.attrs.align;
+        this.layer.ctx.textBaseline = this.attrs.textBaseline;
+        this.layer.ctx.strokeStyle = this.attrs.strokeStyle;
+        this.layer.ctx.lineWidth = this.attrs.lineWidth;
+        this.layer.ctx.font = `${this.attrs.fontWeight} ${this.attrs.fontSize}px ${this.attrs.fontFamily}`;
+        this.layer.ctx.strokeText(this.attrs.text, this.absX(), this.absY());
+        this.layer.ctx.fillText(this.attrs.text, this.absX(), this.absY());
+    }
+}
+
 
 class Path extends Node {
     constructor(options) {
@@ -605,6 +625,7 @@ window.Graphics = {
     Group: Group,
     Rect: Rect,
     Text: Text,
+    StrokedText: StrokedText,
     Path: Path,
     Image: Image,
     EntitiesHolder: EntitiesHolder,
