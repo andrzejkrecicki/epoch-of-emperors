@@ -18,6 +18,10 @@ TownCenter.prototype.AVATAR = make_image("img/interface/avatars/town_center_01_a
 TownCenter.prototype.MAX_HP = 600;
 TownCenter.prototype.SUBTILE_WIDTH = 5;
 
+TownCenter.prototype.COST = {
+    food: 0, wood: 200, stone: 0, gold: 0
+}
+
 TownCenter.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 TownCenter.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/town_center/01_all.png")];
 TownCenter.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/town_center/01_all.png"))];

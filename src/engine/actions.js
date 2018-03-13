@@ -14,6 +14,7 @@ class Action {
         this.action_set = action_set;
         this.viewer = viewer;
         this.entity = this.viewer.engine.selectedEntity;
+        this.player = this.viewer.engine.current_player;
     }
     execute() { }
 }
@@ -39,6 +40,12 @@ RejectConstructionPlan.prototype.POS = {
 let CreateBuildingFactory = function(Building) {
     class CreateBuilding extends Action {
         execute() {
+            let deficit = this.player.deficitResource(this.BUILDING.prototype.COST);
+            if (deficit != null) {
+                this.viewer.setErrorMessage(`Not enough ${deficit}.`);
+                return;
+            }
+
             this.viewer.isPlanningConstruction = true;
             this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
             this.viewer.constructionIndicator.setBuilding(this.BUILDING);
@@ -50,8 +57,16 @@ let CreateBuildingFactory = function(Building) {
         }
         confirmConstruction(e) {
             if (!this.viewer.constructionIndicator.allow_construction) return;
+
+            let deficit = this.player.deficitResource(this.BUILDING.prototype.COST);
+            if (deficit != null) {
+                this.viewer.setErrorMessage(`Not enough ${deficit}.`);
+                return;
+            }
+            this.player.subtractResources(this.BUILDING.prototype.COST);
+
             let sub = this.viewer.constructionIndicator.sub;
-            let building = new this.BUILDING(sub.x, sub.y, this.viewer.engine.current_player);
+            let building = new this.BUILDING(sub.x, sub.y, this.player);
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);
             this.viewer.constructionIndicator.removeChildren();
@@ -151,11 +166,18 @@ let RecruitUnitFactory = function(Unit) {
     class RecruitUnit extends Action {
         execute() {
             let pos = this.findEmptyArea(this.UNIT.prototype.SUBTILE_WIDTH);
-            if (pos != null) {
-                let unit = new this.UNIT(pos.x, pos.y, this.viewer.engine.current_player);
-                this.viewer.engine.addUnit(unit);
-                this.viewer.addEntity(unit);
+            if (pos == null) return;
+
+            let deficit = this.player.deficitResource(this.UNIT.prototype.COST);
+            if (deficit != null) {
+                this.viewer.setErrorMessage(`Not enough ${deficit}.`);
+                return;
             }
+            this.player.subtractResources(this.UNIT.prototype.COST);
+
+            let unit = new this.UNIT(pos.x, pos.y, this.player);
+            this.viewer.engine.addUnit(unit);
+            this.viewer.addEntity(unit);
         }
         findEmptyArea(width) {
             // iterate clockwise around all available areas adjecent to building

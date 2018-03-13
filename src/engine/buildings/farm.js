@@ -24,6 +24,10 @@ Farm.prototype.MAX_HP = 50;
 Farm.prototype.SUBTILE_WIDTH = 5;
 Farm.prototype.INTERACT_WHEN_COMPLETE = true;
 
+Farm.prototype.COST = {
+    food: 0, wood: 75, stone: 0, gold: 0
+}
+
 Farm.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 Farm.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/farm/all.png")];
 Farm.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/farm/all.png"))];

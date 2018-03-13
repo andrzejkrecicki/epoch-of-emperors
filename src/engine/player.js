@@ -18,6 +18,13 @@ class Player {
     addUnit(unit) {
         this.units.push(unit)
     }
+    deficitResource(cost) {
+        for (let res in this.resources) if (this.resources[res] < cost[res]) return res;
+        return null;
+    }
+    subtractResources(cost) {
+        for (let res in this.resources) this.resources[res] -= cost[res];
+    }
     getNearestBuilding(entity, filters={}) {
         let nearest = null;
         let min_dist = Infinity;

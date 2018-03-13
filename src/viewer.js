@@ -69,19 +69,23 @@ class GameViewer {
         this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
         this.layers.interface.add(this.bottombar);
 
-        this.tooltip = new Graphics.StrokedText({
-            fontSize: 15,
-            fontFamily: 'helvetica',
-            fontWeight: "bold",
-            textBaseline: "bottom",
+        this.tooltip = new Graphics.StrokedText(Object.assign({}, this.TOOLTIP_OPTIONS, {
             fill: 'white',
-            strokeStyle: 'black',
-            lineWidth: 3,
             x: 7,
             y: this.stage.height() - BottomBar.IMAGE.height - 7
-        });
+        }));
         this.tooltip.hide();
         this.layers.interface.add(this.tooltip);
+
+        this.errorMessageTimeout = 0;
+        this.errorMessage = new Graphics.StrokedText(Object.assign({}, this.TOOLTIP_OPTIONS, {
+            fill: '#cf4300',
+            align: "center",
+            x: Math.round(this.stage.width() / 2),
+            y: this.stage.height() - BottomBar.IMAGE.height - 42
+        }));
+        this.errorMessage.hide();
+        this.layers.interface.add(this.errorMessage);
 
         this.layers.grid.init(this.mapDrawable);
 
@@ -130,6 +134,11 @@ class GameViewer {
     }
     handleMouseOut(e) {
         this.tooltip.hide();
+    }
+    setErrorMessage(text) {
+        this.errorMessage.text(text);
+        this.errorMessage.show();
+        this.errorMessageTimeout = GameViewer.prototype.ERROR_MESSAGE_TIMEOUT;
     }
     addEntities() {
         for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
@@ -189,9 +198,19 @@ class GameViewer {
                 this.bottombar.entityActions.setEntity(this.engine.selectedEntity);
             }
         }
+        if (this.errorMessageTimeout > 0) if (--this.errorMessageTimeout == 0) this.errorMessage.hide();
         this.constructionIndicator.process();
         this.orderIndicator.process();
     }
+}
+GameViewer.prototype.ERROR_MESSAGE_TIMEOUT = 35 * 6;
+GameViewer.prototype.TOOLTIP_OPTIONS = {
+    fontSize: 15,
+    fontFamily: 'helvetica',
+    fontWeight: "bold",
+    textBaseline: "bottom",
+    strokeStyle: 'black',
+    lineWidth: 3
 }
 
 

@@ -15,6 +15,10 @@ StoragePit.prototype.AVATAR = make_image("img/interface/avatars/storage_pit_01_a
 StoragePit.prototype.MAX_HP = 350;
 StoragePit.prototype.SUBTILE_WIDTH = 5;
 
+StoragePit.prototype.COST = {
+    food: 0, wood: 120, stone: 0, gold: 0
+}
+
 StoragePit.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 StoragePit.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/storage_pit/01_all.png")];
 StoragePit.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/storage_pit/01_all.png"))];

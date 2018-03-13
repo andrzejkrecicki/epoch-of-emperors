@@ -80,6 +80,9 @@ class Entity extends Graphics.Group {
         this.selectionRect.setVisible(this.selected);
     }
 }
+Entity.prototype.COST = {
+    food: 0, wood: 0, stone: 0, gold: 0
+}
 
 
 export { Entity };

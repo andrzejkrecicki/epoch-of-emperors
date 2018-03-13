@@ -8,6 +8,10 @@ House.prototype.AVATAR = make_image("img/interface/avatars/house_01_all.png");
 House.prototype.MAX_HP = 75;
 House.prototype.SUBTILE_WIDTH = 3;
 
+House.prototype.COST = {
+    food: 0, wood: 30, stone: 0, gold: 0
+}
+
 House.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 House.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/house/01_all.png")];
 House.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/house/01_all.png"))];

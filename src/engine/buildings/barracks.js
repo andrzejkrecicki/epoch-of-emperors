@@ -9,6 +9,10 @@ Barracks.prototype.AVATAR = make_image("img/interface/avatars/barracks_all_1.png
 Barracks.prototype.MAX_HP = 350;
 Barracks.prototype.SUBTILE_WIDTH = 5;
 
+Barracks.prototype.COST = {
+    food: 0, wood: 125, stone: 0, gold: 0
+}
+
 Barracks.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 Barracks.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/barracks/01_all.png")];
 Barracks.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/barracks/01_all.png"))];
