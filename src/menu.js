@@ -1,11 +1,16 @@
 import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox } from './ui.js';
-import { PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
+import { PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES, make_image } from './utils.js';
 
 class Menu extends Graphics.Group {
     constructor(stage, nav) {
         super();
         this.stage = stage;
         this.navigator = nav;
+        if (this.BACKGROUND_IMAGE) {
+            this.add(this.image = new Graphics.Image({
+                image: this.BACKGROUND_IMAGE
+            }));
+        } else this.image = null;
         this.on("refresh", this.refresh)
     }
     refresh(e) {
@@ -24,25 +29,25 @@ class MainMenu extends Menu {
         let btnMargin = 20;
         this.singlePlayerBtn = new TextButton(
             stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 2,
+            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * -1,
             { text: 'Single Player' }
         );
         this.add(this.singlePlayerBtn);
         this.multiPlayerBtn = new TextButton(
             stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 1,
+            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 0,
             { text: 'Multi Player' }
         );
         this.add(this.multiPlayerBtn);
         this.scenarioBuilderBtn = new TextButton(
             stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
-            stage_center.y - (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 0,
+            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 1,
             { text: 'Scenario Builder' }
         );
         this.add(this.scenarioBuilderBtn);
         this.helpBtn = new TextButton(
             stage_center.x - TextButton.DEFAULT_RECT_OPTIONS.width / 2,
-            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 1,
+            stage_center.y + (TextButton.DEFAULT_RECT_OPTIONS.height + btnMargin) * 2,
             { text: 'Help' }
         );
         this.add(this.helpBtn);
@@ -52,6 +57,8 @@ class MainMenu extends Menu {
         });
     }
 }
+MainMenu.prototype.BACKGROUND_IMAGE = make_image("img/interface/menu_main.png");
+
 
 class SinglePlayerMenu extends Menu {
     constructor(stage, nav) {
@@ -100,6 +107,8 @@ class SinglePlayerMenu extends Menu {
         });
     }
 }
+SinglePlayerMenu.prototype.BACKGROUND_IMAGE = make_image("img/interface/menu_single.png");
+
 
 class RandomMapMenu extends Menu {
     constructor(stage, nav) {
@@ -390,6 +399,7 @@ class RandomMapMenu extends Menu {
         };
     }
 }
+RandomMapMenu.prototype.BACKGROUND_IMAGE = make_image("img/interface/menu_single.png");
 RandomMapMenu.NAME_SECTION_WIDTH = 130;
 RandomMapMenu.CIV_SECTION_WIDTH = 170;
 RandomMapMenu.PLAYER_SECTION_WIDTH = 90;

@@ -49,11 +49,11 @@ TextButton.DEFAULT_TEXT_OPTIONS = {
 }
 TextButton.DEFAULT_RECT_OPTIONS = {
     stroke: '#817041',
-    fill: '#2c2117',
+    fill: 'rgba(44, 33, 23, .7)',
     strokeWidth: 3,
     width: 370,
     height: 45,
-    moverFill: '#4c4137'
+    moverFill: 'rgba(76, 65, 55, .7)'
 }
 
 class DropDown extends Graphics.Group {
@@ -135,11 +135,11 @@ class DropDown extends Graphics.Group {
 }
 DropDown.DEFAULT_RECT_OPTIONS = {
     stroke: '#817041',
-    fill: '#2c2117',
+    fill: 'rgba(44, 33, 23, .7)',
     strokeWidth: 3,
     height: 30,
     width: 80,
-    moverFill: '#4c4137'
+    moverFill: 'rgba(76, 65, 55, .7)'
 }
 DropDown.DEFAULT_TEXT_OPTIONS = {
     fill: '#e0d09f',
@@ -263,11 +263,11 @@ class CheckBox extends Graphics.Group {
 }
 CheckBox.DEFAULT_OPTIONS = {
     stroke: '#817041',
-    fill: '#2c2117',
+    fill: 'rgba(44, 33, 23, .7)',
     strokeWidth: 3,
     width: 30,
     height: 30,
-    moverFill: '#4c4137'
+    moverFill: 'rgba(76, 65, 55, .7)'
 }
 
 
