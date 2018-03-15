@@ -143,6 +143,11 @@ class Engine {
         entity.updateSprite();
         if (this.framesCount % entity.FRAME_RATE[entity.state & Unit.prototype.BASE_STATE_MASK] == 0) ++entity.frame;
     }
+    processBuildings() {
+        for (let entity, i = 0; entity = this.buildings[i++];) {
+            if (entity.tasks.length) entity.processTasks();
+        }
+    }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
         for (let x = subtile_x; x < subtile_x + entity.SUBTILE_WIDTH; ++x) {
@@ -168,6 +173,7 @@ class Engine {
         ++this.framesCount;
         this.viewer.process();
         this.processUnits();
+        this.processBuildings();
         this.viewer.stage.draw();
     }
     handleRightClick(point) {

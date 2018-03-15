@@ -10,17 +10,18 @@ import { rand_choice } from '../utils.js';
 import { MapDrawable } from '../viewer.js';
 
 class Action {
-    constructor(action_set, viewer) {
-        this.action_set = action_set;
+    constructor(viewer) {
         this.viewer = viewer;
         this.entity = this.viewer.engine.selectedEntity;
         this.player = this.viewer.engine.current_player;
+        this.failed = false;
     }
     execute() { }
 }
 Action.prototype.SIZE = 54;
 Action.prototype.MARGIN = 2;
 Action.prototype.ACTIONS_PER_ROW = 5;
+Action.prototype.SUPPORTS_QUEUE = false;
 
 class RejectConstructionPlan extends Action {
     execute() {
@@ -165,19 +166,29 @@ Stop.prototype.TOOLTIP = "Stop";
 let RecruitUnitFactory = function(Unit) {
     class RecruitUnit extends Action {
         execute() {
-            let pos = this.findEmptyArea(this.UNIT.prototype.SUBTILE_WIDTH);
-            if (pos == null) return;
-
             let deficit = this.player.deficitResource(this.UNIT.prototype.COST);
             if (deficit != null) {
                 this.viewer.setErrorMessage(`Not enough ${deficit}.`);
                 return;
             }
             this.player.subtractResources(this.UNIT.prototype.COST);
+            this.entity.addTask(this);
+        }
+        finalize() {
+            let pos = this.findEmptyArea(this.UNIT.prototype.SUBTILE_WIDTH);
+            if (pos == null) {
+                if (!this.failed) this.viewer.setErrorMessage('Not enough room to place unit.');
+                this.failed = true;
+                return false;
+            }
 
             let unit = new this.UNIT(pos.x, pos.y, this.player);
             this.viewer.engine.addUnit(unit);
             this.viewer.addEntity(unit);
+            return true;
+        }
+        time() {
+            return this.UNIT.prototype.CREATION_TIME;
         }
         findEmptyArea(width) {
             // iterate clockwise around all available areas adjecent to building
@@ -211,6 +222,8 @@ let RecruitUnitFactory = function(Unit) {
     RecruitUnit.prototype.IMAGE = Unit.prototype.AVATAR;
     RecruitUnit.prototype.TOOLTIP = `Create ${Unit.prototype.NAME}.`;
     RecruitUnit.prototype.UNIT = Unit;
+    RecruitUnit.prototype.SUPPORTS_QUEUE = true;
+    RecruitUnit.prototype.HASH = Unit.prototype.NAME;
     return RecruitUnit;
 }
 

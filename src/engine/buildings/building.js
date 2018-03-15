@@ -9,11 +9,13 @@ class Building extends Entity {
         this.max_hp = this.MAX_HP;
         this.construction_stage = 0;
         this.isComplete = false;
+        this.attributes.progress = "0%";
         this.state = this.STATE.CONSTRUCTION;
         this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
         this.tasks = [];
+        this.tasks_counts = {};
         this.player = player;
         this.player.addBuilding(this);
     }
@@ -53,15 +55,36 @@ class Building extends Entity {
         this.state = this.STATE.DONE;
         this.isComplete = true;
         this.construction_stage = 0;
+        this.attributes.progress = null;
         this.updateImage();
         this.actions_changed = true;
     }
     constructionTick() {
         ++this.hp;
+        this.attributes.progress = Math.floor(100 * this.hp / this.MAX_HP) + "%";
         if (this.hp == this.MAX_HP) this.setComplete();
         else if (this.hp % Math.ceil(this.MAX_HP / this.IMAGES[Building.prototype.STATE.CONSTRUCTION].length) == 0) {
             ++this.construction_stage;
             this.updateImage();
+        }
+    }
+    addTask(task) {
+        this.tasks.push(task);
+        if (task.SUPPORTS_QUEUE) this.tasks_counts[task.HASH] = (this.tasks_counts[task.HASH] || 0) + 1;
+        this.actions_changed = true;
+    }
+    processTasks() {
+        let task = this.tasks[0];
+        if (this.ticks_waited < task.time()) {
+            this.attributes.progress = Math.floor(100 * ++this.ticks_waited / task.time()) + "%";
+        } else {
+            if (task.finalize()) {
+                this.ticks_waited = 0;
+                this.attributes.progress = null;
+                if (task.SUPPORTS_QUEUE) --this.tasks_counts[task.HASH];
+                this.actions_changed = true;
+                this.tasks.shift();
+            }
         }
     }
     acceptsResource(type) {

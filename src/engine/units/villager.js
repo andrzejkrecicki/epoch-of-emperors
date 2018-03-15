@@ -182,6 +182,8 @@ Villager.prototype.NAME = "Villager";
 Villager.prototype.AVATAR = make_image("img/interface/avatars/villager.png");
 Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
+Villager.prototype.CREATION_TIME = 20 * 35;
+
 Villager.prototype.BUILD_RATE = 3;
 Villager.prototype.FORAGE_RATE = 60;
 Villager.prototype.LUMBER_RATE = 15;

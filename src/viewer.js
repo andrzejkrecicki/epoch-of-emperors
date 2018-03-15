@@ -477,13 +477,14 @@ class EntityAttributes extends Graphics.Group {
 
     }
 }
-EntityAttributes.ALL_ATTRIBUTES = ["attack", "food", "wood", "gold", "stone"];
+EntityAttributes.ALL_ATTRIBUTES = ["attack", "food", "wood", "gold", "stone", "progress"];
 EntityAttributes.ATTRIBUTES = {
     attack: make_image("img/interface/details/attack.png"),
     food: make_image("img/interface/details/food.png"),
     wood: make_image("img/interface/details/wood.png"),
     gold: make_image("img/interface/details/gold.png"),
     stone: make_image("img/interface/details/stone.png"),
+    progress: make_image("img/interface/details/progress.png"),
 }
 
 class EntityAttribute extends Graphics.Group {
@@ -613,11 +614,10 @@ class ActionsSet extends Graphics.Group {
 
 class ActionButton extends Graphics.Group {
     constructor(Action, pos, viewer) {
-        super();
+        super({ x: pos.x, y: pos.y });
         this.pressed = false;
         this.bg = new Graphics.Image({
             image: ActionButton.prototype.BACKGROUND_IMAGE,
-            x: pos.x, y: pos.y,
             width: ActionButton.prototype.BACKGROUND_IMAGE,
             height: ActionButton.prototype.BACKGROUND_IMAGE,
         })
@@ -625,15 +625,23 @@ class ActionButton extends Graphics.Group {
 
         this.img = new Graphics.Image({
             image: Action.prototype.IMAGE,
-            x: pos.x + ActionButton.prototype.BORDER_WIDTH,
-            y: pos.y + ActionButton.prototype.BORDER_WIDTH,
+            x: ActionButton.prototype.BORDER_WIDTH,
+            y: ActionButton.prototype.BORDER_WIDTH,
             width: Action.prototype.IMAGE.width,
             height: Action.prototype.IMAGE.height,
             hasHitmap: true
         });
-        this.img.action = new Action(this, viewer);
+        this.add(this.img);
+
+        this.text = null;
+        if (Action.prototype.SUPPORTS_QUEUE && viewer.engine.selectedEntity.tasks_counts[Action.prototype.HASH]) {
+            this.add(this.text = new Graphics.StrokedText(this.TEXT_OPTIONS));
+            this.text.text(viewer.engine.selectedEntity.tasks_counts[Action.prototype.HASH]);
+        }
+
         this.img.on("click", function(e) {
-            this.action.execute();
+            let action = new Action(viewer);
+            action.execute();
         });
         this.img.on("mousedown", (e) => {
             this.pressed = true;
@@ -649,11 +657,10 @@ class ActionButton extends Graphics.Group {
             viewer.tooltip.hide();
         });
 
-        this.add(this.img);
     }
     draw() {
         if (!this.attrs.visible) return;
-        this.layer.ctx.drawImage(this.bg.attrs.image, this.bg.absX(), this.bg.absY());
+        this.bg.draw();
         this.layer.ctx.drawImage(
             this.img.attrs.image,
             0, 0,
@@ -664,12 +671,22 @@ class ActionButton extends Graphics.Group {
             this.img.attrs.image.width - this.pressed,
             this.img.attrs.image.height - this.pressed
         );
+        if (this.text) this.text.draw();
         this.img.setHitmap();
     }
 }
 ActionButton.prototype.BORDER_WIDTH = 2;
 ActionButton.prototype.BACKGROUND_IMAGE = make_image("img/interface/greek/button_frame.png")
-
+ActionButton.prototype.TEXT_OPTIONS = {
+    x: 6, y: 2,
+    fill: 'white',
+    fontSize: 13,
+    fontFamily: 'helvetica',
+    fontWeight: "bold",
+    textBaseline: "top",
+    strokeStyle: 'black',
+    lineWidth: 2
+}
 
 class ConstructionIndicator extends Graphics.Group {
     constructor(viewer, options) {

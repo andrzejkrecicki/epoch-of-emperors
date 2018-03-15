@@ -6,6 +6,7 @@ class Entity extends Graphics.Group {
         this.realPosition = { x: null, y: null };
         this.hp = 0;
         this.max_hp = 0;
+        this.ticks_waited = 0;
         this.selected = false;
         this.attributes = {};
         this.actions_changed = false;
