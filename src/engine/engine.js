@@ -212,6 +212,7 @@ class Engine {
         let target = entity.path && entity.path[entity.path.length - 1];
         entity.path = null;
         entity.path_progress = 0;
+        entity.setBaseState(Unit.prototype.STATE.IDLE);
 
         if (entity.interactionObject == null) this.moveOrder(entity, target);
         else {

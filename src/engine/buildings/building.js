@@ -18,7 +18,6 @@ class Building extends Entity {
         this.player.addBuilding(this);
     }
     setImage() {
-        this.removeChildren();
         this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
@@ -27,6 +26,11 @@ class Building extends Entity {
             height: this.IMAGES[this.state][this.construction_stage].height
         });
         this.add(this.image);
+    }
+    updateImage() {
+        this.image.image(this.IMAGES[this.state][this.construction_stage]);
+        this.image.x(-this.IMAGE_OFFSETS[this.state].x);
+        this.image.y(-this.IMAGE_OFFSETS[this.state].y);
     }
     createSelectionRect() {
         super.createSelectionRect({
@@ -49,7 +53,7 @@ class Building extends Entity {
         this.state = this.STATE.DONE;
         this.isComplete = true;
         this.construction_stage = 0;
-        this.setImage();
+        this.updateImage();
         this.actions_changed = true;
     }
     constructionTick() {
@@ -57,7 +61,7 @@ class Building extends Entity {
         if (this.hp == this.MAX_HP) this.setComplete();
         else if (this.hp % Math.ceil(this.MAX_HP / this.IMAGES[Building.prototype.STATE.CONSTRUCTION].length) == 0) {
             ++this.construction_stage;
-            this.setImage();
+            this.updateImage();
         }
     }
     acceptsResource(type) {

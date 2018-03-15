@@ -376,7 +376,8 @@ class BottomBar extends Graphics.Group {
             y: 0,
             image: BottomBar.IMAGE,
             width: BottomBar.IMAGE.width,
-            height: BottomBar.IMAGE.height
+            height: BottomBar.IMAGE.height,
+            hasHitmap: true
         });
         this.add(this.image);
 

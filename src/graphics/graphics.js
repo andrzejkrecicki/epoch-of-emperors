@@ -248,6 +248,7 @@ class Layer extends Node {
     }
     clear() {
         this.ctx.clearRect(0, 0, this.stage.width(), this.stage.height());
+        this.hitmap.clearRect(0, 0, this.stage.width(), this.stage.height());
     }
     makeHitmap() {
         let canvas = document.createElement("canvas");
@@ -300,7 +301,7 @@ class GridPreview extends Layer {
         this.attrs.visible = false;
     }
     init(md) {
-        this.attrs.visible = true;
+        // this.attrs.visible = true;
         this.md = md;
 
         let begin_x = (-this.md.x()) - ((-this.md.x()) % 32);
