@@ -97,10 +97,10 @@ class Villager extends Unit {
             else if (engine.framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
         } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
             if (this.interactionObject.destroyed) this.terminateInteraction() // TODO: find next berry bush
+            else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             else if (engine.framesCount % this.FORAGE_RATE == 0) {
                 this.attributes.food += this.interactionObject.getFood();
                 this.carriedResource = RESOURCE_TYPES.FOOD;
-                if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.LUMBER) {
             if (this.interactionObject.destroyed) this.terminateInteraction(); // TODO: find next tree
@@ -114,31 +114,31 @@ class Villager extends Unit {
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.CHOP) {
             if (this.interactionObject.destroyed) this.terminateInteraction(); // TODO: find next tree
+            else if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
             else if (engine.framesCount % this.CHOP_RATE == 0) {
                 this.attributes.wood += this.interactionObject.getWood();
                 this.carriedResource = RESOURCE_TYPES.WOOD;
-                if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINEGOLD) {
             if (this.interactionObject.destroyed) this.terminateInteraction() // TODO: find next gold mine
+            else if (this.attributes.gold == this.CAPACITY.GOLD) this.returnResources(engine);
             else if (engine.framesCount % this.MINE_RATE == 0) {
                 this.attributes.gold += this.interactionObject.getGold();
                 this.carriedResource = RESOURCE_TYPES.GOLD;
-                if (this.attributes.gold == this.CAPACITY.GOLD) this.returnResources(engine);
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
             if (this.interactionObject.destroyed) this.terminateInteraction() // TODO: find next stone mine
+            else if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
             else if (engine.framesCount % this.MINE_RATE == 0) {
                 this.attributes.stone += this.interactionObject.getStone();
                 this.carriedResource = RESOURCE_TYPES.STONE;
-                if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
             if (this.interactionObject.destroyed) this.terminateInteraction()
+            else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             else if (engine.framesCount % this.FARM_RATE == 0) {
                 this.attributes.food += this.interactionObject.getFood();
                 this.carriedResource = RESOURCE_TYPES.FOOD;
-                if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             }
         }
 
