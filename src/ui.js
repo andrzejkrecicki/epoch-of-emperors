@@ -129,7 +129,8 @@ class DropDown extends Graphics.Group {
     }
     click() {
         this.moveToTop();
-        this.options.show();
+        if (this.options.visible()) this.options.hide();
+        else this.options.show();
         this.fire("refresh");
     }
 }
@@ -191,8 +192,8 @@ class Option extends Graphics.Group {
 }
 Option.DEFAULT_RECT_OPTIONS = Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
     stroke: '#716031',
-    fill: '#1c1107',
-    moverFill: '#3c3127'
+    fill: 'rgba(28, 17, 7, .7)',
+    moverFill: 'rgba(60, 49, 39, .7)'
 });
 
 
