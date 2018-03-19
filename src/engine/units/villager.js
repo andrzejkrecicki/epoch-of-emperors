@@ -166,9 +166,10 @@ class Villager extends Unit {
             if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_FARM;
             else this.state = this.STATE.FARMER;
         }
+        this.interaction_type = this.INTERACTION_TYPE.NONE;
     }
     terminateInteraction() {
-        if (this.interaction_type == this.INTERACTION_TYPE.NONE) return;
+        if (this.interactionObject == null) return;
         this.stopInteraction();
         this.setBaseState(this.STATE.IDLE);
         this.INTERACTION_TYPE.NONE;
