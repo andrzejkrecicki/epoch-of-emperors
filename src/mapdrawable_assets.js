@@ -2,13 +2,16 @@ import { Map } from './engine/map.js';
 import { make_image, leftpad } from './utils.js';
 
 let TERRAIN_IMAGES = {};
-TERRAIN_IMAGES[Map.TERRAIN_TYPES.WATER] = [make_image("img/tiles/water_00.png")];
+TERRAIN_IMAGES[Map.TERRAIN_TYPES.WATER] = [];
+for(let i = 0; i < 4; ++i) TERRAIN_IMAGES[Map.TERRAIN_TYPES.WATER].push(
+    make_image("img/tiles/water_" + leftpad(i, 2, "0") + ".png")
+)
 TERRAIN_IMAGES[Map.TERRAIN_TYPES.GRASS] = [];
-for (let i = 0; i < 15; ++i) TERRAIN_IMAGES[Map.TERRAIN_TYPES.GRASS].push(
+for (let i = 0; i < 9; ++i) TERRAIN_IMAGES[Map.TERRAIN_TYPES.GRASS].push(
     make_image("img/tiles/grass_" + leftpad(i, 2, "0") + ".png")
 )
 TERRAIN_IMAGES[Map.TERRAIN_TYPES.SAND] = [];
-for (let i = 0; i < 15; ++i) TERRAIN_IMAGES[Map.TERRAIN_TYPES.SAND].push(
+for (let i = 0; i < 9; ++i) TERRAIN_IMAGES[Map.TERRAIN_TYPES.SAND].push(
     make_image("img/tiles/sand_" + leftpad(i, 2, "0") + ".png")
 )
 
