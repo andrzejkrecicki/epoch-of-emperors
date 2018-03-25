@@ -1,7 +1,26 @@
 import { Building } from './building.js';
+import { FireSmall, SmokeSmall } from './details.js';
 import { make_image, RESOURCE_TYPES } from '../../utils.js';
 
 class House extends Building {
+    constructor() {
+        super(...arguments);
+        this.add(this.fire_small = new FireSmall({
+            x: 50 - this.IMAGE_OFFSETS[this.STATE.DONE].x,
+            y: 30 - this.IMAGE_OFFSETS[this.STATE.DONE].y,
+            visible: false
+        }));
+        this.add(this.smoke_small = new SmokeSmall({
+            x: 51 - this.IMAGE_OFFSETS[this.STATE.DONE].x,
+            y: 23 - this.IMAGE_OFFSETS[this.STATE.DONE].y,
+            visible: false
+        }));
+    }
+    setComplete() {
+        super.setComplete();
+        this.fire_small.show();
+        this.smoke_small.show();
+    }
 }
 House.prototype.NAME = "House";
 House.prototype.AVATAR = make_image("img/interface/avatars/house_01_all.png");
