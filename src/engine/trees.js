@@ -40,8 +40,6 @@ class Tree extends Entity {
             x: -this.IMAGE_OFFSETS[this.state][this.imgChoice].x,
             y: -this.IMAGE_OFFSETS[this.state][this.imgChoice].y,
             image: this.IMAGES[this.state][this.imgChoice],
-            width: this.IMAGES[this.state][this.imgChoice].width,
-            height: this.IMAGES[this.state][this.imgChoice].height,
             hasHitmap: true
         });
         this.add(this.image);

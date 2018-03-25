@@ -24,8 +24,6 @@ class Building extends Entity {
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.construction_stage],
-            width: this.IMAGES[this.state][this.construction_stage].width,
-            height: this.IMAGES[this.state][this.construction_stage].height
         });
         this.add(this.image);
     }

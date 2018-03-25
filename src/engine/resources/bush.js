@@ -26,8 +26,6 @@ class Bush extends Entity {
             x: -this.IMAGE_OFFSET.x,
             y: -this.IMAGE_OFFSET.y,
             image: this.IMAGE,
-            width: this.IMAGE.width,
-            height: this.IMAGE.height,
             hasHitmap: true,
         });
         this.add(this.image);

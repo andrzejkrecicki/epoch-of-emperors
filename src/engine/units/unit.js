@@ -27,8 +27,6 @@ class Unit extends Entity {
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
             image: this.IMAGES[this.state][this.rotation][this.frame],
-            width: this.IMAGES[this.state][this.rotation][this.frame].width,
-            height: this.IMAGES[this.state][this.rotation][this.frame].height,
             hasHitmap: true
         });
         this.add(this.image);
@@ -38,8 +36,6 @@ class Unit extends Entity {
         this.image.image(this.IMAGES[this.state][this.rotation][this.frame]);
         this.image.x(-this.IMAGE_OFFSETS[this.state].x);
         this.image.y(-this.IMAGE_OFFSETS[this.state].y);
-        this.image.width(this.IMAGES[this.state][this.rotation][this.frame].width);
-        this.image.height(this.IMAGES[this.state][this.rotation][this.frame].height);
     }
     createSelectionRect() {
         super.createSelectionRect({

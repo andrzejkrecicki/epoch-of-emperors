@@ -325,13 +325,9 @@ MapDrawable.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
 
 class TopBar extends Graphics.Group {
     constructor() {
-        super({ x: 0, y: 0 });
+        super();
         this.image = new Graphics.Image({
-            x: 0,
-            y: 0,
             image: TopBar.IMAGE,
-            width: TopBar.IMAGE.width,
-            height: TopBar.IMAGE.height
         });
         this.add(this.image);
         this.wood = new Graphics.StrokedText(Object.assign({ x: 34, y: 2 }, TopBar.TEXT_OPTIONS));
@@ -370,11 +366,7 @@ class BottomBar extends Graphics.Group {
     constructor(viewer, x=0, y=0) {
         super({ x: x, y: y });
         this.image = new Graphics.Image({
-            x: 0,
-            y: 0,
             image: BottomBar.IMAGE,
-            width: BottomBar.IMAGE.width,
-            height: BottomBar.IMAGE.height,
             hasHitmap: true
         });
         this.add(this.image);
@@ -433,8 +425,6 @@ class EntityDetails extends Graphics.Group {
         this.entity = entity;
         if (this.entity.AVATAR) {
             this.avatar.image(this.entity.AVATAR);
-            this.avatar.width(this.entity.AVATAR.width);
-            this.avatar.height(this.entity.AVATAR.height);
             this.avatar.show();
         } else {
             this.avatar.hide();
@@ -495,8 +485,6 @@ class EntityAttribute extends Graphics.Group {
         this.add(this.value);
         this.image = new Graphics.Image({
             image: image,
-            height: image.height,
-            width: image.width
         });
         this.add(this.image);
     }
@@ -513,8 +501,6 @@ class HealthBarBig extends Graphics.Group {
     init() {
         this.red = new Graphics.Image({
             image: HealthBarBig.BAR_RED,
-            width: HealthBarBig.BAR_RED.width,
-            height: HealthBarBig.BAR_RED.height
         });
         this.add(this.red);
 
@@ -526,8 +512,6 @@ class HealthBarBig extends Graphics.Group {
 
         this.green = new Graphics.Image({
             image: _bar,
-            width: _bar.width,
-            height: _bar.height
         });
         this.add(this.green);
     }
@@ -616,8 +600,6 @@ class ActionButton extends Graphics.Group {
         this.pressed = false;
         this.bg = new Graphics.Image({
             image: ActionButton.prototype.BACKGROUND_IMAGE,
-            width: ActionButton.prototype.BACKGROUND_IMAGE,
-            height: ActionButton.prototype.BACKGROUND_IMAGE,
         })
         this.add(this.bg);
 
@@ -625,8 +607,6 @@ class ActionButton extends Graphics.Group {
             image: Action.prototype.IMAGE,
             x: ActionButton.prototype.BORDER_WIDTH,
             y: ActionButton.prototype.BORDER_WIDTH,
-            width: Action.prototype.IMAGE.width,
-            height: Action.prototype.IMAGE.height,
             hasHitmap: true
         });
         this.add(this.img);
@@ -751,8 +731,6 @@ class ConstructionIndicator extends Graphics.Group {
             x: - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x,
             y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
             image: building.prototype.IMAGES[building.prototype.STATE.DONE][0],
-            width: building.prototype.IMAGES[building.prototype.STATE.DONE][0].width,
-            height: building.prototype.IMAGES[building.prototype.STATE.DONE][0].height,
             hasHitmap: true
         }));
         this.move();
@@ -769,7 +747,7 @@ ConstructionIndicator.prototype.MIN_OPACITY = .55;
 
 class MoverOrderIndicator extends Graphics.Group {
     constructor() {
-        super(...arguments);
+        super();
         this.counter = 0;
         this.frame = 0;
         this.hide();
@@ -777,8 +755,6 @@ class MoverOrderIndicator extends Graphics.Group {
             x: -this.IMAGE_OFFSET.x,
             y: -this.IMAGE_OFFSET.y,
             image: this.FRAMES[0],
-            width: this.FRAMES[0].width,
-            height: this.FRAMES[0].height
         });
         this.add(this.image);
     }

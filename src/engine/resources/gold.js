@@ -27,8 +27,6 @@ class GoldMine extends Entity {
             x: -this.IMAGE_OFFSETS.x,
             y: -this.IMAGE_OFFSETS.y,
             image: this.IMAGES[this.imgChoice],
-            width: this.IMAGES[this.imgChoice].width,
-            height: this.IMAGES[this.imgChoice].height,
             hasHitmap: true
         });
         this.add(this.image);

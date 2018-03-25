@@ -235,9 +235,7 @@ class CheckBox extends Graphics.Group {
 
         this.rect = new Graphics.Rect(this.options);
         this.mark = new Graphics.Path({
-            data: "M 50 100 L 100 50 L 250 200 L 400 50 L 450 100 L 300 250 L 450 400 L 400 450 L 250 300 L 100 450 L 50 400 L 200 250",
             fill: this.options.stroke,
-            scale: { x: this.options.width / 500, y: this.options.height / 500 },
             visible: checked
         });
         this.add(this.rect);

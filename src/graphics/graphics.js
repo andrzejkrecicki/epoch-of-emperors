@@ -1,7 +1,8 @@
 import { rect_intersection } from '../utils.js';
 
+
 class Node {
-    constructor(options) {
+    constructor(options = {}) {
         this.attrs = {};
         this.children = [];
         this.events = {};
@@ -647,5 +648,3 @@ window.Graphics = {
         BasicHitmask
     }
 };
-
-module.export = Graphics;

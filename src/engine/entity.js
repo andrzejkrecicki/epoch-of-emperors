@@ -1,6 +1,6 @@
 class Entity extends Graphics.Group {
     constructor(subtile_x, subtile_y) {
-        super({ x: 0, y: 0 });
+        super();
         this.subtile_x = subtile_x;
         this.subtile_y = subtile_y;
         this.realPosition = { x: null, y: null };
@@ -17,11 +17,7 @@ class Entity extends Graphics.Group {
         this.selectionRect = new Graphics.Rect(Object.assign({}, {
             stroke: 'white',
             strokeWidth: 1,
-            opacity: 1,
-            alpha: 0,
             visible: false,
-            perfectDrawEnabled: false,
-            shadowForStrokeEnabled: false,
         }, options));
         this.add(this.selectionRect);
     }
