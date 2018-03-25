@@ -15,13 +15,11 @@ class Bush extends Entity {
         this.resetBoundingBox();
     }
     getFood() {
-        if (this.attributes.food == 0) {
-            this.destroyed = true;
-            return 0;
-        } else {
-            --this.attributes.food;
+        if (this.attributes.food > 0) {
+            if (--this.attributes.food == 0) this.destroyed = true;
             return 1;
         }
+        return 0;
     }
     setImage() {
         this.image = new Graphics.Image({

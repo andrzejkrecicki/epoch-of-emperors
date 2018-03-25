@@ -9,13 +9,11 @@ class Farm extends Building {
         };
     }
     getFood() {
-        if (this.attributes.food == 0) {
-            this.destroyed = true;
-            return 0;
-        } else {
-            --this.attributes.food;
+        if (this.attributes.food > 0) {
+            if (--this.attributes.food == 0) this.destroyed = true;
             return 1;
         }
+        return 0;
     }
 }
 Farm.prototype.NAME = "Farm";

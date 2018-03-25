@@ -99,7 +99,10 @@ class Villager extends Unit {
             else if (engine.framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
         } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
             if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) this.terminateInteraction();
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
             } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             else if (engine.framesCount % this.FORAGE_RATE == 0) {
                 this.attributes.food += this.interactionObject.getFood();
@@ -107,7 +110,10 @@ class Villager extends Unit {
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.LUMBER) {
             if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) this.terminateInteraction();
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
             } else {
                 if (this.interactionObject.state == Tree.prototype.STATE.ALIVE) {
                     if (engine.framesCount % this.LUMBER_RATE == 0) this.interactionObject.lumberTick();
@@ -118,7 +124,10 @@ class Villager extends Unit {
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.CHOP) {
             if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) this.terminateInteraction();
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
             } else if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
             else if (engine.framesCount % this.CHOP_RATE == 0) {
                 this.attributes.wood += this.interactionObject.getWood();
@@ -126,7 +135,10 @@ class Villager extends Unit {
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINEGOLD) {
             if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) this.terminateInteraction();
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
             } else if (this.attributes.gold == this.CAPACITY.GOLD) this.returnResources(engine);
             else if (engine.framesCount % this.MINE_RATE == 0) {
                 this.attributes.gold += this.interactionObject.getGold();
@@ -134,7 +146,10 @@ class Villager extends Unit {
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
             if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) this.terminateInteraction();
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
             } else if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
             else if (engine.framesCount % this.MINE_RATE == 0) {
                 this.attributes.stone += this.interactionObject.getStone();
@@ -142,7 +157,10 @@ class Villager extends Unit {
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
             if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) this.terminateInteraction();
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
             } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             else if (engine.framesCount % this.FARM_RATE == 0) {
                 this.attributes.food += this.interactionObject.getFood();

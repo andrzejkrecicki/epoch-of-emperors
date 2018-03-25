@@ -158,11 +158,9 @@ class Engine {
                     !this.map.subtiles[x][y].destroyed
                 ) found = this.map.subtiles[x][y];
                 ++count;
-            }, function(x, y, node) {
-                return { x, y }
-            }, function() {
-                return found != null || count > 1000
-            }, 0, this.map.edge_size * 2 - 1
+            }, (x, y, node) => ({ x, y }),
+            () => (found != null || count > 1000),
+            0, this.map.edge_size * 2 - 1
         );
         walker.run();
         entity.interactionSuccessor = found;

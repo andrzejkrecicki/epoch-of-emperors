@@ -29,13 +29,11 @@ class Tree extends Entity {
         }
     }
     getWood() {
-        if (this.attributes.wood == 0) {
-            this.destroyed = true;
-            return 0;
-        } else {
-            --this.attributes.wood;
+        if (this.attributes.wood > 0) {
+            if (--this.attributes.wood == 0) this.destroyed = true;
             return 1;
         }
+        return 0;
     }
     setImage() {
         this.image = new Graphics.Image({

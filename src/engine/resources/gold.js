@@ -16,13 +16,11 @@ class GoldMine extends Entity {
         this.resetBoundingBox();
     }
     getGold() {
-        if (this.attributes.gold == 0) {
-            this.destroyed = true;
-            return 0;
-        } else {
-            --this.attributes.gold;
+        if (this.attributes.gold > 0) {
+            if (--this.attributes.gold == 0) this.destroyed = true;
             return 1;
         }
+        return 0;
     }
     setImage() {
         this.image = new Graphics.Image({
