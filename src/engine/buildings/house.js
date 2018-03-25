@@ -20,12 +20,24 @@ class House extends Building {
         super.setComplete();
         this.fire_small.show();
         this.smoke_small.show();
+        this.player.max_population += House.prototype.PEOPLE_PER_HOUSE;
+        let that = this;
+        this.attributes = {
+            get population() {
+                return `${that.player.population}/${that.player.max_population}`;
+            }
+        }
+    }
+    destroy(engine) {
+        super.destroy(engine);
+        if (this.isComplete) this.player.max_population -= House.prototype.PEOPLE_PER_HOUSE;
     }
 }
 House.prototype.NAME = "House";
 House.prototype.AVATAR = make_image("img/interface/avatars/house_01_all.png");
 House.prototype.MAX_HP = 75;
 House.prototype.SUBTILE_WIDTH = 3;
+House.prototype.PEOPLE_PER_HOUSE = 4;
 
 House.prototype.COST = {
     food: 0, wood: 30, stone: 0, gold: 0

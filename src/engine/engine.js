@@ -254,6 +254,7 @@ class Engine {
         this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.SUBTILE_WIDTH, unit);
         this.map.entities.push(unit);
         this.units.push(unit);
+        ++unit.player.population
     }
     addBuilding(building) {
         this.map.fillSubtilesWith(building.subtile_x, building.subtile_y, building.SUBTILE_WIDTH, building);

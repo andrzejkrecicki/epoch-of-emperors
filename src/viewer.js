@@ -341,12 +341,16 @@ class TopBar extends Graphics.Group {
 
         this.stone = new Graphics.StrokedText(Object.assign({ x: 235, y: 2 }, TopBar.TEXT_OPTIONS));
         this.add(this.stone);
+
+        this.population = new Graphics.StrokedText(Object.assign({ x: 302, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.add(this.population);
     }
     process(player) {
         this.wood.text(player.resources.wood);
         this.food.text(player.resources.food);
         this.gold.text(player.resources.gold);
         this.stone.text(player.resources.stone);
+        this.population.text(`${player.population}/${player.max_population}`);
     }
 }
 TopBar.IMAGE = make_image("img/interface/greek/topbar.png");
@@ -465,7 +469,7 @@ class EntityAttributes extends Graphics.Group {
 
     }
 }
-EntityAttributes.ALL_ATTRIBUTES = ["attack", "food", "wood", "gold", "stone", "progress"];
+EntityAttributes.ALL_ATTRIBUTES = ["attack", "food", "wood", "gold", "stone", "progress", "population"];
 EntityAttributes.ATTRIBUTES = {
     attack: make_image("img/interface/details/attack.png"),
     food: make_image("img/interface/details/food.png"),
@@ -473,6 +477,7 @@ EntityAttributes.ATTRIBUTES = {
     gold: make_image("img/interface/details/gold.png"),
     stone: make_image("img/interface/details/stone.png"),
     progress: make_image("img/interface/details/progress.png"),
+    population: make_image("img/interface/details/population.png"),
 }
 
 class EntityAttribute extends Graphics.Group {

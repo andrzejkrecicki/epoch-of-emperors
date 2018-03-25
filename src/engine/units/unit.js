@@ -53,6 +53,10 @@ class Unit extends Entity {
             h: this.IMAGES[this.state][this.rotation][this.frame].height
         }
     }
+    destroy(engine) {
+        super.destroy(engine);
+        --this.player.population;
+    }
     rotateToSubtile(subtile) {
         let index = (subtile.y - this.subtile_y + 1) * 3 + (subtile.x - this.subtile_x) + 1
         if (index !== 4) {

@@ -8,7 +8,9 @@ class Player {
         this.colour = definition.colour;
         this.team = definition.team;
         this.is_cpu = definition.is_cpu;
-        this.resources = definition.resources;
+        this.resources = Object.assign({}, definition.resources);
+        this.population = 0;
+        this.max_population = Player.prototype.DEFAULT_POPULATION;
         this.units = [];
         this.buildings = [];
     }
@@ -52,5 +54,6 @@ class Player {
         return nearest;
     }
 }
+Player.prototype.DEFAULT_POPULATION = 4;
 
 export { Player }

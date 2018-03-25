@@ -181,6 +181,11 @@ let RecruitUnitFactory = function(Unit) {
                 this.failed = true;
                 return false;
             }
+            if (this.player.population >= this.player.max_population) {
+                if (!this.failed) this.viewer.setErrorMessage('You need to build more houses.');
+                this.failed = true;
+                return false;
+            }
 
             let unit = new this.UNIT(pos.x, pos.y, this.player);
             this.viewer.engine.addUnit(unit);
