@@ -7,7 +7,7 @@ import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
 import { Barracks } from './buildings/barracks.js';
 import { Bush } from './resources/bush.js';
-import { AStarPathFinder, AStarToEntity } from './algorithms.js';
+import { AStarPathFinder, AStarToEntity, BFSWalker, StandardQueue } from './algorithms.js';
 import { Map } from './map.js';
 import { distance, manhatan_subtile_distance } from '../utils.js'
 
@@ -142,6 +142,32 @@ class Engine {
         entity.processInteraction(this);
         entity.updateSprite();
         if (this.framesCount % entity.FRAME_RATE[entity.state & Unit.prototype.BASE_STATE_MASK] == 0) ++entity.frame;
+    }
+    findInteractionSuccessor(active, entity) {
+        if (entity.interactionSuccessor != null) {
+            this.interactOrder(active, entity.interactionSuccessor);
+            return entity.interactionSuccessor;
+        }
+        let seed = { x: entity.subtile_x, y: entity.subtile_y };
+        let found = null;
+        let count = 0
+        let walker = new BFSWalker(seed, new StandardQueue, (node) => {
+                let { x, y } = node;
+                if (this.map.subtiles[x][y] != null && this.map.subtiles[x][y] != entity &&
+                    this.map.subtiles[x][y] instanceof entity.constructor &&
+                    !this.map.subtiles[x][y].destroyed
+                ) found = this.map.subtiles[x][y];
+                ++count;
+            }, function(x, y, node) {
+                return { x, y }
+            }, function() {
+                return found != null || count > 1000
+            }, 0, this.map.edge_size * 2 - 1
+        );
+        walker.run();
+        entity.interactionSuccessor = found;
+        if (found) this.interactOrder(active, found);
+        return found;
     }
     processBuildings() {
         for (let entity, i = 0; entity = this.buildings[i++];) {

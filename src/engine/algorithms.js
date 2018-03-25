@@ -387,5 +387,6 @@ UnitPathFinder.NEIGHBOURS_DELTA = [
 
 
 export {
-    BFSWalker, UnitPathFinder, MultiSlotQueue, AStarPathFinder, AStarToEntity
+    BFSWalker, UnitPathFinder, MultiSlotQueue, StandardQueue,
+    AStarPathFinder, AStarToEntity
 }
