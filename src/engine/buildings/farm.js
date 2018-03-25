@@ -4,9 +4,6 @@ import { make_image, leftpad } from '../../utils.js';
 class Farm extends Building {
     constructor() {
         super(...arguments);
-        this.attributes = {
-            food: 250
-        };
     }
     getFood(engine) {
         if (this.attributes.food > 0) {
@@ -14,6 +11,10 @@ class Farm extends Building {
             return 1;
         }
         return 0;
+    }
+    setComplete() {
+        super.setComplete();
+        this.attributes.food = 250;
     }
 }
 Farm.prototype.NAME = "Farm";

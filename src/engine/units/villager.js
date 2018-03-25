@@ -41,6 +41,7 @@ class Villager extends Unit {
         }
     }
     initInteraction(engine) {
+        this.ticks_waited = 0;
         if (this.interactionObject.destroyed) {
             if (this.interactionObject.interactionSuccessor) engine.interactOrder(this, this.interactionObject.interactionSuccessor);
             else this.terminateInteraction();
@@ -96,7 +97,7 @@ class Villager extends Unit {
             else if (this.interactionObject.isComplete && this.interactionObject.INTERACT_WHEN_COMPLETE) {
                 this.initInteraction(this.interactionObject);
             } else if (this.interactionObject.isComplete) this.terminateInteraction();
-            else if (engine.framesCount % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
+            else if (this.ticks_waited % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
         } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
             if (this.interactionObject.destroyed) {
                 if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
@@ -104,7 +105,7 @@ class Villager extends Unit {
                     else this.terminateInteraction()
                 }
             } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
-            else if (engine.framesCount % this.FORAGE_RATE == 0) {
+            else if (this.ticks_waited % this.FORAGE_RATE == 0) {
                 this.attributes.food += this.interactionObject.getFood(engine);
                 this.carriedResource = RESOURCE_TYPES.FOOD;
             }
@@ -116,7 +117,7 @@ class Villager extends Unit {
                 }
             } else {
                 if (this.interactionObject.state == Tree.prototype.STATE.ALIVE) {
-                    if (engine.framesCount % this.LUMBER_RATE == 0) this.interactionObject.lumberTick();
+                    if (this.ticks_waited % this.LUMBER_RATE == 0) this.interactionObject.lumberTick();
                 } else {
                     this.state = Villager.prototype.STATE.CHOP;
                     this.interaction_type = Villager.prototype.INTERACTION_TYPE.CHOP;
@@ -129,7 +130,7 @@ class Villager extends Unit {
                     else this.terminateInteraction()
                 }
             } else if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
-            else if (engine.framesCount % this.CHOP_RATE == 0) {
+            else if (this.ticks_waited % this.CHOP_RATE == 0) {
                 this.attributes.wood += this.interactionObject.getWood(engine);
                 this.carriedResource = RESOURCE_TYPES.WOOD;
             }
@@ -140,7 +141,7 @@ class Villager extends Unit {
                     else this.terminateInteraction()
                 }
             } else if (this.attributes.gold == this.CAPACITY.GOLD) this.returnResources(engine);
-            else if (engine.framesCount % this.MINE_RATE == 0) {
+            else if (this.ticks_waited % this.MINE_RATE == 0) {
                 this.attributes.gold += this.interactionObject.getGold(engine);
                 this.carriedResource = RESOURCE_TYPES.GOLD;
             }
@@ -151,7 +152,7 @@ class Villager extends Unit {
                     else this.terminateInteraction()
                 }
             } else if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
-            else if (engine.framesCount % this.MINE_RATE == 0) {
+            else if (this.ticks_waited % this.MINE_RATE == 0) {
                 this.attributes.stone += this.interactionObject.getStone(engine);
                 this.carriedResource = RESOURCE_TYPES.STONE;
             }
@@ -162,12 +163,12 @@ class Villager extends Unit {
                     else this.terminateInteraction()
                 }
             } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
-            else if (engine.framesCount % this.FARM_RATE == 0) {
+            else if (this.ticks_waited % this.FARM_RATE == 0) {
                 this.attributes.food += this.interactionObject.getFood(engine);
                 this.carriedResource = RESOURCE_TYPES.FOOD;
             }
         }
-
+        ++this.ticks_waited;
     }
     returnResources(engine) {
         let types = [];
