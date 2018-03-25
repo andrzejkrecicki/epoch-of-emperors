@@ -26,8 +26,7 @@ class Node {
         node.setLayer(this.layer);
     }
     remove() {
-        this.parent.children.splice(this.index, 1);
-        this.parent.resetIndices();
+        this.parent.removeChild(this);
         this.parent = null;
     }
     moveToTop() {
@@ -37,6 +36,10 @@ class Node {
     }
     resetIndices() {
         for (let i = 0; i < this.children.length; ++i) this.children[i].index = i;
+    }
+    removeChild(child) {
+        this.children.splice(child.index, 1);
+        this.resetIndices();
     }
     removeChildren() {
         for (let child of this.children) {
@@ -465,6 +468,14 @@ class EntitiesHolder extends Node {
         let y = Math.floor(entity.attrs.y / this.cellSize);
         entity.index = this.grid[x][y].length;
         this.grid[x][y].push(entity);
+    }
+    removeChild(child) {
+        let x = Math.floor(child.attrs.x / this.cellSize);
+        let y = Math.floor(child.attrs.y / this.cellSize);
+
+        this.grid[x][y][child.index] = this.grid[x][y][this.grid[x][y].length - 1];
+        this.grid[x][y][child.index].index = child.index;
+        --this.grid[x][y].length;
     }
     draw() {
         let total = 0;

@@ -92,19 +92,17 @@ class GameViewer {
 
         this.engine.startLoop();
     }
+    deselectEntity() {
+        if (this.engine.selectedEntity) this.engine.selectedEntity.setSelected(false);
+        this.engine.selectedEntity = null;
+        this.bottombar.hideDetails();
+    }
     handleClick(e) {
         if (e.evt.button == 2 || e.evt.which == 3) this.handleRightClick(e);
         else this.handleLeftClick(e);
     }
     handleLeftClick(e) {
-        // unselect selected entities
-        // this.engine.unselect ??
-
-        if (this.engine.selectedEntity) {
-            this.engine.selectedEntity.setSelected(false);
-            this.engine.selectedEntity = null;
-            this.bottombar.hideDetails();
-        }
+        this.deselectEntity();
 
         let entity = e.target.parent;
         if (entity instanceof Entity) {

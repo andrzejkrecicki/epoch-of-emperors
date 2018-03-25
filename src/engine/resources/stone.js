@@ -15,9 +15,9 @@ class StoneMine extends Entity {
         this.setImage();
         this.resetBoundingBox();
     }
-    getStone() {
+    getStone(engine) {
         if (this.attributes.stone > 0) {
-            if (--this.attributes.stone == 0) this.destroyed = true;;
+            if (--this.attributes.stone == 0) this.destroy(engine);
             return 1;
         }
         return 0;

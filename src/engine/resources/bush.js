@@ -14,9 +14,9 @@ class Bush extends Entity {
         this.setImage();
         this.resetBoundingBox();
     }
-    getFood() {
+    getFood(engine) {
         if (this.attributes.food > 0) {
-            if (--this.attributes.food == 0) this.destroyed = true;
+            if (--this.attributes.food == 0) this.destroy(engine);
             return 1;
         }
         return 0;

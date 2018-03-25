@@ -260,6 +260,10 @@ class Engine {
         this.map.entities.push(building);
         this.buildings.push(building);
     }
+    destroyEntity(entity) {
+        this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, null);
+        if (this.selectedEntity == entity) this.viewer.deselectEntity();
+    }
     addSampleUnits() {
 
         let d = { x: Math.floor(Map.SIZES[this.map.definition.size]), y: Math.floor(Map.SIZES[this.map.definition.size]) }

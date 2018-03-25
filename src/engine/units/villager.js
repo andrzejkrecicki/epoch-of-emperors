@@ -105,7 +105,7 @@ class Villager extends Unit {
                 }
             } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             else if (engine.framesCount % this.FORAGE_RATE == 0) {
-                this.attributes.food += this.interactionObject.getFood();
+                this.attributes.food += this.interactionObject.getFood(engine);
                 this.carriedResource = RESOURCE_TYPES.FOOD;
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.LUMBER) {
@@ -130,7 +130,7 @@ class Villager extends Unit {
                 }
             } else if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
             else if (engine.framesCount % this.CHOP_RATE == 0) {
-                this.attributes.wood += this.interactionObject.getWood();
+                this.attributes.wood += this.interactionObject.getWood(engine);
                 this.carriedResource = RESOURCE_TYPES.WOOD;
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINEGOLD) {
@@ -141,7 +141,7 @@ class Villager extends Unit {
                 }
             } else if (this.attributes.gold == this.CAPACITY.GOLD) this.returnResources(engine);
             else if (engine.framesCount % this.MINE_RATE == 0) {
-                this.attributes.gold += this.interactionObject.getGold();
+                this.attributes.gold += this.interactionObject.getGold(engine);
                 this.carriedResource = RESOURCE_TYPES.GOLD;
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
@@ -152,7 +152,7 @@ class Villager extends Unit {
                 }
             } else if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
             else if (engine.framesCount % this.MINE_RATE == 0) {
-                this.attributes.stone += this.interactionObject.getStone();
+                this.attributes.stone += this.interactionObject.getStone(engine);
                 this.carriedResource = RESOURCE_TYPES.STONE;
             }
         } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
@@ -163,7 +163,7 @@ class Villager extends Unit {
                 }
             } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
             else if (engine.framesCount % this.FARM_RATE == 0) {
-                this.attributes.food += this.interactionObject.getFood();
+                this.attributes.food += this.interactionObject.getFood(engine);
                 this.carriedResource = RESOURCE_TYPES.FOOD;
             }
         }

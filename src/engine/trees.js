@@ -28,9 +28,9 @@ class Tree extends Entity {
             this.resetBoundingBox();
         }
     }
-    getWood() {
+    getWood(engine) {
         if (this.attributes.wood > 0) {
-            if (--this.attributes.wood == 0) this.destroyed = true;
+            if (--this.attributes.wood == 0) this.destroy(engine);
             return 1;
         }
         return 0;

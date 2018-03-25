@@ -72,6 +72,11 @@ class Entity extends Graphics.Group {
             subtile_y: this.subtile_y + this.SUBTILE_WIDTH / 2 - .5
         }
     }
+    destroy(engine) {
+        this.destroyed = true;
+        this.remove();
+        engine.destroyEntity(this);
+    }
     resetBoundingBox() {
     }
     boundingBox() {
