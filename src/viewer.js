@@ -633,7 +633,7 @@ class ActionButton extends Graphics.Group {
             this.pressed = false;
         });
         this.img.on("mouseover", (e) => {
-            viewer.tooltip.text(Action.prototype.TOOLTIP);
+            viewer.tooltip.text(Action.prototype.toolTip());
             viewer.tooltip.show();
         });
         this.img.on("mouseout", (e) => {

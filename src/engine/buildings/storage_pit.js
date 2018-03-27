@@ -15,6 +15,7 @@ StoragePit.prototype.AVATAR = make_image("img/interface/avatars/storage_pit_01_a
 StoragePit.prototype.MAX_HP = 350;
 StoragePit.prototype.SUBTILE_WIDTH = 5;
 
+StoragePit.prototype.ACTION_KEY = "S";
 StoragePit.prototype.COST = {
     food: 0, wood: 120, stone: 0, gold: 0
 }

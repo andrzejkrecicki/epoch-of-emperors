@@ -23,6 +23,7 @@ Farm.prototype.MAX_HP = 50;
 Farm.prototype.SUBTILE_WIDTH = 5;
 Farm.prototype.INTERACT_WHEN_COMPLETE = true;
 
+Farm.prototype.ACTION_KEY = "F";
 Farm.prototype.COST = {
     food: 0, wood: 75, stone: 0, gold: 0
 }

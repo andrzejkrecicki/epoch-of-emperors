@@ -16,12 +16,31 @@ class Action {
         this.player = this.viewer.engine.current_player;
         this.failed = false;
     }
+    toolTip() {
+        let chunks = [this.TOOLTIP];
+        if (this.ACTION_KEY) chunks.push(`(${this.ACTION_KEY})`);
+        let cost = this.getCost();
+        if (cost) chunks.push(`(${this.costToString(cost)})`);
+        return chunks.join(" ");
+    }
+    getCost() {
+        return null;
+    }
+    costToString(cost) {
+        let result = [];
+        if (cost.wood) result.push(`Wood: ${cost.wood}`);
+        if (cost.food) result.push(`Food: ${cost.food}`);
+        if (cost.gold) result.push(`Gold: ${cost.gold}`);
+        if (cost.stone) result.push(`Stone: ${cost.stone}`);
+        return result.join(" ");
+    }
     execute() { }
 }
 Action.prototype.SIZE = 54;
 Action.prototype.MARGIN = 2;
 Action.prototype.ACTIONS_PER_ROW = 5;
 Action.prototype.SUPPORTS_QUEUE = false;
+Action.prototype.ACTION_KEY = null;
 
 class RejectConstructionPlan extends Action {
     execute() {
@@ -32,6 +51,7 @@ class RejectConstructionPlan extends Action {
 }
 RejectConstructionPlan.prototype.IMAGE = make_image("img/interface/command/cancel.png");
 RejectConstructionPlan.prototype.TOOLTIP = "Cancel";
+RejectConstructionPlan.prototype.ACTION_KEY = "Esc";
 RejectConstructionPlan.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -51,6 +71,9 @@ let CreateBuildingFactory = function(Building) {
             this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
             this.viewer.constructionIndicator.setBuilding(this.BUILDING);
             this.viewer.constructionIndicator.children[0].on("click", this.handleClick.bind(this));
+        }
+        getCost() {
+            return this.BUILDING.prototype.COST;
         }
         handleClick(e) {
             if (e.evt.button == 2 || e.evt.which == 3) this.rejectConstruction(e);
@@ -85,7 +108,8 @@ let CreateBuildingFactory = function(Building) {
     }
     CreateBuilding.prototype.IMAGE = Building.prototype.AVATAR;
     CreateBuilding.prototype.BUILDING = Building;
-    CreateBuilding.prototype.TOOLTIP = `Build ${Building.prototype.NAME}.`;
+    CreateBuilding.prototype.TOOLTIP = `Build ${Building.prototype.NAME}`;
+    CreateBuilding.prototype.ACTION_KEY = Building.prototype.ACTION_KEY;
     CreateBuilding.prototype.ACTIONS = [
         RejectConstructionPlan
     ];
@@ -99,6 +123,7 @@ class PreviousPage extends Action {
 }
 PreviousPage.prototype.IMAGE = make_image("img/interface/command/next.png");
 PreviousPage.prototype.TOOLTIP = "Previous";
+PreviousPage.prototype.ACTION_KEY = "X";
 PreviousPage.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: 0
@@ -111,6 +136,7 @@ class FirstPage extends Action {
 }
 FirstPage.prototype.IMAGE = make_image("img/interface/command/cancel.png");
 FirstPage.prototype.TOOLTIP = "Cancel";
+FirstPage.prototype.ACTION_KEY = "Esc";
 FirstPage.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -123,6 +149,7 @@ class NextBuildingsPage extends Action {
 }
 NextBuildingsPage.prototype.IMAGE = make_image("img/interface/command/next.png");
 NextBuildingsPage.prototype.TOOLTIP = "Next";
+NextBuildingsPage.prototype.ACTION_KEY = "X";
 NextBuildingsPage.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * Action.prototype.ACTIONS_PER_ROW + Action.prototype.MARGIN,
     y: 0
@@ -140,6 +167,7 @@ class Build extends Action {
 }
 Build.prototype.IMAGE = make_image("img/interface/command/build.png");
 Build.prototype.TOOLTIP = "Build";
+Build.prototype.ACTION_KEY = "B";
 Build.prototype.ACTIONS = [
     CreateBuildingFactory(House),
     CreateBuildingFactory(Barracks),
@@ -156,11 +184,13 @@ class Repair extends Action {
 }
 Repair.prototype.IMAGE = make_image("img/interface/command/repair.png");
 Repair.prototype.TOOLTIP = "Repair";
+Repair.prototype.ACTION_KEY = "R";
 
 class Stop extends Action {
 }
 Stop.prototype.IMAGE = make_image("img/interface/command/stop.png");
 Stop.prototype.TOOLTIP = "Stop";
+Stop.prototype.ACTION_KEY = "S";
 
 
 let RecruitUnitFactory = function(Unit) {
@@ -191,6 +221,9 @@ let RecruitUnitFactory = function(Unit) {
             this.viewer.engine.addUnit(unit);
             this.viewer.addEntity(unit);
             return true;
+        }
+        getCost() {
+            return this.UNIT.prototype.COST;
         }
         time() {
             return this.UNIT.prototype.CREATION_TIME;
@@ -225,7 +258,8 @@ let RecruitUnitFactory = function(Unit) {
         }
     }
     RecruitUnit.prototype.IMAGE = Unit.prototype.AVATAR;
-    RecruitUnit.prototype.TOOLTIP = `Create ${Unit.prototype.NAME}.`;
+    RecruitUnit.prototype.TOOLTIP = `Create ${Unit.prototype.NAME}`;
+    RecruitUnit.prototype.ACTION_KEY = Unit.prototype.ACTION_KEY;
     RecruitUnit.prototype.UNIT = Unit;
     RecruitUnit.prototype.SUPPORTS_QUEUE = true;
     RecruitUnit.prototype.HASH = Unit.prototype.NAME;

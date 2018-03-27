@@ -18,6 +18,7 @@ TownCenter.prototype.AVATAR = make_image("img/interface/avatars/town_center_01_a
 TownCenter.prototype.MAX_HP = 600;
 TownCenter.prototype.SUBTILE_WIDTH = 5;
 
+TownCenter.prototype.ACTION_KEY = "N";
 TownCenter.prototype.COST = {
     food: 0, wood: 200, stone: 0, gold: 0
 }

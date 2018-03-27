@@ -11,6 +11,7 @@ Granary.prototype.AVATAR = make_image("img/interface/avatars/granary_01_greek.pn
 Granary.prototype.MAX_HP = 350;
 Granary.prototype.SUBTILE_WIDTH = 5;
 
+Granary.prototype.ACTION_KEY = "G";
 Granary.prototype.COST = {
     food: 0, wood: 120, stone: 0, gold: 0
 }

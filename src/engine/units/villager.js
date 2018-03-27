@@ -219,6 +219,7 @@ Villager.prototype.CHOP_RATE = 60;
 Villager.prototype.MINE_RATE = 60;
 Villager.prototype.FARM_RATE = 60;
 
+Villager.prototype.ACTION_KEY = "C";
 Villager.prototype.COST = {
     food: 50, wood: 0, stone: 0, gold: 0
 }
