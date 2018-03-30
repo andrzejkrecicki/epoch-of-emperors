@@ -5,8 +5,10 @@ import { Entity } from './entity.js';
 import { Player } from './player.js';
 import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
-import { Barracks } from './buildings/barracks.js';
 import { Bush } from './resources/bush.js';
+import { GoldMine } from './resources/gold.js';
+import { StoneMine } from './resources/stone.js';
+import { LeafTree } from './trees.js';
 import { AStarPathFinder, AStarToEntity, BFSWalker, StandardQueue } from './algorithms.js';
 import { Map } from './map.js';
 import { distance, manhatan_subtile_distance } from '../utils.js'
@@ -271,17 +273,100 @@ class Engine {
     addSampleUnits() {
 
         let d = { x: Math.floor(Map.SIZES[this.map.definition.size]), y: Math.floor(Map.SIZES[this.map.definition.size]) }
-        this.addUnit(new Villager(d.x, d.y ));
 
-        let towncenter = new TownCenter(d.x + 3, d.y + 3 );
-        towncenter.state = 1;
-        towncenter.setImage();
+        let bush = new Bush(129, 132);
+        this.map.fillSubtilesWith(bush.subtile_x, bush.subtile_y, bush.SUBTILE_WIDTH, bush);
+        this.map.entities.push(bush);
+
+        bush = new Bush(131, 135);
+        this.map.fillSubtilesWith(bush.subtile_x, bush.subtile_y, bush.SUBTILE_WIDTH, bush);
+        this.map.entities.push(bush);
+
+        bush = new Bush(131, 138);
+        this.map.fillSubtilesWith(bush.subtile_x, bush.subtile_y, bush.SUBTILE_WIDTH, bush);
+        this.map.entities.push(bush);
+
+        bush = new Bush(126, 135);
+        this.map.fillSubtilesWith(bush.subtile_x, bush.subtile_y, bush.SUBTILE_WIDTH, bush);
+        this.map.entities.push(bush);
+
+        bush = new Bush(123, 135);
+        this.map.fillSubtilesWith(bush.subtile_x, bush.subtile_y, bush.SUBTILE_WIDTH, bush);
+        this.map.entities.push(bush);
+
+
+
+        let tree = new LeafTree(141, 131, 4);
+        this.map.fillSubtilesWith(tree.subtile_x, tree.subtile_y, tree.SUBTILE_WIDTH, tree);
+        this.map.entities.push(tree);
+
+        tree = new LeafTree(141, 125, 1);
+        this.map.fillSubtilesWith(tree.subtile_x, tree.subtile_y, tree.SUBTILE_WIDTH, tree);
+        this.map.entities.push(tree);
+
+        tree = new LeafTree(147, 127, 4);
+        this.map.fillSubtilesWith(tree.subtile_x, tree.subtile_y, tree.SUBTILE_WIDTH, tree);
+        this.map.entities.push(tree);
+
+        tree = new LeafTree(145, 133, 2);
+        this.map.fillSubtilesWith(tree.subtile_x, tree.subtile_y, tree.SUBTILE_WIDTH, tree);
+        this.map.entities.push(tree);
+
+        tree = new LeafTree(139, 136, 5);
+        this.map.fillSubtilesWith(tree.subtile_x, tree.subtile_y, tree.SUBTILE_WIDTH, tree);
+        this.map.entities.push(tree);
+
+        tree = new LeafTree(143, 137, 5);
+        this.map.fillSubtilesWith(tree.subtile_x, tree.subtile_y, tree.SUBTILE_WIDTH, tree);
+        this.map.entities.push(tree);
+
+
+
+        let gold = new GoldMine(114, 120, 4);
+        this.map.fillSubtilesWith(gold.subtile_x, gold.subtile_y, gold.SUBTILE_WIDTH, gold);
+        this.map.entities.push(gold);
+
+        gold = new GoldMine(116, 120, 3);
+        this.map.fillSubtilesWith(gold.subtile_x, gold.subtile_y, gold.SUBTILE_WIDTH, gold);
+        this.map.entities.push(gold);
+
+        gold = new GoldMine(116, 118, 5);
+        this.map.fillSubtilesWith(gold.subtile_x, gold.subtile_y, gold.SUBTILE_WIDTH, gold);
+        this.map.entities.push(gold);
+
+        gold = new GoldMine(118, 118, 1);
+        this.map.fillSubtilesWith(gold.subtile_x, gold.subtile_y, gold.SUBTILE_WIDTH, gold);
+        this.map.entities.push(gold);
+
+        gold = new GoldMine(118, 122, 5);
+        this.map.fillSubtilesWith(gold.subtile_x, gold.subtile_y, gold.SUBTILE_WIDTH, gold);
+        this.map.entities.push(gold);
+
+
+        let stone = new StoneMine(124, 114, 6);
+        this.map.fillSubtilesWith(stone.subtile_x, stone.subtile_y, stone.SUBTILE_WIDTH, stone);
+        this.map.entities.push(stone);
+
+        stone = new StoneMine(126, 114, 4);
+        this.map.fillSubtilesWith(stone.subtile_x, stone.subtile_y, stone.SUBTILE_WIDTH, stone);
+        this.map.entities.push(stone);
+
+        stone = new StoneMine(124, 112, 4);
+        this.map.fillSubtilesWith(stone.subtile_x, stone.subtile_y, stone.SUBTILE_WIDTH, stone);
+        this.map.entities.push(stone);
+
+        stone = new StoneMine(126, 112, 3);
+        this.map.fillSubtilesWith(stone.subtile_x, stone.subtile_y, stone.SUBTILE_WIDTH, stone);
+        this.map.entities.push(stone);
+
+        this.addUnit(new Villager(d.x - 1, d.y - 6, this.current_player));
+        this.addUnit(new Villager(d.x + 7, d.y - 10, this.current_player));
+        this.addUnit(new Villager(d.x + 2, d.y, this.current_player));
+
+        let towncenter = new TownCenter(d.x + 1, d.y - 8, this.current_player);
+        towncenter.setComplete();
         this.addBuilding(towncenter);
 
-        let barracks = new Barracks(d.x + 3, d.y + 12 );
-        barracks.state = 1;
-        barracks.setImage();
-        this.addBuilding(barracks);
     }
 }
 Engine.prototype.frameRate = 35;

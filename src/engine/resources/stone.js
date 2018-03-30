@@ -2,12 +2,14 @@ import { Entity } from '../entity.js';
 import { make_image, rand_choice } from '../../utils.js';
 
 class StoneMine extends Entity {
-    constructor(subtile_x, subtile_y) {
+    constructor(subtile_x, subtile_y, imgChoice=-1) {
         super(...arguments);
         this.attributes = {
             stone: 400
         };
-        this.imgChoice = Math.floor(Math.random() * this.IMAGES.length);
+        if (imgChoice == -1) this.imgChoice = Math.floor(Math.random() * this.IMAGES.length);
+        this.imgChoice = imgChoice;
+
         this.hp = this.MAX_HP;
         this.max_hp = this.MAX_HP;
 

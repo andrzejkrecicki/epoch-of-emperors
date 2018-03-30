@@ -87,8 +87,7 @@ class GameViewer {
         this.errorMessage.hide();
         this.layers.interface.add(this.errorMessage);
 
-        this.layers.grid.init(this.mapDrawable);
-
+        // this.layers.grid.init(this.mapDrawable);
 
         this.engine.startLoop();
     }

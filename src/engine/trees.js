@@ -3,7 +3,7 @@ import { TreeStump } from './flat_drawables.js';
 import { make_image, rand_choice } from '../utils.js';
 
 class Tree extends Entity {
-    constructor(subtile_x, subtile_y) {
+    constructor(subtile_x, subtile_y, imgChoice=-1) {
         super(...arguments);
         this.attributes = {
             wood: 75
@@ -11,7 +11,8 @@ class Tree extends Entity {
         this.hp = Tree.prototype.MAX_HP;
         this.max_hp = Tree.prototype.MAX_HP;
         this.state = Tree.prototype.STATE.ALIVE;
-        this.imgChoice = Math.floor(Math.random() * this.IMAGES[this.state].length);
+        if (imgChoice == -1) this.imgChoice = Math.floor(Math.random() * this.IMAGES[this.state].length);
+        else this.imgChoice = imgChoice;
 
         this.createSelectionRect();
         this.setImage();
