@@ -264,6 +264,9 @@ class Engine {
     destroyEntity(entity) {
         this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, null);
         if (this.selectedEntity == entity) this.viewer.deselectEntity();
+        if (entity.LEFTOVERS != null) {
+            this.viewer.addEntity(new entity.LEFTOVERS(entity.subtile_x, entity.subtile_y));
+        }
     }
     addSampleUnits() {
 

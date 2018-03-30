@@ -1,4 +1,5 @@
 import { Building } from './building.js';
+import { ExhaustedFarm } from '../flat_drawables.js';
 import { make_image, leftpad } from '../../utils.js';
 
 class Farm extends Building {
@@ -22,6 +23,7 @@ Farm.prototype.AVATAR = make_image("img/interface/avatars/farm.png");
 Farm.prototype.MAX_HP = 50;
 Farm.prototype.SUBTILE_WIDTH = 5;
 Farm.prototype.INTERACT_WHEN_COMPLETE = true;
+Farm.prototype.LEFTOVERS = ExhaustedFarm;
 
 Farm.prototype.ACTION_KEY = "F";
 Farm.prototype.COST = {

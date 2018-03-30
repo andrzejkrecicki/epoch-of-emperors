@@ -513,14 +513,15 @@ class EntitiesHolder extends Node {
         if (highest_z == -1) return;
 
         // create layers for each z-index in calculated range
-        let z_layers = new Array(highest_z - lowest_z + 1).fill(null).map(() => []);
+        let z_layers = new Array(highest_z - lowest_z + 2).fill(null).map(() => []);
 
         for (let x = first_x; x < last_x; ++x) {
             for (let y = first_y; y < last_y; ++y) {
                 for (let i = 0; i < this.grid[x][y].length; ++i) {
                     if (rect_intersection(this.grid[x][y][i].getBoundingBox(), viewPort)) {
                         let z = this.mapSize - (this.grid[x][y][i].subtile_x - this.grid[x][y][i].subtile_y)
-                        z_layers[z - lowest_z].push(this.grid[x][y][i]);
+                        if (this.grid[x][y][i].isFlat) z = lowest_z - 1;
+                        z_layers[z - lowest_z + 1].push(this.grid[x][y][i]);
                     }
                 }
             }
