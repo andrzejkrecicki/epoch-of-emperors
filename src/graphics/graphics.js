@@ -576,6 +576,8 @@ function BasicHitmask(image, offset) {
     let wrap = {
         ctx: null,
         imageData: null,
+        width: 0,
+        height: 0,
         offset: offset
     };
 
@@ -585,9 +587,11 @@ function BasicHitmask(image, offset) {
         tmp.setAttribute("height", image.height);
         let ctx = tmp.getContext("2d");
         ctx.drawImage(image, 0, 0);
-        let imageData = ctx.getImageData(0, 0, image.width, image.height);
+        ctx.globalCompositeOperation = "source-in";
         wrap.ctx = ctx;
-        wrap.imageData = imageData;
+        wrap.width = image.width;
+        wrap.height = image.height;
+        wrap.imageData = ctx.getImageData(0, 0, image.width, image.height);
     });
     return wrap;
 }
@@ -598,6 +602,8 @@ function ComposeHitmask(img1, img2, offset1, offset2) {
     let wrap = {
         ctx: null,
         imageData: null,
+        width: 0,
+        height: 0,
         offset: null
     }
 
@@ -616,7 +622,10 @@ function ComposeHitmask(img1, img2, offset1, offset2) {
             Math.max(offset1.x, offset2.x) - offset2.x,
             Math.max(offset1.y, offset2.y) - offset2.y
         );
+        ctx.globalCompositeOperation = "source-in";
         wrap.ctx = ctx;
+        wrap.width = tmp.width;
+        wrap.height = tmp.height;
         wrap.imageData = ctx.getImageData(0, 0, tmp.width, tmp.height);
         wrap.offset = {
             x: Math.max(offset1.x, offset2.x),

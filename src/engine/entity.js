@@ -41,24 +41,17 @@ class Entity extends Graphics.Group {
         if (this.HAS_BITMAP_HITMASK) this.setHitmap();
     }
     setHitmap() {
-        this.layer.hitmap.fillStyle = this.hitColor;
-
-        let imageData = this.layer.hitmap.getImageData(
-            this.absX() - this.HITMAP[this.state].offset.x,
-            this.absY() - this.HITMAP[this.state].offset.y,
-            this.HITMAP[this.state].imageData.width,
-            this.HITMAP[this.state].imageData.height
+        this.HITMAP[this.state].ctx.fillStyle = this.image.hitColor;
+        // hitmask bitmaps use source-in as a composite operation
+        // therefore fillRect bellow does not overlay whole hitmask
+        // but instead repaints only its non-transparent pixels
+        this.HITMAP[this.state].ctx.fillRect(
+            0, 0,
+            this.HITMAP[this.state].width,
+            this.HITMAP[this.state].height
         );
 
-        for (let i = 0; i < imageData.data.length; i += 4) {
-            if (this.HITMAP[this.state].imageData.data[i + 3] != 0) {
-                imageData.data[i] = (this.image.UUID & 0xff0000) >> 16;
-                imageData.data[i + 1] = (this.image.UUID & 0x00ff00) >> 8;
-                imageData.data[i + 2] = (this.image.UUID & 0x0000ff);
-                imageData.data[i + 3] = 255;
-            }
-        }
-        this.layer.hitmap.putImageData(imageData,
+        this.layer.hitmap.drawImage(this.HITMAP[this.state].ctx.canvas,
             this.absX() - this.HITMAP[this.state].offset.x,
             this.absY() - this.HITMAP[this.state].offset.y
         );
