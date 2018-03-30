@@ -59,13 +59,13 @@ class RandomMap extends Map {
         // this.plantTrees();
     }
     getNeighboursIdentityVector(x, y, synonyms=[]) {
-        let neighbours_vector = [0, 0, 0, 0, 0, 0, 0, 0];
+        let neighbours_vector = 0;
         for (let i = 0, delta; delta = Map.ALL_NEIGHBOURS_DELTA[i]; ++i) {
             let nx = x + delta.x;
             let ny = y + delta.y;
             nx = Math.max(Math.min(this.edge_size - 1, nx), 0);
             ny = Math.max(Math.min(this.edge_size - 1, ny), 0);
-            neighbours_vector[i] = +(synonyms.indexOf(this.initial_tiles[nx][ny]) != -1);
+            neighbours_vector |= +(synonyms.indexOf(this.initial_tiles[nx][ny]) != -1) << (7 - i);
         }
         return neighbours_vector
     }
@@ -167,9 +167,7 @@ class RandomMap extends Map {
             for (let y = 1; y < this.edge_size - 1; ++y) {
                 for (let x = 1; x < this.edge_size - 1; ++x) {
                     if (this.initial_tiles[x][y] != Map.TERRAIN_TYPES.WATER) {
-                        let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
-
-                        let bitmask = Number.parseInt(neighbours_vector.join(""), 2);
+                        let bitmask = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
 
                         if (!(bitmask in RandomMap.SAND_TRANSFORMATIONS)) {
                             changes_pending = true;
@@ -190,9 +188,7 @@ class RandomMap extends Map {
         for (let y = 0; y < this.edge_size; ++y) {
             for (let x = 0; x < this.edge_size; ++x) {
                 if (this.initial_tiles[x][y] !== Map.TERRAIN_TYPES.WATER) {
-                    let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
-
-                    let bitmask = Number.parseInt(neighbours_vector.join(""), 2);
+                    let bitmask = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.SAND, Map.TERRAIN_TYPES.GRASS]);
 
                     if (bitmask !== 255 && bitmask in RandomMap.SAND_TRANSFORMATIONS) {
                         this.terrain_tiles[x][y] = RandomMap.SAND_TRANSFORMATIONS[bitmask];
@@ -207,9 +203,7 @@ class RandomMap extends Map {
         for (let y = 0; y < this.edge_size; ++y) {
             for (let x = 0; x < this.edge_size; ++x) {
                 if (this.initial_tiles[x][y] == Map.TERRAIN_TYPES.GRASS) {
-                    let neighbours_vector = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.GRASS]);
-
-                    let bitmask = Number.parseInt(neighbours_vector.join(""), 2);
+                    let bitmask = this.getNeighboursIdentityVector(x, y, [Map.TERRAIN_TYPES.GRASS]);
 
                     if (bitmask in RandomMap.GRASS_TRANSFORMATIONS) {
                         this.terrain_tiles[x][y] = RandomMap.GRASS_TRANSFORMATIONS[bitmask];
