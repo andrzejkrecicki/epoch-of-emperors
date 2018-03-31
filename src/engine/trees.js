@@ -116,7 +116,7 @@ LeafTree.prototype.IMAGE_OFFSETS = {};
 LeafTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT];
 LeafTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.ALIVE] = [
     { x: 15, y: 54 },
-    { x: 6, y: 60 },
+    { x: 40, y: 68 },
     { x: 19, y: 68 },
     { x: 40, y: 66 },
     { x: 18, y: 64 },

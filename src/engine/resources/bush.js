@@ -63,6 +63,6 @@ Bush.prototype.AVATAR = make_image("img/interface/avatars/bush.png");
 Bush.prototype.TOOLTIP = "Forage here for food.";
 
 Bush.prototype.IMAGE = make_image("img/resources/bush.png");
-Bush.prototype.IMAGE_OFFSET =  { x: -13, y: 25 };
+Bush.prototype.IMAGE_OFFSET =  { x: -12, y: 25 };
 
 export { Bush }
