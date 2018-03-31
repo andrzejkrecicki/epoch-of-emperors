@@ -159,6 +159,12 @@ NextBuildingsPage.prototype.ACTIONS = [
     FirstPage,
 ];
 
+class StandGround extends Action {
+}
+StandGround.prototype.IMAGE = make_image("img/interface/command/stand_ground.png");
+StandGround.prototype.TOOLTIP = "Stand Ground";
+StandGround.prototype.ACTION_KEY = "D";
+
 
 class Build extends Action {
     execute() {
@@ -268,7 +274,7 @@ let RecruitUnitFactory = function(Unit) {
 
 
 let Actions = {
-    Build, Repair, Stop, RecruitUnitFactory
+    StandGround, Build, Repair, Stop, RecruitUnitFactory
 }
 
 export { Actions };

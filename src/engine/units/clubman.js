@@ -12,9 +12,9 @@ class ClubMan extends Unit {
         }
     }
     get ACTIONS() {
-        return [
-            Actions.Stop
-        ];
+        if (this.state & Unit.prototype.STATE.IDLE) return [
+            Actions.StandGround
+        ]; else return [Actions.StandGround, Actions.Stop]
     }
 }
 ClubMan.prototype.SUBTILE_WIDTH = 1;

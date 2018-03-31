@@ -100,6 +100,7 @@ class Unit extends Entity {
     setBaseState(state) {
         this.state &= this.BASE_STATE_MASK;
         this.state |= state;
+        this.actions_changed = true;
     }
     preInitInteraction(object) {
 

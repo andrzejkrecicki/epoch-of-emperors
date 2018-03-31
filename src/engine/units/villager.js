@@ -21,6 +21,13 @@ class Villager extends Unit {
         }
         this.carriedResource = RESOURCE_TYPES.NONE;
     }
+    get ACTIONS() {
+        if (this.state & Unit.prototype.STATE.IDLE) return [
+            Actions.Build, Actions.Repair
+        ]; else return [
+            Actions.Build, Actions.Repair, Actions.Stop
+        ];
+    }
     preInitInteraction(object) {
         if (object instanceof Farm && object.isComplete) {
             this.state = Villager.prototype.STATE.FARMER;
@@ -231,11 +238,6 @@ Villager.prototype.CAPACITY = {
     GOLD: 10
 }
 Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
-Villager.prototype.ACTIONS = [
-    Actions.Build,
-    Actions.Repair,
-    Actions.Stop
-];
 Villager.prototype.ATTRIBUTES = {
     ATTACK: 3
 }
