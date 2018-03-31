@@ -14,10 +14,10 @@ class Villager extends Unit {
         super(...arguments);
         this.attributes = {
             attack: Villager.prototype.ATTRIBUTES.ATTACK,
-            food: 0,
-            wood: 0,
-            gold: 0,
-            stone: 0
+            food: null,
+            wood: null,
+            gold: null,
+            stone: null
         }
         this.carriedResource = RESOURCE_TYPES.NONE;
     }
@@ -28,16 +28,16 @@ class Villager extends Unit {
             this.state = Villager.prototype.STATE.BUILDING;
         } else if (object instanceof Tree) {
             this.state = Villager.prototype.STATE.LUMBER;
-            this.attributes.food = this.attributes.gold = this.attributes.stone = 0;
+            this.attributes.food = this.attributes.gold = this.attributes.stone = null;
         } else if (object instanceof Bush) {
             this.state = Villager.prototype.STATE.FORAGE;
-            this.attributes.wood = this.attributes.gold = this.attributes.stone = 0;
+            this.attributes.wood = this.attributes.gold = this.attributes.stone = null;
         } else if (object instanceof GoldMine) {
             this.state = Villager.prototype.STATE.MINE;
-            this.attributes.food = this.attributes.wood = this.attributes.stone = 0;
+            this.attributes.food = this.attributes.wood = this.attributes.stone = null;
         } else if (object instanceof StoneMine) {
             this.state = Villager.prototype.STATE.MINE;
-            this.attributes.food = this.attributes.wood = this.attributes.gold = 0;
+            this.attributes.food = this.attributes.wood = this.attributes.gold = null;
         }
     }
     initInteraction(engine) {
@@ -55,7 +55,7 @@ class Villager extends Unit {
             if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {
                 let res_name = RESOURCE_NAME[this.carriedResource];
                 this.player.resources[res_name] += this.attributes[res_name];
-                this.attributes[res_name] = 0;
+                this.attributes[res_name] = null;
                 this.carriedResource = RESOURCE_TYPES.NONE;
 
                 if (this.prevInteractionObject == null) {

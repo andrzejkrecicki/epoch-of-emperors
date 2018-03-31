@@ -458,7 +458,7 @@ class EntityAttributes extends Graphics.Group {
         this.entity = entity;
         let offset_y = 0;
         for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
-            if (this.entity.attributes[attr]) {
+            if (this.entity.attributes[attr] != null) {
                 this[attr].text(this.entity.attributes[attr]);
                 this[attr].position({ x: 0, y: offset_y });
                 this[attr].show();
@@ -469,8 +469,8 @@ class EntityAttributes extends Graphics.Group {
     }
 }
 EntityAttributes.ALL_ATTRIBUTES = [
-    "attack", "armor", "progress"
-    "food", "wood", "gold", "stone", "population",
+    "attack", "armor", "progress", "population",
+    "food", "wood", "gold", "stone"
 ];
 EntityAttributes.ATTRIBUTES = {
     attack: make_image("img/interface/details/attack.png"),
