@@ -387,8 +387,8 @@ class RandomMapMenu extends Menu {
                 new PlayerDefinition(3, "Computer 3", null, PLAYER_COLOURS[3], null, true)
             ],
             map: {
-                size: 1,
-                type: 3,
+                size: 0,
+                type: 2,
                 startingAge: 1,
                 resources: 1,
                 difficulty: 2,
