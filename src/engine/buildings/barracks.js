@@ -1,8 +1,14 @@
 import { Building } from './building.js';
-import { Villager } from '../units/villager.js';
+import { ClubMan } from '../units/clubman.js';
+import { Actions } from '../actions.js';
 import { make_image, leftpad } from '../../utils.js';
 
 class Barracks extends Building {
+    get ACTIONS() {
+        if (this.isComplete) return [
+            Actions.RecruitUnitFactory(ClubMan)
+        ]; else return null;
+    }
 }
 Barracks.prototype.NAME = "Barracks";
 Barracks.prototype.AVATAR = make_image("img/interface/avatars/barracks_all_1.png");
