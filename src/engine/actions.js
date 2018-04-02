@@ -35,6 +35,12 @@ class Action {
         return result.join(" ");
     }
     execute() { }
+    init() {
+        return true;
+    }
+    finalize() {
+        return true;
+    }
 }
 Action.prototype.SIZE = 54;
 Action.prototype.MARGIN = 2;
@@ -209,6 +215,16 @@ let RecruitUnitFactory = function(Unit) {
             }
             this.player.subtractResources(this.UNIT.prototype.COST);
             this.entity.addTask(this);
+        }
+        init() {
+            if (this.player.population >= this.player.max_population) {
+                if (!this.failed) this.viewer.setErrorMessage('You need to build more houses.');
+                this.failed = true;
+                return false;
+            } else {
+                this.failed = false;
+                return true;
+            }
         }
         finalize() {
             let pos = this.findEmptyArea(this.UNIT.prototype.SUBTILE_WIDTH);

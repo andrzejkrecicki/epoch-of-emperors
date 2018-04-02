@@ -73,6 +73,10 @@ class Building extends Entity {
     }
     processTasks() {
         let task = this.tasks[0];
+        if (this.ticks_waited == 0 && !task.init()) {
+            this.attributes.progress = "0%";
+            return;
+        }
         if (this.ticks_waited < task.time()) {
             this.attributes.progress = Math.floor(100 * ++this.ticks_waited / task.time()) + "%";
         } else {
