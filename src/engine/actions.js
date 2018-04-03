@@ -270,7 +270,13 @@ let RecruitUnitFactory = function(Unit) {
                     y: curr.y + (this.entity.SUBTILE_WIDTH + width) * dir.y
                 }
                 do {
-                    if (this.viewer.engine.map.areSubtilesEmpty(curr.x, curr.y, width)) {
+                    let terrain_counts = this.viewer.engine.map.countTerrainTiles(curr.x, curr.y, width);
+                    let allowed_terrain = true;
+                    for (let terrain of terrain_counts.keys())
+                        if (!this.UNIT.prototype.SUPPORTED_TERRAIN.has(terrain)) allowed_terrain = false;
+
+                    let empty = this.viewer.engine.map.areSubtilesEmpty(curr.x, curr.y, width);
+                    if (empty && allowed_terrain) {
                         possible_areas.push(curr);
                     }
                     curr = { x: curr.x + 1 * dir.x, y: curr.y + 1 * dir.y };
