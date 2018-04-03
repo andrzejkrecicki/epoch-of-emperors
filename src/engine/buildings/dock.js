@@ -2,12 +2,18 @@ import { Building } from './building.js';
 import { FishingBoat } from '../units/fishing_boat.js';
 import { Actions } from '../actions.js';
 import { make_image, leftpad } from '../../utils.js';
+import { TERRAIN_TYPES } from '../terrain.js';
+
 
 class Dock extends Building {
     get ACTIONS() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(FishingBoat)
         ]; else return null;
+    }
+    canConstructOn(terrain_counts) {
+        return terrain_counts.get(TERRAIN_TYPES.WATER) > 0 &&
+            terrain_counts.get(TERRAIN_TYPES.WATER) < (this.SUBTILE_WIDTH / 2) ** 2;
     }
 }
 Dock.prototype.NAME = "Dock";

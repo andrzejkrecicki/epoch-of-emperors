@@ -719,7 +719,8 @@ class ConstructionIndicator extends Graphics.Group {
         let map = this.viewer.engine.map;
         if (this.sub.x >= 0 && this.sub.x + W <= map.edge_size * 2 &&
             this.sub.y >= 0 && this.sub.y + W <= map.edge_size * 2 &&
-            map.areSubtilesEmpty(this.sub.x, this.sub.y, W) && map.areaIsLand(this.sub.x, this.sub.y, W)
+            map.areSubtilesEmpty(this.sub.x, this.sub.y, W) &&
+            this.building.prototype.canConstructOn(map.countTerrainTiles(this.sub.x, this.sub.y, W))
         ) {
             this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0]);
             this.allow_construction = true;

@@ -1,5 +1,6 @@
 import { Entity } from '../entity.js';
 import { make_image } from '../../utils.js';
+import { TERRAIN_TYPES } from '../terrain.js';
 
 
 class Building extends Entity {
@@ -91,6 +92,9 @@ class Building extends Entity {
     }
     acceptsResource(type) {
         return false;
+    }
+    canConstructOn(terrain_counts) {
+        return terrain_counts.get(TERRAIN_TYPES.WATER) == null;
     }
     getBoundingBox() {
         return this.boundingBox;

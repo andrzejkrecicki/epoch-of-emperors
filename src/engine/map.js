@@ -89,6 +89,15 @@ class RandomMap extends Map {
         }
         return true;
     }
+    countTerrainTiles(subtile_x, subtile_y, width) {
+        let counts = new window.Map();
+        for (let x = Math.floor(subtile_x / 2); x < Math.round((subtile_x + width) / 2); ++x) {
+            for (let y = Math.floor(subtile_y / 2); y < Math.round((subtile_y + width) / 2); ++y) {
+                counts.set(this.initial_tiles[x][y], (counts.get(this.initial_tiles[x][y]) || 0) + 1);
+            }
+        }
+        return counts;
+    }
     getEntityAtSubtile(x, y) {
         return this.subtiles[x][y];
     }
