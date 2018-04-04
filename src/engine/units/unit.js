@@ -117,10 +117,17 @@ class Unit extends Entity {
         
     }
     stopInteraction() {
-        
+        this.interaction_type = this.INTERACTION_TYPE.NONE
+        this.state = this.STATE.IDLE;
     }
     terminateInteraction() {
-
+        if (this.interactionObject == null) return;
+        this.stopInteraction();
+        this.setBaseState(this.STATE.IDLE);
+        this.INTERACTION_TYPE.NONE;
+        this.frame = 0;
+        this.interactionObject = null;
+        this.prevInteractionObject = null;
     }
     getBoundingBox() {
         return this.boundingBox;
@@ -163,7 +170,8 @@ Unit.prototype.INTERACTION_TYPE = {
     CHOP: 4,
     MINEGOLD: 5,
     MINESTONE: 6,
-    FARMING: 7
+    FARMING: 7,
+    FISHING: 8
 }
 
 export { Unit }

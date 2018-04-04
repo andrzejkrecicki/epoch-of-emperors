@@ -48,6 +48,7 @@ class Villager extends Unit {
         }
     }
     initInteraction(engine) {
+        // TODO - remove all the redundancy !!!
         this.ticks_waited = 0;
         if (this.interactionObject.destroyed) {
             if (this.interactionObject.interactionSuccessor) engine.interactOrder(this, this.interactionObject.interactionSuccessor);
@@ -99,6 +100,7 @@ class Villager extends Unit {
         }
     }
     processInteraction(engine) {
+        // TODO - remove all the redundancy !!!
         if (this.interaction_type == this.INTERACTION_TYPE.BUILDING) {
             if (this.interactionObject.destroyed) this.terminateInteraction();
             else if (this.interactionObject.isComplete && this.interactionObject.INTERACT_WHEN_COMPLETE) {
@@ -201,15 +203,6 @@ class Villager extends Unit {
             else this.state = this.STATE.FARMER;
         }
         this.interaction_type = this.INTERACTION_TYPE.NONE;
-    }
-    terminateInteraction() {
-        if (this.interactionObject == null) return;
-        this.stopInteraction();
-        this.setBaseState(this.STATE.IDLE);
-        this.INTERACTION_TYPE.NONE;
-        this.frame = 0;
-        this.interactionObject = null;
-        this.prevInteractionObject = null;
     }
 }
 Villager.prototype.SUBTILE_WIDTH = 1;
