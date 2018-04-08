@@ -221,6 +221,7 @@ class MapDrawable extends Graphics.Group {
         this.map = map;
         this.stage = stage;
         this.insertTiles();
+        this.frame = 0;
     }
     draw() {
         let corner_tile = this.screenCoordsToTile(
@@ -237,8 +238,14 @@ class MapDrawable extends Graphics.Group {
         while (cur_pix.y < this.stage.height() - this.offset.bottom) {
             while (cur_pix.x < this.stage.width()) {
                 if (cur_tile.x > -1 && cur_tile.x < this.map.edge_size && cur_tile.y > -1 && cur_tile.y < this.map.edge_size) {
-                    let tileset = MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[cur_tile.x][cur_tile.y]];
-                    let choice = tileset.length > 1 ? this.rand_tile(cur_tile.x, cur_tile.y) % tileset.length : 0;
+                    if (this.map.initial_tiles[cur_tile.x][cur_tile.y] == Map.TERRAIN_TYPES.WATER) {
+                        let idx = cur_tile.x % 2 + (cur_tile.y % 2) * 2;
+                        var tileset = MapDrawable.TERRAIN_IMAGES[Map.TERRAIN_TYPES.WATER][idx];
+                        var choice = this.frame % tileset.length;
+                    } else {
+                        var tileset = MapDrawable.TERRAIN_IMAGES[this.map.terrain_tiles[cur_tile.x][cur_tile.y]];
+                        var choice = tileset.length > 1 ? this.rand_tile(cur_tile.x, cur_tile.y) % tileset.length : 0;
+                    }
                     this.layer.ctx.drawImage(tileset[choice], cur_pix.x, cur_pix.y);
                 }
                 cur_pix.x += MapDrawable.TILE_SIZE.width;
@@ -252,6 +259,7 @@ class MapDrawable extends Graphics.Group {
             cur_tile.x = corner_tile.x - Math.ceil(row / 2);
             cur_tile.y = corner_tile.y + Math.floor(row / 2);
         }
+        ++this.frame;
     }
     rand_tile(x, y) {
         let rnd = x * 7883 + y * 317;
