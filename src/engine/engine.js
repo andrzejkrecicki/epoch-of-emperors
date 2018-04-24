@@ -38,8 +38,13 @@ class Engine {
                 this.processMovingUnit(entity);
             } else if (entity.state & Unit.prototype.STATE.IDLE && entity.path != null) {
                 this.processWaitingUnit(entity);
-            } else if (!(entity.state & Unit.prototype.STATE.IDLE)) {
+            } else if (entity.state & Unit.prototype.BASE_STATE_MASK) {
                 this.processInteractingUnit(entity);
+            } else if (entity.state & Unit.prototype.STATE.DYING) {
+                if (entity.frame < entity.IMAGES[Unit.prototype.STATE.DYING][0].length) {
+                    entity.updateSprite();
+                    if (this.framesCount % entity.FRAME_RATE[Unit.prototype.STATE.DYING] == 0) ++entity.frame;
+                } else entity.toggleDead(this);
             } else if (!entity.hasFullPath && entity.interactionObject != null) {
                 if (Math.random() > .85) ++entity.ticks_waited;
                 if (entity.ticks_waited > Engine.prototype.UNIT_MAX_WAIT_TIME * 3 && Math.random() > .85) {

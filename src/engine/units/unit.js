@@ -102,6 +102,22 @@ class Unit extends Entity {
         this.state |= state;
         this.actions_changed = true;
     }
+    hit(target, engine) {
+        // take into account technological attack bonuses etc
+        target.takeHit(this.attributes.attack, engine);
+    }
+    takeHit(value, engine) {
+        // take into account armour etc
+        this.hp -= value;
+        if (this.hp <= 0) {
+            this.hp = 0;
+            this.setBaseState(Unit.prototype.STATE.DYING);
+        }
+    }
+    toggleDead(engine) {
+        this.state = Unit.prototype.STATE.DEAD;
+        this.destroy(engine);
+    }
     preInitInteraction(object) {
 
     }
@@ -154,13 +170,19 @@ Unit.prototype.DIRECTIONS_DELTA = [
 Unit.prototype.STATE = {
     INTERACTION: 0,
     IDLE: 1,
-    MOVING: 2
+    MOVING: 2,
+    DYING: 4,
+    DEAD: 8
 }
 Unit.prototype.BASE_STATE_MASK_WIDTH = 10;
 Unit.prototype.BASE_STATE_MASK = (
     (~0) >> Unit.prototype.BASE_STATE_MASK_WIDTH
     << Unit.prototype.BASE_STATE_MASK_WIDTH
 );
+
+Unit.prototype.FRAME_RATE = {}
+Unit.prototype.FRAME_RATE[Unit.prototype.STATE.MOVING] = 2;
+Unit.prototype.FRAME_RATE[Unit.prototype.STATE.DYING] = 3;
 
 Unit.prototype.INTERACTION_TYPE = {
     NONE: 0,
