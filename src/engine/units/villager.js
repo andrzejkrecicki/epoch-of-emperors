@@ -69,6 +69,7 @@ class Villager extends Unit {
                 this.player.resources[res_name] += this.attributes[res_name];
                 this.attributes[res_name] = null;
                 this.carriedResource = RESOURCE_TYPES.NONE;
+                this.state = Villager.prototype.STATE.IDLE;
 
                 if (this.prevInteractionObject == null) {
                     this.terminateInteraction();
@@ -642,18 +643,18 @@ Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE] = { x: 14, y: 45
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_IDLE] = { x: 0, y: 31 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_MOVING] = { x: 10, y: 32 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_MOVING] = { x: 5, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_IDLE] = { x: 5, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_MOVING] = { x: 3, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_IDLE] = { x: 3, y: 34 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_MOVING] = { x: 5, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_IDLE] = { x: 5, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_MOVING] = { x: 3, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_IDLE] = { x: 3, y: 34 };
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER] = { x: 19, y: 33 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_IDLE] = { x: -1, y: 34 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_MOVING] = { x: 14, y: 35 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_IDLE] = { x: 11, y: 37 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_MOVING] = { x: 11, y: 37 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_IDLE] = { x: 11, y: 35 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_MOVING] = { x: 11, y: 35 };
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER] = { x: 33, y: 54 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_IDLE] = { x: 22, y: 34 };
