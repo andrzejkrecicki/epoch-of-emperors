@@ -193,7 +193,9 @@ Unit.prototype.INTERACTION_TYPE = {
     MINEGOLD: 5,
     MINESTONE: 6,
     FARMING: 7,
-    FISHING: 8
+    FISHING: 8,
+    HUNT: 9,
+    BUTCHER: 10
 }
 
 export { Unit }

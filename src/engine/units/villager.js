@@ -4,6 +4,7 @@ import { Farm } from '../buildings/farm.js';
 import { GoldMine } from '../resources/gold.js';
 import { StoneMine } from '../resources/stone.js';
 import { Bush } from '../resources/bush.js';
+import { Animal } from './animal.js';
 import { Tree } from '../trees.js';
 import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
@@ -45,6 +46,9 @@ class Villager extends Unit {
         } else if (object instanceof StoneMine) {
             this.state = Villager.prototype.STATE.MINE;
             this.attributes.food = this.attributes.wood = this.attributes.gold = null;
+        } else if (object instanceof Animal) {
+            this.state = Villager.prototype.STATE.HUNTER;
+            this.attributes.wood = this.attributes.gold = this.attributes.stone = null;
         }
     }
     initInteraction(engine) {
@@ -94,6 +98,15 @@ class Villager extends Unit {
         } else if (this.interactionObject instanceof StoneMine) {
             this.state = this.STATE.MINE;
             this.interaction_type = this.INTERACTION_TYPE.MINESTONE;
+            this.rotateToEntity(this.interactionObject);
+        } else if (this.interactionObject instanceof Animal) {
+            if (this.interactionObject.hp > 0) {
+                this.interaction_type = this.INTERACTION_TYPE.HUNT;
+                this.state = this.STATE.HUNTER;
+            } else {
+                this.interaction_type = this.INTERACTION_TYPE.BUTCHER;
+                this.state = this.STATE.BUTCHER;
+            }
             this.rotateToEntity(this.interactionObject);
         } else {
             super.initInteraction();
@@ -176,6 +189,29 @@ class Villager extends Unit {
                 this.attributes.food += this.interactionObject.getFood(engine);
                 this.carriedResource = RESOURCE_TYPES.FOOD;
             }
+        } else if (this.interaction_type == this.INTERACTION_TYPE.BUTCHER) {
+            if (this.interactionObject.destroyed) {
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
+            } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
+            else if (this.ticks_waited % this.BUTCHER_RATE == 0) {
+                this.attributes.food += this.interactionObject.getFood(engine);
+                this.carriedResource = RESOURCE_TYPES.FOOD;
+            }
+        } else if (this.interaction_type == this.INTERACTION_TYPE.HUNT) {
+            if (this.interactionObject.destroyed) {
+                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
+                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
+                    else this.terminateInteraction()
+                }
+            } else if (this.interactionObject.state == Unit.prototype.STATE.DYING) {
+                this.state = Villager.prototype.STATE.BUTCHER;
+                this.interaction_type = Villager.prototype.INTERACTION_TYPE.BUTCHER;
+            } else if (this.ticks_waited % this.HUNTER_RATE == 0) {
+                this.hit(this.interactionObject, engine);
+            }
         }
         ++this.ticks_waited;
     }
@@ -201,6 +237,9 @@ class Villager extends Unit {
         } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
             if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_FARM;
             else this.state = this.STATE.FARMER;
+        } else if (this.interaction_type == this.INTERACTION_TYPE.BUTCHER) {
+            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_MEAT;
+            else this.state = this.STATE.HUNTER;
         }
         this.interaction_type = this.INTERACTION_TYPE.NONE;
     }
@@ -218,6 +257,8 @@ Villager.prototype.LUMBER_RATE = 15;
 Villager.prototype.CHOP_RATE = 60;
 Villager.prototype.MINE_RATE = 60;
 Villager.prototype.FARM_RATE = 60;
+Villager.prototype.BUTCHER_RATE = 60;
+Villager.prototype.HUNTER_RATE = 23 * 2;
 
 Villager.prototype.ACTION_KEY = "C";
 Villager.prototype.COST = {
@@ -273,15 +314,28 @@ Villager.prototype.STATE.CARRY_FARM = 10 << Unit.prototype.BASE_STATE_MASK_WIDTH
 Villager.prototype.STATE.CARRY_FARM_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_FARM;
 Villager.prototype.STATE.CARRY_FARM_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_FARM;
 
+Villager.prototype.STATE.HUNTER = 11 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.HUNTER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.HUNTER;
+Villager.prototype.STATE.HUNTER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.HUNTER;
+
+Villager.prototype.STATE.BUTCHER = 12 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+
+Villager.prototype.STATE.CARRY_MEAT = 13 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_MEAT_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_MEAT;
+Villager.prototype.STATE.CARRY_MEAT_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_MEAT;
 
 
-Villager.prototype.FRAME_RATE = {}
+
+
+Villager.prototype.FRAME_RATE = Object.assign({}, Unit.prototype.FRAME_RATE);
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FORAGE] = 4;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.LUMBER] = 3;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.CHOP] = 3;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.MINE] = 3;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FARMER] = 3;
+Villager.prototype.FRAME_RATE[Villager.prototype.STATE.HUNTER] = 2;
+Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUTCHER] = 4;
 
 Villager.prototype.IMAGES = {};
 
@@ -305,7 +359,7 @@ for (let dir = 0; dir < 8; ++dir) {
         make_image(`img/units/villager/forage_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
     );
 }
-    
+
 Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
     Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE][dir].push(
@@ -355,6 +409,23 @@ for (let dir = 0; dir < 8; ++dir) {
         make_image(`img/units/villager/carry_farm/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
     );
 }
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_IDLE][dir].push(
+        make_image(`img/units/villager/hunter_idle/${Unit.prototype.DIRECTIONS[dir]}_00.png`)
+    );
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_IDLE] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_IDLE][dir].push(
+        make_image(`img/units/villager/carry_meat/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
+    );
+}
+
+
+
 
 
 Villager.prototype.IMAGES[Villager.prototype.STATE.MOVING] = new Array(8).fill(null).map(() => []);
@@ -508,6 +579,43 @@ for (let dir = 0; dir < 8; ++dir) {
     }
 }
 
+Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 23; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER][dir].push(
+            make_image(`img/units/villager/hunter/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_MOVING][dir].push(
+            make_image(`img/units/villager/hunter_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.BUTCHER] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 12; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.BUTCHER][dir].push(
+            make_image(`img/units/villager/butcher/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
+
+Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_MOVING] = new Array(8).fill(null).map(() => []);
+for (let dir = 0; dir < 8; ++dir) {
+    for (let i = 0; i < 15; ++i) {
+        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_MOVING][dir].push(
+            make_image(`img/units/villager/carry_meat/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+        )
+    }
+}
+
 
 
 Villager.prototype.IMAGE_OFFSETS = {};
@@ -546,5 +654,14 @@ Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_MOVING] = { x: 
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_IDLE] = { x: 11, y: 37 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_MOVING] = { x: 11, y: 37 };
+
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER] = { x: 33, y: 54 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_IDLE] = { x: 22, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_MOVING] = { x: 15, y: 42 };
+
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUTCHER] = { x: 11, y: 32 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_MOVING] = { x: 3, y: 36 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_IDLE] = { x: 3, y: 36 };
+
 
 export { Villager }
