@@ -30,6 +30,7 @@ class Engine {
         this.map = MapFactory(this.definition.map);
         this.units = [];
         this.buildings = [];
+        this.projectiles = [];
         this.addSampleUnits();
     }
     processUnits() {
@@ -179,6 +180,21 @@ class Engine {
             if (entity.tasks.length) entity.processTasks();
         }
     }
+    processProjectiles() {
+        for (let projectile of this.projectiles) {
+            if (--projectile.TTL == 0) projectile.remove();
+            else {
+                let pos = {
+                    x: projectile.realPosition.x + projectile.delta.x,
+                    y: projectile.realPosition.y + projectile.delta.y
+                };
+                let subtile = this.viewer.mapDrawable.screenCoordsToSubtile(pos.x, pos.y);
+                projectile.subtile_x = subtile.x;
+                projectile.subtile_y = subtile.y;
+                projectile.position(pos);
+            }
+        }
+    }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
         for (let x = subtile_x; x < subtile_x + entity.SUBTILE_WIDTH; ++x) {
@@ -203,6 +219,7 @@ class Engine {
     processLoop() {
         ++this.framesCount;
         this.viewer.process();
+        this.processProjectiles();
         this.processUnits();
         this.processBuildings();
         this.viewer.stage.draw();
@@ -274,6 +291,20 @@ class Engine {
         if (entity.LEFTOVERS != null) {
             this.viewer.addEntity(new entity.LEFTOVERS(entity.subtile_x, entity.subtile_y));
         }
+    }
+    makeProjectile(Projectile, source, target) {
+        let source_pix = this.viewer.mapDrawable.tileCoordsToScreen(source.subtile_x / 2, source.subtile_y / 2);
+        // source_pix.x += 30;
+        // source_pix.y -= 30;
+
+        let target_pix = this.viewer.mapDrawable.tileCoordsToScreen(target.subtile_x / 2, target.subtile_y / 2);
+        let projectile = new Projectile(
+            source_pix,
+            target_pix,
+            source
+        );
+        this.projectiles.push(projectile);
+        this.viewer.entitiesHolder.add(projectile);
     }
     addSampleUnits() {
 

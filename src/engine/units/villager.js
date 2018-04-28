@@ -9,6 +9,7 @@ import { Tree } from '../trees.js';
 import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
+import { Spear } from '../projectiles.js';
 
 class Villager extends Unit {
     constructor() {
@@ -210,8 +211,11 @@ class Villager extends Unit {
             } else if (this.interactionObject.state == Unit.prototype.STATE.DYING) {
                 this.state = Villager.prototype.STATE.BUTCHER;
                 this.interaction_type = Villager.prototype.INTERACTION_TYPE.BUTCHER;
-            } else if (this.ticks_waited % this.HUNTER_RATE == 0) {
-                this.hit(this.interactionObject, engine);
+            } else if (this.ticks_waited == this.HUNTER_RATE) {
+                engine.makeProjectile(Spear, this.getCenterSubtile(), this.interactionObject.getCenterSubtile());
+                // this.hit(this.interactionObject, engine);
+            } else if (this.frame == this.IMAGES[this.STATE.HUNTER][0].length - 1) {
+                this.ticks_waited = -1;
             }
         }
         ++this.ticks_waited;
@@ -259,7 +263,7 @@ Villager.prototype.CHOP_RATE = 60;
 Villager.prototype.MINE_RATE = 60;
 Villager.prototype.FARM_RATE = 60;
 Villager.prototype.BUTCHER_RATE = 60;
-Villager.prototype.HUNTER_RATE = 23 * 2;
+Villager.prototype.HUNTER_RATE = 10;
 
 Villager.prototype.ACTION_KEY = "C";
 Villager.prototype.COST = {
