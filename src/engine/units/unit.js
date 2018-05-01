@@ -15,7 +15,7 @@ class Unit extends Entity {
         this.resetBoundingBox();
         this.path = null;
         this.path_progress = 0;
-        this.interaction_type = Unit.prototype.INTERACTION_TYPE.NONE;
+        this.interaction = null;
         this.interactionObject = null;
         this.prevInteractionObject = null;
         this.hasFullPath = false;
@@ -118,32 +118,24 @@ class Unit extends Entity {
         this.state = Unit.prototype.STATE.DEAD;
         this.destroy(engine);
     }
-    preInitInteraction(object) {
-
+    preInitInteraction() {
+        this.interaction && this.interaction.preInit();
     }
     initInteraction() {
-        if (false) {
-            // attack enymy unit
-            this.rotateToEntity(this.interactionObject);
-        } else {
-            this.setBaseState(this.STATE.IDLE);
-        }
+        this.ticks_waited = 0;
+        this.interaction && this.interaction.init();
     }
     processInteraction() {
-        
+        if (this.interaction == null) return;
+        this.interaction.process();
+        ++this.ticks_waited;
     }
     stopInteraction() {
-        this.interaction_type = this.INTERACTION_TYPE.NONE
-        this.state = this.STATE.IDLE;
+        this.interaction && this.interaction.stop();
+        this.interaction = null;
     }
     terminateInteraction() {
-        if (this.interactionObject == null) return;
-        this.stopInteraction();
-        this.setBaseState(this.STATE.IDLE);
-        this.INTERACTION_TYPE.NONE;
-        this.frame = 0;
-        this.interactionObject = null;
-        this.prevInteractionObject = null;
+        this.interaction && this.interaction.terminate();
     }
     getBoundingBox() {
         return this.boundingBox;
@@ -183,19 +175,5 @@ Unit.prototype.BASE_STATE_MASK = (
 Unit.prototype.FRAME_RATE = {}
 Unit.prototype.FRAME_RATE[Unit.prototype.STATE.MOVING] = 2;
 Unit.prototype.FRAME_RATE[Unit.prototype.STATE.DYING] = 3;
-
-Unit.prototype.INTERACTION_TYPE = {
-    NONE: 0,
-    BUILDING: 1,
-    FORAGE: 2,
-    LUMBER: 3,
-    CHOP: 4,
-    MINEGOLD: 5,
-    MINESTONE: 6,
-    FARMING: 7,
-    FISHING: 8,
-    HUNT: 9,
-    BUTCHER: 10
-}
 
 export { Unit }

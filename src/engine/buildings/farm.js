@@ -6,7 +6,7 @@ class Farm extends Building {
     constructor() {
         super(...arguments);
     }
-    getFood(engine) {
+    getResource(engine) {
         if (this.attributes.food > 0) {
             if (--this.attributes.food == 0) this.destroy(engine);
             return 1;

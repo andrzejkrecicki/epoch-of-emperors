@@ -21,7 +21,7 @@ class FishBig extends Entity {
         this.frame = (this.frame + .5) % this.IMAGES.length;
         this.image.image(this.IMAGES[Math.floor(this.frame)]);
     }
-    getFood(engine) {
+    getResource(engine) {
         if (this.attributes.food > 0) {
             if (--this.attributes.food == 0) this.destroy(engine);
             return 1;

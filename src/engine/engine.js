@@ -39,7 +39,7 @@ class Engine {
                 this.processMovingUnit(entity);
             } else if (entity.state & Unit.prototype.STATE.IDLE && entity.path != null) {
                 this.processWaitingUnit(entity);
-            } else if (entity.state & Unit.prototype.BASE_STATE_MASK) {
+            } else if ((entity.state & ~Unit.prototype.BASE_STATE_MASK) == 0) {
                 this.processInteractingUnit(entity);
             } else if (entity.state & Unit.prototype.STATE.DYING) {
                 if (entity.frame < entity.IMAGES[Unit.prototype.STATE.DYING][0].length) {
@@ -253,14 +253,22 @@ class Engine {
             if (path.length) {
                 active.swapPath(path);
                 active.rotateToSubtile(active.path[0]);
-                active.preInitInteraction(passive);
+                let Interaction = active.getInteractionType(passive);
+                if (Interaction) active.interaction = new Interaction(active, passive, this);
+                active.preInitInteraction();
                 active.setBaseState(Unit.prototype.STATE.MOVING);
             } else {
                 active.path = null;
                 active.path_progress = 0;
-                active.initInteraction(this);
+                active.initInteraction();
             }
         }
+    }
+    interactImmediately(active, passive) {
+        let Interaction = active.getInteractionType(passive);
+        if (Interaction) active.interaction = new Interaction(active, passive, this);
+        active.preInitInteraction();
+        active.initInteraction();
     }
     bypassOrder(entity) {
         let target = entity.path && entity.path[entity.path.length - 1];

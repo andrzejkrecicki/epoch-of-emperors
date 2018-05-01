@@ -17,7 +17,7 @@ class GoldMine extends Entity {
         this.setImage();
         this.resetBoundingBox();
     }
-    getGold(engine) {
+    getResource(engine) {
         if (this.attributes.gold > 0) {
             if (--this.attributes.gold == 0) this.destroy(engine);
             return 1;

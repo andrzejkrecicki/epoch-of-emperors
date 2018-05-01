@@ -4,6 +4,7 @@ import { FishBig } from '../resources/fish.js';
 import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
+import * as interactions from '../interactions.js';
 
 class FishingBoat extends Unit {
     constructor() {
@@ -18,52 +19,11 @@ class FishingBoat extends Unit {
             Actions.StandGround
         ]; else return [Actions.StandGround, Actions.Stop]
     }
-    initInteraction(engine) {
-        // TODO - remove all the redundancy
-        this.ticks_waited = 0;
-        if (this.interactionObject.destroyed) {
-            if (this.interactionObject.interactionSuccessor) engine.interactOrder(this, this.interactionObject.interactionSuccessor);
-            else this.terminateInteraction();
-        } else if (!this.hasFullPath) this.setBaseState(this.STATE.IDLE);
-        else if (this.interactionObject instanceof FishBig) {
-            this.rotateToEntity(this.interactionObject);
-            this.state = this.STATE.FISHING;
-            this.interaction_type = this.INTERACTION_TYPE.FISHING;
-        } else if (this.interactionObject instanceof Building) {
-            // TODO - check if its our or enymy's building
-            if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {
-                let res_name = RESOURCE_NAME[this.carriedResource];
-                this.player.resources[res_name] += this.attributes[res_name];
-                this.attributes[res_name] = null;
-                this.carriedResource = RESOURCE_TYPES.NONE;
-
-                if (this.prevInteractionObject == null) {
-                    this.terminateInteraction();
-                    return;
-                } else engine.interactOrder(this, this.prevInteractionObject);
-                this.prevInteractionObject = null;
-            }
+    getInteractionType(object) {
+        if (object instanceof FishBig) return interactions.FishingInteraction;
+        else if (object instanceof Building) {
+            if (this.carriedResource && object.acceptsResource(this.carriedResource)) return interactions.ReturnResourcesInteraction;
         }
-    }
-    processInteraction(engine) {
-        if (this.interaction_type == this.INTERACTION_TYPE.FISHING) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
-            else if (this.ticks_waited % this.FISHING_RATE == 0) {
-                this.attributes.food += this.interactionObject.getFood(engine);
-                this.carriedResource = RESOURCE_TYPES.FOOD;
-            }
-        }
-        ++this.ticks_waited;
-    }
-    returnResources(engine) {
-        let building = this.player.getNearestBuilding(this, { NAME: ["Dock"], isComplete: [true] });
-        this.prevInteractionObject = this.interactionObject;
-        engine.interactOrder(this, building);
     }
 }
 FishingBoat.prototype.SUBTILE_WIDTH = 2;
@@ -73,13 +33,13 @@ FishingBoat.prototype.MAX_HP = 45;
 FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;
 
-FishingBoat.prototype.FISHING_RATE = 60;
-
 FishingBoat.prototype.ACTION_KEY = "F";
 FishingBoat.prototype.COST = {
     food: 0, wood: 50, stone: 0, gold: 0
 }
-FishingBoat.prototype.CAPACITY = { FOOD: 15 }
+FishingBoat.prototype.CAPACITY = {
+    [RESOURCE_NAME[RESOURCE_TYPES.FOOD]]: 15
+}
 
 FishingBoat.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
 

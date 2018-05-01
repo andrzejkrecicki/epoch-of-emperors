@@ -10,6 +10,7 @@ import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import { Spear } from '../projectiles.js';
+import * as interactions from '../interactions.js';
 
 class Villager extends Unit {
     constructor() {
@@ -30,223 +31,23 @@ class Villager extends Unit {
             Actions.Build, Actions.Repair, Actions.Stop
         ];
     }
-    preInitInteraction(object) {
-        if (object instanceof Farm && object.isComplete) {
-            this.state = Villager.prototype.STATE.FARMER;
-        } else if (object instanceof Building && object.hp < object.MAX_HP) {
-            this.state = Villager.prototype.STATE.BUILDING;
+    getInteractionType(object) {
+        // TODO: check if its our farm or emymy's
+        if (object instanceof Farm && object.isComplete) return interactions.FarmingInteraction;
+        // TODO: check if its our building or emymy's
+        else if (object instanceof Building) {
+            if (this.carriedResource && object.acceptsResource(this.carriedResource)) return interactions.ReturnResourcesInteraction;
+            else if (object.hp < object.MAX_HP) return interactions.BuilderInteraction;
         } else if (object instanceof Tree) {
-            this.state = Villager.prototype.STATE.LUMBER;
-            this.attributes.food = this.attributes.gold = this.attributes.stone = null;
-        } else if (object instanceof Bush) {
-            this.state = Villager.prototype.STATE.FORAGE;
-            this.attributes.wood = this.attributes.gold = this.attributes.stone = null;
-        } else if (object instanceof GoldMine) {
-            this.state = Villager.prototype.STATE.MINE;
-            this.attributes.food = this.attributes.wood = this.attributes.stone = null;
-        } else if (object instanceof StoneMine) {
-            this.state = Villager.prototype.STATE.MINE;
-            this.attributes.food = this.attributes.wood = this.attributes.gold = null;
-        } else if (object instanceof Animal) {
-            this.state = Villager.prototype.STATE.HUNTER;
-            this.attributes.wood = this.attributes.gold = this.attributes.stone = null;
+            if (object.state == Tree.prototype.STATE.ALIVE) return interactions.LumberInteraction;
+            else return interactions.ChopInteraction;
+        } else if (object instanceof Bush) return interactions.ForageInteraction;
+        else if (object instanceof GoldMine) return interactions.GoldMineInteraction;
+        else if (object instanceof StoneMine) return interactions.StoneMineInteraction;
+        else if (object instanceof Animal) {
+            if (object.hp > 0) return interactions.HunterInteraction;
+            else return interactions.ButcherInteraction;
         }
-    }
-    initInteraction(engine) {
-        // TODO - remove all the redundancy !!!
-        this.ticks_waited = 0;
-        if (this.interactionObject.destroyed) {
-            if (this.interactionObject.interactionSuccessor) engine.interactOrder(this, this.interactionObject.interactionSuccessor);
-            else this.terminateInteraction();
-        } else if (!this.hasFullPath) this.setBaseState(this.STATE.IDLE);
-        else if (this.interactionObject instanceof Farm && this.interactionObject.isComplete) {
-            this.state = this.STATE.FARMER;
-            this.interaction_type = this.INTERACTION_TYPE.FARMING;
-            this.rotateToEntity(this.interactionObject);
-        } else if (this.interactionObject instanceof Building) {
-            // TODO - check if its our or enymy's building
-            if (this.carriedResource && this.interactionObject.acceptsResource(this.carriedResource)) {
-                let res_name = RESOURCE_NAME[this.carriedResource];
-                this.player.resources[res_name] += this.attributes[res_name];
-                this.attributes[res_name] = null;
-                this.carriedResource = RESOURCE_TYPES.NONE;
-                this.state = Villager.prototype.STATE.IDLE;
-
-                if (this.prevInteractionObject == null) {
-                    this.terminateInteraction();
-                    return;
-                } else engine.interactOrder(this, this.prevInteractionObject);
-                this.prevInteractionObject = null;
-            } else if (this.interactionObject.isComplete) {
-                // TODO - repair
-                this.setBaseState(this.STATE.IDLE);
-            } else {
-                this.state = this.STATE.BUILDING;
-                this.interaction_type = this.INTERACTION_TYPE.BUILDING;
-            }
-            this.rotateToEntity(this.interactionObject);
-        } else if (this.interactionObject instanceof Bush) {
-            this.state = this.STATE.FORAGE;
-            this.interaction_type = this.INTERACTION_TYPE.FORAGE;
-            this.rotateToEntity(this.interactionObject);
-        } else if (this.interactionObject instanceof Tree) {
-            this.state = this.STATE.LUMBER;
-            this.interaction_type = this.INTERACTION_TYPE.LUMBER;
-            this.rotateToEntity(this.interactionObject);
-        } else if (this.interactionObject instanceof GoldMine) {
-            this.state = this.STATE.MINE;
-            this.interaction_type = this.INTERACTION_TYPE.MINEGOLD;
-            this.rotateToEntity(this.interactionObject);
-        } else if (this.interactionObject instanceof StoneMine) {
-            this.state = this.STATE.MINE;
-            this.interaction_type = this.INTERACTION_TYPE.MINESTONE;
-            this.rotateToEntity(this.interactionObject);
-        } else if (this.interactionObject instanceof Animal) {
-            if (this.interactionObject.hp > 0) {
-                this.interaction_type = this.INTERACTION_TYPE.HUNT;
-                this.state = this.STATE.HUNTER;
-            } else {
-                this.interaction_type = this.INTERACTION_TYPE.BUTCHER;
-                this.state = this.STATE.BUTCHER;
-            }
-            this.rotateToEntity(this.interactionObject);
-        } else {
-            super.initInteraction();
-        }
-    }
-    processInteraction(engine) {
-        // TODO - remove all the redundancy !!!
-        if (this.interaction_type == this.INTERACTION_TYPE.BUILDING) {
-            if (this.interactionObject.destroyed) this.terminateInteraction();
-            else if (this.interactionObject.isComplete && this.interactionObject.INTERACT_WHEN_COMPLETE) {
-                this.initInteraction(this.interactionObject);
-            } else if (this.interactionObject.isComplete) this.terminateInteraction();
-            else if (this.ticks_waited % this.BUILD_RATE == 0) this.interactionObject.constructionTick();
-        } else if (this.interaction_type == this.INTERACTION_TYPE.FORAGE) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
-            else if (this.ticks_waited % this.FORAGE_RATE == 0) {
-                this.attributes.food += this.interactionObject.getFood(engine);
-                this.carriedResource = RESOURCE_TYPES.FOOD;
-            }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.LUMBER) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else {
-                if (this.interactionObject.state == Tree.prototype.STATE.ALIVE) {
-                    if (this.ticks_waited % this.LUMBER_RATE == 0) this.interactionObject.lumberTick();
-                } else {
-                    this.state = Villager.prototype.STATE.CHOP;
-                    this.interaction_type = Villager.prototype.INTERACTION_TYPE.CHOP;
-                }
-            }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.CHOP) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.attributes.wood == this.CAPACITY.WOOD) this.returnResources(engine);
-            else if (this.ticks_waited % this.CHOP_RATE == 0) {
-                this.attributes.wood += this.interactionObject.getWood(engine);
-                this.carriedResource = RESOURCE_TYPES.WOOD;
-            }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.MINEGOLD) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.attributes.gold == this.CAPACITY.GOLD) this.returnResources(engine);
-            else if (this.ticks_waited % this.MINE_RATE == 0) {
-                this.attributes.gold += this.interactionObject.getGold(engine);
-                this.carriedResource = RESOURCE_TYPES.GOLD;
-            }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.attributes.stone == this.CAPACITY.STONE) this.returnResources(engine);
-            else if (this.ticks_waited % this.MINE_RATE == 0) {
-                this.attributes.stone += this.interactionObject.getStone(engine);
-                this.carriedResource = RESOURCE_TYPES.STONE;
-            }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
-            else if (this.ticks_waited % this.FARM_RATE == 0) {
-                this.attributes.food += this.interactionObject.getFood(engine);
-                this.carriedResource = RESOURCE_TYPES.FOOD;
-            }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.BUTCHER) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.attributes.food == this.CAPACITY.FOOD) this.returnResources(engine);
-            else if (this.ticks_waited % this.BUTCHER_RATE == 0) {
-                this.attributes.food += this.interactionObject.getFood(engine);
-                this.carriedResource = RESOURCE_TYPES.FOOD;
-            }
-        } else if (this.interaction_type == this.INTERACTION_TYPE.HUNT) {
-            if (this.interactionObject.destroyed) {
-                if (engine.findInteractionSuccessor(this, this.interactionObject) == null) {
-                    if (this.attributes[RESOURCE_NAME[this.carriedResource]]) this.returnResources(engine)
-                    else this.terminateInteraction()
-                }
-            } else if (this.interactionObject.state == Unit.prototype.STATE.DYING) {
-                this.state = Villager.prototype.STATE.BUTCHER;
-                this.interaction_type = Villager.prototype.INTERACTION_TYPE.BUTCHER;
-            } else if (this.ticks_waited == this.HUNTER_RATE) {
-                engine.makeProjectile(Spear, this.getCenterSubtile(), this.interactionObject.getCenterSubtile());
-                // this.hit(this.interactionObject, engine);
-            } else if (this.frame == this.IMAGES[this.STATE.HUNTER][0].length - 1) {
-                this.ticks_waited = -1;
-            }
-        }
-        ++this.ticks_waited;
-    }
-    returnResources(engine) {
-        let types = [];
-        if (this.carriedResource == RESOURCE_TYPES.FOOD) types = ["Town Center", "Granary"];
-        else types = ["Town Center", "Storage Pit"];
-
-        let building = this.player.getNearestBuilding(this, { NAME: types, isComplete: [true] });
-        this.prevInteractionObject = this.interactionObject;
-        engine.interactOrder(this, building);
-    }
-    stopInteraction() {
-        if (this.interaction_type == this.INTERACTION_TYPE.CHOP) {
-            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_WOOD;
-            else this.state = this.STATE.LUMBER;
-        } else if (this.interaction_type == this.INTERACTION_TYPE.MINEGOLD) {
-            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_GOLD;
-            else this.state = this.STATE.MINE;
-        } else if (this.interaction_type == this.INTERACTION_TYPE.MINESTONE) {
-            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_STONE;
-            else this.state = this.STATE.MINE;
-        } else if (this.interaction_type == this.INTERACTION_TYPE.FARMING) {
-            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_FARM;
-            else this.state = this.STATE.FARMER;
-        } else if (this.interaction_type == this.INTERACTION_TYPE.BUTCHER) {
-            if (this.attributes[RESOURCE_NAME[this.carriedResource]] > 0) this.state = this.STATE.CARRY_MEAT;
-            else this.state = this.STATE.HUNTER;
-        }
-        this.interaction_type = this.INTERACTION_TYPE.NONE;
     }
 }
 Villager.prototype.SUBTILE_WIDTH = 1;
@@ -256,25 +57,16 @@ Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.CREATION_TIME = 20 * 35;
 
-Villager.prototype.BUILD_RATE = 3;
-Villager.prototype.FORAGE_RATE = 60;
-Villager.prototype.LUMBER_RATE = 15;
-Villager.prototype.CHOP_RATE = 60;
-Villager.prototype.MINE_RATE = 60;
-Villager.prototype.FARM_RATE = 60;
-Villager.prototype.BUTCHER_RATE = 60;
-Villager.prototype.HUNTER_RATE = 10;
-
 Villager.prototype.ACTION_KEY = "C";
 Villager.prototype.COST = {
     food: 50, wood: 0, stone: 0, gold: 0
 }
 
 Villager.prototype.CAPACITY = {
-    FOOD: 10,
-    WOOD: 10,
-    STONE: 10,
-    GOLD: 10
+    [RESOURCE_NAME[RESOURCE_TYPES.FOOD]]: 10,
+    [RESOURCE_NAME[RESOURCE_TYPES.WOOD]]: 10,
+    [RESOURCE_NAME[RESOURCE_TYPES.STONE]]: 10,
+    [RESOURCE_NAME[RESOURCE_TYPES.GOLD]]: 10
 }
 Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 Villager.prototype.ATTRIBUTES = {
@@ -328,8 +120,6 @@ Villager.prototype.STATE.BUTCHER = 12 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_MEAT = 13 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_MEAT_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_MEAT;
 Villager.prototype.STATE.CARRY_MEAT_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_MEAT;
-
-
 
 
 Villager.prototype.FRAME_RATE = Object.assign({}, Unit.prototype.FRAME_RATE);
