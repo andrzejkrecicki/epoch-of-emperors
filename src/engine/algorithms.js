@@ -301,8 +301,9 @@ AStarPathFinder.RINGS_COUNT = 30;
 // works exactly as AStarPathFinder but it treats every subtile around
 // chosen entity as a valid target therefore avoids needless computations
 class AStarToEntity extends AStarPathFinder {
-    constructor(unit, map, target, limit=AStarPathFinder.MAX_ITERATIONS) {
-        super(...arguments);
+    constructor(unit, map, target, distance=0, limit=AStarPathFinder.MAX_ITERATIONS) {
+        super(unit, map, target, limit);
+        this.distance = distance;
         this.targetCenter = target.getCenterSubtile();
         this.targetCenter = {
             x: this.targetCenter.subtile_x,
@@ -313,7 +314,7 @@ class AStarToEntity extends AStarPathFinder {
         return Math.max(
             Math.abs(subtile.x + this.unit.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.x),
             Math.abs(subtile.y + this.unit.SUBTILE_WIDTH / 2 - .5 - this.targetCenter.y)
-        ) <= 0.01 + (this.unit.SUBTILE_WIDTH + this.target.SUBTILE_WIDTH) / 2;
+        ) <= 0.01 + (this.unit.SUBTILE_WIDTH + this.target.SUBTILE_WIDTH) / 2 + this.distance;
     }
     heuristic(x, y) {
         return Math.max(

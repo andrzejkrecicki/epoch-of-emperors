@@ -1,6 +1,7 @@
 import { RESOURCE_TYPES, RESOURCE_NAME } from '../utils.js';
+import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
-
+import { Spear } from './projectiles.js';
 
 class Interaction {
     constructor(active, passive, engine) {
@@ -33,7 +34,11 @@ class Interaction {
         this.active.prevInteractionObject = null;
         this.active.interaction = null;
     }
+    static getDistance() {
+        return Interaction.prototype.DISTANCE;
+    }
 }
+Interaction.prototype.DISTANCE = 0;
 
 
 class ResourceExtractionInteraction extends Interaction {
@@ -45,9 +50,10 @@ class ResourceExtractionInteraction extends Interaction {
             }
         } else if (this.active.attributes[this.RESOURCE_NAME] == this.active.CAPACITY[this.RESOURCE_NAME]) {
             this.returnResources(engine);
-        } else if (this.active.ticks_waited % this.RATE == 0) {
+        } else if (this.active.ticks_waited == this.RATE) {
             this.active.attributes[this.RESOURCE_NAME] += this.passive.getResource(engine);
             this.active.carriedResource = this.RESOURCE_TYPE;
+            this.active.ticks_waited = 0;
         }
     }
     getReturnBuildingTypes() {
@@ -92,8 +98,9 @@ class BuilderInteraction extends Interaction {
             this.engine.interactImmediately(this.active, this.passive);
         } else if (this.passive.isComplete)
             this.terminate();
-        else if (this.active.ticks_waited % this.RATE == 0) {
+        else if (this.active.ticks_waited == this.RATE) {
             this.passive.constructionTick();
+            this.active.ticks_waited = 0;
         }
     }
 }
@@ -131,7 +138,10 @@ class LumberInteraction extends Interaction {
             }
         } else {
             if (this.passive.state == this.passive.STATE.ALIVE) {
-                if (this.active.ticks_waited % this.RATE == 0) this.passive.lumberTick();
+                if (this.active.ticks_waited == this.RATE) {
+                    this.passive.lumberTick();
+                    this.active.ticks_waited = 0;
+                }
             } else this.engine.interactImmediately(this.active, this.passive);
         }
     }
@@ -212,14 +222,18 @@ class HunterInteraction extends Interaction {
         } else if (this.passive.state == Unit.prototype.STATE.DYING) {
             this.active.state = Villager.prototype.STATE.BUTCHER;
         } else if (this.active.ticks_waited == this.RATE) {
-            this.engine.makeProjectile(Spear, this.active.getCenterSubtile(), this.passive.getxxx());
+            this.engine.makeProjectile(Spear, this.active.getCenterSubtile(), this.passive.getCenterSubtile());
             // this.active.hit(this.passive, engine);
         } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER][0].length - 1) {
             this.active.ticks_waited = -1;
         }
     }
+    static getDistance() {
+        return HunterInteraction.prototype.DISTANCE;
+    }
 }
 HunterInteraction.prototype.RATE = 10;
+HunterInteraction.prototype.DISTANCE = 6;
 
 
 class ButcherInteraction extends ResourceExtractionInteraction {

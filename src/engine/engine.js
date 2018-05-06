@@ -99,8 +99,9 @@ class Engine {
                 entity.path_progress = 0;
                 entity.path = null;
                 entity.frame = 0;
-                if (entity.interactionObject === null) {
+                if (entity.interaction === null) {
                     entity.setBaseState(Unit.prototype.STATE.IDLE);
+                    entity.interactionObject = null;
                 } else {
                     entity.initInteraction(this);
                 }
@@ -226,9 +227,10 @@ class Engine {
     }
     handleRightClick(point) {
         if (this.selectedEntity instanceof Unit) {
-            if (this.map.subtiles[point.x][point.y] == null) {
+            let target = this.map.subtiles[point.x][point.y];
+            if (target == null || target == this.selectedEntity) {
                 this.moveOrder(this.selectedEntity, point);
-            } else if (this.map.subtiles[point.x][point.y] instanceof Entity) {
+            } else if (target instanceof Entity) {
                 this.interactOrder(this.selectedEntity, this.map.subtiles[point.x][point.y]);
             }
         }
@@ -244,7 +246,10 @@ class Engine {
         }
     }
     interactOrder(active, passive, subtilesLimit) {
-        let finder = new AStarToEntity(active, this.map, passive, subtilesLimit);
+        let Interaction = active.getInteractionType(passive);
+        let distance = Interaction == null ? 0 : Interaction.getDistance();
+
+        let finder = new AStarToEntity(active, this.map, passive, distance, subtilesLimit);
         let path = finder.run();
         if (path !== null) {
             active.stopInteraction();
@@ -253,13 +258,14 @@ class Engine {
             if (path.length) {
                 active.swapPath(path);
                 active.rotateToSubtile(active.path[0]);
-                let Interaction = active.getInteractionType(passive);
                 if (Interaction) active.interaction = new Interaction(active, passive, this);
                 active.preInitInteraction();
                 active.setBaseState(Unit.prototype.STATE.MOVING);
             } else {
                 active.path = null;
                 active.path_progress = 0;
+                if (Interaction) active.interaction = new Interaction(active, passive, this);
+                active.preInitInteraction();
                 active.initInteraction();
             }
         }
