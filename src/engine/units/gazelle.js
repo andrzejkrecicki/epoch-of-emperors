@@ -19,6 +19,10 @@ class Gazelle extends Animal {
             this.destroy(engine);
         }
     }
+    takeHit(value, engine) {
+        super.takeHit(value, engine);
+        if (this.hp > 0) engine.escapeOrder(this);
+    }
 }
 Gazelle.prototype.SUBTILE_WIDTH = 1;
 Gazelle.prototype.NAME = "Gazelle";

@@ -220,12 +220,12 @@ class HunterInteraction extends Interaction {
                 else this.active.terminateInteraction()
             }
         } else if (this.passive.state == Unit.prototype.STATE.DYING) {
-            this.active.state = Villager.prototype.STATE.BUTCHER;
+            this.engine.interactOrder(this.active, this.passive);
         } else if (this.active.ticks_waited == this.RATE) {
-            this.engine.makeProjectile(Spear, this.active.getCenterSubtile(), this.passive.getCenterSubtile());
+            this.engine.makeProjectile(Spear, this.active, this.passive);
             // this.active.hit(this.passive, engine);
         } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER][0].length - 1) {
-            this.active.ticks_waited = -1;
+            this.engine.interactOrder(this.active, this.passive);
         }
     }
     static getDistance() {
@@ -239,6 +239,7 @@ HunterInteraction.prototype.DISTANCE = 6;
 class ButcherInteraction extends ResourceExtractionInteraction {
     init() {
         this.active.state = this.active.STATE.BUTCHER;
+        super.init();
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_MEAT;

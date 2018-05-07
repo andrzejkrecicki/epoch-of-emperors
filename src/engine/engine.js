@@ -183,8 +183,17 @@ class Engine {
     }
     processProjectiles() {
         for (let projectile of this.projectiles) {
-            if (--projectile.TTL == 0) projectile.remove();
-            else {
+            if (--projectile.TTL == 0) projectile.destroy();
+            else if (distance(projectile.realPosition, projectile.victim.realPosition) <= projectile.SPEED / 2) {
+                projectile.victim.takeHit(projectile.attributes.attack, this);
+                projectile.destroy();
+            } else if (distance(projectile.realPosition, projectile.target) <= projectile.SPEED / 2) {
+                let { x, y } = this.viewer.mapDrawable.screenCoordsToSubtile(projectile.target.x, projectile.target.y);
+                if (this.map.subtiles[x][y] instanceof Unit || this.map.subtiles[x][y] instanceof Building) {
+                    this.map.subtiles[x][y].takeHit(projectile.attributes.attack, this);
+                    projectile.destroy();
+                }
+            } else {
                 let pos = {
                     x: projectile.realPosition.x + projectile.delta.x,
                     y: projectile.realPosition.y + projectile.delta.y
@@ -276,6 +285,13 @@ class Engine {
         active.preInitInteraction();
         active.initInteraction();
     }
+    escapeOrder(unit) {
+        let target = {
+            x: unit.subtile_x + (5 + Math.floor(Math.random() * 6)) * (Math.random() < .5 ? -1 : 1),
+            y: unit.subtile_y + (5 + Math.floor(Math.random() * 6)) * (Math.random() < .5 ? -1 : 1),
+        }
+        this.moveOrder(unit, target);
+    }
     bypassOrder(entity) {
         let target = entity.path && entity.path[entity.path.length - 1];
         entity.path = null;
@@ -306,16 +322,18 @@ class Engine {
             this.viewer.addEntity(new entity.LEFTOVERS(entity.subtile_x, entity.subtile_y));
         }
     }
-    makeProjectile(Projectile, source, target) {
+    makeProjectile(Projectile, thrower, victim) {
+        let source = thrower.getCenterSubtile();
         let source_pix = this.viewer.mapDrawable.tileCoordsToScreen(source.subtile_x / 2, source.subtile_y / 2);
         // source_pix.x += 30;
         // source_pix.y -= 30;
 
+        let target = victim.getCenterSubtile();
         let target_pix = this.viewer.mapDrawable.tileCoordsToScreen(target.subtile_x / 2, target.subtile_y / 2);
         let projectile = new Projectile(
-            source_pix,
-            target_pix,
-            source
+            thrower, victim,
+            source_pix, target_pix,
+            source.subtile_x, source.subtile_y
         );
         this.projectiles.push(projectile);
         this.viewer.entitiesHolder.add(projectile);

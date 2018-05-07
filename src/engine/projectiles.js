@@ -2,13 +2,16 @@ import { make_image, leftpad } from '../utils.js';
 
 
 class LinearProjectile extends Graphics.Group {
-    constructor(position, target, subtile) {
+    constructor(thrower, victim, position, target, subtile_x, subtile_y) {
         super({
             x: position.x,
             y: position.y
         });
-        this.subtile_x = subtile.subtile_x;
-        this.subtile_y = subtile.subtile_y;
+        this.thrower = thrower;
+        this.victim = victim;
+        this.target = target;
+        this.subtile_x = subtile_x;
+        this.subtile_y = subtile_y;
         this.realPosition = position;
         this.angle = Math.atan2(target.y - position.y, target.x - position.x);
         this.delta = {
@@ -28,6 +31,7 @@ class LinearProjectile extends Graphics.Group {
         })
         this.add(this.image);
         this.resetBoundingBox();
+        this.destroyed = false;
         this.TTL = 35;
     }
     draw() {
@@ -57,11 +61,21 @@ class LinearProjectile extends Graphics.Group {
         });
         if (this.parent != null) this.parent.updateBucket(this, old);
     }
+    destroy() {
+        this.destroyed = true;
+        this.remove();
+    }
 }
 
 
 
 class Spear extends LinearProjectile {
+    constructor() {
+        super(...arguments);
+        this.attributes = {
+            attack: 3
+        };
+    }
 }
 Spear.prototype.SPEED = 10;
 
