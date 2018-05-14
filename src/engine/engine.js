@@ -55,6 +55,7 @@ class Engine {
                 }
             }
         }
+        this.units = this.units.filter((u) => !u.destroyed);
     }
     processMovingUnit(entity) {
         let tmp_target = this.viewer.mapDrawable.tileCoordsToScreen(
@@ -96,11 +97,11 @@ class Engine {
                     this.bypassOrder(entity);
                 }
             } else if (entity.path.length == entity.path_progress) {
+                entity.setBaseState(Unit.prototype.STATE.IDLE);
                 entity.path_progress = 0;
                 entity.path = null;
                 entity.frame = 0;
                 if (entity.interaction === null) {
-                    entity.setBaseState(Unit.prototype.STATE.IDLE);
                     entity.interactionObject = null;
                 } else {
                     entity.initInteraction(this);
@@ -180,6 +181,7 @@ class Engine {
         for (let entity, i = 0; entity = this.buildings[i++];) {
             if (entity.tasks.length) entity.processTasks();
         }
+        this.buildings = this.buildings.filter((b) => !b.destroyed);
     }
     processProjectiles() {
         for (let projectile of this.projectiles) {
@@ -204,6 +206,7 @@ class Engine {
                 projectile.position(pos);
             }
         }
+        this.projectiles = this.projectiles.filter((p) => !p.destroyed);
     }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
@@ -273,6 +276,7 @@ class Engine {
             } else {
                 active.path = null;
                 active.path_progress = 0;
+                active.setBaseState(Unit.prototype.STATE.IDLE);
                 if (Interaction) active.interaction = new Interaction(active, passive, this);
                 active.preInitInteraction();
                 active.initInteraction();

@@ -79,6 +79,8 @@ class Unit extends Entity {
             this.rotation = this.DIFF_TO_ROTATION[index];
         }
     }
+    getInteractionType(object) {
+    }
     swapPath(path) {
         if (this.path == null) {
             // if unit currently has no path, just assign found path;

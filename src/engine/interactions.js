@@ -87,10 +87,6 @@ class BuilderInteraction extends Interaction {
     preInit() {
         this.active.state = Villager.prototype.STATE.BUILDING;
     }
-    init() {
-        super.init();
-        this.active.state = this.active.STATE.BUILDING;
-    }
     process() {
         if (this.passive.destroyed) {
             this.terminate();
