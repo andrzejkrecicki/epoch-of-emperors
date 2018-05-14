@@ -33,10 +33,10 @@ Gazelle.prototype.SPEED = 2;
 Gazelle.prototype.ATTRIBUTES = {}
 
 Gazelle.prototype.STATE = Object.assign({}, Gazelle.prototype.STATE);
-Gazelle.prototype.STATE.ESCAPE = 1 << Gazelle.prototype.BASE_STATE_MASK_WIDTH;
-Gazelle.prototype.STATE.ESCAPE_IDLE = Gazelle.prototype.STATE.IDLE | Gazelle.prototype.STATE.ESCAPE;
-Gazelle.prototype.STATE.ESCAPE_MOVING = Gazelle.prototype.STATE.MOVING | Gazelle.prototype.STATE.ESCAPE;
-Gazelle.prototype.STATE.ESCAPE_DYING = Gazelle.prototype.STATE.DYING | Gazelle.prototype.STATE.ESCAPE;
+Gazelle.prototype.STATE.SLOW = 1 << Gazelle.prototype.BASE_STATE_MASK_WIDTH;
+Gazelle.prototype.STATE.SLOW_IDLE = Gazelle.prototype.STATE.IDLE | Gazelle.prototype.STATE.SLOW;
+Gazelle.prototype.STATE.SLOW_MOVING = Gazelle.prototype.STATE.MOVING | Gazelle.prototype.STATE.SLOW;
+Gazelle.prototype.STATE.SLOW_DYING = Gazelle.prototype.STATE.DYING | Gazelle.prototype.STATE.SLOW;
 
 
 Gazelle.prototype.IMAGES = {};
@@ -50,9 +50,9 @@ for (let dir = 0; dir < 8; ++dir) {
 
 Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.MOVING] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < 8; ++i) {
         Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.MOVING][dir].push(
-            make_image(`img/units/gazelle/moving/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+            make_image(`img/units/gazelle/run/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
         )
     }
 }
@@ -77,29 +77,27 @@ for (let dir = 0; dir < 8; ++dir) {
 
 
 
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.ESCAPE_IDLE] = Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.IDLE];
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.ESCAPE_DYING] = Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.DYING];
+Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_IDLE] = Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.IDLE];
+Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_DYING] = Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.DYING];
 
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.ESCAPE_MOVING] = new Array(8).fill(null).map(() => []);
+Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_MOVING] = new Array(8).fill(null).map(() => []);
 for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 8; ++i) {
-        Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.ESCAPE_MOVING][dir].push(
-            make_image(`img/units/gazelle/run/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+    for (let i = 0; i < 10; ++i) {
+        Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_MOVING][dir].push(
+            make_image(`img/units/gazelle/moving/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
         )
     }
 }
 
 
-
 Gazelle.prototype.IMAGE_OFFSETS = {};
 Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.IDLE] = { x: 15, y: 24 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.MOVING] = { x: 17, y: 34 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DYING] = { x: 17, y: 34 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DEAD] = { x: 17, y: 34 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.MOVING] = { x: 15, y: 44 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DYING] = { x: 19, y: 33 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DEAD] = { x: 16, y: 19 };
 
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.ESCAPE_IDLE] = { x: 15, y: 24 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.ESCAPE_MOVING] = { x: 15, y: 44 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.ESCAPE_DYING] = { x: 15, y: 44 };
-
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_IDLE] = { x: 15, y: 24 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_MOVING] = { x: 17, y: 34 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_DYING] = { x: 19, y: 33 };
 
 export { Gazelle }
