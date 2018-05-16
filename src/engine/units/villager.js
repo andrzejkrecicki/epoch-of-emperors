@@ -49,6 +49,9 @@ class Villager extends Unit {
             else return interactions.ButcherInteraction;
         }
     }
+    getProjectileOffset() {
+        return { x: 16, y: -30 }
+    }
 }
 Villager.prototype.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = "Villager";

@@ -62,6 +62,12 @@ class Entity extends Graphics.Group {
             subtile_y: this.subtile_y + this.SUBTILE_WIDTH / 2 - .5
         }
     }
+    getExactSubtileCenter() {
+        return {
+            subtile_x: this.subtile_x + this.SUBTILE_WIDTH / 2,
+            subtile_y: this.subtile_y + this.SUBTILE_WIDTH / 2
+        }
+    }
     destroy(engine) {
         this.destroyed = true;
         this.remove();

@@ -81,6 +81,9 @@ class Unit extends Entity {
     }
     getInteractionType(object) {
     }
+    getProjectileOffset() {
+        return { x: 0, y: 0 }
+    }
     swapPath(path) {
         if (this.path == null) {
             // if unit currently has no path, just assign found path;

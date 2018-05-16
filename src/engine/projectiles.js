@@ -73,11 +73,12 @@ class Spear extends LinearProjectile {
     constructor() {
         super(...arguments);
         this.attributes = {
-            attack: 3
+            attack: 4
         };
     }
 }
 Spear.prototype.SPEED = 10;
+Spear.prototype.RADIUS = 17;
 
 Spear.prototype.IMAGES = [];
 for (let i = 0; i < 32; ++i) Spear.prototype.IMAGES.push(

@@ -185,16 +185,19 @@ class Engine {
     }
     processProjectiles() {
         for (let projectile of this.projectiles) {
+            let target = projectile.victim.getExactSubtileCenter();
+            let target_pos = this.viewer.mapDrawable.tileCoordsToScreen(target.subtile_x / 2, target.subtile_y / 2);
+
             if (--projectile.TTL == 0) projectile.destroy();
-            else if (distance(projectile.realPosition, projectile.victim.realPosition) <= projectile.SPEED / 2) {
+            else if (distance(projectile.realPosition, target_pos) - projectile.RADIUS <= projectile.SPEED / 2) {
                 projectile.victim.takeHit(projectile.attributes.attack, this);
                 projectile.destroy();
-            } else if (distance(projectile.realPosition, projectile.target) <= projectile.SPEED / 2) {
+            } else if (distance(projectile.realPosition, projectile.target) - projectile.RADIUS <= projectile.SPEED / 2) {
                 let { x, y } = this.viewer.mapDrawable.screenCoordsToSubtile(projectile.target.x, projectile.target.y);
                 if (this.map.subtiles[x][y] instanceof Unit || this.map.subtiles[x][y] instanceof Building) {
                     this.map.subtiles[x][y].takeHit(projectile.attributes.attack, this);
-                    projectile.destroy();
                 }
+                projectile.destroy();
             } else {
                 let pos = {
                     x: projectile.realPosition.x + projectile.delta.x,
@@ -232,9 +235,9 @@ class Engine {
     processLoop() {
         ++this.framesCount;
         this.viewer.process();
-        this.processProjectiles();
         this.processUnits();
         this.processBuildings();
+        this.processProjectiles();
         this.viewer.stage.draw();
     }
     handleRightClick(point) {
@@ -329,10 +332,11 @@ class Engine {
     makeProjectile(Projectile, thrower, victim) {
         let source = thrower.getCenterSubtile();
         let source_pix = this.viewer.mapDrawable.tileCoordsToScreen(source.subtile_x / 2, source.subtile_y / 2);
-        // source_pix.x += 30;
-        // source_pix.y -= 30;
+        let offset = thrower.getProjectileOffset();
+        source_pix.x += offset.x;
+        source_pix.y += offset.y;
 
-        let target = victim.getCenterSubtile();
+        let target = victim.getExactSubtileCenter();
         let target_pix = this.viewer.mapDrawable.tileCoordsToScreen(target.subtile_x / 2, target.subtile_y / 2);
         let projectile = new Projectile(
             thrower, victim,
