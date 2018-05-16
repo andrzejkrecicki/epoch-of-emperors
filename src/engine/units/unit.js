@@ -1,5 +1,4 @@
 import { Entity } from '../entity.js';
-import { MapDrawable } from '../../viewer.js';
 
 
 class Unit extends Entity {
@@ -8,7 +7,7 @@ class Unit extends Entity {
         this.hp = this.MAX_HP;
         this.max_hp = this.MAX_HP;
         this.state = this.STATE.IDLE;
-        this.rotation = rotation || Math.floor(Math.random() * 8);
+        this.rotation = rotation != null ? rotation : Math.floor(Math.random() * 8);
         this.frame = 0;
         this.createSelectionRect();
         this.setImage();
@@ -128,6 +127,7 @@ class Unit extends Entity {
     }
     initInteraction() {
         this.ticks_waited = 0;
+        this.frame = 0;
         this.interaction && this.interaction.init();
     }
     processInteraction() {

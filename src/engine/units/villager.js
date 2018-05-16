@@ -75,6 +75,7 @@ Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYP
 Villager.prototype.ATTRIBUTES = {
     ATTACK: 3
 }
+
 Villager.prototype.STATE = Object.assign({}, Villager.prototype.STATE);
 Villager.prototype.STATE.BUILDING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.BUILDING_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.BUILDING;
@@ -417,49 +418,49 @@ for (let dir = 0; dir < 8; ++dir) {
 
 
 Villager.prototype.IMAGE_OFFSETS = {};
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: 0, y: 35 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MOVING] = { x: 6, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: -5, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MOVING] = { x: 2, y: 33 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING] = { x: 12, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_IDLE] = { x: -1, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_MOVING] = { x: 6, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING] = { x: 8, y: 31 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_IDLE] = { x: -5, y: 32 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_MOVING] = { x: 2, y: 33 };
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE] = { x: 17, y: 39 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_IDLE] = { x: 4, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_MOVING] = { x: 11, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_IDLE] = { x: 1, y: 31 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_MOVING] = { x: 7, y: 33 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER] = { x: 12, y: 47 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_IDLE] = { x: 8, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_MOVING] = { x: 8, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER] = { x: 1, y: 46 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_IDLE] = { x: 1, y: 32 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_MOVING] = { x: 3, y: 33 };
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP] = { x: 17, y: 43 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_MOVING] = { x: 8, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_IDLE] = { x: 8, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_MOVING] = { x: 4, y: 32 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_IDLE] = { x: 4, y: 32 };
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE] = { x: 14, y: 45 };
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_IDLE] = { x: 0, y: 31 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_MOVING] = { x: 10, y: 32 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_MOVING] = { x: 6, y: 32 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_MOVING] = { x: 3, y: 34 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_IDLE] = { x: 3, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_MOVING] = { x: 0, y: 32 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_IDLE] = { x: 0, y: 32 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_MOVING] = { x: 3, y: 34 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_IDLE] = { x: 3, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_MOVING] = { x: 0, y: 33 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_IDLE] = { x: 0, y: 33 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER] = { x: 19, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_IDLE] = { x: -1, y: 34 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_MOVING] = { x: 14, y: 35 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER] = { x: 12, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_IDLE] = { x: -3, y: 35 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_MOVING] = { x: 12, y: 37 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_IDLE] = { x: 11, y: 35 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_MOVING] = { x: 11, y: 35 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_IDLE] = { x: 7, y: 35 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_MOVING] = { x: 7, y: 35 };
 
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER] = { x: 33, y: 54 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_IDLE] = { x: 22, y: 34 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_MOVING] = { x: 15, y: 42 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER] = { x: 29, y: 54 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_IDLE] = { x: 17, y: 32 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_MOVING] = { x: 10, y: 41 };
 
 Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUTCHER] = { x: 11, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_MOVING] = { x: 3, y: 36 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_IDLE] = { x: 3, y: 36 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_MOVING] = { x: -1, y: 34 };
+Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_IDLE] = { x: -1, y: 34 };
 
 
 export { Villager }

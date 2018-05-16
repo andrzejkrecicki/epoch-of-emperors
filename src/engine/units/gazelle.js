@@ -91,13 +91,13 @@ for (let dir = 0; dir < 8; ++dir) {
 
 
 Gazelle.prototype.IMAGE_OFFSETS = {};
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.IDLE] = { x: 15, y: 24 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.MOVING] = { x: 15, y: 44 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DYING] = { x: 19, y: 33 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DEAD] = { x: 16, y: 19 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.IDLE] = { x: 11, y: 24 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.MOVING] = { x: 19, y: 43 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DYING] = { x: 15, y: 34 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DEAD] = { x: 12, y: 17 };
 
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_IDLE] = { x: 15, y: 24 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_MOVING] = { x: 17, y: 34 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_DYING] = { x: 19, y: 33 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_IDLE] = { x: 11, y: 24 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_MOVING] = { x: 13, y: 35 };
+Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_DYING] = { x: 15, y: 34 };
 
 export { Gazelle }
