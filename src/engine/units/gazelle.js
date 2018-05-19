@@ -37,7 +37,7 @@ Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.MOVING] = new Array(8).fill(nul
 for (let dir = 0; dir < 8; ++dir) {
     for (let i = 0; i < 8; ++i) {
         Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.MOVING][dir].push(
-            make_image(`img/units/gazelle/run/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+            make_image(`img/units/gazelle/moving/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
         )
     }
 }
@@ -69,7 +69,7 @@ Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_MOVING] = new Array(8).fil
 for (let dir = 0; dir < 8; ++dir) {
     for (let i = 0; i < 10; ++i) {
         Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_MOVING][dir].push(
-            make_image(`img/units/gazelle/moving/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
+            make_image(`img/units/gazelle/slow/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
         )
     }
 }
