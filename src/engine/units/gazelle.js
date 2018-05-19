@@ -8,21 +8,6 @@ class Gazelle extends Animal {
             food: 150
         }
     }
-    toggleDead(engine) {
-        if (this.attributes.food > 0 && this.ticks_waited > 4 * 35) {
-            --this.attributes.food;
-            this.ticks_waited = 0;
-        } else ++this.ticks_waited;
-
-        if (this.attributes.food == 0) {
-            this.state = Animal.prototype.STATE.DEAD;
-            this.destroy(engine);
-        }
-    }
-    takeHit(value, engine) {
-        super.takeHit(value, engine);
-        if (this.hp > 0) engine.escapeOrder(this);
-    }
 }
 Gazelle.prototype.SUBTILE_WIDTH = 1;
 Gazelle.prototype.NAME = "Gazelle";

@@ -16,8 +16,33 @@ class Animal extends Unit {
         }
         return 0;
     }
+    toggleDead(engine) {
+        if (this.attributes.food > 0 && this.ticks_waited > Animal.prototype.DECAY_RATE) {
+            --this.attributes.food;
+            this.ticks_waited = 0;
+        } else ++this.ticks_waited;
+
+        if (this.attributes.food == 0 && !this.destroyed) {
+            this.destroy(engine);
+        }
+    }
+    takeHit(value, engine) {
+        this.hp -= value;
+        if (this.hp > 0) {
+            if (this.path == null) engine.escapeOrder(this);
+        } else {
+            this.hp = 0;
+            if (this.path == null) this.setBaseState(Animal.prototype.STATE.DYING);
+        }
+    }
+    afterStep() {
+        if (this.hp <= 0) {
+            this.path = null;
+            this.setBaseState(Animal.prototype.STATE.DYING);
+        }
+    }
 }
 Animal.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
-
+Animal.prototype.DECAY_RATE = 4 * 35;
 
 export { Animal }

@@ -122,6 +122,8 @@ class Unit extends Entity {
         this.state = Unit.prototype.STATE.DEAD;
         this.destroy(engine);
     }
+    afterStep() {
+    }
     preInitInteraction() {
         this.interaction && this.interaction.preInit();
     }

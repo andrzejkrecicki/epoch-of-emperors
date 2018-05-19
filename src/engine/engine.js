@@ -107,6 +107,7 @@ class Engine {
                     entity.initInteraction(this);
                 }
             }
+            entity.afterStep();
         } else {
             let old_rotation = entity.rotation;
             entity.rotateToSubtile(entity.path[entity.path_progress]);
