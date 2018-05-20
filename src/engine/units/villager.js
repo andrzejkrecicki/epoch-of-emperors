@@ -6,8 +6,8 @@ import { StoneMine } from '../resources/stone.js';
 import { Bush } from '../resources/bush.js';
 import { Animal } from './animal.js';
 import { Tree } from '../trees.js';
-import { Sprites } from '../sprites.js';
-import { make_image, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
+import { RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import { Spear } from '../projectiles.js';
@@ -56,7 +56,7 @@ class Villager extends Unit {
 }
 Villager.prototype.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = "Villager";
-Villager.prototype.AVATAR = make_image("img/interface/avatars/villager.png");
+Villager.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/villager.png");
 Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.CREATION_TIME = 20 * 35;

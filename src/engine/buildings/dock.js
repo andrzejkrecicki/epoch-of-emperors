@@ -1,8 +1,9 @@
 import { Building } from './building.js';
 import { FishingBoat } from '../units/fishing_boat.js';
 import { Actions } from '../actions.js';
-import { make_image, leftpad, RESOURCE_TYPES } from '../../utils.js';
+import { leftpad, RESOURCE_TYPES } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
+import { Sprites } from '../../sprites.js';
 
 
 class Dock extends Building {
@@ -20,7 +21,7 @@ class Dock extends Building {
     }
 }
 Dock.prototype.NAME = "Dock";
-Dock.prototype.AVATAR = make_image("img/interface/avatars/dock_01_all.png");
+Dock.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/dock_01_all.png");
 Dock.prototype.MAX_HP = 350;
 Dock.prototype.SUBTILE_WIDTH = 4;
 
@@ -30,13 +31,13 @@ Dock.prototype.COST = {
 }
 
 Dock.prototype.IMAGES = {}
-Dock.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/dock/01_all.png")];
-Dock.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/dock/01_all.png"))];
+Dock.prototype.IMAGES[Building.prototype.STATE.DONE] = [Sprites.Sprite("img/buildings/dock/01_all.png")];
+Dock.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/dock/01_all.png"))];
 
 Dock.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = [
-    make_image("img/buildings/dock/construction_01_all_00.png"),
-    make_image("img/buildings/dock/construction_01_all_01.png"),
-    make_image("img/buildings/dock/construction_01_all_02.png")
+    Sprites.Sprite("img/buildings/dock/construction_01_all_00.png"),
+    Sprites.Sprite("img/buildings/dock/construction_01_all_01.png"),
+    Sprites.Sprite("img/buildings/dock/construction_01_all_02.png")
 ];
 
 
@@ -46,8 +47,8 @@ Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: -22, y: 36 };
 
 Dock.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
 Dock.prototype.HITMAP[Dock.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(
-    make_image("img/buildings/base_hit_big.png"),
-    make_image("img/buildings/dock/01_all.png"),
+    Sprites.Sprite("img/buildings/base_hit_big.png"),
+    Sprites.Sprite("img/buildings/dock/01_all.png"),
     Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
     Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
 );

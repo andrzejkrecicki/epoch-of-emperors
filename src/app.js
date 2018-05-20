@@ -1,3 +1,4 @@
+import { Sprites } from './sprites.js';
 import './graphics/graphics.js';
 import { MenuNavigator } from './navigator.js';
 
@@ -35,5 +36,9 @@ Game.STAGE_WIDTH = 800;
 Game.STAGE_HEIGHT = 600;
 
 document.body.oncontextmenu = function() { return false; };
-let game = new Game('container');
-game.draw();
+
+Sprites.ready.then(function() {
+    let game = new Game('container');
+    game.draw();
+})
+

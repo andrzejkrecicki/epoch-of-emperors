@@ -1,5 +1,6 @@
 import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox } from './ui.js';
-import { PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES, make_image } from './utils.js';
+import { Sprites } from './sprites.js';
+import { PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
 
 class Menu extends Graphics.Group {
     constructor(stage, nav) {
@@ -57,7 +58,7 @@ class MainMenu extends Menu {
         });
     }
 }
-MainMenu.prototype.BACKGROUND_IMAGE = make_image("img/interface/menu_main.png");
+MainMenu.prototype.BACKGROUND_IMAGE = Sprites.Sprite("img/interface/menu_main.png");
 
 
 class SinglePlayerMenu extends Menu {
@@ -107,7 +108,7 @@ class SinglePlayerMenu extends Menu {
         });
     }
 }
-SinglePlayerMenu.prototype.BACKGROUND_IMAGE = make_image("img/interface/menu_single.png");
+SinglePlayerMenu.prototype.BACKGROUND_IMAGE = Sprites.Sprite("img/interface/menu_single.png");
 
 
 class RandomMapMenu extends Menu {
@@ -399,7 +400,7 @@ class RandomMapMenu extends Menu {
         };
     }
 }
-RandomMapMenu.prototype.BACKGROUND_IMAGE = make_image("img/interface/menu_single.png");
+RandomMapMenu.prototype.BACKGROUND_IMAGE = Sprites.Sprite("img/interface/menu_single.png");
 RandomMapMenu.NAME_SECTION_WIDTH = 130;
 RandomMapMenu.CIV_SECTION_WIDTH = 170;
 RandomMapMenu.PLAYER_SECTION_WIDTH = 90;

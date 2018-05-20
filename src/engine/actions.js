@@ -1,4 +1,3 @@
-import { make_image } from '../utils.js';
 import { TownCenter } from './buildings/town_center';
 import { Barracks } from './buildings/barracks.js';
 import { Farm } from './buildings/farm.js';
@@ -9,6 +8,7 @@ import { House } from './buildings/house.js';
 import { Villager } from './units/villager.js';
 import { rand_choice } from '../utils.js';
 import { MapDrawable } from '../viewer.js';
+import { Sprites } from '../sprites.js';
 
 class Action {
     constructor(viewer) {
@@ -56,7 +56,7 @@ class RejectConstructionPlan extends Action {
         this.viewer.isPlanningConstruction = false;
     }
 }
-RejectConstructionPlan.prototype.IMAGE = make_image("img/interface/command/cancel.png");
+RejectConstructionPlan.prototype.IMAGE = Sprites.Sprite("img/interface/command/cancel.png");
 RejectConstructionPlan.prototype.TOOLTIP = "Cancel";
 RejectConstructionPlan.prototype.ACTION_KEY = "Esc";
 RejectConstructionPlan.prototype.POS = {
@@ -128,7 +128,7 @@ class PreviousPage extends Action {
         this.viewer.bottombar.entityActions.popActions();
     }
 }
-PreviousPage.prototype.IMAGE = make_image("img/interface/command/next.png");
+PreviousPage.prototype.IMAGE = Sprites.Sprite("img/interface/command/next.png");
 PreviousPage.prototype.TOOLTIP = "Previous";
 PreviousPage.prototype.ACTION_KEY = "X";
 PreviousPage.prototype.POS = {
@@ -141,7 +141,7 @@ class FirstPage extends Action {
         this.viewer.bottombar.entityActions.goToFirst();
     }
 }
-FirstPage.prototype.IMAGE = make_image("img/interface/command/cancel.png");
+FirstPage.prototype.IMAGE = Sprites.Sprite("img/interface/command/cancel.png");
 FirstPage.prototype.TOOLTIP = "Cancel";
 FirstPage.prototype.ACTION_KEY = "Esc";
 FirstPage.prototype.POS = {
@@ -154,7 +154,7 @@ class NextBuildingsPage extends Action {
         this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
     }
 }
-NextBuildingsPage.prototype.IMAGE = make_image("img/interface/command/next.png");
+NextBuildingsPage.prototype.IMAGE = Sprites.Sprite("img/interface/command/next.png");
 NextBuildingsPage.prototype.TOOLTIP = "Next";
 NextBuildingsPage.prototype.ACTION_KEY = "X";
 NextBuildingsPage.prototype.POS = {
@@ -168,7 +168,7 @@ NextBuildingsPage.prototype.ACTIONS = [
 
 class StandGround extends Action {
 }
-StandGround.prototype.IMAGE = make_image("img/interface/command/stand_ground.png");
+StandGround.prototype.IMAGE = Sprites.Sprite("img/interface/command/stand_ground.png");
 StandGround.prototype.TOOLTIP = "Stand Ground";
 StandGround.prototype.ACTION_KEY = "D";
 
@@ -178,7 +178,7 @@ class Build extends Action {
         this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
     }
 }
-Build.prototype.IMAGE = make_image("img/interface/command/build.png");
+Build.prototype.IMAGE = Sprites.Sprite("img/interface/command/build.png");
 Build.prototype.TOOLTIP = "Build";
 Build.prototype.ACTION_KEY = "B";
 Build.prototype.ACTIONS = [
@@ -196,13 +196,13 @@ Build.prototype.ACTIONS = [
 
 class Repair extends Action {
 }
-Repair.prototype.IMAGE = make_image("img/interface/command/repair.png");
+Repair.prototype.IMAGE = Sprites.Sprite("img/interface/command/repair.png");
 Repair.prototype.TOOLTIP = "Repair";
 Repair.prototype.ACTION_KEY = "R";
 
 class Stop extends Action {
 }
-Stop.prototype.IMAGE = make_image("img/interface/command/stop.png");
+Stop.prototype.IMAGE = Sprites.Sprite("img/interface/command/stop.png");
 Stop.prototype.TOOLTIP = "Stop";
 Stop.prototype.ACTION_KEY = "S";
 

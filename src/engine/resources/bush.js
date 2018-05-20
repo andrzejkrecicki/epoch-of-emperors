@@ -1,5 +1,6 @@
 import { Entity } from '../entity.js';
-import { make_image, rand_choice } from '../../utils.js';
+import { rand_choice } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
 
 class Bush extends Entity {
     constructor(subtile_x, subtile_y) {
@@ -59,10 +60,10 @@ class Bush extends Entity {
 Bush.prototype.MAX_HP = 25;
 Bush.prototype.SUBTILE_WIDTH = 2;
 Bush.prototype.NAME = "Berry Bush";
-Bush.prototype.AVATAR = make_image("img/interface/avatars/bush.png");
+Bush.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/bush.png");
 Bush.prototype.TOOLTIP = "Forage here for food.";
 
-Bush.prototype.IMAGE = make_image("img/resources/bush.png");
-Bush.prototype.IMAGE_OFFSET =  { x: -12, y: 25 };
+Bush.prototype.IMAGE = Sprites.Sprite("img/resources/bush.png");
+Bush.prototype.IMAGE_OFFSET = { x: -12, y: 25 };
 
 export { Bush }

@@ -1,6 +1,5 @@
 import { Animal } from './animal.js';
-import { make_image } from '../../utils.js';
-import { Sprites } from '../sprites.js';
+import { Sprites } from '../../sprites.js';
 
 class Gazelle extends Animal {
     constructor() {
@@ -12,7 +11,7 @@ class Gazelle extends Animal {
 }
 Gazelle.prototype.SUBTILE_WIDTH = 1;
 Gazelle.prototype.NAME = "Gazelle";
-Gazelle.prototype.AVATAR = make_image("img/interface/avatars/gazelle.png");
+Gazelle.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/gazelle.png");
 Gazelle.prototype.MAX_HP = 8;
 Gazelle.prototype.SPEED = 2;
 

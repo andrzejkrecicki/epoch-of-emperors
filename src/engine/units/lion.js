@@ -1,6 +1,5 @@
 import { Animal } from './animal.js';
-import { make_image } from '../../utils.js';
-import { Sprites } from '../sprites.js';
+import { Sprites } from '../../sprites.js';
 
 class Lion extends Animal {
     constructor() {
@@ -12,7 +11,7 @@ class Lion extends Animal {
 }
 Lion.prototype.SUBTILE_WIDTH = 1;
 Lion.prototype.NAME = "Lion";
-Lion.prototype.AVATAR = make_image("img/interface/avatars/lion.png");
+Lion.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/lion.png");
 Lion.prototype.MAX_HP = 24;
 Lion.prototype.SPEED = 2;
 

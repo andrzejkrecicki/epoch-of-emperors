@@ -555,7 +555,7 @@ class EntitiesHolder extends Node {
 
 function RedFilter(image) {
     let tmp = document.createElement("canvas");
-    image.addEventListener("load", function() {
+    image.ready.then(function(image) {
         tmp.setAttribute("width", image.width);
         tmp.setAttribute("height", image.height);
         let ctx = tmp.getContext("2d");
@@ -581,7 +581,7 @@ function BasicHitmask(image, offset) {
         offset: offset
     };
 
-    image.addEventListener("load", function() {
+    image.ready.then(function(image) {
         let tmp = document.createElement("canvas");
         tmp.setAttribute("width", image.width);
         tmp.setAttribute("height", image.height);
@@ -607,8 +607,7 @@ function ComposeHitmask(img1, img2, offset1, offset2) {
         offset: null
     }
 
-    let callback = function() {
-        if (++loaded < 2) return;
+    let callback = function([img1, img2]) {
         let tmp = document.createElement("canvas");
         tmp.setAttribute("width", Math.max(img1.width, img2.width));
         tmp.setAttribute("height", Math.max(img1.height, img2.height));
@@ -632,9 +631,7 @@ function ComposeHitmask(img1, img2, offset1, offset2) {
             y: Math.max(offset1.y, offset2.y)
         }
     }
-
-    img1.addEventListener("load", callback);
-    img2.addEventListener("load", callback);
+    Promise.all([img1.ready, img2.ready]).then(callback);
 
     return wrap;
 }

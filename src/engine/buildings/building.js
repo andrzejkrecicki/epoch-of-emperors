@@ -1,6 +1,6 @@
 import { Entity } from '../entity.js';
-import { make_image } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
+import { Sprites } from '../../sprites.js';
 
 
 class Building extends Entity {
@@ -116,19 +116,14 @@ Building.prototype.STATE = {
     DENIED: 100,
 }
 Building.prototype.IMAGES = {};
-Building.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = [
-    make_image("img/buildings/construction_big_00.png"),
-    make_image("img/buildings/construction_big_01.png"),
-    make_image("img/buildings/construction_big_02.png"),
-    make_image("img/buildings/construction_big_03.png")
-];
+Building.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = Sprites.SpriteSequence("img/buildings/construction_big_", 4);
 
 Building.prototype.IMAGE_OFFSETS = {};
 Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
 
 Building.prototype.HITMAP = {};
 Building.prototype.HITMAP[Building.prototype.STATE.CONSTRUCTION] = Graphics.Filters.BasicHitmask(
-    make_image("img/buildings/base_hit_big.png"),
+    Sprites.Sprite("img/buildings/base_hit_big.png"),
     Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION]
 );
 

@@ -1,4 +1,4 @@
-import { make_image, leftpad } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
 
 class AnimatedDetail extends Graphics.Group {
     constructor() {
@@ -19,18 +19,12 @@ class AnimatedDetail extends Graphics.Group {
 }
 
 class FireSmall extends AnimatedDetail {}
-FireSmall.prototype.IMAGES = [];
-for (let i = 0; i < 20; ++i) FireSmall.prototype.IMAGES.push(
-    make_image(`img/buildings/details/fire_small_${leftpad(i, 2, "0")}.png`)
-)
+FireSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/fire_small_", 20);
 FireSmall.prototype.IMAGE_OFFSETS = { x: 6, y: 26 }
 
 
 class SmokeSmall extends AnimatedDetail {}
-SmokeSmall.prototype.IMAGES = [];
-for (let i = 0; i < 17; ++i) SmokeSmall.prototype.IMAGES.push(
-    make_image(`img/buildings/details/smoke_small_${leftpad(i, 2, "0")}.png`)
-)
+SmokeSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/smoke_small_", 17);
 SmokeSmall.prototype.IMAGE_OFFSETS = { x: 9, y: 27 }
 
 export {

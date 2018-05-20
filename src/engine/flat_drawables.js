@@ -1,5 +1,5 @@
 import { Entity } from './entity.js';
-import { make_image } from '../utils.js';
+import { Sprites } from '../sprites.js';
 
 class FlatDrawable extends Entity {
     constructor(subtile_x, subtile_y) {
@@ -33,14 +33,14 @@ class FlatDrawable extends Entity {
 class TreeStump extends FlatDrawable {
 }
 TreeStump.prototype.SUBTILE_WIDTH = 0;
-TreeStump.prototype.IMAGES = [make_image('/img/trees/stump.png')];
+TreeStump.prototype.IMAGES = [Sprites.Sprite('img/trees/stump.png')];
 TreeStump.prototype.IMAGE_OFFSET = { x: -11, y: 10 }
 
 
 class ExhaustedFarm extends FlatDrawable {
 }
 ExhaustedFarm.prototype.SUBTILE_WIDTH = 0;
-ExhaustedFarm.prototype.IMAGES = [make_image('/img/buildings/farm/exhausted.png')];
+ExhaustedFarm.prototype.IMAGES = [Sprites.Sprite('img/buildings/farm/exhausted.png')];
 ExhaustedFarm.prototype.IMAGE_OFFSET = { x: 17 - 15, y: 44 - 10 }
 
 

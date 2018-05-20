@@ -1,8 +1,8 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { FishBig } from '../resources/fish.js';
-import { make_image, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
-import { Sprites } from '../sprites.js';
+import { RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import * as interactions from '../interactions.js';
@@ -29,7 +29,7 @@ class FishingBoat extends Unit {
 }
 FishingBoat.prototype.SUBTILE_WIDTH = 2;
 FishingBoat.prototype.NAME = "Fishing Boat";
-FishingBoat.prototype.AVATAR = make_image("img/interface/avatars/fishing_boat.png");
+FishingBoat.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/fishing_boat.png");
 FishingBoat.prototype.MAX_HP = 45;
 FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;

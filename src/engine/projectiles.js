@@ -1,5 +1,4 @@
-import { make_image, leftpad } from '../utils.js';
-
+import { Sprites } from '../sprites.js';
 
 class LinearProjectile extends Graphics.Group {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
@@ -80,10 +79,7 @@ class Spear extends LinearProjectile {
 Spear.prototype.SPEED = 10;
 Spear.prototype.RADIUS = 17;
 
-Spear.prototype.IMAGES = [];
-for (let i = 0; i < 32; ++i) Spear.prototype.IMAGES.push(
-    make_image(`img/projectiles/spear/${leftpad(i, 2, "0")}.png`)
-)
+Spear.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/spear/", 32);
 
 Spear.prototype.IMAGE_OFFSETS = { x: 25, y: 9 };
 

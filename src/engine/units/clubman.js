@@ -1,6 +1,5 @@
 import { Unit } from './unit.js';
-import { make_image } from '../../utils.js';
-import { Sprites } from '../sprites.js';
+import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 
@@ -20,7 +19,7 @@ class ClubMan extends Unit {
 }
 ClubMan.prototype.SUBTILE_WIDTH = 1;
 ClubMan.prototype.NAME = "Clubman";
-ClubMan.prototype.AVATAR = make_image("img/interface/avatars/clubman.png");
+ClubMan.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/clubman.png");
 ClubMan.prototype.MAX_HP = 40;
 ClubMan.prototype.SPEED = 1;
 ClubMan.prototype.CREATION_TIME = 26 * 35;

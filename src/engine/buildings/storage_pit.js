@@ -1,5 +1,6 @@
 import { Building } from './building.js';
-import { make_image, RESOURCE_TYPES } from '../../utils.js';
+import { RESOURCE_TYPES } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
 
 class StoragePit extends Building {
     acceptsResource(type) {
@@ -11,7 +12,7 @@ class StoragePit extends Building {
     }
 }
 StoragePit.prototype.NAME = "Storage Pit";
-StoragePit.prototype.AVATAR = make_image("img/interface/avatars/storage_pit_01_all.png");
+StoragePit.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/storage_pit_01_all.png");
 StoragePit.prototype.MAX_HP = 350;
 StoragePit.prototype.SUBTILE_WIDTH = 5;
 
@@ -21,16 +22,16 @@ StoragePit.prototype.COST = {
 }
 
 StoragePit.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
-StoragePit.prototype.IMAGES[Building.prototype.STATE.DONE] = [make_image("img/buildings/storage_pit/01_all.png")];
-StoragePit.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(make_image("img/buildings/storage_pit/01_all.png"))];
+StoragePit.prototype.IMAGES[Building.prototype.STATE.DONE] = [Sprites.Sprite("img/buildings/storage_pit/01_all.png")];
+StoragePit.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/storage_pit/01_all.png"))];
 
 StoragePit.prototype.IMAGE_OFFSETS = Object.assign({}, Building.prototype.IMAGE_OFFSETS);
 StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 1, y: 64 };
 
 StoragePit.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
 StoragePit.prototype.HITMAP[StoragePit.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(
-    make_image("img/buildings/base_hit_big.png"),
-    make_image("img/buildings/storage_pit/01_all.png"),
+    Sprites.Sprite("img/buildings/base_hit_big.png"),
+    Sprites.Sprite("img/buildings/storage_pit/01_all.png"),
     StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
     StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
 );

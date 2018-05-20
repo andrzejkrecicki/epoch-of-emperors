@@ -70,13 +70,6 @@ let CIVILIZATIONS_NAMES = [
     "Asiatic"
 ]
 
-
-var make_image = function(src) {
-    let img = new Image;
-    img.src = src;
-    return img;
-}
-
 var to_binary = function(num) {
     let bin = (+num).toString(2);
     return "00000000".substr(bin.length) + bin;
@@ -108,6 +101,6 @@ var rect_intersection = function(r1, r2) {
 
 export {
     PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
-    make_image, to_binary, leftpad, rand_choice, rect_intersection, distance,
+    to_binary, leftpad, rand_choice, rect_intersection, distance,
     manhatan_subtile_distance, RESOURCE_TYPES, RESOURCE_NAME
 }

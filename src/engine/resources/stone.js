@@ -1,5 +1,6 @@
 import { Entity } from '../entity.js';
-import { make_image, rand_choice } from '../../utils.js';
+import { rand_choice } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
 
 class StoneMine extends Entity {
     constructor(subtile_x, subtile_y, imgChoice=-1) {
@@ -62,20 +63,12 @@ class StoneMine extends Entity {
 }
 StoneMine.prototype.SUBTILE_WIDTH = 2;
 StoneMine.prototype.NAME = "Stone Mine";
-StoneMine.prototype.AVATAR = make_image("img/interface/avatars/stone.png");
+StoneMine.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/stone.png");
 StoneMine.prototype.MAX_HP = 25;
 StoneMine.prototype.TOOLTIP = "Mine here for stone.";
 
 
-StoneMine.prototype.IMAGES = [
-    make_image("img/resources/stone/00.png"),
-    make_image("img/resources/stone/01.png"),
-    make_image("img/resources/stone/02.png"),
-    make_image("img/resources/stone/03.png"),
-    make_image("img/resources/stone/04.png"),
-    make_image("img/resources/stone/05.png"),
-    make_image("img/resources/stone/06.png"),
-];
+StoneMine.prototype.IMAGES = Sprites.SpriteSequence("img/resources/stone/", 7);
 StoneMine.prototype.IMAGE_OFFSETS = { x: 12, y: 25 }
 
 

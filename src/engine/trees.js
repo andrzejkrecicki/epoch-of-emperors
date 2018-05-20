@@ -1,6 +1,7 @@
 import { Entity } from './entity.js';
 import { TreeStump } from './flat_drawables.js';
-import { make_image, rand_choice } from '../utils.js';
+import { rand_choice } from '../utils.js';
+import { Sprites } from '../sprites.js';
 
 class Tree extends Entity {
     constructor(subtile_x, subtile_y, imgChoice=-1) {
@@ -75,7 +76,7 @@ class Tree extends Entity {
 }
 Tree.prototype.MAX_HP = 25;
 Tree.prototype.SUBTILE_WIDTH = 1;
-Tree.prototype.AVATAR = make_image("img/interface/avatars/tree.png");
+Tree.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/tree.png");
 Tree.prototype.TOOLTIP = "Chop down trees for wood.";
 Tree.prototype.LEFTOVERS = TreeStump;
 
@@ -85,10 +86,7 @@ Tree.prototype.STATE = {
 }
 
 Tree.prototype.IMAGES = {};
-Tree.prototype.IMAGES[Tree.prototype.STATE.CUT] = [
-    make_image("img/trees/cut_00.png"),
-    make_image("img/trees/cut_01.png")
-];
+Tree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Sprites.SpriteSequence("img/trees/cut_", 2);
 Tree.prototype.IMAGE_OFFSETS = {};
 Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = [
     { x: 21, y: 13 },
@@ -104,14 +102,8 @@ class LeafTree extends Tree {
 LeafTree.prototype.NAME = "Leaf Tree";
 LeafTree.prototype.IMAGES = {};
 LeafTree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGES[Tree.prototype.STATE.CUT];
-LeafTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = [
-    make_image("img/trees/leaf_00.png"),
-    make_image("img/trees/leaf_01.png"),
-    make_image("img/trees/leaf_02.png"),
-    make_image("img/trees/leaf_03.png"),
-    make_image("img/trees/leaf_04.png"),
-    make_image("img/trees/leaf_05.png"),
-];
+LeafTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = Sprites.SpriteSequence("img/trees/leaf_", 6);
+
 LeafTree.prototype.IMAGE_OFFSETS = {};
 LeafTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT];
 LeafTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.ALIVE] = [
@@ -132,12 +124,8 @@ class PalmTree extends Tree {
 PalmTree.prototype.NAME = "Palm";
 PalmTree.prototype.IMAGES = {};
 PalmTree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGES[Tree.prototype.STATE.CUT];
-PalmTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = [
-    make_image("img/trees/palm_00.png"),
-    make_image("img/trees/palm_01.png"),
-    make_image("img/trees/palm_02.png"),
-    make_image("img/trees/palm_03.png"),
-];
+PalmTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = Sprites.SpriteSequence("img/trees/palm_", 4);
+
 PalmTree.prototype.IMAGE_OFFSETS = {};
 PalmTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT];
 PalmTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.ALIVE] = [
@@ -156,13 +144,8 @@ class PineTree extends Tree {
 PineTree.prototype.NAME = "Pine";
 PineTree.prototype.IMAGES = {};
 PineTree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGES[Tree.prototype.STATE.CUT];
-PineTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = [
-    make_image("img/trees/pine_00.png"),
-    make_image("img/trees/pine_01.png"),
-    make_image("img/trees/pine_02.png"),
-    make_image("img/trees/pine_03.png"),
-    make_image("img/trees/pine_04.png"),
-];
+PineTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = Sprites.SpriteSequence("img/trees/pine_", 5);
+
 PineTree.prototype.IMAGE_OFFSETS = {};
 PineTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT];
 PineTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.ALIVE] = [

@@ -1,6 +1,7 @@
 import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
-import { make_image, rand_choice, rect_intersection } from './utils.js';
+import { rand_choice, rect_intersection } from './utils.js';
+import { Sprites } from './sprites.js';
 import { Tree, LeafTree } from './engine/trees.js';
 import { Villager } from './engine/units/villager.js';
 import { Unit } from './engine/units/unit.js';
@@ -360,7 +361,7 @@ class TopBar extends Graphics.Group {
         this.population.text(`${player.population}/${player.max_population}`);
     }
 }
-TopBar.IMAGE = make_image("img/interface/greek/topbar.png");
+TopBar.IMAGE = Sprites.Sprite("img/interface/greek/topbar.png");
 TopBar.TEXT_OPTIONS = {
     fontSize: 13,
     fontFamily: 'helvetica',
@@ -400,7 +401,7 @@ class BottomBar extends Graphics.Group {
         this.entityActions.hide();
     }
 }
-BottomBar.IMAGE = make_image("img/interface/greek/bottombar.png");
+BottomBar.IMAGE = Sprites.Sprite("img/interface/greek/bottombar.png");
 
 
 class EntityDetails extends Graphics.Group {
@@ -481,14 +482,14 @@ EntityAttributes.ALL_ATTRIBUTES = [
     "food", "wood", "gold", "stone"
 ];
 EntityAttributes.ATTRIBUTES = {
-    attack: make_image("img/interface/details/attack.png"),
-    food: make_image("img/interface/details/food.png"),
-    wood: make_image("img/interface/details/wood.png"),
-    gold: make_image("img/interface/details/gold.png"),
-    stone: make_image("img/interface/details/stone.png"),
-    progress: make_image("img/interface/details/progress.png"),
-    population: make_image("img/interface/details/population.png"),
-    armor: make_image("img/interface/details/armor.png"),
+    attack: Sprites.Sprite("img/interface/details/attack.png"),
+    food: Sprites.Sprite("img/interface/details/food.png"),
+    wood: Sprites.Sprite("img/interface/details/wood.png"),
+    gold: Sprites.Sprite("img/interface/details/gold.png"),
+    stone: Sprites.Sprite("img/interface/details/stone.png"),
+    progress: Sprites.Sprite("img/interface/details/progress.png"),
+    population: Sprites.Sprite("img/interface/details/population.png"),
+    armor: Sprites.Sprite("img/interface/details/armor.png"),
 }
 
 class EntityAttribute extends Graphics.Group {
@@ -542,8 +543,8 @@ class HealthBarBig extends Graphics.Group {
         );
     }
 }
-HealthBarBig.BAR_GREEN = make_image('img/interface/details/health_green_big.png');
-HealthBarBig.BAR_RED = make_image('img/interface/details/health_red_big.png');
+HealthBarBig.BAR_GREEN = Sprites.Sprite('img/interface/details/health_green_big.png');
+HealthBarBig.BAR_RED = Sprites.Sprite('img/interface/details/health_red_big.png');
 
 
 class EntityActions extends Graphics.Group {
@@ -670,7 +671,7 @@ class ActionButton extends Graphics.Group {
     }
 }
 ActionButton.prototype.BORDER_WIDTH = 2;
-ActionButton.prototype.BACKGROUND_IMAGE = make_image("img/interface/greek/button_frame.png")
+ActionButton.prototype.BACKGROUND_IMAGE = Sprites.Sprite("img/interface/greek/button_frame.png")
 ActionButton.prototype.TEXT_OPTIONS = {
     x: 6, y: 2,
     fill: 'white',
@@ -795,8 +796,7 @@ class MoverOrderIndicator extends Graphics.Group {
     }
 }
 MoverOrderIndicator.prototype.IMAGE_OFFSET = { x: 24, y: 10 };
-MoverOrderIndicator.prototype.FRAMES = [];
-for (let i = 0; i < 6; ++i) MoverOrderIndicator.prototype.FRAMES.push(make_image(`img/interface/misc/move_order_${i}.png`));
+MoverOrderIndicator.prototype.FRAMES = Sprites.SpriteSequence("img/interface/misc/move_order_", 6);
 
 export {
     GameViewer, MapDrawable

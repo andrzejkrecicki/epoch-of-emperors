@@ -1,5 +1,5 @@
 import { Entity } from '../entity.js';
-import { leftpad, make_image, rand_choice } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
 
 class FishBig extends Entity {
     constructor(subtile_x, subtile_y) {
@@ -66,13 +66,10 @@ class FishBig extends Entity {
 FishBig.prototype.MAX_HP = 25;
 FishBig.prototype.SUBTILE_WIDTH = 3;
 FishBig.prototype.NAME = "Fish";
-FishBig.prototype.AVATAR = make_image("img/interface/avatars/fish.png");
+FishBig.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/fish.png");
 FishBig.prototype.TOOLTIP = "Fish here for food.";
 
-FishBig.prototype.IMAGES = [];
-for (let i = 0; i < 30; ++i) FishBig.prototype.IMAGES.push(
-    make_image(`img/resources/fish_big/fish_${leftpad(i, 2, 0)}.png`)
-)
+FishBig.prototype.IMAGES = Sprites.SpriteSequence("img/resources/fish_big/fish_", 30);
 FishBig.prototype.IMAGE_OFFSET =  { x: -5, y: 49 };
 
 export { FishBig }

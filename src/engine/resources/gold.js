@@ -1,5 +1,6 @@
 import { Entity } from '../entity.js';
-import { make_image, rand_choice } from '../../utils.js';
+import { rand_choice } from '../../utils.js';
+import { Sprites } from '../../sprites.js';
 
 class GoldMine extends Entity {
     constructor(subtile_x, subtile_y, imgChoice=-1) {
@@ -62,20 +63,11 @@ class GoldMine extends Entity {
 }
 GoldMine.prototype.SUBTILE_WIDTH = 2;
 GoldMine.prototype.NAME = "Gold Mine";
-GoldMine.prototype.AVATAR = make_image("img/interface/avatars/gold.png");
+GoldMine.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/gold.png");
 GoldMine.prototype.MAX_HP = 25;
 GoldMine.prototype.TOOLTIP = "Mine here for gold.";
 
-
-GoldMine.prototype.IMAGES = [
-    make_image("img/resources/gold/00.png"),
-    make_image("img/resources/gold/01.png"),
-    make_image("img/resources/gold/02.png"),
-    make_image("img/resources/gold/03.png"),
-    make_image("img/resources/gold/04.png"),
-    make_image("img/resources/gold/05.png"),
-    make_image("img/resources/gold/06.png"),
-];
+GoldMine.prototype.IMAGES = Sprites.SpriteSequence("img/resources/gold/", 7);
 GoldMine.prototype.IMAGE_OFFSETS = { x: 12, y: 25 }
 
 
