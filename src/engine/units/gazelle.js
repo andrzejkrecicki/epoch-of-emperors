@@ -1,5 +1,6 @@
 import { Animal } from './animal.js';
-import { make_image, leftpad } from '../../utils.js';
+import { make_image } from '../../utils.js';
+import { Sprites } from '../sprites.js';
 
 class Gazelle extends Animal {
     constructor() {
@@ -24,65 +25,27 @@ Gazelle.prototype.STATE.SLOW_MOVING = Gazelle.prototype.STATE.MOVING | Gazelle.p
 Gazelle.prototype.STATE.SLOW_DYING = Gazelle.prototype.STATE.DYING | Gazelle.prototype.STATE.SLOW;
 
 
-Gazelle.prototype.IMAGES = {};
+Gazelle.prototype.IMAGES = {
+    [Gazelle.prototype.STATE.IDLE]: Sprites.DirectionSprites("img/units/gazelle/idle/", 1),
+    [Gazelle.prototype.STATE.MOVING]: Sprites.DirectionSprites("img/units/gazelle/moving/", 8),
+    [Gazelle.prototype.STATE.DYING]: Sprites.DirectionSprites("img/units/gazelle/dying/", 10),
+    [Gazelle.prototype.STATE.DEAD]: Sprites.DirectionSprites("img/units/gazelle/dead/", 4),
 
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.IDLE][dir].push(
-        make_image(`img/units/gazelle/idle/${Gazelle.prototype.DIRECTIONS[dir]}_00.png`)
-    );
-}
-
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 8; ++i) {
-        Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.MOVING][dir].push(
-            make_image(`img/units/gazelle/moving/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.DYING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 10; ++i) {
-        Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.DYING][dir].push(
-            make_image(`img/units/gazelle/dying/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.DEAD] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 4; ++i) {
-        Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.DEAD][dir].push(
-            make_image(`img/units/gazelle/dead/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-
+    [Gazelle.prototype.STATE.SLOW_MOVING]: Sprites.DirectionSprites("img/units/gazelle/slow/", 10)
+};
 Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_IDLE] = Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.IDLE];
 Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_DYING] = Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.DYING];
 
-Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 10; ++i) {
-        Gazelle.prototype.IMAGES[Gazelle.prototype.STATE.SLOW_MOVING][dir].push(
-            make_image(`img/units/gazelle/slow/${Gazelle.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
+Gazelle.prototype.IMAGE_OFFSETS = {
+    [Gazelle.prototype.STATE.IDLE]: { x: 11, y: 24 },
+    [Gazelle.prototype.STATE.MOVING]: { x: 19, y: 43 },
+    [Gazelle.prototype.STATE.DYING]: { x: 15, y: 34 },
+    [Gazelle.prototype.STATE.DEAD]: { x: 12, y: 17 },
 
+    [Gazelle.prototype.STATE.SLOW_IDLE]: { x: 11, y: 24 },
+    [Gazelle.prototype.STATE.SLOW_MOVING]: { x: 13, y: 35 },
+    [Gazelle.prototype.STATE.SLOW_DYING]: { x: 15, y: 34 }
+};
 
-Gazelle.prototype.IMAGE_OFFSETS = {};
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.IDLE] = { x: 11, y: 24 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.MOVING] = { x: 19, y: 43 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DYING] = { x: 15, y: 34 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.DEAD] = { x: 12, y: 17 };
-
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_IDLE] = { x: 11, y: 24 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_MOVING] = { x: 13, y: 35 };
-Gazelle.prototype.IMAGE_OFFSETS[Gazelle.prototype.STATE.SLOW_DYING] = { x: 15, y: 34 };
 
 export { Gazelle }

@@ -1,5 +1,6 @@
 import { Unit } from './unit.js';
-import { make_image, leftpad } from '../../utils.js';
+import { make_image } from '../../utils.js';
+import { Sprites } from '../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 
@@ -35,28 +36,15 @@ ClubMan.prototype.ATTRIBUTES = {
     ARMOR: 0
 }
 
+ClubMan.prototype.IMAGES = {
+    [ClubMan.prototype.STATE.IDLE]: Sprites.DirectionSprites("img/units/clubman/idle/", 1),
+    [ClubMan.prototype.STATE.MOVING]: Sprites.DirectionSprites("img/units/clubman/moving/", 15)
+};
 
-ClubMan.prototype.IMAGES = {};
-
-ClubMan.prototype.IMAGES[ClubMan.prototype.STATE.IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    ClubMan.prototype.IMAGES[ClubMan.prototype.STATE.IDLE][dir].push(
-        make_image(`img/units/clubman/idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
-    );
-}
-
-ClubMan.prototype.IMAGES[ClubMan.prototype.STATE.MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        ClubMan.prototype.IMAGES[ClubMan.prototype.STATE.MOVING][dir].push(
-            make_image(`img/units/clubman/moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-ClubMan.prototype.IMAGE_OFFSETS = {};
-ClubMan.prototype.IMAGE_OFFSETS[ClubMan.prototype.STATE.IDLE] = { x: 6, y: 34 };
-ClubMan.prototype.IMAGE_OFFSETS[ClubMan.prototype.STATE.MOVING] = { x: 6, y: 33 };
+ClubMan.prototype.IMAGE_OFFSETS = {
+    [ClubMan.prototype.STATE.IDLE]: { x: 6, y: 34 },
+    [ClubMan.prototype.STATE.MOVING]: { x: 6, y: 33 },
+};
 
 
 export { ClubMan }

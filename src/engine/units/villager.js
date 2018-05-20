@@ -6,7 +6,8 @@ import { StoneMine } from '../resources/stone.js';
 import { Bush } from '../resources/bush.js';
 import { Animal } from './animal.js';
 import { Tree } from '../trees.js';
-import { make_image, leftpad, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
+import { Sprites } from '../sprites.js';
+import { make_image, RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import { Spear } from '../projectiles.js';
@@ -136,331 +137,86 @@ Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FARMER] = 3;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.HUNTER] = 2;
 Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUTCHER] = 4;
 
-Villager.prototype.IMAGES = {};
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.IDLE][dir].push(
-        make_image(`img/units/villager/idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
-    );
+Villager.prototype.IMAGES = {
+    [Villager.prototype.STATE.IDLE]: Sprites.DirectionSprites("img/units/villager/idle/", 1),
+    [Villager.prototype.STATE.BUILDING_IDLE]: Sprites.DirectionSprites("img/units/villager/builder_idle/", 1),
+    [Villager.prototype.STATE.FORAGE_IDLE]: Sprites.DirectionSprites("img/units/villager/forage_idle/", 1),
+    [Villager.prototype.STATE.LUMBER_IDLE]: Sprites.DirectionSprites("img/units/villager/lumber_idle/", 1),
+    [Villager.prototype.STATE.CARRY_WOOD_IDLE]: Sprites.DirectionSprites("img/units/villager/carry_wood/", 1, 12),
+    [Villager.prototype.STATE.MINE_IDLE]: Sprites.DirectionSprites("img/units/villager/mine_idle/", 1),
+    [Villager.prototype.STATE.CARRY_GOLD_IDLE]: Sprites.DirectionSprites("img/units/villager/carry_gold/", 1, 12),
+    [Villager.prototype.STATE.CARRY_STONE_IDLE]: Sprites.DirectionSprites("img/units/villager/carry_stone/", 1, 12),
+    [Villager.prototype.STATE.FARMER_IDLE]: Sprites.DirectionSprites("img/units/villager/farmer_idle/", 1),
+    [Villager.prototype.STATE.CARRY_FARM_IDLE]: Sprites.DirectionSprites("img/units/villager/carry_farm/", 1, 12),
+    [Villager.prototype.STATE.HUNTER_IDLE]: Sprites.DirectionSprites("img/units/villager/hunter_idle/", 1),
+    [Villager.prototype.STATE.CARRY_MEAT_IDLE]: Sprites.DirectionSprites("img/units/villager/carry_meat/", 1, 12),
+    [Villager.prototype.STATE.MOVING]: Sprites.DirectionSprites("img/units/villager/moving/", 15),
+    [Villager.prototype.STATE.BUILDING]: Sprites.DirectionSprites("img/units/villager/building/", 16),
+    [Villager.prototype.STATE.BUILDING_MOVING]: Sprites.DirectionSprites("img/units/villager/builder_moving/", 15),
+    [Villager.prototype.STATE.FORAGE]: Sprites.DirectionSprites("img/units/villager/forage/", 27),
+    [Villager.prototype.STATE.FORAGE_MOVING]: Sprites.DirectionSprites("img/units/villager/forage_moving/", 15),
+    [Villager.prototype.STATE.LUMBER]: Sprites.DirectionSprites("img/units/villager/lumber/", 11),
+    [Villager.prototype.STATE.LUMBER_MOVING]: Sprites.DirectionSprites("img/units/villager/lumber_moving/", 15),
+    [Villager.prototype.STATE.CHOP]: Sprites.DirectionSprites("img/units/villager/chop/", 15),
+    [Villager.prototype.STATE.CARRY_WOOD_MOVING]: Sprites.DirectionSprites("img/units/villager/carry_wood/", 15),
+    [Villager.prototype.STATE.MINE]: Sprites.DirectionSprites("img/units/villager/mine/", 13),
+    [Villager.prototype.STATE.MINE_MOVING]: Sprites.DirectionSprites("img/units/villager/mine_moving/", 15),
+    [Villager.prototype.STATE.CARRY_GOLD_MOVING]: Sprites.DirectionSprites("img/units/villager/carry_gold/", 15),
+    [Villager.prototype.STATE.CARRY_STONE_MOVING]: Sprites.DirectionSprites("img/units/villager/carry_stone/", 15),
+    [Villager.prototype.STATE.FARMER]: Sprites.DirectionSprites("img/units/villager/farming/", 29),
+    [Villager.prototype.STATE.FARMER_MOVING]: Sprites.DirectionSprites("img/units/villager/farmer_moving/", 15),
+    [Villager.prototype.STATE.CARRY_FARM_MOVING]: Sprites.DirectionSprites("img/units/villager/carry_farm/", 15),
+    [Villager.prototype.STATE.HUNTER]: Sprites.DirectionSprites("img/units/villager/hunter/", 23),
+    [Villager.prototype.STATE.HUNTER_MOVING]: Sprites.DirectionSprites("img/units/villager/hunter_moving/", 15),
+    [Villager.prototype.STATE.BUTCHER]: Sprites.DirectionSprites("img/units/villager/butcher/", 12),
+    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: Sprites.DirectionSprites("img/units/villager/carry_meat/", 15)
 }
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_IDLE][dir].push(
-        make_image(`img/units/villager/builder_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
-    );
-}
+Villager.prototype.IMAGE_OFFSETS = {
+    [Villager.prototype.STATE.IDLE]: { x: -5, y: 33 },
+    [Villager.prototype.STATE.MOVING]: { x: 2, y: 33 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_IDLE][dir].push(
-        make_image(`img/units/villager/forage_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
-    );
-}
+    [Villager.prototype.STATE.BUILDING]: { x: 8, y: 31 },
+    [Villager.prototype.STATE.BUILDING_IDLE]: { x: -5, y: 32 },
+    [Villager.prototype.STATE.BUILDING_MOVING]: { x: 2, y: 33 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_IDLE][dir].push(
-        make_image(`img/units/villager/lumber_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
-    );
-}
+    [Villager.prototype.STATE.FORAGE]: { x: 17, y: 39 },
+    [Villager.prototype.STATE.FORAGE_IDLE]: { x: 1, y: 31 },
+    [Villager.prototype.STATE.FORAGE_MOVING]: { x: 7, y: 33 },
 
+    [Villager.prototype.STATE.LUMBER]: { x: 1, y: 46 },
+    [Villager.prototype.STATE.LUMBER_IDLE]: { x: 1, y: 32 },
+    [Villager.prototype.STATE.LUMBER_MOVING]: { x: 3, y: 33 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_IDLE][dir].push(
-        make_image(`img/units/villager/carry_wood/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
-    );
-}
+    [Villager.prototype.STATE.CHOP]: { x: 17, y: 43 },
+    [Villager.prototype.STATE.CARRY_WOOD_MOVING]: { x: 4, y: 32 },
+    [Villager.prototype.STATE.CARRY_WOOD_IDLE]: { x: 4, y: 32 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.MINE_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.MINE_IDLE][dir].push(
-        make_image(`img/units/villager/mine_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
-    );
-}
+    [Villager.prototype.STATE.MINE]: { x: 14, y: 45 },
+    [Villager.prototype.STATE.MINE_IDLE]: { x: 0, y: 31 },
+    [Villager.prototype.STATE.MINE_MOVING]: { x: 6, y: 32 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_GOLD_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_GOLD_IDLE][dir].push(
-        make_image(`img/units/villager/carry_gold/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
-    );
-}
+    [Villager.prototype.STATE.CARRY_GOLD_MOVING]: { x: 0, y: 32 },
+    [Villager.prototype.STATE.CARRY_GOLD_IDLE]: { x: 0, y: 32 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_IDLE][dir].push(
-        make_image(`img/units/villager/carry_stone/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
-    );
-}
+    [Villager.prototype.STATE.CARRY_STONE_MOVING]: { x: 0, y: 33 },
+    [Villager.prototype.STATE.CARRY_STONE_IDLE]: { x: 0, y: 33 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_IDLE][dir].push(
-        make_image(`img/units/villager/farmer_idle/${Unit.prototype.DIRECTIONS[dir]}.png`)
-    );
-}
+    [Villager.prototype.STATE.FARMER]: { x: 12, y: 34 },
+    [Villager.prototype.STATE.FARMER_IDLE]: { x: -3, y: 35 },
+    [Villager.prototype.STATE.FARMER_MOVING]: { x: 12, y: 37 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_IDLE][dir].push(
-        make_image(`img/units/villager/carry_farm/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
-    );
-}
+    [Villager.prototype.STATE.CARRY_FARM_IDLE]: { x: 7, y: 35 },
+    [Villager.prototype.STATE.CARRY_FARM_MOVING]: { x: 7, y: 35 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_IDLE][dir].push(
-        make_image(`img/units/villager/hunter_idle/${Unit.prototype.DIRECTIONS[dir]}_00.png`)
-    );
-}
+    [Villager.prototype.STATE.HUNTER]: { x: 29, y: 54 },
+    [Villager.prototype.STATE.HUNTER_IDLE]: { x: 17, y: 32 },
+    [Villager.prototype.STATE.HUNTER_MOVING]: { x: 10, y: 41 },
 
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_IDLE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_IDLE][dir].push(
-        make_image(`img/units/villager/carry_meat/${Unit.prototype.DIRECTIONS[dir]}_12.png`)
-    );
-}
-
-
-
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.MOVING][dir].push(
-            make_image(`img/units/villager/moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 16; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING][dir].push(
-            make_image(`img/units/villager/building/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.BUILDING_MOVING][dir].push(
-            make_image(`img/units/villager/builder_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 27; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE][dir].push(
-            make_image(`img/units/villager/forage/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.FORAGE_MOVING][dir].push(
-            make_image(`img/units/villager/forage_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 11; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER][dir].push(
-            make_image(`img/units/villager/lumber/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.LUMBER_MOVING][dir].push(
-            make_image(`img/units/villager/lumber_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CHOP][dir].push(
-            make_image(`img/units/villager/chop/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_WOOD_MOVING][dir].push(
-            make_image(`img/units/villager/carry_wood/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.MINE] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 13; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.MINE][dir].push(
-            make_image(`img/units/villager/mine/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.MINE_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.MINE_MOVING][dir].push(
-            make_image(`img/units/villager/mine_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_GOLD_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_GOLD_MOVING][dir].push(
-            make_image(`img/units/villager/carry_gold/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_STONE_MOVING][dir].push(
-            make_image(`img/units/villager/carry_stone/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 29; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER][dir].push(
-            make_image(`img/units/villager/farming/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.FARMER_MOVING][dir].push(
-            make_image(`img/units/villager/farmer_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_FARM_MOVING][dir].push(
-            make_image(`img/units/villager/carry_farm/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 23; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER][dir].push(
-            make_image(`img/units/villager/hunter/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.HUNTER_MOVING][dir].push(
-            make_image(`img/units/villager/hunter_moving/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.BUTCHER] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 12; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.BUTCHER][dir].push(
-            make_image(`img/units/villager/butcher/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_MOVING] = new Array(8).fill(null).map(() => []);
-for (let dir = 0; dir < 8; ++dir) {
-    for (let i = 0; i < 15; ++i) {
-        Villager.prototype.IMAGES[Villager.prototype.STATE.CARRY_MEAT_MOVING][dir].push(
-            make_image(`img/units/villager/carry_meat/${Unit.prototype.DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`)
-        )
-    }
-}
-
-
-
-Villager.prototype.IMAGE_OFFSETS = {};
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.IDLE] = { x: -5, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MOVING] = { x: 2, y: 33 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING] = { x: 8, y: 31 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_IDLE] = { x: -5, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUILDING_MOVING] = { x: 2, y: 33 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE] = { x: 17, y: 39 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_IDLE] = { x: 1, y: 31 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FORAGE_MOVING] = { x: 7, y: 33 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER] = { x: 1, y: 46 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_IDLE] = { x: 1, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.LUMBER_MOVING] = { x: 3, y: 33 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CHOP] = { x: 17, y: 43 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_MOVING] = { x: 4, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_WOOD_IDLE] = { x: 4, y: 32 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE] = { x: 14, y: 45 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_IDLE] = { x: 0, y: 31 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.MINE_MOVING] = { x: 6, y: 32 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_MOVING] = { x: 0, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_GOLD_IDLE] = { x: 0, y: 32 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_MOVING] = { x: 0, y: 33 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_STONE_IDLE] = { x: 0, y: 33 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER] = { x: 12, y: 34 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_IDLE] = { x: -3, y: 35 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.FARMER_MOVING] = { x: 12, y: 37 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_IDLE] = { x: 7, y: 35 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_FARM_MOVING] = { x: 7, y: 35 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER] = { x: 29, y: 54 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_IDLE] = { x: 17, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.HUNTER_MOVING] = { x: 10, y: 41 };
-
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.BUTCHER] = { x: 11, y: 32 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_MOVING] = { x: -1, y: 34 };
-Villager.prototype.IMAGE_OFFSETS[Villager.prototype.STATE.CARRY_MEAT_IDLE] = { x: -1, y: 34 };
+    [Villager.prototype.STATE.BUTCHER]: { x: 11, y: 32 },
+    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: { x: -1, y: 34 },
+    [Villager.prototype.STATE.CARRY_MEAT_IDLE]: { x: -1, y: 34 },
+};
 
 
 export { Villager }
