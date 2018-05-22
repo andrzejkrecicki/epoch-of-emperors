@@ -33,12 +33,7 @@ Dock.prototype.COST = {
 Dock.prototype.IMAGES = {
     [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/dock/01_all.png")],
     [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/dock/01_all.png"))],
-
-    [Building.prototype.STATE.CONSTRUCTION]: [
-        Sprites.Sprite("img/buildings/dock/construction_01_all_00.png"),
-        Sprites.Sprite("img/buildings/dock/construction_01_all_01.png"),
-        Sprites.Sprite("img/buildings/dock/construction_01_all_02.png")
-    ]
+    [Building.prototype.STATE.CONSTRUCTION]: Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3)
 }
 
 

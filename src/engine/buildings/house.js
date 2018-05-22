@@ -49,12 +49,7 @@ House.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
 House.prototype.IMAGES[Building.prototype.STATE.DONE] = [Sprites.Sprite("img/buildings/house/01_all.png")];
 House.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/house/01_all.png"))];
 
-House.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = [
-    Sprites.Sprite("img/buildings/house/construction_01_all_00.png"),
-    Sprites.Sprite("img/buildings/house/construction_01_all_01.png"),
-    Sprites.Sprite("img/buildings/house/construction_01_all_02.png"),
-    Sprites.Sprite("img/buildings/house/construction_01_all_03.png")
-];
+House.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = Sprites.SpriteSequence("img/buildings/house/construction_01_all_", 4)
 
 House.prototype.IMAGE_OFFSETS = Object.assign({}, Building.prototype.IMAGE_OFFSETS);
 House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: -2, y: 30 };
