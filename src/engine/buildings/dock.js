@@ -30,20 +30,22 @@ Dock.prototype.COST = {
     food: 0, wood: 100, stone: 0, gold: 0
 }
 
-Dock.prototype.IMAGES = {}
-Dock.prototype.IMAGES[Building.prototype.STATE.DONE] = [Sprites.Sprite("img/buildings/dock/01_all.png")];
-Dock.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/dock/01_all.png"))];
+Dock.prototype.IMAGES = {
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/dock/01_all.png")],
+    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/dock/01_all.png"))],
 
-Dock.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = [
-    Sprites.Sprite("img/buildings/dock/construction_01_all_00.png"),
-    Sprites.Sprite("img/buildings/dock/construction_01_all_01.png"),
-    Sprites.Sprite("img/buildings/dock/construction_01_all_02.png")
-];
+    [Building.prototype.STATE.CONSTRUCTION]: [
+        Sprites.Sprite("img/buildings/dock/construction_01_all_00.png"),
+        Sprites.Sprite("img/buildings/dock/construction_01_all_01.png"),
+        Sprites.Sprite("img/buildings/dock/construction_01_all_02.png")
+    ]
+}
 
 
-Dock.prototype.IMAGE_OFFSETS = {}
-Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: -21, y: 36 };
-Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: -22, y: 36 };
+Dock.prototype.IMAGE_OFFSETS = {
+    [Building.prototype.STATE.CONSTRUCTION]: { x: -21, y: 36 },
+    [Building.prototype.STATE.DONE]: { x: -22, y: 36 }
+}
 
 Dock.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
 Dock.prototype.HITMAP[Dock.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(

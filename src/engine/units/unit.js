@@ -179,8 +179,9 @@ Unit.prototype.BASE_STATE_MASK = (
     << Unit.prototype.BASE_STATE_MASK_WIDTH
 );
 
-Unit.prototype.FRAME_RATE = {}
-Unit.prototype.FRAME_RATE[Unit.prototype.STATE.MOVING] = 2;
-Unit.prototype.FRAME_RATE[Unit.prototype.STATE.DYING] = 3;
+Unit.prototype.FRAME_RATE = {
+    [Unit.prototype.STATE.MOVING]: 2,
+    [Unit.prototype.STATE.DYING]: 3
+}
 
 export { Unit }

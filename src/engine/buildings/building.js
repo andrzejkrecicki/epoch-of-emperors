@@ -115,16 +115,19 @@ Building.prototype.STATE = {
     DONE: 1,
     DENIED: 100,
 }
-Building.prototype.IMAGES = {};
-Building.prototype.IMAGES[Building.prototype.STATE.CONSTRUCTION] = Sprites.SpriteSequence("img/buildings/construction_big_", 4);
+Building.prototype.IMAGES = {
+    [Building.prototype.STATE.CONSTRUCTION]: Sprites.SpriteSequence("img/buildings/construction_big_", 4)
+}
 
-Building.prototype.IMAGE_OFFSETS = {};
-Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION] = { x: 5, y: 47 };
+Building.prototype.IMAGE_OFFSETS = {
+    [Building.prototype.STATE.CONSTRUCTION]: { x: 5, y: 47 }
+}
 
-Building.prototype.HITMAP = {};
-Building.prototype.HITMAP[Building.prototype.STATE.CONSTRUCTION] = Graphics.Filters.BasicHitmask(
-    Sprites.Sprite("img/buildings/base_hit_big.png"),
-    Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION]
-);
+Building.prototype.HITMAP = {
+    [Building.prototype.STATE.CONSTRUCTION]: Graphics.Filters.BasicHitmask(
+        Sprites.Sprite("img/buildings/base_hit_big.png"),
+        Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION]
+    )
+}
 
 export { Building }

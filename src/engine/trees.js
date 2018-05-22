@@ -85,13 +85,15 @@ Tree.prototype.STATE = {
     CUT: 1
 }
 
-Tree.prototype.IMAGES = {};
-Tree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Sprites.SpriteSequence("img/trees/cut_", 2);
-Tree.prototype.IMAGE_OFFSETS = {};
-Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = [
-    { x: 21, y: 13 },
-    { x: -2, y: 19 }
-];
+Tree.prototype.IMAGES = {
+    [Tree.prototype.STATE.CUT]: Sprites.SpriteSequence("img/trees/cut_", 2)
+};
+Tree.prototype.IMAGE_OFFSETS = {
+    [Tree.prototype.STATE.CUT]: [
+        { x: 21, y: 13 },
+        { x: -2, y: 19 }
+    ]
+};
 
 
 class LeafTree extends Tree {
@@ -100,21 +102,22 @@ class LeafTree extends Tree {
     }
 }
 LeafTree.prototype.NAME = "Leaf Tree";
-LeafTree.prototype.IMAGES = {};
-LeafTree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGES[Tree.prototype.STATE.CUT];
-LeafTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = Sprites.SpriteSequence("img/trees/leaf_", 6);
+LeafTree.prototype.IMAGES = {
+    [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGES[Tree.prototype.STATE.CUT],
+    [Tree.prototype.STATE.ALIVE]: Sprites.SpriteSequence("img/trees/leaf_", 6)
+}
 
-LeafTree.prototype.IMAGE_OFFSETS = {};
-LeafTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT];
-LeafTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.ALIVE] = [
-    { x: 15, y: 54 },
-    { x: 40, y: 68 },
-    { x: 19, y: 68 },
-    { x: 40, y: 66 },
-    { x: 18, y: 64 },
-    { x: 15, y: 62 },
-];
-
+LeafTree.prototype.IMAGE_OFFSETS = {
+    [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT],
+    [Tree.prototype.STATE.ALIVE]: [
+        { x: 15, y: 54 },
+        { x: 40, y: 68 },
+        { x: 19, y: 68 },
+        { x: 40, y: 66 },
+        { x: 18, y: 64 },
+        { x: 15, y: 62 },
+    ]
+};
 
 class PalmTree extends Tree {
     constructor(x, y) {
@@ -122,18 +125,20 @@ class PalmTree extends Tree {
     }
 }
 PalmTree.prototype.NAME = "Palm";
-PalmTree.prototype.IMAGES = {};
-PalmTree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGES[Tree.prototype.STATE.CUT];
-PalmTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = Sprites.SpriteSequence("img/trees/palm_", 4);
+PalmTree.prototype.IMAGES = {
+    [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGES[Tree.prototype.STATE.CUT],
+    [Tree.prototype.STATE.ALIVE]: Sprites.SpriteSequence("img/trees/palm_", 4)
+};
 
-PalmTree.prototype.IMAGE_OFFSETS = {};
-PalmTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT];
-PalmTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.ALIVE] = [
-    { x: 6, y: 63 },
-    { x: 18, y: 57 },
-    { x: 21, y: 48 },
-    { x: 14, y: 49 },
-];
+PalmTree.prototype.IMAGE_OFFSETS = {
+    [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT],
+    [Tree.prototype.STATE.ALIVE]: [
+        { x: 6, y: 63 },
+        { x: 18, y: 57 },
+        { x: 21, y: 48 },
+        { x: 14, y: 49 },
+    ]
+};
 
 
 class PineTree extends Tree {
@@ -142,19 +147,21 @@ class PineTree extends Tree {
     }
 }
 PineTree.prototype.NAME = "Pine";
-PineTree.prototype.IMAGES = {};
-PineTree.prototype.IMAGES[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGES[Tree.prototype.STATE.CUT];
-PineTree.prototype.IMAGES[Tree.prototype.STATE.ALIVE] = Sprites.SpriteSequence("img/trees/pine_", 5);
+PineTree.prototype.IMAGES = {
+    [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGES[Tree.prototype.STATE.CUT],
+    [Tree.prototype.STATE.ALIVE]: Sprites.SpriteSequence("img/trees/pine_", 5)
+};
 
-PineTree.prototype.IMAGE_OFFSETS = {};
-PineTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT] = Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT];
-PineTree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.ALIVE] = [
-    { x: 8, y: 75 },
-    { x: 16, y: 62 },
-    { x: 8, y: 68 },
-    { x: 12, y: 56 },
-    { x: 10, y: 78 },
-];
+PineTree.prototype.IMAGE_OFFSETS = {
+    [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGE_OFFSETS[Tree.prototype.STATE.CUT],
+    [Tree.prototype.STATE.ALIVE]: [
+        { x: 8, y: 75 },
+        { x: 16, y: 62 },
+        { x: 8, y: 68 },
+        { x: 12, y: 56 },
+        { x: 10, y: 78 },
+    ]
+};
 
 
 export { Tree, LeafTree, PalmTree, PineTree }
