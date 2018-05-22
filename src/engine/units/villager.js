@@ -78,51 +78,51 @@ Villager.prototype.ATTRIBUTES = {
 }
 
 Villager.prototype.STATE = Object.assign({}, Villager.prototype.STATE);
-Villager.prototype.STATE.BUILDING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.BUILDING = 2 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.BUILDING_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.BUILDING;
 Villager.prototype.STATE.BUILDING_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.BUILDING;
 
-Villager.prototype.STATE.FORAGE = 2 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.FORAGE = 3 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.FORAGE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FORAGE;
 Villager.prototype.STATE.FORAGE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FORAGE;
 
-Villager.prototype.STATE.LUMBER = 3 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.LUMBER = 4 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.LUMBER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.LUMBER;
 Villager.prototype.STATE.LUMBER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.LUMBER;
 
-Villager.prototype.STATE.CHOP = 4 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CHOP = 5 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 
-Villager.prototype.STATE.CARRY_WOOD = 5 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_WOOD = 6 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_WOOD_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_WOOD;
 Villager.prototype.STATE.CARRY_WOOD_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_WOOD;
 
-Villager.prototype.STATE.MINE = 6 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.MINE = 7 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.MINE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.MINE;
 Villager.prototype.STATE.MINE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.MINE;
 
-Villager.prototype.STATE.CARRY_GOLD = 7 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_GOLD = 8 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_GOLD_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_GOLD;
 Villager.prototype.STATE.CARRY_GOLD_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_GOLD;
 
-Villager.prototype.STATE.CARRY_STONE = 8 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_STONE = 9 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_STONE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_STONE;
 Villager.prototype.STATE.CARRY_STONE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_STONE;
 
-Villager.prototype.STATE.FARMER = 9 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.FARMER = 10 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.FARMER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FARMER;
 Villager.prototype.STATE.FARMER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FARMER;
 
-Villager.prototype.STATE.CARRY_FARM = 10 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_FARM = 11 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_FARM_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_FARM;
 Villager.prototype.STATE.CARRY_FARM_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_FARM;
 
-Villager.prototype.STATE.HUNTER = 11 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.HUNTER = 12 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.HUNTER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.HUNTER;
 Villager.prototype.STATE.HUNTER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.HUNTER;
 
-Villager.prototype.STATE.BUTCHER = 12 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.BUTCHER = 13 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 
-Villager.prototype.STATE.CARRY_MEAT = 13 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+Villager.prototype.STATE.CARRY_MEAT = 14 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 Villager.prototype.STATE.CARRY_MEAT_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_MEAT;
 Villager.prototype.STATE.CARRY_MEAT_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_MEAT;
 

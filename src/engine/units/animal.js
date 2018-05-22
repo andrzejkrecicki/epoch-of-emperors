@@ -1,5 +1,6 @@
 import { Unit } from './unit.js';
 import { TERRAIN_TYPES } from '../terrain.js';
+import * as interactions from '../interactions.js';
 
 class Animal extends Unit {
     constructor() {
@@ -14,6 +15,9 @@ class Animal extends Unit {
             return 1;
         }
         return 0;
+    }
+    getInteractionType(object) {
+        if (object instanceof Unit) return interactions.AttackInteraction;
     }
     toggleDead(engine) {
         if (this.attributes.food > 0 && this.ticks_waited > Animal.prototype.DECAY_RATE) {

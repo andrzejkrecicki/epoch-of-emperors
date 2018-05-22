@@ -18,7 +18,7 @@ Gazelle.prototype.SPEED = 2;
 Gazelle.prototype.ATTRIBUTES = {}
 
 Gazelle.prototype.STATE = Object.assign({}, Gazelle.prototype.STATE);
-Gazelle.prototype.STATE.SLOW = 1 << Gazelle.prototype.BASE_STATE_MASK_WIDTH;
+Gazelle.prototype.STATE.SLOW = 2 << Gazelle.prototype.BASE_STATE_MASK_WIDTH;
 Gazelle.prototype.STATE.SLOW_IDLE = Gazelle.prototype.STATE.IDLE | Gazelle.prototype.STATE.SLOW;
 Gazelle.prototype.STATE.SLOW_MOVING = Gazelle.prototype.STATE.MOVING | Gazelle.prototype.STATE.SLOW;
 Gazelle.prototype.STATE.SLOW_DYING = Gazelle.prototype.STATE.DYING | Gazelle.prototype.STATE.SLOW;

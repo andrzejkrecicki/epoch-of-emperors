@@ -166,21 +166,23 @@ Unit.prototype.DIRECTIONS_DELTA = [
     { x: 0, y: -0.5656854249491516 }, { x: .8, y: -.4 }, { x: 1.1313708498983033, y: 0 }, { x: .8, y: .4 },
     { x: 0, y: 0.5656854249491516 }, { x: -.8, y: .4 }, { x: -1.1313708498983033, y: 0 }, { x: -.8, y: -.4 }
 ];
-Unit.prototype.STATE = {
-    INTERACTION: 0,
-    IDLE: 1,
-    MOVING: 2,
-    DYING: 4,
-    DEAD: 8
-}
 Unit.prototype.BASE_STATE_MASK_WIDTH = 10;
 Unit.prototype.BASE_STATE_MASK = (
     (~0) >> Unit.prototype.BASE_STATE_MASK_WIDTH
     << Unit.prototype.BASE_STATE_MASK_WIDTH
 );
+Unit.prototype.STATE = {
+    INTERACTION: 0,
+    IDLE: 1,
+    MOVING: 2,
+    DYING: 4,
+    DEAD: 8,
+    ATTACK: 1 << Unit.prototype.BASE_STATE_MASK_WIDTH
+}
 
 Unit.prototype.FRAME_RATE = {
     [Unit.prototype.STATE.MOVING]: 2,
+    [Unit.prototype.STATE.ATTACK]: 2,
     [Unit.prototype.STATE.DYING]: 3
 }
 

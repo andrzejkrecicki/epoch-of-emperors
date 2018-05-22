@@ -264,8 +264,30 @@ FishingInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.FOOD];
 FishingInteraction.prototype.RATE = 60;
 
 
+class AttackInteraction extends Interaction {
+    init() {
+        this.active.state = Unit.prototype.STATE.ATTACK;
+    }
+    process() {
+        if (this.passive.destroyed) {
+            this.terminate();
+        } else if (this.active.ticks_waited == this.RATE) {
+            this.active.hit(this.passive, this.engine);
+        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.ATTACK][0].length - 1) {
+            this.active.ticks_waited = 0;
+        }
+    }
+    terminate() {
+        this.active.state = this.active.STATE.IDLE;
+        super.terminate();
+    }
+}
+AttackInteraction.prototype.RATE = 8;
+
+
+
 export {
     FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
     ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
-    HunterInteraction, ButcherInteraction, FishingInteraction
+    HunterInteraction, ButcherInteraction, FishingInteraction, AttackInteraction
 }
