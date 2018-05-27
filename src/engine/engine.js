@@ -191,12 +191,12 @@ class Engine {
 
             if (--projectile.TTL == 0) projectile.destroy();
             else if (distance(projectile.realPosition, target_pos) - projectile.RADIUS <= projectile.SPEED / 2) {
-                projectile.victim.takeHit(projectile.attributes.attack, this);
+                projectile.victim.takeHit(projectile.attributes.attack, projectile.thrower, this);
                 projectile.destroy();
             } else if (distance(projectile.realPosition, projectile.target) - projectile.RADIUS <= projectile.SPEED / 2) {
                 let { x, y } = this.viewer.mapDrawable.screenCoordsToSubtile(projectile.target.x, projectile.target.y);
                 if (this.map.subtiles[x][y] instanceof Unit || this.map.subtiles[x][y] instanceof Building) {
-                    this.map.subtiles[x][y].takeHit(projectile.attributes.attack, this);
+                    this.map.subtiles[x][y].takeHit(projectile.attributes.attack, projectile.thrower, this);
                 }
                 projectile.destroy();
             } else {
@@ -293,11 +293,17 @@ class Engine {
         active.preInitInteraction();
         active.initInteraction();
     }
-    escapeOrder(unit) {
-        let target = {
-            x: unit.subtile_x + (5 + Math.floor(Math.random() * 6)) * (Math.random() < .5 ? -1 : 1),
-            y: unit.subtile_y + (5 + Math.floor(Math.random() * 6)) * (Math.random() < .5 ? -1 : 1),
+    escapeOrder(unit, attacker=null) {
+        let angle = Math.random() * Math.PI * 2;
+        if (attacker) {
+            angle = Math.atan2(unit.subtile_y - attacker.subtile_y, unit.subtile_x - attacker.subtile_x);
+            angle += (Math.random() * Math.PI / 2) - Math.PI / 4
         }
+        let target = {
+            x: unit.subtile_x + Math.floor((5 + Math.random() * 6) * Math.cos(angle)),
+            y: unit.subtile_y + Math.floor((5 + Math.random() * 6) * Math.sin(angle))
+        }
+
         this.moveOrder(unit, target);
     }
     bypassOrder(entity) {

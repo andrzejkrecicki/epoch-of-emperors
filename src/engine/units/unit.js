@@ -108,9 +108,9 @@ class Unit extends Entity {
     }
     hit(target, engine) {
         // take into account technological attack bonuses etc
-        target.takeHit(this.attributes.attack, engine);
+        target.takeHit(this.attributes.attack, this, engine);
     }
-    takeHit(value, engine) {
+    takeHit(value, attacker, engine) {
         // take into account armour etc
         this.hp -= value;
         if (this.hp <= 0) {

@@ -29,10 +29,10 @@ class Animal extends Unit {
             this.destroy(engine);
         }
     }
-    takeHit(value, engine) {
+    takeHit(value, attacker, engine) {
         this.hp -= value;
         if (this.hp > 0) {
-            if (this.path == null) engine.escapeOrder(this);
+            if (this.path == null) engine.escapeOrder(this, attacker);
         } else {
             this.hp = 0;
             if (this.path == null) {
