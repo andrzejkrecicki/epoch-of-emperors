@@ -16,6 +16,7 @@ class Interaction {
             else this.terminate();
         } else if (!this.active.hasFullPath) this.active.setBaseState(this.active.STATE.IDLE);
         else {
+            this.active.frame = 0;
             this.active.rotateToEntity(this.passive);
             this.active.setBaseState(this.active.STATE.INTERACTION);
         }
@@ -24,7 +25,9 @@ class Interaction {
 
     }
     process() {}
-    stop() {}
+    stop() {
+        this.active.state = this.active.STATE.IDLE;
+    }
     terminate() {
         this.stop();
         this.active.setBaseState(this.active.STATE.IDLE);
@@ -252,9 +255,6 @@ class FishingInteraction extends ResourceExtractionInteraction {
         this.active.state = this.active.STATE.FISHING;
         super.init();
     }
-    stop() {
-        this.active.state = this.active.STATE.IDLE;
-    }
     getReturnBuildingTypes() {
         return ["Dock"];
     }
@@ -266,23 +266,29 @@ FishingInteraction.prototype.RATE = 60;
 
 class AttackInteraction extends Interaction {
     init() {
-        this.active.state = Unit.prototype.STATE.ATTACK;
+        if (!this.active.isAdjecentTo(this.passive)) {
+            let frame = this.active.frame;
+            this.engine.interactOrder(this.active, this.passive);
+            this.active.frame = frame;
+        } else {
+            this.active.state = Unit.prototype.STATE.ATTACK;
+            super.init();
+        }
     }
     process() {
-        if (this.passive.destroyed) {
+        if (this.passive.destroyed || this.passive.hp <= 0) {
             this.terminate();
-        } else if (this.active.ticks_waited == this.RATE) {
+        } else if (!this.active.isAdjecentTo(this.passive)) {
+            this.engine.interactOrder(this.active, this.passive);
+            return;
+        } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
             this.active.hit(this.passive, this.engine);
         } else if (this.active.frame == this.active.IMAGES[this.active.STATE.ATTACK][0].length - 1) {
             this.active.ticks_waited = 0;
         }
-    }
-    terminate() {
-        this.active.state = this.active.STATE.IDLE;
-        super.terminate();
+        this.active.rotateToEntity(this.passive);
     }
 }
-AttackInteraction.prototype.RATE = 8;
 
 
 

@@ -68,6 +68,15 @@ class Entity extends Graphics.Group {
             subtile_y: this.subtile_y + this.SUBTILE_WIDTH / 2
         }
     }
+    isAdjecentTo(entity) {
+        let center_1 = this.getCenterSubtile();
+        let center_2 = entity.getCenterSubtile();
+        let dist = (this.SUBTILE_WIDTH + entity.SUBTILE_WIDTH) / 2;
+        return (
+            Math.abs(center_1.subtile_x - center_2.subtile_x) <= dist &&
+            Math.abs(center_1.subtile_y - center_2.subtile_y) <= dist
+        );
+    }
     destroy(engine) {
         this.destroyed = true;
         this.remove();

@@ -35,12 +35,16 @@ class Animal extends Unit {
             if (this.path == null) engine.escapeOrder(this);
         } else {
             this.hp = 0;
-            if (this.path == null) this.setBaseState(Animal.prototype.STATE.DYING);
+            if (this.path == null) {
+                this.frame = 0;
+                this.setBaseState(Animal.prototype.STATE.DYING);
+            }
         }
     }
     afterStep() {
         if (this.hp <= 0) {
             this.path = null;
+            this.frame = 0;
             this.setBaseState(Animal.prototype.STATE.DYING);
         }
     }

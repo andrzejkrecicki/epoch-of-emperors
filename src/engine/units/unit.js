@@ -115,6 +115,7 @@ class Unit extends Entity {
         this.hp -= value;
         if (this.hp <= 0) {
             this.hp = 0;
+            this.frame = 0;
             this.setBaseState(Unit.prototype.STATE.DYING);
         }
     }
@@ -129,7 +130,6 @@ class Unit extends Entity {
     }
     initInteraction() {
         this.ticks_waited = 0;
-        this.frame = 0;
         this.interaction && this.interaction.init();
     }
     processInteraction() {

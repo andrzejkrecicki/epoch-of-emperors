@@ -100,8 +100,8 @@ class Engine {
                 entity.setBaseState(Unit.prototype.STATE.IDLE);
                 entity.path_progress = 0;
                 entity.path = null;
-                entity.frame = 0;
                 if (entity.interaction === null) {
+                    entity.frame = 0;
                     entity.interactionObject = null;
                 } else {
                     entity.initInteraction(this);
