@@ -90,6 +90,13 @@ class Building extends Entity {
             }
         }
     }
+    takeHit(value, attacker, engine) {
+        this.hp -= value;
+        if (this.hp <= 0) {
+            this.hp = 0;
+            this.destroy(engine);
+        }
+    }
     acceptsResource(type) {
         return false;
     }

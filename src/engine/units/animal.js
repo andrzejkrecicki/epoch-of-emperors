@@ -37,7 +37,7 @@ class Animal extends Unit {
             this.hp = 0;
             if (this.path == null) {
                 this.frame = 0;
-                this.setBaseState(Animal.prototype.STATE.DYING);
+                this.state = Animal.prototype.STATE.DYING;
             }
         }
     }
@@ -45,7 +45,7 @@ class Animal extends Unit {
         if (this.hp <= 0) {
             this.path = null;
             this.frame = 0;
-            this.setBaseState(Animal.prototype.STATE.DYING);
+            this.state = Animal.prototype.STATE.DYING;
         }
     }
 }

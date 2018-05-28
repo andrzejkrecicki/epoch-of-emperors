@@ -26,11 +26,10 @@ class Interaction {
     }
     process() {}
     stop() {
-        this.active.state = this.active.STATE.IDLE;
+        this.active.setBaseState(this.active.STATE.IDLE);
     }
     terminate() {
         this.stop();
-        this.active.setBaseState(this.active.STATE.IDLE);
         this.active.frame = 0;
         this.active.ticks_waited = 0;
         this.active.interactionObject = null;
@@ -223,7 +222,7 @@ class HunterInteraction extends Interaction {
         } else if (this.active.ticks_waited == this.RATE) {
             this.engine.makeProjectile(Spear, this.active, this.passive);
             // this.active.hit(this.passive, engine);
-        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER][0].length - 1) {
+        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER][0].length) {
             this.engine.interactOrder(this.active, this.passive);
         }
     }
@@ -255,6 +254,9 @@ class FishingInteraction extends ResourceExtractionInteraction {
         this.active.state = this.active.STATE.FISHING;
         super.init();
     }
+    stop() {
+        this.active.state = this.active.STATE.IDLE;
+    }
     getReturnBuildingTypes() {
         return ["Dock"];
     }
@@ -275,6 +277,9 @@ class AttackInteraction extends Interaction {
             super.init();
         }
     }
+    stop() {
+        this.active.state = this.active.STATE.IDLE;
+    }
     process() {
         if (this.passive.destroyed || this.passive.hp <= 0) {
             this.terminate();
@@ -283,7 +288,7 @@ class AttackInteraction extends Interaction {
             return;
         } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
             this.active.hit(this.passive, this.engine);
-        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.ATTACK][0].length - 1) {
+        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.ATTACK][0].length) {
             this.active.ticks_waited = 0;
         }
         this.active.rotateToEntity(this.passive);

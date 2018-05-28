@@ -1,6 +1,5 @@
 import { Entity } from '../entity.js';
 
-
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, rotation=null) {
         super(...arguments);
@@ -116,7 +115,7 @@ class Unit extends Entity {
         if (this.hp <= 0) {
             this.hp = 0;
             this.frame = 0;
-            this.setBaseState(Unit.prototype.STATE.DYING);
+            this.state = Unit.prototype.STATE.DYING;
         }
     }
     toggleDead(engine) {

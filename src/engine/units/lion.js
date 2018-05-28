@@ -17,7 +17,7 @@ class Lion extends Animal {
             this.hp = 0;
             if (this.path == null) {
                 this.frame = 0;
-                this.setBaseState(Animal.prototype.STATE.DYING);
+                this.state = Animal.prototype.STATE.DYING;
             }
         }
     }
@@ -27,14 +27,14 @@ Lion.prototype.NAME = "Lion";
 Lion.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/lion.png");
 Lion.prototype.MAX_HP = 24;
 Lion.prototype.SPEED = 3;
-Lion.prototype.ATTACK_RATE = 8;
+Lion.prototype.ATTACK_RATE = 10;
 
 Lion.prototype.ATTRIBUTES = {
     ATTACK: 4
 }
 
 Lion.prototype.STATE = Object.assign({}, Lion.prototype.STATE);
-Lion.prototype.STATE.SLOW = 2 << Lion.prototype.BASE_STATE_MASK_WIDTH;
+Lion.prototype.STATE.SLOW = 1 << (Lion.prototype.BASE_STATE_MASK_WIDTH + 1);
 Lion.prototype.STATE.SLOW_IDLE = Lion.prototype.STATE.IDLE | Lion.prototype.STATE.SLOW;
 Lion.prototype.STATE.SLOW_MOVING = Lion.prototype.STATE.MOVING | Lion.prototype.STATE.SLOW;
 Lion.prototype.STATE.SLOW_DYING = Lion.prototype.STATE.DYING | Lion.prototype.STATE.SLOW;
