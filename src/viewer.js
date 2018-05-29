@@ -70,21 +70,23 @@ class GameViewer {
         this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
         this.layers.interface.add(this.bottombar);
 
-        this.tooltip = new Graphics.StrokedText(Object.assign({}, this.TOOLTIP_OPTIONS, {
+        this.tooltip = new Graphics.StrokedText({
+            ...this.TOOLTIP_OPTIONS,
             fill: 'white',
             x: 7,
             y: this.stage.height() - BottomBar.IMAGE.height - 7
-        }));
+        });
         this.tooltip.hide();
         this.layers.interface.add(this.tooltip);
 
         this.errorMessageTimeout = 0;
-        this.errorMessage = new Graphics.StrokedText(Object.assign({}, this.TOOLTIP_OPTIONS, {
+        this.errorMessage = new Graphics.StrokedText({
+            ...this.TOOLTIP_OPTIONS,
             fill: '#cf4300',
             align: "center",
             x: Math.round(this.stage.width() / 2),
             y: this.stage.height() - BottomBar.IMAGE.height - 42
-        }));
+        });
         this.errorMessage.hide();
         this.layers.interface.add(this.errorMessage);
 
@@ -338,19 +340,19 @@ class TopBar extends Graphics.Group {
             image: TopBar.IMAGE,
         });
         this.add(this.image);
-        this.wood = new Graphics.StrokedText(Object.assign({ x: 34, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.wood = new Graphics.StrokedText({ x: 34, y: 2, ...TopBar.TEXT_OPTIONS });
         this.add(this.wood);
 
-        this.food = new Graphics.StrokedText(Object.assign({ x: 101, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.food = new Graphics.StrokedText({ x: 101, y: 2, ...TopBar.TEXT_OPTIONS });
         this.add(this.food);
 
-        this.gold = new Graphics.StrokedText(Object.assign({ x: 168, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.gold = new Graphics.StrokedText({ x: 168, y: 2, ...TopBar.TEXT_OPTIONS });
         this.add(this.gold);
 
-        this.stone = new Graphics.StrokedText(Object.assign({ x: 235, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.stone = new Graphics.StrokedText({ x: 235, y: 2, ...TopBar.TEXT_OPTIONS });
         this.add(this.stone);
 
-        this.population = new Graphics.StrokedText(Object.assign({ x: 302, y: 2 }, TopBar.TEXT_OPTIONS));
+        this.population = new Graphics.StrokedText({ x: 302, y: 2, ...TopBar.TEXT_OPTIONS });
         this.add(this.population);
     }
     process(player) {
@@ -413,9 +415,10 @@ class EntityDetails extends Graphics.Group {
             width: 123,
             height: 111
         }));
-        this.name = new Graphics.Text(Object.assign({
-            x: 10, y: 16
-        }, EntityDetails.TEXT_OPTIONS))
+        this.name = new Graphics.Text({
+            x: 10, y: 16,
+            ...EntityDetails.TEXT_OPTIONS
+        });
         this.add(this.name);
 
         this.avatar = new Graphics.Image({ x: 10, y: 37 });
@@ -424,9 +427,10 @@ class EntityDetails extends Graphics.Group {
         this.healthBar = new HealthBarBig({ x: 10, y: 91 });
         this.add(this.healthBar);
 
-        this.hp = new Graphics.Text(Object.assign({
-            x: 10, y: 102
-        }, EntityDetails.TEXT_OPTIONS))
+        this.hp = new Graphics.Text({
+            x: 10, y: 102,
+            ...EntityDetails.TEXT_OPTIONS
+        });
         this.add(this.hp);
 
         this.attributes = new EntityAttributes({ x: 65, y: 35 });
@@ -496,9 +500,10 @@ class EntityAttribute extends Graphics.Group {
     constructor(image) {
         super();
         this.hide();
-        this.value = new Graphics.Text(Object.assign({
-            x: 3 + image.width, y: 5
-        }, EntityDetails.TEXT_OPTIONS));
+        this.value = new Graphics.Text({
+            x: 3 + image.width, y: 5,
+            ...EntityDetails.TEXT_OPTIONS
+        });
         this.add(this.value);
         this.image = new Graphics.Image({
             image: image,

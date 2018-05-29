@@ -19,7 +19,7 @@ class Engine {
         this.framesCount = 0;
         this.loop = null;
         this.viewer = viewer;
-        this.definition = Object.assign({}, definition);
+        this.definition = { ...definition };
 
         this.players = [];
         for (let i = 0; i < this.definition.players.length; ++i) {

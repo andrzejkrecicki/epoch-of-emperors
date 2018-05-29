@@ -96,7 +96,7 @@ Villager.prototype.ATTRIBUTES = {
     ATTACK: 3
 }
 
-Villager.prototype.STATE = Object.assign({}, Villager.prototype.STATE);
+Villager.prototype.STATE = { ...Villager.prototype.STATE };
 Villager.prototype.STATE.BUILDING = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH + 1);
 Villager.prototype.STATE.BUILDING_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.BUILDING;
 Villager.prototype.STATE.BUILDING_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.BUILDING;
@@ -158,16 +158,17 @@ Villager.prototype.STATE.CARRY_MEAT_IDLE = Villager.prototype.STATE.IDLE | Villa
 Villager.prototype.STATE.CARRY_MEAT_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_MEAT;
 
 
-Villager.prototype.FRAME_RATE = Object.assign({}, Unit.prototype.FRAME_RATE);
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.DYING] = 3;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUILDING] = 2;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FORAGE] = 4;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.LUMBER] = 3;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.CHOP] = 3;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.MINE] = 3;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.FARMER] = 3;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.HUNTER] = 2;
-Villager.prototype.FRAME_RATE[Villager.prototype.STATE.BUTCHER] = 4;
+Villager.prototype.FRAME_RATE = { ...Unit.prototype.FRAME_RATE,
+    [Villager.prototype.STATE.DYING]: 3,
+    [Villager.prototype.STATE.BUILDING]: 2,
+    [Villager.prototype.STATE.FORAGE]: 4,
+    [Villager.prototype.STATE.LUMBER]: 3,
+    [Villager.prototype.STATE.CHOP]: 3,
+    [Villager.prototype.STATE.MINE]: 3,
+    [Villager.prototype.STATE.FARMER]: 3,
+    [Villager.prototype.STATE.HUNTER]: 2,
+    [Villager.prototype.STATE.BUTCHER]: 4
+}
 
 Villager.prototype.IMAGES = {
     [Villager.prototype.STATE.IDLE]: Sprites.DirectionSprites("img/units/villager/idle/", 1),

@@ -41,8 +41,10 @@ ClubMan.prototype.ATTRIBUTES = {
     ARMOR: 0
 }
 
-ClubMan.prototype.FRAME_RATE = Object.assign({}, Unit.prototype.FRAME_RATE);
-ClubMan.prototype.FRAME_RATE[ClubMan.prototype.STATE.ATTACK] = 3;
+ClubMan.prototype.FRAME_RATE = {
+    ...Unit.prototype.FRAME_RATE,
+    [ClubMan.prototype.STATE.ATTACK]: 3
+}
 
 
 ClubMan.prototype.IMAGES = {

@@ -21,19 +21,25 @@ StoragePit.prototype.COST = {
     food: 0, wood: 120, stone: 0, gold: 0
 }
 
-StoragePit.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
-StoragePit.prototype.IMAGES[Building.prototype.STATE.DONE] = [Sprites.Sprite("img/buildings/storage_pit/01_all.png")];
-StoragePit.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/storage_pit/01_all.png"))];
+StoragePit.prototype.IMAGES = {
+    ...Building.prototype.IMAGES,
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/storage_pit/01_all.png")],
+    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/storage_pit/01_all.png"))]
+}
 
-StoragePit.prototype.IMAGE_OFFSETS = Object.assign({}, Building.prototype.IMAGE_OFFSETS);
-StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 1, y: 64 };
+StoragePit.prototype.IMAGE_OFFSETS = {
+    ...Building.prototype.IMAGE_OFFSETS,
+    [Building.prototype.STATE.DONE]: { x: 1, y: 64 }
+}
 
-StoragePit.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
-StoragePit.prototype.HITMAP[StoragePit.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(
-    Sprites.Sprite("img/buildings/base_hit_big.png"),
-    Sprites.Sprite("img/buildings/storage_pit/01_all.png"),
-    StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-    StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-);
+StoragePit.prototype.HITMAP = {
+    ...Building.prototype.HITMAP,
+    [StoragePit.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
+        Sprites.Sprite("img/buildings/base_hit_big.png"),
+        Sprites.Sprite("img/buildings/storage_pit/01_all.png"),
+        StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
+        StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
+    )
+}
 
 export { StoragePit }

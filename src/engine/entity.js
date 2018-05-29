@@ -15,11 +15,12 @@ class Entity extends Graphics.Group {
         this.isFlat = false;
     }
     createSelectionRect(options) {
-        this.selectionRect = new Graphics.Rect(Object.assign({}, {
+        this.selectionRect = new Graphics.Rect({
             stroke: 'white',
             strokeWidth: 1,
             visible: false,
-        }, options));
+            ...options
+        });
         this.add(this.selectionRect);
     }
     position(pos) {

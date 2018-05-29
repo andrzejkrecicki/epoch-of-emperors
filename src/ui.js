@@ -1,11 +1,13 @@
 class TextButton extends Graphics.Group {
     constructor(x, y, textOptions, rectOptions) {
         super({ x, y });
-        this.rectOptions = Object.assign({}, TextButton.DEFAULT_RECT_OPTIONS, rectOptions);
-        this.textOptions = Object.assign({
+        this.rectOptions = { ...TextButton.DEFAULT_RECT_OPTIONS, ...rectOptions };
+        this.textOptions = {
             x: this.rectOptions.width / 2,
-            y: this.rectOptions.height / 2
-        }, TextButton.DEFAULT_TEXT_OPTIONS, textOptions);
+            y: this.rectOptions.height / 2,
+            ...TextButton.DEFAULT_TEXT_OPTIONS,
+            ...textOptions
+        };
 
         this.rect = new Graphics.Rect(this.rectOptions);
         this.text = new Graphics.Text(this.textOptions);
@@ -65,9 +67,10 @@ class DropDown extends Graphics.Group {
 
         this.chosen = new Graphics.Group();
 
-        this.rect = new Graphics.Rect(Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
+        this.rect = new Graphics.Rect({
+            ...DropDown.DEFAULT_RECT_OPTIONS,
             width: this.width
-        }));
+        });
         this.chosen.add(this.rect);
         this.valueText = new Label({
             text: "" + this.values[this.chosenIndex],
@@ -153,10 +156,11 @@ class Option extends Graphics.Group {
         super({ x, y });
         this.index = index;
         this.text = text;
-        this.rect = new Graphics.Rect(Object.assign({}, Option.DEFAULT_RECT_OPTIONS, {
+        this.rect = new Graphics.Rect({
+            ...Option.DEFAULT_RECT_OPTIONS,
             width: width,
             height: height
-        }));
+        });
         this.add(this.rect);
         this.valueText = new Label({
             text: this.text,
@@ -190,21 +194,24 @@ class Option extends Graphics.Group {
         this.fire("refresh");
     }
 }
-Option.DEFAULT_RECT_OPTIONS = Object.assign({}, DropDown.DEFAULT_RECT_OPTIONS, {
+Option.DEFAULT_RECT_OPTIONS = {
+    ...DropDown.DEFAULT_RECT_OPTIONS,
     stroke: '#716031',
     fill: 'rgba(28, 17, 7, .7)',
     moverFill: 'rgba(60, 49, 39, .7)'
-});
+};
 
 
 class MultiStateButton extends TextButton {
     constructor(x, y, states, currentState, textOptions, rectOptions) {
-        let mergedRectOptions = Object.assign({}, MultiStateButton.DEFAULT_RECT_OPTIONS, rectOptions);
-        let mergedTextOptions = Object.assign({}, MultiStateButton.DEFAULT_TEXT_OPTIONS, textOptions, {
+        let mergedRectOptions = { ...MultiStateButton.DEFAULT_RECT_OPTIONS, rectOptions };
+        let mergedTextOptions = {
+            ...MultiStateButton.DEFAULT_TEXT_OPTIONS,
+            ...textOptions,
             text: states[currentState],
             width: mergedRectOptions.width,
             height: mergedRectOptions.height
-        });
+        };
         super(x, y, mergedTextOptions, mergedRectOptions);
         this.states = states;
         this.currentState = currentState;
@@ -217,19 +224,21 @@ class MultiStateButton extends TextButton {
         });
     }
 }
-MultiStateButton.DEFAULT_RECT_OPTIONS = Object.assign({}, TextButton.DEFAULT_RECT_OPTIONS, {
+MultiStateButton.DEFAULT_RECT_OPTIONS = {
+    ...TextButton.DEFAULT_RECT_OPTIONS,
     width: 40,
     height: 30
-});
-MultiStateButton.DEFAULT_TEXT_OPTIONS = Object.assign({}, TextButton.DEFAULT_TEXT_OPTIONS, {
+};
+MultiStateButton.DEFAULT_TEXT_OPTIONS = {
+    ...TextButton.DEFAULT_TEXT_OPTIONS,
     fontSize: 14
-});
+};
 
 
 class CheckBox extends Graphics.Group {
     constructor(x, y, checked, options) {
         super({ x, y });
-        this.options = Object.assign({}, CheckBox.DEFAULT_OPTIONS, options);
+        this.options = { ...CheckBox.DEFAULT_OPTIONS, ...options };
 
         this.checked = checked;
 
@@ -272,7 +281,7 @@ CheckBox.DEFAULT_OPTIONS = {
 
 class Header extends Graphics.Text {
     constructor(options) {
-        super(Object.assign({}, Header.DEFAULT_OPTIONS, options));
+        super({ ...Header.DEFAULT_OPTIONS, ...options });
     }
 }
 Header.DEFAULT_OPTIONS = {
@@ -284,7 +293,7 @@ Header.DEFAULT_OPTIONS = {
 }
 class Label extends Graphics.Text {
     constructor(options) {
-        super(Object.assign({}, Label.DEFAULT_OPTIONS, options));
+        super({ ...Label.DEFAULT_OPTIONS, ...options });
     }
 }
 Label.DEFAULT_OPTIONS = {

@@ -21,20 +21,26 @@ Barracks.prototype.COST = {
     food: 0, wood: 125, stone: 0, gold: 0
 }
 
-Barracks.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
-Barracks.prototype.IMAGES[Building.prototype.STATE.DONE] = [Sprites.Sprite("img/buildings/barracks/01_all.png")];
-Barracks.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/barracks/01_all.png"))];
+Barracks.prototype.IMAGES = {
+    ...Building.prototype.IMAGES,
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/barracks/01_all.png")],
+    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/barracks/01_all.png"))]
+};
 
-Barracks.prototype.IMAGE_OFFSETS = Object.assign({}, Building.prototype.IMAGE_OFFSETS);
-Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 11, y: 82 };
+Barracks.prototype.IMAGE_OFFSETS = {
+    ...Building.prototype.IMAGE_OFFSETS,
+    [Building.prototype.STATE.DONE]: { x: 11, y: 82 }
+}
 
-Barracks.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
-Barracks.prototype.HITMAP[Barracks.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(
-    Sprites.Sprite("img/buildings/base_hit_big.png"),
-    Sprites.Sprite("img/buildings/barracks/01_all.png"),
-    Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-    Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-);
+Barracks.prototype.HITMAP = {
+    ...Building.prototype.HITMAP,
+    [Barracks.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
+        Sprites.Sprite("img/buildings/base_hit_big.png"),
+        Sprites.Sprite("img/buildings/barracks/01_all.png"),
+        Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
+        Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
+    )
+};
 
 
 export { Barracks }

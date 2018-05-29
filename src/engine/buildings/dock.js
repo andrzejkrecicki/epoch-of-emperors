@@ -42,13 +42,15 @@ Dock.prototype.IMAGE_OFFSETS = {
     [Building.prototype.STATE.DONE]: { x: -22, y: 36 }
 }
 
-Dock.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
-Dock.prototype.HITMAP[Dock.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(
-    Sprites.Sprite("img/buildings/base_hit_big.png"),
-    Sprites.Sprite("img/buildings/dock/01_all.png"),
-    Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-    Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-);
+Dock.prototype.HITMAP = {
+    ...Building.prototype.HITMAP,
+    [Dock.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
+        Sprites.Sprite("img/buildings/base_hit_big.png"),
+        Sprites.Sprite("img/buildings/dock/01_all.png"),
+        Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
+        Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
+    )
+}
 
 
 export { Dock }

@@ -33,7 +33,7 @@ Lion.prototype.ATTRIBUTES = {
     ATTACK: 4
 }
 
-Lion.prototype.STATE = Object.assign({}, Lion.prototype.STATE);
+Lion.prototype.STATE = { ...Lion.prototype.STATE };
 Lion.prototype.STATE.SLOW = 1 << (Lion.prototype.BASE_STATE_MASK_WIDTH + 1);
 Lion.prototype.STATE.SLOW_IDLE = Lion.prototype.STATE.IDLE | Lion.prototype.STATE.SLOW;
 Lion.prototype.STATE.SLOW_MOVING = Lion.prototype.STATE.MOVING | Lion.prototype.STATE.SLOW;

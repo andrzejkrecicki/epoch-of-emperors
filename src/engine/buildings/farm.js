@@ -30,19 +30,25 @@ Farm.prototype.COST = {
     food: 0, wood: 75, stone: 0, gold: 0
 }
 
-Farm.prototype.IMAGES = Object.assign({}, Building.prototype.IMAGES);
-Farm.prototype.IMAGES[Building.prototype.STATE.DONE] = [Sprites.Sprite("img/buildings/farm/all.png")];
-Farm.prototype.IMAGES[Building.prototype.STATE.DENIED] = [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/farm/all.png"))];
+Farm.prototype.IMAGES = {
+    ...Building.prototype.IMAGES,
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/farm/all.png")],
+    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/farm/all.png"))]
+}
 
-Farm.prototype.IMAGE_OFFSETS = Object.assign({}, Building.prototype.IMAGE_OFFSETS);
-Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE] = { x: 17, y: 44 };
+Farm.prototype.IMAGE_OFFSETS = {
+    ...Building.prototype.IMAGE_OFFSETS,
+    [Building.prototype.STATE.DONE]: { x: 17, y: 44 }
+}
 
-Farm.prototype.HITMAP = Object.assign({}, Building.prototype.HITMAP);
-Farm.prototype.HITMAP[Farm.prototype.STATE.DONE] = Graphics.Filters.ComposeHitmask(
-    Sprites.Sprite("img/buildings/base_hit_big.png"),
-    Sprites.Sprite("img/buildings/farm/all.png"),
-    Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-    Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-);
+Farm.prototype.HITMAP = {
+    ...Building.prototype.HITMAP,
+    [Farm.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
+        Sprites.Sprite("img/buildings/base_hit_big.png"),
+        Sprites.Sprite("img/buildings/farm/all.png"),
+        Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
+        Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
+    )
+}
 
 export { Farm }
