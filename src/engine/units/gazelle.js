@@ -8,6 +8,18 @@ class Gazelle extends Animal {
             food: 150
         }
     }
+    takeHit(value, attacker, engine) {
+        this.hp -= value;
+        if (this.hp > 0) {
+            if (this.path == null) engine.escapeOrder(this, attacker);
+        } else {
+            this.hp = 0;
+            if (this.path == null) {
+                this.frame = 0;
+                this.state = Animal.prototype.STATE.DYING;
+            }
+        }
+    }
 }
 Gazelle.prototype.SUBTILE_WIDTH = 1;
 Gazelle.prototype.NAME = "Gazelle";

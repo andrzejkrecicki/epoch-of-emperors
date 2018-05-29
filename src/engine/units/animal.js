@@ -32,7 +32,7 @@ class Animal extends Unit {
     takeHit(value, attacker, engine) {
         this.hp -= value;
         if (this.hp > 0) {
-            if (this.path == null) engine.escapeOrder(this, attacker);
+            if (this.state & Animal.prototype.STATE.IDLE) engine.interactOrder(this, attacker);
         } else {
             this.hp = 0;
             if (this.path == null) {

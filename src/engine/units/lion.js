@@ -9,18 +9,6 @@ class Lion extends Animal {
             food: 450
         }
     }
-    takeHit(value, attacker, engine) {
-        this.hp -= value;
-        if (this.hp > 0) {
-            if (this.state & Animal.prototype.STATE.IDLE) engine.interactOrder(this, attacker);
-        } else {
-            this.hp = 0;
-            if (this.path == null) {
-                this.frame = 0;
-                this.state = Animal.prototype.STATE.DYING;
-            }
-        }
-    }
 }
 Lion.prototype.SUBTILE_WIDTH = 1;
 Lion.prototype.NAME = "Lion";
