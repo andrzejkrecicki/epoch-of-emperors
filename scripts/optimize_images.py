@@ -1,6 +1,7 @@
 import os
 import argparse
-
+import time
+import subprocess
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='''
@@ -13,9 +14,17 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    t0 = time.time()
+
+    null = open(os.devnull, 'w')
+
     for root, dirs, files in os.walk(args.input):
-        for name in files:
+        for i, name in enumerate(files):
             if name.endswith("." + args.ext):
                 path = os.path.join(root, name)
-                os.popen2(args.cmd + path)
+                subprocess.Popen(
+                    args.cmd + path,
+                    stderr=null
+                )
 
+    print time.time() - t0
