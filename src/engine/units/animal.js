@@ -3,12 +3,6 @@ import { TERRAIN_TYPES } from '../terrain.js';
 import * as interactions from '../interactions.js';
 
 class Animal extends Unit {
-    constructor() {
-        super(...arguments);
-        this.attributes = {
-            attack: this.ATTRIBUTES.ATTACK,
-        }
-    }
     getResource(engine) {
         if (this.attributes.food > 0) {
             if (--this.attributes.food == 0) this.destroy(engine);

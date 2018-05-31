@@ -11,22 +11,22 @@ class Interaction {
     }
     preInit() {}
     init() {
-        if (this.passive.destroyed) {
-            if (this.passive.interactionSuccessor) this.engine.interactOrder(this.active, this.passive.interactionSuccessor);
-            else this.terminate();
-        } else if (!this.active.hasFullPath) this.active.setBaseState(this.active.STATE.IDLE);
+        if (this.passive.destroyed) this.interactWithSuccessor();
+        else if (!this.active.hasFullPath) this.active.setBaseState(this.active.STATE.IDLE);
         else {
             this.active.frame = 0;
             this.active.rotateToEntity(this.passive);
             this.active.setBaseState(this.active.STATE.INTERACTION);
         }
     }
-    preProcess() {
-
-    }
+    preProcess() {}
     process() {}
     stop() {
         this.active.setBaseState(this.active.STATE.IDLE);
+    }
+    interactWithSuccessor() {
+        if (this.passive.interactionSuccessor) this.engine.interactOrder(this.active, this.passive.interactionSuccessor);
+        else this.terminate();
     }
     terminate() {
         this.stop();
@@ -108,7 +108,9 @@ BuilderInteraction.prototype.RATE = 3;
 
 class ReturnResourcesInteraction extends Interaction {
     init() {
-        if (!this.passive.destroyed) {
+        if (this.passive.destroyed) {
+            this.interactWithSuccessor();
+        } else if (this.active.hasFullPath) {
             let res_name = RESOURCE_NAME[this.active.carriedResource];
             this.active.player.resources[res_name] += this.active.attributes[res_name];
             this.active.attributes[res_name] = null;
@@ -119,7 +121,7 @@ class ReturnResourcesInteraction extends Interaction {
                 this.terminate();
             } else this.engine.interactOrder(this.active, this.active.prevInteractionObject);
             this.active.prevInteractionObject = null;
-        }
+        } else this.active.setBaseState(this.active.STATE.IDLE);
     }
 }
 
@@ -236,8 +238,11 @@ HunterInteraction.prototype.DISTANCE = 6;
 
 class ButcherInteraction extends ResourceExtractionInteraction {
     init() {
-        this.active.state = this.active.STATE.BUTCHER;
+        if (this.active.hasFullPath) this.active.state = this.active.STATE.BUTCHER;
         super.init();
+    }
+    stop() {
+        this.active.state = this.active.STATE.HUNTER_IDLE;
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_MEAT;
@@ -251,7 +256,7 @@ ButcherInteraction.prototype.RATE = 60;
 
 class FishingInteraction extends ResourceExtractionInteraction {
     init() {
-        this.active.state = this.active.STATE.FISHING;
+        if (this.active.hasFullPath) this.active.state = this.active.STATE.FISHING;
         super.init();
     }
     stop() {
@@ -268,13 +273,17 @@ FishingInteraction.prototype.RATE = 60;
 
 class AttackInteraction extends Interaction {
     init() {
-        if (!this.active.isAdjecentTo(this.passive)) {
-            let frame = this.active.frame;
-            this.engine.interactOrder(this.active, this.passive);
-            this.active.frame = frame;
+        if (this.active.hasFullPath) {
+            if (!this.active.isAdjecentTo(this.passive)) {
+                let frame = this.active.frame;
+                this.engine.interactOrder(this.active, this.passive);
+                this.active.frame = frame;
+            } else {
+                this.active.state = Unit.prototype.STATE.ATTACK;
+                super.init();
+            }
         } else {
-            this.active.state = Unit.prototype.STATE.ATTACK;
-            super.init();
+            this.active.state = this.active.STATE.IDLE;
         }
     }
     stop() {

@@ -14,7 +14,7 @@ Elephant.prototype.SUBTILE_WIDTH = 2;
 Elephant.prototype.NAME = "Elephant";
 Elephant.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/elephant.png");
 Elephant.prototype.MAX_HP = 45;
-Elephant.prototype.SPEED = 1;
+Elephant.prototype.SPEED = 1.5;
 Elephant.prototype.ATTACK_RATE = 13;
 
 Elephant.prototype.ATTRIBUTES = {

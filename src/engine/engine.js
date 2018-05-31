@@ -120,7 +120,7 @@ class Engine {
         }
         entity.updateSprite();
         entity.resetBoundingBox();
-        if (this.framesCount % 2) ++entity.frame;
+        if (this.framesCount % entity.FRAME_RATE[entity.STATE.MOVING] == entity.FRAME_RATE[entity.STATE.MOVING] - 1) ++entity.frame;
     }
     processWaitingUnit(entity) {
         // process unit which is waiting for another unit to release currently desired area
