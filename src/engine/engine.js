@@ -3,6 +3,7 @@ import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
 import { Entity } from './entity.js';
 import { Player } from './player.js';
+import { DeadBody } from './flat_drawables.js';
 import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
 import { Bush } from './resources/bush.js';
@@ -31,6 +32,7 @@ class Engine {
         this.units = [];
         this.buildings = [];
         this.projectiles = [];
+        this.drawables = [];
         this.addSampleUnits();
     }
     processUnits() {
@@ -73,8 +75,10 @@ class Engine {
             entity.position(tmp_target);
             this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, entity);
             ++entity.path_progress;
+            entity.hasPrelocatedArea = false;
 
-            if (entity.path_progress < entity.path.length) {
+            entity.afterStep();
+            if (entity.state != Unit.prototype.STATE.DYING && entity.path_progress < entity.path.length) {
                 // if there are further steps check if next area is unoccupied
                 let entrance = this.canEnterSubtile(
                     entity.path[entity.path_progress].x,
@@ -90,14 +94,15 @@ class Engine {
                         entity.SUBTILE_WIDTH,
                         entity
                     );
+                    entity.hasPrelocatedArea = true;
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.WAIT) {
                     // if area is temporarily taken wait until it frees
                     entity.setBaseState(Unit.prototype.STATE.IDLE);
                 } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
                     this.bypassOrder(entity);
                 }
-            } else if (entity.path.length == entity.path_progress) {
-                entity.setBaseState(Unit.prototype.STATE.IDLE);
+            } else if (entity.state == Unit.prototype.STATE.DYING || entity.path.length == entity.path_progress) {
+                if (entity.state != Unit.prototype.STATE.DYING) entity.setBaseState(Unit.prototype.STATE.IDLE);
                 entity.path_progress = 0;
                 entity.path = null;
                 if (entity.interaction === null) {
@@ -107,7 +112,6 @@ class Engine {
                     entity.initInteraction(this);
                 }
             }
-            entity.afterStep();
         } else {
             let old_rotation = entity.rotation;
             entity.rotateToSubtile(entity.path[entity.path_progress]);
@@ -138,6 +142,7 @@ class Engine {
                 entity.SUBTILE_WIDTH,
                 entity
             );
+            entity.hasPrelocatedArea = true;
         } else if (entrance == Engine.prototype.AREA_ENTRANCE_RESOLUTION.BYPASS) {
             this.bypassOrder(entity);
         } else {
@@ -212,6 +217,12 @@ class Engine {
         }
         this.projectiles = this.projectiles.filter((p) => !p.destroyed);
     }
+    processDrawables() {
+        for (let drawable of this.drawables) {
+            drawable.process(engine);
+        }
+        this.drawables = this.drawables.filter((p) => !p.destroyed);
+    }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
         for (let x = subtile_x; x < subtile_x + entity.SUBTILE_WIDTH; ++x) {
@@ -239,6 +250,7 @@ class Engine {
         this.processUnits();
         this.processBuildings();
         this.processProjectiles();
+        this.processDrawables();
         this.viewer.stage.draw();
     }
     handleRightClick(point) {
@@ -331,9 +343,27 @@ class Engine {
     }
     destroyEntity(entity) {
         this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, null);
+        if (entity.hasPrelocatedArea) this.map.fillSubtilesWith(
+            entity.path[entity.path_progress].x,
+            entity.path[entity.path_progress].y,
+            entity.SUBTILE_WIDTH,
+            null
+        );
         if (this.selectedEntity == entity) this.viewer.deselectEntity();
         if (entity.LEFTOVERS != null) {
-            this.viewer.addEntity(new entity.LEFTOVERS(entity.subtile_x, entity.subtile_y));
+            let leftovers = new entity.LEFTOVERS(entity.subtile_x, entity.subtile_y);
+            this.drawables.push(leftovers);
+            this.viewer.addEntity(leftovers);
+        } else if (entity instanceof Unit) {
+            let dead = new DeadBody(
+                entity.subtile_x,
+                entity.subtile_y,
+                entity.position(),
+                entity.IMAGES[entity.state][entity.rotation],
+                entity.IMAGE_OFFSETS[entity.state]
+            );
+            this.drawables.push(dead);
+            this.viewer.addEntity(dead, true);
         }
     }
     makeProjectile(Projectile, thrower, victim) {

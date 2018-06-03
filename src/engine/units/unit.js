@@ -119,7 +119,7 @@ class Unit extends Entity {
         }
     }
     toggleDead(engine) {
-        this.state = Unit.prototype.STATE.DEAD;
+        this.setBaseState(Unit.prototype.STATE.DEAD);
         this.destroy(engine);
     }
     afterStep() {

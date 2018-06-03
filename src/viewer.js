@@ -145,8 +145,10 @@ class GameViewer {
             this.entitiesHolder.add(entity);
         }
     }
-    addEntity(entity) {
-        entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
+    addEntity(entity, skip_reposition=false) {
+        if (!skip_reposition) {
+            entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
+        }
         entity.resetBoundingBox();
         this.entitiesHolder.add(entity);
     }

@@ -5,7 +5,10 @@ import * as interactions from '../interactions.js';
 class Animal extends Unit {
     getResource(engine) {
         if (this.attributes.food > 0) {
-            if (--this.attributes.food == 0) this.destroy(engine);
+            if (--this.attributes.food == 0) {
+                this.setBaseState(Unit.prototype.STATE.DEAD);
+                this.destroy(engine);
+            }
             return 1;
         }
         return 0;
@@ -14,12 +17,15 @@ class Animal extends Unit {
         if (object instanceof Unit) return interactions.AttackInteraction;
     }
     toggleDead(engine) {
+        this.isFlat = true;
+
         if (this.attributes.food > 0 && this.ticks_waited > Animal.prototype.DECAY_RATE) {
             --this.attributes.food;
             this.ticks_waited = 0;
         } else ++this.ticks_waited;
 
         if (this.attributes.food == 0 && !this.destroyed) {
+            this.setBaseState(Unit.prototype.STATE.DEAD);
             this.destroy(engine);
         }
     }
@@ -37,9 +43,11 @@ class Animal extends Unit {
     }
     afterStep() {
         if (this.hp <= 0) {
+            this.terminateInteraction();
             this.path = null;
             this.frame = 0;
             this.state = Animal.prototype.STATE.DYING;
+            this.hasPrelocatedArea = false;
         }
     }
 }
