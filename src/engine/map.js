@@ -103,7 +103,6 @@ class RandomMap extends Map {
     }
     isSuitableForTree(x, y) {
         // values are multiplied by 2 to get recalculated to subtiles coordinates
-        if (x < 200 && x > 160 && y < 200 && y > 160) return false;
         return this.areSubtilesEmpty(x * 2, y * 2, 2) && this.terrain_tiles[x][y] !== Map.TERRAIN_TYPES.WATER && !this.isShore(x, y);
     }
     plantTrees() {

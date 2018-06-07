@@ -78,6 +78,7 @@ class FarmingInteraction extends ResourceExtractionInteraction {
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FARM;
         else this.active.state = this.active.STATE.FARMER;
+        super.stop();
     }
 }
 FarmingInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.FOOD;
@@ -158,6 +159,7 @@ class ChopInteraction extends ResourceExtractionInteraction {
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_WOOD;
         else this.active.state = this.active.STATE.LUMBER;
+        super.stop();
     }
 }
 ChopInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.WOOD;
@@ -184,6 +186,7 @@ class GoldMineInteraction extends ResourceExtractionInteraction {
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_GOLD;
         else this.active.state = this.active.STATE.MINE;
+        super.stop();
     }
 }
 GoldMineInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.GOLD;
@@ -200,6 +203,7 @@ class StoneMineInteraction extends ResourceExtractionInteraction {
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_STONE;
         else this.active.state = this.active.STATE.MINE;
+        super.stop();
     }
 }
 StoneMineInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.STONE;
@@ -211,7 +215,6 @@ class HunterInteraction extends Interaction {
     preInit() {
         this.active.state = Villager.prototype.STATE.HUNTER;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
-
     }
     process() {
         if (this.passive.destroyed) {
@@ -237,16 +240,18 @@ HunterInteraction.prototype.DISTANCE = 6;
 
 
 class ButcherInteraction extends ResourceExtractionInteraction {
+    preInit() {
+        this.active.state = Villager.prototype.STATE.HUNTER;
+        this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
+    }
     init() {
         if (this.active.hasFullPath) this.active.state = this.active.STATE.BUTCHER;
         super.init();
     }
     stop() {
-        this.active.state = this.active.STATE.HUNTER_IDLE;
-    }
-    stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_MEAT;
         else this.active.state = this.active.STATE.HUNTER;
+        super.stop();
     }
 }
 ButcherInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.FOOD;
