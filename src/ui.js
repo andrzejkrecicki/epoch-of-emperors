@@ -1,3 +1,5 @@
+import { PLAYER_COLOURS } from './utils.js';
+
 class TextButton extends Graphics.Group {
     constructor(x, y, textOptions, rectOptions) {
         super({ x, y });
@@ -202,6 +204,46 @@ Option.DEFAULT_RECT_OPTIONS = {
 };
 
 
+class ColorSelect extends Graphics.Group {
+    constructor(x, y, colour) {
+        super({ x, y });
+        this.colour = colour;
+        this.oldColour = colour;
+        this.rect = new Graphics.Rect({
+            fill: PLAYER_COLOURS[this.colour],
+            ...ColorSelect.DEFAULT_OPTIONS
+        })
+        this.add(this.rect);
+
+        this.on("mouseover", this.mouseover);
+        this.on("mouseout", this.mouseout);
+        this.on("mousedown", this.mousedown);
+        this.on("click", this.click);
+    }
+    mouseover() {
+        this.oldColour = this.colour;
+    }
+    mouseout() {
+        if (this.oldColour != this.colour) this.fire("update");
+    }
+    mousedown() {
+    }
+    mouseup() {
+    }
+    click() {
+        this.colour = (this.colour + 1) % PLAYER_COLOURS.length;
+        this.rect.setFill(PLAYER_COLOURS[this.colour]);
+        this.fire("refresh");
+    }
+}
+ColorSelect.DEFAULT_OPTIONS = {
+    stroke: '#817041',
+    strokeWidth: 3,
+    height: 30,
+    width: 30
+}
+
+
 class MultiStateButton extends TextButton {
     constructor(x, y, states, currentState, textOptions, rectOptions) {
         let mergedRectOptions = { ...MultiStateButton.DEFAULT_RECT_OPTIONS, rectOptions };
@@ -306,5 +348,5 @@ Label.DEFAULT_OPTIONS = {
 }
 
 export {
-    TextButton, Header, Label, DropDown, MultiStateButton, CheckBox
+    TextButton, Header, Label, DropDown, MultiStateButton, CheckBox, ColorSelect
 };

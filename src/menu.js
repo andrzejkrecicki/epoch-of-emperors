@@ -1,6 +1,6 @@
-import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox } from './ui.js';
+import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox, ColorSelect } from './ui.js';
 import { Sprites } from './sprites.js';
-import { PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
+import { PlayerDefinition, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
 
 class Menu extends Graphics.Group {
     constructor(stage, nav) {
@@ -361,6 +361,18 @@ class RandomMapMenu extends Menu {
             })(i));
             this.playersSection.add(civDropDown);
             offset.x += RandomMapMenu.CIV_SECTION_WIDTH;
+
+            let colorBtn = new ColorSelect(offset.x + 8, offset.y, this.game_definition.players[i].colour);
+            this.playersSection.add(colorBtn);
+            colorBtn.on("update", function() {
+                for (let player of that.game_definition.players) {
+                    if (player.colour == this.oldColour) player.colour = this.colour;
+                    else if (player.colour == this.colour) player.colour = this.oldColour;
+                }
+                that.playersSection.removeChildren();
+                that.initialziePlayersSection();
+                that.fire("refresh");
+            })
 
             offset.x += RandomMapMenu.PLAYER_SECTION_WIDTH;
 

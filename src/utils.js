@@ -30,15 +30,16 @@ let RESOURCE_TYPES = {
 let RESOURCE_NAME = [null, "food", "wood", "stone", "gold"]
 
 let PLAYER_COLOURS = [
-    "blue",
-    "red",
-    "yellow",
-    "brown",
-    "orange",
-    "green",
-    "gray",
-    "navy"
+    'rgb(39, 63, 143)',
+    'rgb(227, 11, 0)',
+    'rgb(255, 255, 0)',
+    'rgb(115, 71, 39)',
+    'rgb(243, 119, 15)',
+    'rgb(55, 95, 39)',
+    'rgb(179, 179, 179)',
+    'rgb(43, 191, 147)'
 ];
+
 
 let CIVILIZATIONS = {
     EGYPTIAN: {
