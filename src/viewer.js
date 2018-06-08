@@ -442,7 +442,11 @@ class EntityDetails extends Graphics.Group {
     setEntity(entity) {
         this.entity = entity;
         if (this.entity.AVATAR) {
-            this.avatar.image(this.entity.AVATAR);
+            if (this.entity.player) {
+                this.avatar.image(Sprites.Colorize(this.entity.AVATAR, this.entity.player.colour));
+            } else {
+                this.avatar.image(this.entity.AVATAR);
+            }
             this.avatar.show();
         } else {
             this.avatar.hide();
@@ -628,7 +632,7 @@ class ActionButton extends Graphics.Group {
         this.add(this.bg);
 
         this.img = new Graphics.Image({
-            image: Action.prototype.IMAGE,
+            image: Sprites.Colorize(Action.prototype.IMAGE, viewer.engine.selectedEntity.player.colour),
             x: ActionButton.prototype.BORDER_WIDTH,
             y: ActionButton.prototype.BORDER_WIDTH,
             hasHitmap: true
@@ -738,10 +742,16 @@ class ConstructionIndicator extends Graphics.Group {
             map.areSubtilesEmpty(this.sub.x, this.sub.y, W) &&
             this.building.prototype.canConstructOn(map.countTerrainTiles(this.sub.x, this.sub.y, W))
         ) {
-            this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0]);
+            this.image.image(Sprites.Colorize(
+                this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
+                this.viewer.engine.selectedEntity.player.colour
+            ));
             this.allow_construction = true;
         } else {
-            this.image.image(this.building.prototype.IMAGES[this.building.prototype.STATE.DENIED][0]);
+            this.image.image(Graphics.Filters.RedFilter(Sprites.Colorize(
+                this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
+                this.viewer.engine.selectedEntity.player.colour
+            )));
             this.allow_construction = false;
         }
     }
@@ -755,7 +765,10 @@ class ConstructionIndicator extends Graphics.Group {
         this.add(this.image = new Graphics.Image({
             x: - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x,
             y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
-            image: building.prototype.IMAGES[building.prototype.STATE.DONE][0],
+            image: Sprites.Colorize(
+                building.prototype.IMAGES[building.prototype.STATE.DONE][0],
+                this.viewer.engine.selectedEntity.player.colour
+            ),
             hasHitmap: true
         }));
         this.move();

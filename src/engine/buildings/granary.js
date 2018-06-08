@@ -19,8 +19,7 @@ Granary.prototype.COST = {
 
 Granary.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/granary/01_greek.png")],
-    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/granary/01_greek.png"))]
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/granary/01_greek.png")]
 }
 
 Granary.prototype.IMAGE_OFFSETS = {

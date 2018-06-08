@@ -23,8 +23,7 @@ StoragePit.prototype.COST = {
 
 StoragePit.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/storage_pit/01_all.png")],
-    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/storage_pit/01_all.png"))]
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/storage_pit/01_all.png")]
 }
 
 StoragePit.prototype.IMAGE_OFFSETS = {

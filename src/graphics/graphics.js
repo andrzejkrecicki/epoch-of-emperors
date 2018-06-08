@@ -555,19 +555,17 @@ class EntitiesHolder extends Node {
 
 function RedFilter(image) {
     let tmp = document.createElement("canvas");
-    image.ready.then(function(image) {
-        tmp.setAttribute("width", image.width);
-        tmp.setAttribute("height", image.height);
-        let ctx = tmp.getContext("2d");
-        ctx.drawImage(image, 0, 0);
-        let imageData = ctx.getImageData(0, 0, image.width, image.height);
-        for (let i = 0; i < imageData.data.length; i += 4) {
-            imageData.data[i] = Math.min(imageData.data[i] + 150, 255);
-            imageData.data[i + 1] = Math.max(0, imageData.data[i + 1] - 40);
-            imageData.data[i + 2] = Math.max(0, imageData.data[i + 2] - 40);
-        }
-        ctx.putImageData(imageData, 0, 0);
-    });
+    tmp.setAttribute("width", image.width);
+    tmp.setAttribute("height", image.height);
+    let ctx = tmp.getContext("2d");
+    ctx.drawImage(image, 0, 0);
+    let imageData = ctx.getImageData(0, 0, image.width, image.height);
+    for (let i = 0; i < imageData.data.length; i += 4) {
+        imageData.data[i] = Math.min(imageData.data[i] + 150, 255);
+        imageData.data[i + 1] = Math.max(0, imageData.data[i + 1] - 40);
+        imageData.data[i + 2] = Math.max(0, imageData.data[i + 2] - 40);
+    }
+    ctx.putImageData(imageData, 0, 0);
     return tmp;
 }
 

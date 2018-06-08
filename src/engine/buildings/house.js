@@ -48,7 +48,6 @@ House.prototype.COST = {
 House.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
     [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/house/01_all.png")],
-    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/house/01_all.png"))],
     [Building.prototype.STATE.CONSTRUCTION]: Sprites.SpriteSequence("img/buildings/house/construction_01_all_", 4)
 }
 

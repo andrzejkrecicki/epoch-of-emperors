@@ -165,7 +165,7 @@ class RandomMapMenu extends Menu {
                 );
             } else {
                 for (let i = old_val; i <= new_val; ++i ) {
-                    this.game_definition.players.push(new PlayerDefinition(i, `Computer ${i}`, null, PLAYER_COLOURS[i], null, true));
+                    this.game_definition.players.push(new PlayerDefinition(i, `Computer ${i}`, null, i, null, true));
                 }
             }
             this.playersSection.removeChildren();
@@ -382,10 +382,10 @@ class RandomMapMenu extends Menu {
     getDefaultGameDefinition() {
         return {
             players: [
-                new PlayerDefinition(0, "You", null, PLAYER_COLOURS[0], null),
-                new PlayerDefinition(1, "Computer 1", null, PLAYER_COLOURS[1], null, true),
-                new PlayerDefinition(2, "Computer 2", null, PLAYER_COLOURS[2], null, true),
-                new PlayerDefinition(3, "Computer 3", null, PLAYER_COLOURS[3], null, true)
+                new PlayerDefinition(0, "You", null, 0, null),
+                new PlayerDefinition(1, "Computer 1", null, 1, null, true),
+                new PlayerDefinition(2, "Computer 2", null, 2, null, true),
+                new PlayerDefinition(3, "Computer 3", null, 3, null, true)
             ],
             map: {
                 size: 0,

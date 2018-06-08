@@ -26,8 +26,7 @@ TownCenter.prototype.COST = {
 
 TownCenter.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/town_center/01_all.png")],
-    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/town_center/01_all.png"))]
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/town_center/01_all.png")]
 }
 
 TownCenter.prototype.IMAGE_OFFSETS = {

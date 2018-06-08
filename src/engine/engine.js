@@ -360,7 +360,8 @@ class Engine {
                 entity.subtile_y,
                 entity.position(),
                 entity.IMAGES[entity.state][entity.rotation],
-                entity.IMAGE_OFFSETS[entity.state]
+                entity.IMAGE_OFFSETS[entity.state],
+                entity.player
             );
             this.drawables.push(dead);
             this.viewer.addEntity(dead, true);

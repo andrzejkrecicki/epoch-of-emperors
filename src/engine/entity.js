@@ -1,3 +1,5 @@
+import { Sprites } from '../sprites.js';
+
 class Entity extends Graphics.Group {
     constructor(subtile_x, subtile_y) {
         super();
@@ -13,6 +15,7 @@ class Entity extends Graphics.Group {
         this.interactionSuccessor = null;
         this.destroyed = false;
         this.isFlat = false;
+        this.player = null;
     }
     createSelectionRect(options) {
         this.selectionRect = new Graphics.Rect({
@@ -38,6 +41,7 @@ class Entity extends Graphics.Group {
     }
     draw() {
         if (!this.attrs.visible) return;
+        if (this.COLORIZE) this.image.attrs.image = Sprites.Colorize(this.image.attrs.image, this.player.colour);
         super.draw();
         if (this.HAS_BITMAP_HITMASK) this.setHitmap();
     }
@@ -97,6 +101,6 @@ class Entity extends Graphics.Group {
 Entity.prototype.COST = {
     food: 0, wood: 0, stone: 0, gold: 0
 }
-
+Entity.prototype.COLORIZE = false;
 
 export { Entity };

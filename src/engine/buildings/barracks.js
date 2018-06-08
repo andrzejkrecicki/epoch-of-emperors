@@ -23,8 +23,7 @@ Barracks.prototype.COST = {
 
 Barracks.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/barracks/01_all.png")],
-    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/barracks/01_all.png"))]
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/barracks/01_all.png")]
 };
 
 Barracks.prototype.IMAGE_OFFSETS = {

@@ -49,13 +49,14 @@ ExhaustedFarm.prototype.MAX_AGE = 35 * 45;
 
 
 class DeadBody extends Entity {
-    constructor(subtile_x, subtile_y, position, images, offsets) {
+    constructor(subtile_x, subtile_y, position, images, offsets, player) {
         super(subtile_x, subtile_y);
         this.position(position);
         this.isFlat = true;
         this.imgIdx = 0;
         this.images = images;
         this.offsets = offsets;
+        this.player = player;
         this.setImage();
         this.age = 0;
         this.max_age = this.images.length * 15 * 35;
@@ -84,6 +85,7 @@ class DeadBody extends Entity {
         else if (this.age % (15 * 35) == 0) this.image.image(this.images[++this.imgIdx]);
     }
 }
+DeadBody.prototype.COLORIZE = true;
 
 
 export { TreeStump, ExhaustedFarm, DeadBody }

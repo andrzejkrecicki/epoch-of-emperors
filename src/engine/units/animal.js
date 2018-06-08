@@ -53,5 +53,6 @@ class Animal extends Unit {
 }
 Animal.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 Animal.prototype.DECAY_RATE = 4 * 35;
+Animal.prototype.COLORIZE = false;
 
 export { Animal }

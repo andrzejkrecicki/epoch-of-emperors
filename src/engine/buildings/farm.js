@@ -32,8 +32,7 @@ Farm.prototype.COST = {
 
 Farm.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/farm/all.png")],
-    [Building.prototype.STATE.DENIED]: [Graphics.Filters.RedFilter(Sprites.Sprite("img/buildings/farm/all.png"))]
+    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/farm/all.png")]
 }
 
 Farm.prototype.IMAGE_OFFSETS = {
