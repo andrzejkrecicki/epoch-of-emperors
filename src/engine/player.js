@@ -5,7 +5,7 @@ class Player {
         this.index = definition.index;
         this.name = definition.name;
         this.civ = definition.civ;
-        this.colour = definition.colour;
+        this.color = definition.color;
         this.team = definition.team;
         this.is_cpu = definition.is_cpu;
         this.resources = { ...definition.resources };

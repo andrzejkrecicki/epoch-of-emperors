@@ -1,6 +1,6 @@
-import { PLAYER_COLOURS } from './utils.js';
+import { PLAYER_COLORS } from './utils.js';
 
-class TextButton extends Graphics.Group {
+class TextButton extends Graphics.Node {
     constructor(x, y, textOptions, rectOptions) {
         super({ x, y });
         this.rectOptions = { ...TextButton.DEFAULT_RECT_OPTIONS, ...rectOptions };
@@ -60,14 +60,14 @@ TextButton.DEFAULT_RECT_OPTIONS = {
     moverFill: 'rgba(76, 65, 55, .7)'
 }
 
-class DropDown extends Graphics.Group {
+class DropDown extends Graphics.Node {
     constructor(x, y, width, values, chosenIndex) {
         super({ x, y });
         this.width = width;
         this.values = values;
         this.chosenIndex = chosenIndex;
 
-        this.chosen = new Graphics.Group();
+        this.chosen = new Graphics.Node();
 
         this.rect = new Graphics.Rect({
             ...DropDown.DEFAULT_RECT_OPTIONS,
@@ -85,7 +85,7 @@ class DropDown extends Graphics.Group {
         this.chosen.add(this.valueText);
         this.add(this.chosen);
 
-        this.options = new Graphics.Group({
+        this.options = new Graphics.Node({
             x: 0, y: this.rect.height(),
             visible: false
         });
@@ -153,7 +153,7 @@ DropDown.DEFAULT_TEXT_OPTIONS = {
 }
 
 
-class Option extends Graphics.Group {
+class Option extends Graphics.Node {
     constructor(x, y, text, index, width, height) {
         super({ x, y });
         this.index = index;
@@ -204,13 +204,13 @@ Option.DEFAULT_RECT_OPTIONS = {
 };
 
 
-class ColorSelect extends Graphics.Group {
-    constructor(x, y, colour) {
+class ColorSelect extends Graphics.Node {
+    constructor(x, y, color) {
         super({ x, y });
-        this.colour = colour;
-        this.oldColour = colour;
+        this.color = color;
+        this.oldColour = color;
         this.rect = new Graphics.Rect({
-            fill: PLAYER_COLOURS[this.colour],
+            fill: PLAYER_COLORS[this.color],
             ...ColorSelect.DEFAULT_OPTIONS
         })
         this.add(this.rect);
@@ -221,18 +221,18 @@ class ColorSelect extends Graphics.Group {
         this.on("click", this.click);
     }
     mouseover() {
-        this.oldColour = this.colour;
+        this.oldColour = this.color;
     }
     mouseout() {
-        if (this.oldColour != this.colour) this.fire("update");
+        if (this.oldColour != this.color) this.fire("update");
     }
     mousedown() {
     }
     mouseup() {
     }
     click() {
-        this.colour = (this.colour + 1) % PLAYER_COLOURS.length;
-        this.rect.setFill(PLAYER_COLOURS[this.colour]);
+        this.color = (this.color + 1) % PLAYER_COLORS.length;
+        this.rect.setFill(PLAYER_COLORS[this.color]);
         this.fire("refresh");
     }
 }
@@ -277,7 +277,7 @@ MultiStateButton.DEFAULT_TEXT_OPTIONS = {
 };
 
 
-class CheckBox extends Graphics.Group {
+class CheckBox extends Graphics.Node {
     constructor(x, y, checked, options) {
         super({ x, y });
         this.options = { ...CheckBox.DEFAULT_OPTIONS, ...options };

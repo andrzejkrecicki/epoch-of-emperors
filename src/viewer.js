@@ -216,7 +216,7 @@ GameViewer.prototype.TOOLTIP_OPTIONS = {
 }
 
 
-class MapDrawable extends Graphics.Group {
+class MapDrawable extends Graphics.Node {
     constructor(map, stage, viewPort, offset) {
         super({
             x: -viewPort.x,
@@ -335,7 +335,7 @@ MapDrawable.TERRAIN_IMAGES = TERRAIN_IMAGES;
 MapDrawable.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
 
 
-class TopBar extends Graphics.Group {
+class TopBar extends Graphics.Node {
     constructor() {
         super();
         this.image = new Graphics.Image({
@@ -378,7 +378,7 @@ TopBar.TEXT_OPTIONS = {
 
 
 
-class BottomBar extends Graphics.Group {
+class BottomBar extends Graphics.Node {
     constructor(viewer, x=0, y=0) {
         super({ x: x, y: y });
         this.image = new Graphics.Image({
@@ -408,7 +408,7 @@ class BottomBar extends Graphics.Group {
 BottomBar.IMAGE = Sprites.Sprite("img/interface/greek/bottombar.png");
 
 
-class EntityDetails extends Graphics.Group {
+class EntityDetails extends Graphics.Node {
     constructor() {
         super(...arguments);
         this.add(new Graphics.Rect({
@@ -443,7 +443,7 @@ class EntityDetails extends Graphics.Group {
         this.entity = entity;
         if (this.entity.AVATAR) {
             if (this.entity.player) {
-                this.avatar.image(Sprites.Colorize(this.entity.AVATAR, this.entity.player.colour));
+                this.avatar.image(Sprites.Colorize(this.entity.AVATAR, this.entity.player.color));
             } else {
                 this.avatar.image(this.entity.AVATAR);
             }
@@ -465,7 +465,7 @@ EntityDetails.TEXT_OPTIONS = {
     fill: '#ffffff',
 };
 
-class EntityAttributes extends Graphics.Group {
+class EntityAttributes extends Graphics.Node {
     constructor() {
         super(...arguments);
         for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
@@ -502,7 +502,7 @@ EntityAttributes.ATTRIBUTES = {
     armor: Sprites.Sprite("img/interface/details/armor.png"),
 }
 
-class EntityAttribute extends Graphics.Group {
+class EntityAttribute extends Graphics.Node {
     constructor(image) {
         super();
         this.hide();
@@ -521,7 +521,7 @@ class EntityAttribute extends Graphics.Group {
     }
 }
 
-class HealthBarBig extends Graphics.Group {
+class HealthBarBig extends Graphics.Node {
     constructor() {
         super(...arguments);
         this.init();
@@ -558,7 +558,7 @@ HealthBarBig.BAR_GREEN = Sprites.Sprite('img/interface/details/health_green_big.
 HealthBarBig.BAR_RED = Sprites.Sprite('img/interface/details/health_red_big.png');
 
 
-class EntityActions extends Graphics.Group {
+class EntityActions extends Graphics.Node {
     constructor(viewer, options) {
         super(options);
         this.viewer = viewer;
@@ -599,7 +599,7 @@ class EntityActions extends Graphics.Group {
 }
 
 
-class ActionsSet extends Graphics.Group {
+class ActionsSet extends Graphics.Node {
     constructor(viewer, actions) {
         super();
         this.viewer = viewer;
@@ -622,7 +622,7 @@ class ActionsSet extends Graphics.Group {
 }
 
 
-class ActionButton extends Graphics.Group {
+class ActionButton extends Graphics.Node {
     constructor(Action, pos, viewer) {
         super({ x: pos.x, y: pos.y });
         this.pressed = false;
@@ -632,7 +632,7 @@ class ActionButton extends Graphics.Group {
         this.add(this.bg);
 
         this.img = new Graphics.Image({
-            image: Sprites.Colorize(Action.prototype.IMAGE, viewer.engine.selectedEntity.player.colour),
+            image: Sprites.Colorize(Action.prototype.IMAGE, viewer.engine.selectedEntity.player.color),
             x: ActionButton.prototype.BORDER_WIDTH,
             y: ActionButton.prototype.BORDER_WIDTH,
             hasHitmap: true
@@ -694,7 +694,7 @@ ActionButton.prototype.TEXT_OPTIONS = {
     lineWidth: 2
 }
 
-class ConstructionIndicator extends Graphics.Group {
+class ConstructionIndicator extends Graphics.Node {
     constructor(viewer, options) {
         super(options);
         this.viewer = viewer;
@@ -744,13 +744,13 @@ class ConstructionIndicator extends Graphics.Group {
         ) {
             this.image.image(Sprites.Colorize(
                 this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player.colour
+                this.viewer.engine.selectedEntity.player.color
             ));
             this.allow_construction = true;
         } else {
             this.image.image(Graphics.Filters.RedFilter(Sprites.Colorize(
                 this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player.colour
+                this.viewer.engine.selectedEntity.player.color
             )));
             this.allow_construction = false;
         }
@@ -767,7 +767,7 @@ class ConstructionIndicator extends Graphics.Group {
             y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
             image: Sprites.Colorize(
                 building.prototype.IMAGES[building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player.colour
+                this.viewer.engine.selectedEntity.player.color
             ),
             hasHitmap: true
         }));
@@ -783,7 +783,7 @@ ConstructionIndicator.prototype.MAX_OPACITY = .75;
 ConstructionIndicator.prototype.MIN_OPACITY = .55;
 
 
-class MoverOrderIndicator extends Graphics.Group {
+class MoverOrderIndicator extends Graphics.Node {
     constructor() {
         super();
         this.counter = 0;

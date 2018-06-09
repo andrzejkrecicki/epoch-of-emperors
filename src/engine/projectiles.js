@@ -1,6 +1,6 @@
 import { Sprites } from '../sprites.js';
 
-class LinearProjectile extends Graphics.Group {
+class LinearProjectile extends Graphics.Node {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
         super({
             x: position.x,

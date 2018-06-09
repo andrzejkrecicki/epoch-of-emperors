@@ -1,6 +1,6 @@
 import { Sprites } from '../sprites.js';
 
-class Entity extends Graphics.Group {
+class Entity extends Graphics.Node {
     constructor(subtile_x, subtile_y) {
         super();
         this.subtile_x = subtile_x;
@@ -41,7 +41,7 @@ class Entity extends Graphics.Group {
     }
     draw() {
         if (!this.attrs.visible) return;
-        if (this.COLORIZE) this.image.attrs.image = Sprites.Colorize(this.image.attrs.image, this.player.colour);
+        if (this.COLORIZE) this.image.attrs.image = Sprites.Colorize(this.image.attrs.image, this.player.color);
         super.draw();
         if (this.HAS_BITMAP_HITMASK) this.setHitmap();
     }

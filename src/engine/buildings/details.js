@@ -1,6 +1,6 @@
 import { Sprites } from '../../sprites.js';
 
-class AnimatedDetail extends Graphics.Group {
+class AnimatedDetail extends Graphics.Node {
     constructor() {
         super(...arguments)
         this.frame = 0;

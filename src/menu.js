@@ -2,7 +2,7 @@ import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox, ColorS
 import { Sprites } from './sprites.js';
 import { PlayerDefinition, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
 
-class Menu extends Graphics.Group {
+class Menu extends Graphics.Node {
     constructor(stage, nav) {
         super();
         this.stage = stage;
@@ -139,7 +139,7 @@ class RandomMapMenu extends Menu {
             x: row_offset, y: 80
         }));
 
-        this.playersSection = new Graphics.Group({
+        this.playersSection = new Graphics.Node({
             x: 30,
             y: 120
         });
@@ -362,12 +362,12 @@ class RandomMapMenu extends Menu {
             this.playersSection.add(civDropDown);
             offset.x += RandomMapMenu.CIV_SECTION_WIDTH;
 
-            let colorBtn = new ColorSelect(offset.x + 8, offset.y, this.game_definition.players[i].colour);
+            let colorBtn = new ColorSelect(offset.x + 8, offset.y, this.game_definition.players[i].color);
             this.playersSection.add(colorBtn);
             colorBtn.on("update", function() {
                 for (let player of that.game_definition.players) {
-                    if (player.colour == this.oldColour) player.colour = this.colour;
-                    else if (player.colour == this.colour) player.colour = this.oldColour;
+                    if (player.color == this.oldColour) player.color = this.color;
+                    else if (player.color == this.color) player.color = this.oldColour;
                 }
                 that.playersSection.removeChildren();
                 that.initialziePlayersSection();

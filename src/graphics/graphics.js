@@ -339,11 +339,6 @@ class GridPreview extends Layer {
 }
 
 
-class Group extends Node {
-    constructor(options) {
-        super(options || {});
-    }
-}
 class Rect extends Node {
     constructor(options) {
         super(options || {});
@@ -640,7 +635,6 @@ window.Graphics = {
     Layer: Layer,
     HitlessLayer: HitlessLayer,
     GridPreview: GridPreview,
-    Group: Group,
     Rect: Rect,
     Text: Text,
     StrokedText: StrokedText,

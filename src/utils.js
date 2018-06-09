@@ -1,5 +1,5 @@
 class PlayerDefinition {
-    constructor(index, name, civ, colour, team=null, is_cpu=true) {
+    constructor(index, name, civ, color, team=null, is_cpu=true) {
         this.index = index;
         this.name = name;
         if (civ === null) {
@@ -13,7 +13,7 @@ class PlayerDefinition {
             stone: 400,
             gold: 400
         };
-        this.colour = colour;
+        this.color = color;
         this.team = team;
         this.is_cpu = is_cpu;
     }
@@ -29,7 +29,7 @@ let RESOURCE_TYPES = {
 
 let RESOURCE_NAME = [null, "food", "wood", "stone", "gold"]
 
-let PLAYER_COLOURS = [
+let PLAYER_COLORS = [
     'rgb(39, 63, 143)',
     'rgb(227, 11, 0)',
     'rgb(255, 255, 0)',
@@ -101,7 +101,7 @@ var rect_intersection = function(r1, r2) {
 }
 
 export {
-    PlayerDefinition, PLAYER_COLOURS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
+    PlayerDefinition, PLAYER_COLORS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
     to_binary, leftpad, rand_choice, rect_intersection, distance,
     manhatan_subtile_distance, RESOURCE_TYPES, RESOURCE_NAME
 }
