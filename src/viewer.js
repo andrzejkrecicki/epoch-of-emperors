@@ -443,7 +443,7 @@ class EntityDetails extends Graphics.Node {
         this.entity = entity;
         if (this.entity.AVATAR) {
             if (this.entity.player) {
-                this.avatar.image(Sprites.Colorize(this.entity.AVATAR, this.entity.player.color));
+                this.avatar.image(Sprites.Colorize(this.entity.AVATAR, this.entity.player));
             } else {
                 this.avatar.image(this.entity.AVATAR);
             }
@@ -632,7 +632,7 @@ class ActionButton extends Graphics.Node {
         this.add(this.bg);
 
         this.img = new Graphics.Image({
-            image: Sprites.Colorize(Action.prototype.IMAGE, viewer.engine.selectedEntity.player.color),
+            image: Sprites.Colorize(Action.prototype.IMAGE, viewer.engine.selectedEntity.player),
             x: ActionButton.prototype.BORDER_WIDTH,
             y: ActionButton.prototype.BORDER_WIDTH,
             hasHitmap: true
@@ -744,13 +744,13 @@ class ConstructionIndicator extends Graphics.Node {
         ) {
             this.image.image(Sprites.Colorize(
                 this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player.color
+                this.viewer.engine.selectedEntity.player
             ));
             this.allow_construction = true;
         } else {
             this.image.image(Graphics.Filters.RedFilter(Sprites.Colorize(
                 this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player.color
+                this.viewer.engine.selectedEntity.player
             )));
             this.allow_construction = false;
         }
@@ -767,7 +767,7 @@ class ConstructionIndicator extends Graphics.Node {
             y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
             image: Sprites.Colorize(
                 building.prototype.IMAGES[building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player.color
+                this.viewer.engine.selectedEntity.player
             ),
             hasHitmap: true
         }));

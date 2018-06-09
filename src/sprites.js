@@ -12,7 +12,9 @@ const Sprites = {
     ready: new Promise(function(resolve) {
         _resolve = resolve;
     }),
-    Colorize(img, player_idx) {
+    Colorize(img, player) {
+        if (!player) return img;
+
         let canvas = document.createElement("canvas");
         canvas.width = img.width;
         canvas.height = img.height;
@@ -24,7 +26,7 @@ const Sprites = {
         for (let i = 0; i < data.data.length; i += 4) {
             let color = rgb(data.data[i], data.data[i + 1], data.data[i + 2]);
             if (color in color_idx) {
-                color = palette[player_idx][color_idx[color]];
+                color = palette[player.color][color_idx[color]];
                 data.data[i] = color[0];
                 data.data[i + 1] = color[1];
                 data.data[i + 2] = color[2];

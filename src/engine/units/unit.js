@@ -1,4 +1,5 @@
 import { Entity } from '../entity.js';
+import { Sprites } from '../../sprites.js';
 
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, rotation=null) {
@@ -8,9 +9,6 @@ class Unit extends Entity {
         this.state = this.STATE.IDLE;
         this.rotation = rotation != null ? rotation : Math.floor(Math.random() * 8);
         this.frame = 0;
-        this.createSelectionRect();
-        this.setImage();
-        this.resetBoundingBox();
         this.path = null;
         this.path_progress = 0;
         this.interaction = null;
@@ -19,19 +17,23 @@ class Unit extends Entity {
         this.hasFullPath = false;
         this.player = player;
         this.player.addUnit(this);
+
+        this.setImage();
+        this.createSelectionRect();
+        this.resetBoundingBox();
     }
     setImage() {
         this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
-            image: this.IMAGES[this.state][this.rotation][this.frame],
+            image: Sprites.Colorize(this.IMAGES[this.state][this.rotation][this.frame], this.COLORIZE && this.player),
             hasHitmap: true
         });
         this.add(this.image);
     }
     updateSprite() {
         this.frame %= this.IMAGES[this.state][this.rotation].length;
-        this.image.image(this.IMAGES[this.state][this.rotation][this.frame]);
+        this.image.image(Sprites.Colorize(this.IMAGES[this.state][this.rotation][this.frame], this.COLORIZE && this.player));
         this.image.x(-this.IMAGE_OFFSETS[this.state].x);
         this.image.y(-this.IMAGE_OFFSETS[this.state].y);
     }

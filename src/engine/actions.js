@@ -14,7 +14,7 @@ class Action {
     constructor(viewer) {
         this.viewer = viewer;
         this.entity = this.viewer.engine.selectedEntity;
-        this.player = this.viewer.engine.current_player;
+        this.player = this.entity.player;
         this.failed = false;
     }
     toolTip() {

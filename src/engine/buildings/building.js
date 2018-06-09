@@ -12,24 +12,25 @@ class Building extends Entity {
         this.isComplete = false;
         this.attributes.progress = "0%";
         this.state = this.STATE.CONSTRUCTION;
-        this.createSelectionRect();
-        this.setImage();
-        this.resetBoundingBox();
         this.tasks = [];
         this.tasks_counts = {};
         this.player = player;
         this.player.addBuilding(this);
+
+        this.setImage();
+        this.createSelectionRect();
+        this.resetBoundingBox();
     }
     setImage() {
         this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS[this.state].x,
             y: -this.IMAGE_OFFSETS[this.state].y,
-            image: this.IMAGES[this.state][this.construction_stage],
+            image: Sprites.Colorize(this.IMAGES[this.state][this.construction_stage], this.COLORIZE && this.player),
         });
         this.add(this.image);
     }
     updateImage() {
-        this.image.image(this.IMAGES[this.state][this.construction_stage]);
+        this.image.image(Sprites.Colorize(this.IMAGES[this.state][this.construction_stage], this.COLORIZE && this.player));
         this.image.x(-this.IMAGE_OFFSETS[this.state].x);
         this.image.y(-this.IMAGE_OFFSETS[this.state].y);
     }

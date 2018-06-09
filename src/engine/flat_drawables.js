@@ -65,7 +65,7 @@ class DeadBody extends Entity {
         this.add(this.image = new Graphics.Image({
             x: -this.offsets.x,
             y: -this.offsets.y,
-            image: this.images[this.imgIdx]
+            image: Sprites.Colorize(this.images[this.imgIdx], player)
         }))
     }
     resetBoundingBox() {
@@ -85,7 +85,6 @@ class DeadBody extends Entity {
         else if (this.age % (15 * 35) == 0) this.image.image(this.images[++this.imgIdx]);
     }
 }
-DeadBody.prototype.COLORIZE = true;
 
 
 export { TreeStump, ExhaustedFarm, DeadBody }
