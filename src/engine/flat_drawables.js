@@ -28,7 +28,7 @@ class FlatDrawable extends Entity {
         return this.boundingBox;
     }
     process(engine) {
-        if (++this.age > this.MAX_AGE) this.destroy(engine);
+        if (++this.age >= this.MAX_AGE) this.destroy(engine);
     }
 }
 FlatDrawable.prototype.SUBTILE_WIDTH = 0;
@@ -65,7 +65,7 @@ class DeadBody extends Entity {
         this.add(this.image = new Graphics.Image({
             x: -this.offsets.x,
             y: -this.offsets.y,
-            image: Sprites.Colorize(this.images[this.imgIdx], player)
+            image: Sprites.Colorize(this.images[this.imgIdx], this.player)
         }))
     }
     resetBoundingBox() {
@@ -81,8 +81,10 @@ class DeadBody extends Entity {
     }
     process(engine) {
         ++this.age;
-        if (this.age > this.max_age) this.destroy(engine);
-        else if (this.age % (15 * 35) == 0) this.image.image(this.images[++this.imgIdx]);
+        if (this.age >= this.max_age) this.destroy(engine);
+        else if (this.age % (15 * 35) == 0) {
+            this.image.image(Sprites.Colorize(this.images[++this.imgIdx], this.player));
+        }
     }
 }
 
