@@ -8,7 +8,14 @@ class Granary extends Building {
     }
 }
 Granary.prototype.NAME = "Granary";
-Granary.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/granary_01_greek.png");
+Granary.prototype.AVATAR = [
+    [
+        Sprites.Sprite("img/interface/avatars/granary_01_greek.png"),
+        Sprites.Sprite("img/interface/avatars/granary_01_greek.png"),
+        Sprites.Sprite("img/interface/avatars/granary_01_greek.png"),
+        Sprites.Sprite("img/interface/avatars/granary_04_greek.png")
+    ]
+];
 Granary.prototype.MAX_HP = 350;
 Granary.prototype.SUBTILE_WIDTH = 5;
 
@@ -19,22 +26,53 @@ Granary.prototype.COST = {
 
 Granary.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/granary/01_greek.png")]
+    [Building.prototype.STATE.DONE]: [
+        [
+            [Sprites.Sprite("img/buildings/granary/01_greek.png")],
+            [Sprites.Sprite("img/buildings/granary/01_greek.png")],
+            [Sprites.Sprite("img/buildings/granary/01_greek.png")],
+            [Sprites.Sprite("img/buildings/granary/01_greek.png")]
+        ]
+    ]
 }
 
 Granary.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
-    [Building.prototype.STATE.DONE]: { x: -11, y: 70 }
+    [Building.prototype.STATE.DONE]: [
+        [{ x: -11, y: 70 }, { x: -11, y: 70 }, { x: -11, y: 70 }, { x: -11, y: 70 }]
+    ]
 }
 
 Granary.prototype.HITMAP = {
     ...Building.prototype.HITMAP,
-    [Granary.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
-        Sprites.Sprite("img/buildings/base_hit_big.png"),
-        Sprites.Sprite("img/buildings/granary/01_greek.png"),
-        Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-        Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-    )
+    [Granary.prototype.STATE.DONE]: [
+        [
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/granary/01_greek.png"),
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/granary/01_greek.png"),
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/granary/01_greek.png"),
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/granary/01_greek.png"),
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
+                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
+            )
+        ]
+    ]
 }
 
 export { Granary }

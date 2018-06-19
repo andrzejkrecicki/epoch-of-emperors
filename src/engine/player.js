@@ -1,7 +1,7 @@
 import { manhatan_subtile_distance } from '../utils.js';
 
 class Player {
-    constructor(definition) {
+    constructor(definition, map) {
         this.index = definition.index;
         this.name = definition.name;
         this.civ = definition.civ;
@@ -11,8 +11,12 @@ class Player {
         this.resources = { ...definition.resources };
         this.population = 0;
         this.max_population = Player.prototype.DEFAULT_POPULATION;
+        this.age = map.startingAge;
+
         this.units = [];
         this.buildings = [];
+        this.possessions = {};
+        this.defaultEntityLevel = {};
     }
     addBuilding(building) {
         this.buildings.push(building);

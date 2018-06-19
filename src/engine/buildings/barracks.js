@@ -12,7 +12,14 @@ class Barracks extends Building {
     }
 }
 Barracks.prototype.NAME = "Barracks";
-Barracks.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/barracks_all_1.png");
+Barracks.prototype.AVATAR = [
+    [
+        Sprites.Sprite("img/interface/avatars/barracks_01_all.png"),
+        Sprites.Sprite("img/interface/avatars/barracks_01_all.png"),
+        Sprites.Sprite("img/interface/avatars/barracks_03_greek.png"),
+        Sprites.Sprite("img/interface/avatars/barracks_04_greek.png")
+    ]
+];
 Barracks.prototype.MAX_HP = 350;
 Barracks.prototype.SUBTILE_WIDTH = 5;
 
@@ -23,22 +30,53 @@ Barracks.prototype.COST = {
 
 Barracks.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/barracks/01_all.png")]
+    [Building.prototype.STATE.DONE]: [
+        [
+            [Sprites.Sprite("img/buildings/barracks/01_all.png")],
+            [Sprites.Sprite("img/buildings/barracks/01_all.png")],
+            [Sprites.Sprite("img/buildings/barracks/01_all.png")],
+            [Sprites.Sprite("img/buildings/barracks/01_all.png")]
+        ]
+    ]
 };
 
 Barracks.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
-    [Building.prototype.STATE.DONE]: { x: 11, y: 82 }
+    [Building.prototype.STATE.DONE]: [
+        [{ x: 11, y: 82 }, { x: 11, y: 82 }, { x: 11, y: 82 }, { x: 11, y: 82 }]
+    ]
 }
 
 Barracks.prototype.HITMAP = {
     ...Building.prototype.HITMAP,
-    [Barracks.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
-        Sprites.Sprite("img/buildings/base_hit_big.png"),
-        Sprites.Sprite("img/buildings/barracks/01_all.png"),
-        Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-        Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-    )
+    [Barracks.prototype.STATE.DONE]: [
+        [
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/barracks/01_all.png"),
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/barracks/01_all.png"),
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/barracks/01_all.png"),
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/barracks/01_all.png"),
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
+                Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
+            )
+        ]
+    ]
 };
 
 

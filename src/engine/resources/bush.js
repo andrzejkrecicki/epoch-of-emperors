@@ -22,39 +22,11 @@ class Bush extends Entity {
         }
         return 0;
     }
-    setImage() {
-        this.image = new Graphics.Image({
-            x: -this.IMAGE_OFFSET.x,
-            y: -this.IMAGE_OFFSET.y,
-            image: this.IMAGE,
-            hasHitmap: true,
-        });
-        this.add(this.image);
+    getOffset() {
+        return this.IMAGE_OFFSET;
     }
-    createSelectionRect() {
-        super.createSelectionRect({
-            x: -this.IMAGE_OFFSET.x,
-            y: -this.IMAGE_OFFSET.y,
-            width: this.IMAGE.width,
-            height: this.IMAGE.height
-        });
-    }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() - this.IMAGE_OFFSET.x,
-            y: this.y() - this.IMAGE_OFFSET.y,
-            w: this.image.width(),
-            h: this.image.height()
-        }
-    }
-    getBoundingBox() {
-        return this.boundingBox;
-    }
-    height() {
-        return this.image.height();
-    }
-    width() {
-        return this.image.width();
+    getSprite() {
+        return this.IMAGE;
     }
 }
 Bush.prototype.MAX_HP = 25;

@@ -5,9 +5,9 @@ import { leftpad } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 
 class TownCenter extends Building {
-    get ACTIONS() {
+    actions() {
         if (this.isComplete) return [
-            Actions.RecruitUnitFactory(Villager)
+            Actions.RecruitUnitFactory(Villager),
         ]; else return null;
     }
     acceptsResource(type) {
@@ -15,7 +15,14 @@ class TownCenter extends Building {
     }
 }
 TownCenter.prototype.NAME = "Town Center";
-TownCenter.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/town_center_01_all.png");
+TownCenter.prototype.AVATAR = [
+    [
+        Sprites.Sprite("img/interface/avatars/town_center_01_all.png"),
+        Sprites.Sprite("img/interface/avatars/town_center_02_all.png"),
+        Sprites.Sprite("img/interface/avatars/town_center_03_greek.png"),
+        Sprites.Sprite("img/interface/avatars/town_center_04_greek.png")
+    ]
+];
 TownCenter.prototype.MAX_HP = 600;
 TownCenter.prototype.SUBTILE_WIDTH = 5;
 
@@ -26,22 +33,53 @@ TownCenter.prototype.COST = {
 
 TownCenter.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/town_center/01_all.png")]
+    [Building.prototype.STATE.DONE]: [
+        [
+            [Sprites.Sprite("img/buildings/town_center/01_all.png")],
+            [Sprites.Sprite("img/buildings/town_center/02_all.png")],
+            [Sprites.Sprite("img/buildings/town_center/01_all.png")],
+            [Sprites.Sprite("img/buildings/town_center/01_all.png")]
+        ]
+    ]
 }
 
 TownCenter.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
-    [Building.prototype.STATE.DONE]: { x: 3, y: 54 }
+    [Building.prototype.STATE.DONE]: [
+        [{ x: 3, y: 54 }, { x: 10, y: 61 }, { x: 10, y: 61 }, { x: 10, y: 61 }]
+    ]
 }
 
 TownCenter.prototype.HITMAP = {
     ...Building.prototype.HITMAP,
-    [TownCenter.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
-        Sprites.Sprite("img/buildings/base_hit_big.png"),
-        Sprites.Sprite("img/buildings/town_center/01_all.png"),
-        TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-        TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-    )
+    [TownCenter.prototype.STATE.DONE]: [
+        [
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/town_center/01_all.png"),
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/town_center/02_all.png"),
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/town_center/01_all.png"),
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/town_center/01_all.png"),
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
+                TownCenter.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
+            )
+        ]
+    ]
 }
 
 export { TownCenter }

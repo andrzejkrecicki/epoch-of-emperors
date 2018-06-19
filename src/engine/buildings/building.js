@@ -21,34 +21,11 @@ class Building extends Entity {
         this.createSelectionRect();
         this.resetBoundingBox();
     }
-    setImage() {
-        this.image = new Graphics.Image({
-            x: -this.IMAGE_OFFSETS[this.state].x,
-            y: -this.IMAGE_OFFSETS[this.state].y,
-            image: Sprites.Colorize(this.IMAGES[this.state][this.construction_stage], this.COLORIZE && this.player),
-        });
-        this.add(this.image);
+    getSprite() {
+        return this.IMAGES[this.state][this.player.civ][this.level][this.construction_stage];
     }
-    updateImage() {
-        this.image.image(Sprites.Colorize(this.IMAGES[this.state][this.construction_stage], this.COLORIZE && this.player));
-        this.image.x(-this.IMAGE_OFFSETS[this.state].x);
-        this.image.y(-this.IMAGE_OFFSETS[this.state].y);
-    }
-    createSelectionRect() {
-        super.createSelectionRect({
-            x: Math.round(-this.IMAGE_OFFSETS[this.state].x),
-            y: Math.round(-this.IMAGE_OFFSETS[this.state].y),
-            width: this.IMAGES[this.state][this.construction_stage].width,
-            height: this.IMAGES[this.state][this.construction_stage].height
-        });
-    }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() -this.IMAGE_OFFSETS[this.state].x,
-            y: this.y() -this.IMAGE_OFFSETS[this.state].y,
-            w: this.IMAGES[this.state][this.construction_stage].width,
-            h: this.IMAGES[this.state][this.construction_stage].height
-        }
+    getOffset() {
+        return this.IMAGE_OFFSETS[this.state][this.player.civ][this.level];
     }
     setComplete() {
         this.hp = this.MAX_HP;
@@ -58,17 +35,30 @@ class Building extends Entity {
         this.attributes.progress = null;
         this.updateImage();
         this.actions_changed = true;
+        this.player.possessions[this.constructor.name] = (this.player.possessions[this.constructor.name] || 0) + 1;
+    }
+    actions() {
+        return null;
+    }
+    get ACTIONS() {
+        let actions = this.actions();
+        if (this.tasks.length) {
+            if (this.tasks[0].SUPPORTS_QUEUE) return actions.filter((a) => a.prototype.SUPPORTS_QUEUE);
+            else return actions.filter((a) => this.tasks[0] instanceof a);
+        } else return actions;
     }
     constructionTick() {
         ++this.hp;
         this.attributes.progress = Math.floor(100 * this.hp / this.MAX_HP) + "%";
+        let img_seq = this.IMAGES[Building.prototype.STATE.CONSTRUCTION][this.player.civ][this.player.age];
         if (this.hp == this.MAX_HP) this.setComplete();
-        else if (this.hp % Math.ceil(this.MAX_HP / this.IMAGES[Building.prototype.STATE.CONSTRUCTION].length) == 0) {
+        else if (this.hp % Math.ceil(this.MAX_HP / img_seq.length) == 0) {
             ++this.construction_stage;
             this.updateImage();
         }
     }
     addTask(task) {
+        if (!task.SUPPORTS_QUEUE && this.tasks.length) return;
         this.tasks.push(task);
         if (task.SUPPORTS_QUEUE) this.tasks_counts[task.HASH] = (this.tasks_counts[task.HASH] || 0) + 1;
         this.actions_changed = true;
@@ -91,6 +81,12 @@ class Building extends Entity {
             }
         }
     }
+    getPixelPerfectHitmap() {
+        return this.HITMAP[this.state][this.player.civ][this.level];
+    }
+    getAvatar() {
+        return this.AVATAR[this.player.civ][this.level];
+    }
     takeHit(value, attacker, engine) {
         this.hp -= value;
         if (this.hp <= 0) {
@@ -104,15 +100,6 @@ class Building extends Entity {
     canConstructOn(terrain_counts) {
         return terrain_counts.get(TERRAIN_TYPES.WATER) == null;
     }
-    getBoundingBox() {
-        return this.boundingBox;
-    }
-    height() {
-        return this.image.height();
-    }
-    width() {
-        return this.image.width();
-    }
 }
 Building.prototype.HAS_BITMAP_HITMASK = true;
 Building.prototype.INTERACT_WHEN_COMPLETE = false;
@@ -125,18 +112,43 @@ Building.prototype.STATE = {
     DENIED: 100,
 }
 Building.prototype.IMAGES = {
-    [Building.prototype.STATE.CONSTRUCTION]: Sprites.SpriteSequence("img/buildings/construction_big_", 4)
+    [Building.prototype.STATE.CONSTRUCTION]: [
+        [
+            Sprites.SpriteSequence("img/buildings/construction_big_", 4),
+            Sprites.SpriteSequence("img/buildings/construction_big_", 4),
+            Sprites.SpriteSequence("img/buildings/construction_big_", 4),
+            Sprites.SpriteSequence("img/buildings/construction_big_", 4)
+        ]
+    ]
 }
 
 Building.prototype.IMAGE_OFFSETS = {
-    [Building.prototype.STATE.CONSTRUCTION]: { x: 5, y: 47 }
+    [Building.prototype.STATE.CONSTRUCTION]: [
+        [{ x: 5, y: 47 }, { x: 5, y: 47 }, { x: 5, y: 47 }, { x: 5, y: 47 }]
+    ]
 }
 
 Building.prototype.HITMAP = {
-    [Building.prototype.STATE.CONSTRUCTION]: Graphics.Filters.BasicHitmask(
-        Sprites.Sprite("img/buildings/base_hit_big.png"),
-        Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION]
-    )
+    [Building.prototype.STATE.CONSTRUCTION]: [
+        [
+            Graphics.Filters.BasicHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0]
+            ),
+            Graphics.Filters.BasicHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1]
+            ),
+            Graphics.Filters.BasicHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2]
+            ),
+            Graphics.Filters.BasicHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3]
+            )
+        ]
+    ]
 }
 
 export { Building }

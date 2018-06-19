@@ -25,40 +25,11 @@ class GoldMine extends Entity {
         }
         return 0;
     }
-    setImage() {
-        this.image = new Graphics.Image({
-            x: -this.IMAGE_OFFSETS.x,
-            y: -this.IMAGE_OFFSETS.y,
-            image: this.IMAGES[this.imgChoice],
-            hasHitmap: true
-        });
-        this.add(this.image);
+    getOffset() {
+        return this.IMAGE_OFFSETS;
     }
-    createSelectionRect() {
-        let referenceSprite = this.IMAGES[this.imgChoice];
-        super.createSelectionRect({
-            x: Math.round(-this.IMAGE_OFFSETS.x),
-            y: Math.round(-this.IMAGE_OFFSETS.y),
-            width: referenceSprite.width,
-            height: referenceSprite.height
-        })
-    }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() - this.IMAGE_OFFSETS.x,
-            y: this.y() - this.IMAGE_OFFSETS.y,
-            w: this.image.width(),
-            h: this.image.height()
-        }
-    }
-    getBoundingBox() {
-        return this.boundingBox;
-    }
-    height() {
-        return this.image.height();
-    }
-    width() {
-        return this.image.width();
+    getSprite() {
+        return this.IMAGES[this.imgChoice];
     }
 }
 GoldMine.prototype.SUBTILE_WIDTH = 2;

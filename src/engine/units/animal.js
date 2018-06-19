@@ -50,6 +50,9 @@ class Animal extends Unit {
             this.hasPrelocatedArea = false;
         }
     }
+    getAvatar() {
+        return this.AVATAR;
+    }
 }
 Animal.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 Animal.prototype.DECAY_RATE = 4 * 35;

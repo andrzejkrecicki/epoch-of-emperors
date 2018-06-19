@@ -17,14 +17,12 @@ class ClubMan extends Unit {
         if (object instanceof Unit || object instanceof Building) return interactions.AttackInteraction;
     }
     get ACTIONS() {
-        if (this.state & Unit.prototype.STATE.IDLE) return [
-            Actions.StandGround
-        ]; else return [Actions.StandGround, Actions.Stop]
+        return [Actions.StandGround, Actions.Stop];
     }
 }
 ClubMan.prototype.SUBTILE_WIDTH = 1;
 ClubMan.prototype.NAME = "Clubman";
-ClubMan.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/clubman.png");
+ClubMan.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/clubman.png")];
 ClubMan.prototype.MAX_HP = 40;
 ClubMan.prototype.SPEED = 1;
 ClubMan.prototype.CREATION_TIME = 26 * 35;

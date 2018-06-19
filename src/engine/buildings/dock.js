@@ -21,7 +21,14 @@ class Dock extends Building {
     }
 }
 Dock.prototype.NAME = "Dock";
-Dock.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/dock_01_all.png");
+Dock.prototype.AVATAR = [
+    [
+        Sprites.Sprite("img/interface/avatars/dock_01_all.png"),
+        Sprites.Sprite("img/interface/avatars/dock_01_all.png"),
+        Sprites.Sprite("img/interface/avatars/dock_03_greek.png"),
+        Sprites.Sprite("img/interface/avatars/dock_04_greek.png")
+    ]
+];
 Dock.prototype.MAX_HP = 350;
 Dock.prototype.SUBTILE_WIDTH = 4;
 
@@ -31,24 +38,64 @@ Dock.prototype.COST = {
 }
 
 Dock.prototype.IMAGES = {
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/dock/01_all.png")],
-    [Building.prototype.STATE.CONSTRUCTION]: Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3)
+    [Building.prototype.STATE.DONE]: [
+        [
+            [Sprites.Sprite("img/buildings/dock/01_all.png")],
+            [Sprites.Sprite("img/buildings/dock/01_all.png")],
+            [Sprites.Sprite("img/buildings/dock/01_all.png")],
+            [Sprites.Sprite("img/buildings/dock/01_all.png")]
+        ]
+    ],
+    [Building.prototype.STATE.CONSTRUCTION]: [
+        [
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3),
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3),
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3),
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3)
+        ]
+    ]
 }
 
 
 Dock.prototype.IMAGE_OFFSETS = {
-    [Building.prototype.STATE.CONSTRUCTION]: { x: -21, y: 36 },
-    [Building.prototype.STATE.DONE]: { x: -22, y: 36 }
+    [Building.prototype.STATE.CONSTRUCTION]: [
+        [{ x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }]
+    ],
+    [Building.prototype.STATE.DONE]: [
+        [{ x: -22, y: 36 }, { x: -22, y: 36 }, { x: -22, y: 36 }, { x: -22, y: 36 }]
+    ]
 }
 
 Dock.prototype.HITMAP = {
     ...Building.prototype.HITMAP,
-    [Dock.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
-        Sprites.Sprite("img/buildings/base_hit_big.png"),
-        Sprites.Sprite("img/buildings/dock/01_all.png"),
-        Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-        Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-    )
+    [Dock.prototype.STATE.DONE]: [
+        [
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/dock/01_all.png"),
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/dock/01_all.png"),
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/dock/01_all.png"),
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/dock/01_all.png"),
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
+                Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
+            )
+        ]
+    ]
 }
 
 

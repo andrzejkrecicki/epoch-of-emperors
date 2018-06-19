@@ -26,9 +26,7 @@ class Villager extends Unit {
         this.carriedResource = RESOURCE_TYPES.NONE;
     }
     get ACTIONS() {
-        if (this.state & Unit.prototype.STATE.IDLE) return [
-            Actions.Build, Actions.Repair
-        ]; else return [
+        return [
             Actions.Build, Actions.Repair, Actions.Stop
         ];
     }
@@ -75,7 +73,7 @@ class Villager extends Unit {
 }
 Villager.prototype.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = "Villager";
-Villager.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/villager.png");
+Villager.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/villager.png")];
 Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.CREATION_TIME = 20 * 35;

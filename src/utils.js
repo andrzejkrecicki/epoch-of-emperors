@@ -42,34 +42,29 @@ let PLAYER_COLORS = [
 
 
 let CIVILIZATIONS = {
-    EGYPTIAN: {
-        index: 0,
-        name: "Egyptian"
-    },
-    BABYLONIAN: {
-        index: 1,
-        name: "Babylonian"
-    },
-    GREEK: {
-        index: 2,
-        name: "Greek"
-    },
-    ASIATIC: {
-        index: 3,
-        name: "Asiatic"
-    },
-    0: "Egyptian",
-    1: "Babylonian",
-    2: "Greek",
+    GREEK: 0,
+    EGYPTIAN: 1,
+    BABYLONIAN: 2,
+    ASIATIC: 3,
+    0: "Greek",
+    1: "Egyptian",
+    2: "Babylonian",
     3: "Asiatic",
     length: 4
 }
 let CIVILIZATIONS_NAMES = [
+    "Greek",
     "Egyptian",
     "Babylonian",
-    "Greek",
     "Asiatic"
-]
+];
+
+let AGES = {
+    STONE_AGE: 0,
+    TOOL_AGE: 1,
+    BRONZE_AGE: 2,
+    IRON_AGE: 3,
+}
 
 var to_binary = function(num) {
     let bin = (+num).toString(2);
@@ -103,5 +98,5 @@ var rect_intersection = function(r1, r2) {
 export {
     PlayerDefinition, PLAYER_COLORS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
     to_binary, leftpad, rand_choice, rect_intersection, distance,
-    manhatan_subtile_distance, RESOURCE_TYPES, RESOURCE_NAME
+    manhatan_subtile_distance, RESOURCE_TYPES, RESOURCE_NAME, AGES
 }

@@ -5,10 +5,12 @@ import { StoragePit } from './buildings/storage_pit.js';
 import { Dock } from './buildings/dock.js';
 import { Granary } from './buildings/granary.js';
 import { House } from './buildings/house.js';
+import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
 import { rand_choice } from '../utils.js';
 import { MapDrawable } from '../viewer.js';
 import { Sprites } from '../sprites.js';
+
 
 class Action {
     constructor(viewer) {
@@ -16,6 +18,7 @@ class Action {
         this.entity = this.viewer.engine.selectedEntity;
         this.player = this.entity.player;
         this.failed = false;
+        this.progress = null;
     }
     toolTip() {
         let chunks = [this.TOOLTIP];
@@ -27,6 +30,13 @@ class Action {
     getCost() {
         return null;
     }
+    checkCost(cost) {
+        let deficit = this.player.deficitResource(cost);
+        if (deficit != null) {
+            this.viewer.setErrorMessage(`Not enough ${deficit}.`);
+            return false;
+        } else return true;
+    }
     costToString(cost) {
         let result = [];
         if (cost.wood) result.push(`Wood: ${cost.wood}`);
@@ -34,6 +44,15 @@ class Action {
         if (cost.gold) result.push(`Gold: ${cost.gold}`);
         if (cost.stone) result.push(`Stone: ${cost.stone}`);
         return result.join(" ");
+    }
+    static isPossible() {
+        return true;
+    }
+    static isVisible() {
+        return true;
+    }
+    static getImage() {
+        return this.prototype.IMAGE;
     }
     execute() { }
     init() {
@@ -68,12 +87,7 @@ RejectConstructionPlan.prototype.POS = {
 let CreateBuildingFactory = function(Building) {
     class CreateBuilding extends Action {
         execute() {
-            let deficit = this.player.deficitResource(this.BUILDING.prototype.COST);
-            if (deficit != null) {
-                this.viewer.setErrorMessage(`Not enough ${deficit}.`);
-                return;
-            }
-
+            if (this.checkCost(this.BUILDING.prototype.COST) == false) return;
             this.viewer.isPlanningConstruction = true;
             this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
             this.viewer.constructionIndicator.setBuilding(this.BUILDING);
@@ -82,22 +96,21 @@ let CreateBuildingFactory = function(Building) {
         getCost() {
             return this.BUILDING.prototype.COST;
         }
+        static getImage(entity) {
+            return Building.prototype.AVATAR[entity.player.civ][entity.player.age];
+        }
         handleClick(e) {
             if (e.evt.button == 2 || e.evt.which == 3) this.rejectConstruction(e);
             else this.confirmConstruction(e);
         }
         confirmConstruction(e) {
             if (!this.viewer.constructionIndicator.allow_construction) return;
-
-            let deficit = this.player.deficitResource(this.BUILDING.prototype.COST);
-            if (deficit != null) {
-                this.viewer.setErrorMessage(`Not enough ${deficit}.`);
-                return;
-            }
+            if (this.checkCost(this.BUILDING.prototype.COST) == false) return;
             this.player.subtractResources(this.BUILDING.prototype.COST);
 
             let sub = this.viewer.constructionIndicator.sub;
             let building = new this.BUILDING(sub.x, sub.y, this.player);
+            building.level = this.player.age;
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);
             this.viewer.constructionIndicator.removeChildren();
@@ -113,7 +126,6 @@ let CreateBuildingFactory = function(Building) {
             this.viewer.isPlanningConstruction = false;
         }
     }
-    CreateBuilding.prototype.IMAGE = Building.prototype.AVATAR;
     CreateBuilding.prototype.BUILDING = Building;
     CreateBuilding.prototype.TOOLTIP = `Build ${Building.prototype.NAME}`;
     CreateBuilding.prototype.ACTION_KEY = Building.prototype.ACTION_KEY;
@@ -201,6 +213,9 @@ Repair.prototype.TOOLTIP = "Repair";
 Repair.prototype.ACTION_KEY = "R";
 
 class Stop extends Action {
+    static isVisible(viewer) {
+        return !(viewer.engine.selectedEntity.state & Unit.prototype.STATE.IDLE);
+    }
 }
 Stop.prototype.IMAGE = Sprites.Sprite("img/interface/command/stop.png");
 Stop.prototype.TOOLTIP = "Stop";
@@ -210,11 +225,7 @@ Stop.prototype.ACTION_KEY = "S";
 let RecruitUnitFactory = function(Unit) {
     class RecruitUnit extends Action {
         execute() {
-            let deficit = this.player.deficitResource(this.UNIT.prototype.COST);
-            if (deficit != null) {
-                this.viewer.setErrorMessage(`Not enough ${deficit}.`);
-                return;
-            }
+            if (this.checkCost(this.UNIT.prototype.COST) == false) return;
             this.player.subtractResources(this.UNIT.prototype.COST);
             this.entity.addTask(this);
         }
@@ -248,6 +259,9 @@ let RecruitUnitFactory = function(Unit) {
         }
         getCost() {
             return this.UNIT.prototype.COST;
+        }
+        static getImage(entity) {
+            return Unit.prototype.AVATAR[entity.player.defaultEntityLevel[Unit.name] || 0];
         }
         time() {
             return this.UNIT.prototype.CREATION_TIME;
@@ -287,12 +301,11 @@ let RecruitUnitFactory = function(Unit) {
             return rand_choice(possible_areas);
         }
     }
-    RecruitUnit.prototype.IMAGE = Unit.prototype.AVATAR;
     RecruitUnit.prototype.TOOLTIP = `Create ${Unit.prototype.NAME}`;
     RecruitUnit.prototype.ACTION_KEY = Unit.prototype.ACTION_KEY;
     RecruitUnit.prototype.UNIT = Unit;
     RecruitUnit.prototype.SUPPORTS_QUEUE = true;
-    RecruitUnit.prototype.HASH = Unit.prototype.NAME;
+    RecruitUnit.prototype.HASH = Unit.constructor.name;
     return RecruitUnit;
 }
 
@@ -301,4 +314,4 @@ let Actions = {
     StandGround, Build, Repair, Stop, RecruitUnitFactory
 }
 
-export { Actions };
+export { Actions, Action };

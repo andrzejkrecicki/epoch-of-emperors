@@ -394,7 +394,7 @@ class RandomMapMenu extends Menu {
     getDefaultGameDefinition() {
         return {
             players: [
-                new PlayerDefinition(0, "You", null, 0, null),
+                new PlayerDefinition(0, "You", 0, 0, null),
                 new PlayerDefinition(1, "Computer 1", null, 1, null, true),
                 new PlayerDefinition(2, "Computer 2", null, 2, null, true),
                 new PlayerDefinition(3, "Computer 3", null, 3, null, true)
@@ -402,7 +402,7 @@ class RandomMapMenu extends Menu {
             map: {
                 size: 0,
                 type: 2,
-                startingAge: 1,
+                startingAge: 0,
                 resources: 1,
                 difficulty: 2,
                 revealMap: false,
@@ -419,7 +419,7 @@ RandomMapMenu.PLAYER_SECTION_WIDTH = 90;
 RandomMapMenu.DEFAULT_PLAYERS_NUMBER = 4;
 RandomMapMenu.MAP_SIZES = ["Small", "Medium", "Large"];
 RandomMapMenu.MAP_TYPES = ["Small Islands", "Large Islands", "Coastal", "Inland"];
-RandomMapMenu.AGES = ["Nomad", "Stone Age", "Tool Age", "Bronze Age", "Iron Age"];
+RandomMapMenu.AGES = [/*"Nomad", */"Stone Age", "Tool Age", "Bronze Age", "Iron Age"];
 RandomMapMenu.RESOURCES = ["Small", "Medium", "High"];
 RandomMapMenu.DIFFICULTY = ["Easiest", "Easy", "Moderate", "Hard", "Hardest"];
 

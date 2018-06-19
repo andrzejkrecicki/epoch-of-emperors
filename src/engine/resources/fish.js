@@ -13,12 +13,13 @@ class FishBig extends Entity {
         this.createSelectionRect();
 
         this.frame = 0;
+        this._frame = 0;
         this.setImage();
         this.resetBoundingBox();
     }
     draw() {
         super.draw();
-        this.frame = (this.frame + .5) % this.IMAGES.length;
+        this.frame = ((++this._frame) >> 0) % this.IMAGES.length
         this.image.image(this.IMAGES[Math.floor(this.frame)]);
     }
     getResource(engine) {
@@ -28,39 +29,11 @@ class FishBig extends Entity {
         }
         return 0;
     }
-    setImage() {
-        this.image = new Graphics.Image({
-            x: -this.IMAGE_OFFSET.x,
-            y: -this.IMAGE_OFFSET.y,
-            image: this.IMAGES[0],
-            hasHitmap: true
-        });
-        this.add(this.image);
+    getOffset() {
+        return this.IMAGE_OFFSET;
     }
-    createSelectionRect() {
-        super.createSelectionRect({
-            x: -this.IMAGE_OFFSET.x,
-            y: -this.IMAGE_OFFSET.y,
-            width: this.IMAGES[0].width,
-            height: this.IMAGES[0].height
-        });
-    }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() - this.IMAGE_OFFSET.x,
-            y: this.y() - this.IMAGE_OFFSET.y,
-            w: this.image.width(),
-            h: this.image.height()
-        }
-    }
-    getBoundingBox() {
-        return this.boundingBox;
-    }
-    height() {
-        return this.image.height();
-    }
-    width() {
-        return this.image.width();
+    getSprite() {
+        return this.IMAGES[this.state][this.frame];
     }
 }
 FishBig.prototype.MAX_HP = 25;

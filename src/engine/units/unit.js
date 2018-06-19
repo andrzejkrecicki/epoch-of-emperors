@@ -22,36 +22,20 @@ class Unit extends Entity {
         this.createSelectionRect();
         this.resetBoundingBox();
     }
-    setImage() {
-        this.image = new Graphics.Image({
-            x: -this.IMAGE_OFFSETS[this.state].x,
-            y: -this.IMAGE_OFFSETS[this.state].y,
-            image: Sprites.Colorize(this.IMAGES[this.state][this.rotation][this.frame], this.COLORIZE && this.player),
-            hasHitmap: true
-        });
-        this.add(this.image);
+    getSprite() {
+        return this.IMAGES[this.state][this.rotation][this.frame];
+    }
+    getOffset() {
+        return this.IMAGE_OFFSETS[this.state];
     }
     updateSprite() {
         this.frame %= this.IMAGES[this.state][this.rotation].length;
-        this.image.image(Sprites.Colorize(this.IMAGES[this.state][this.rotation][this.frame], this.COLORIZE && this.player));
-        this.image.x(-this.IMAGE_OFFSETS[this.state].x);
-        this.image.y(-this.IMAGE_OFFSETS[this.state].y);
+        this.image.image(Sprites.Colorize(this.getSprite(), this.COLORIZE && this.player));
+        this.image.x(-this.getOffset().x);
+        this.image.y(-this.getOffset().y);
     }
-    createSelectionRect() {
-        super.createSelectionRect({
-            x: Math.round(-this.IMAGE_OFFSETS[this.state].x),
-            y: Math.round(-this.IMAGE_OFFSETS[this.state].y),
-            width: this.IMAGES[this.state][this.rotation][this.frame].width,
-            height: this.IMAGES[this.state][this.rotation][this.frame].height
-        })
-    }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() -this.IMAGE_OFFSETS[this.state].x,
-            y: this.y() -this.IMAGE_OFFSETS[this.state].y,
-            w: this.IMAGES[this.state][this.rotation][this.frame].width,
-            h: this.IMAGES[this.state][this.rotation][this.frame].height
-        }
+    getAvatar() {
+        return this.AVATAR[this.level];
     }
     destroy(engine) {
         super.destroy(engine);
@@ -144,15 +128,6 @@ class Unit extends Entity {
     }
     terminateInteraction() {
         this.interaction && this.interaction.terminate();
-    }
-    getBoundingBox() {
-        return this.boundingBox;
-    }
-    height() {
-        return this.image.height();
-    }
-    width() {
-        return this.image.width();
     }
 }
 Unit.prototype.TOOLTIP = "Click to select this unit.";

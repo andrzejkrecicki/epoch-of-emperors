@@ -19,7 +19,14 @@ class Farm extends Building {
     }
 }
 Farm.prototype.NAME = "Farm";
-Farm.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/farm.png");
+Farm.prototype.AVATAR = [
+    [
+        Sprites.Sprite("img/interface/avatars/farm.png"),
+        Sprites.Sprite("img/interface/avatars/farm.png"),
+        Sprites.Sprite("img/interface/avatars/farm.png"),
+        Sprites.Sprite("img/interface/avatars/farm.png")
+    ]
+];
 Farm.prototype.MAX_HP = 50;
 Farm.prototype.SUBTILE_WIDTH = 5;
 Farm.prototype.INTERACT_WHEN_COMPLETE = true;
@@ -32,22 +39,53 @@ Farm.prototype.COST = {
 
 Farm.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
-    [Building.prototype.STATE.DONE]: [Sprites.Sprite("img/buildings/farm/all.png")]
+    [Building.prototype.STATE.DONE]: [
+        [
+            [Sprites.Sprite("img/buildings/farm/all.png")],
+            [Sprites.Sprite("img/buildings/farm/all.png")],
+            [Sprites.Sprite("img/buildings/farm/all.png")],
+            [Sprites.Sprite("img/buildings/farm/all.png")]
+        ]
+    ]
 }
 
 Farm.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
-    [Building.prototype.STATE.DONE]: { x: 17, y: 44 }
+    [Building.prototype.STATE.DONE]: [
+        [{ x: 17, y: 44 }, { x: 17, y: 44 }, { x: 17, y: 44 }, { x: 17, y: 44 }]
+    ]
 }
 
 Farm.prototype.HITMAP = {
     ...Building.prototype.HITMAP,
-    [Farm.prototype.STATE.DONE]: Graphics.Filters.ComposeHitmask(
-        Sprites.Sprite("img/buildings/base_hit_big.png"),
-        Sprites.Sprite("img/buildings/farm/all.png"),
-        Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION],
-        Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE]
-    )
+    [Farm.prototype.STATE.DONE]: [
+        [
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/farm/all.png"),
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/farm/all.png"),
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/farm/all.png"),
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
+            ),
+            Graphics.Filters.ComposeHitmask(
+                Sprites.Sprite("img/buildings/base_hit_big.png"),
+                Sprites.Sprite("img/buildings/farm/all.png"),
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
+                Farm.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
+            )
+        ]
+    ]
 }
 
 export { Farm }

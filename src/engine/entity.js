@@ -1,3 +1,5 @@
+import { Sprites } from '../sprites.js';
+
 class Entity extends Graphics.Node {
     constructor(subtile_x, subtile_y) {
         super();
@@ -14,13 +16,18 @@ class Entity extends Graphics.Node {
         this.destroyed = false;
         this.isFlat = false;
         this.player = null;
+        this.wasConverted = false;
+        this.level = 0;
     }
-    createSelectionRect(options) {
+    createSelectionRect() {
         this.selectionRect = new Graphics.Rect({
             stroke: 'white',
             strokeWidth: 1,
             visible: false,
-            ...options
+            x: Math.round(-this.getOffset().x),
+            y: Math.round(-this.getOffset().y),
+            width: this.getSprite().width,
+            height: this.getSprite().height
         });
         this.add(this.selectionRect);
     }
@@ -43,20 +50,24 @@ class Entity extends Graphics.Node {
         if (this.HAS_BITMAP_HITMASK) this.setHitmap();
     }
     setHitmap() {
-        this.HITMAP[this.state].ctx.fillStyle = this.image.hitColor;
+        let hitmap = this.getPixelPerfectHitmap();
+        hitmap.ctx.fillStyle = this.image.hitColor;
         // hitmask bitmaps use source-in as a composite operation
         // therefore fillRect bellow does not overlay whole hitmask
         // but instead repaints only its non-transparent pixels
-        this.HITMAP[this.state].ctx.fillRect(
+        hitmap.ctx.fillRect(
             0, 0,
-            this.HITMAP[this.state].width,
-            this.HITMAP[this.state].height
+            hitmap.width,
+            hitmap.height
         );
 
-        this.layer.hitmap.drawImage(this.HITMAP[this.state].ctx.canvas,
-            this.absX() - this.HITMAP[this.state].offset.x,
-            this.absY() - this.HITMAP[this.state].offset.y
+        this.layer.hitmap.drawImage(hitmap.ctx.canvas,
+            this.absX() - hitmap.offset.x,
+            this.absY() - hitmap.offset.y
         );
+    }
+    getPixelPerfectHitmap() {
+        return null;
     }
     getCenterSubtile() {
         return {
@@ -79,22 +90,53 @@ class Entity extends Graphics.Node {
             Math.abs(center_1.subtile_y - center_2.subtile_y) <= dist
         );
     }
-    destroy(engine) {
-        this.destroyed = true;
-        this.remove();
-        engine.destroyEntity(this);
+    setImage() {
+        this.image = new Graphics.Image({
+            x: -this.getOffset().x,
+            y: -this.getOffset().y,
+            image: Sprites.Colorize(this.getSprite(), this.COLORIZE && this.player),
+            hasHitmap: !this.HAS_BITMAP_HITMASK && this.HAS_HITMASK
+        });
+        this.add(this.image);
+    }
+    getAvatar() {
+        return this.AVATAR;
+    }
+    updateImage() {
+        this.image.image(Sprites.Colorize(this.getSprite(), this.COLORIZE && this.player));
+        this.image.x(-this.getOffset().x);
+        this.image.y(-this.getOffset().y);
     }
     resetBoundingBox() {
+        this.boundingBox = {
+            x: this.x() -this.getOffset().x,
+            y: this.y() -this.getOffset().y,
+            w: this.getSprite().width,
+            h: this.getSprite().height
+        }
     }
-    boundingBox() {
+    getBoundingBox() {
+        return this.boundingBox;
     }
-    setImage() {
+    height() {
+        return this.image.height();
+    }
+    width() {
+        return this.image.width();
     }
     setSelected(value) {
         this.selected = !!value;
         this.selectionRect.setVisible(this.selected);
     }
+    destroy(engine) {
+        if (this.player) --this.player.possessions[this.constructor.name];
+        this.destroyed = true;
+        this.remove();
+        engine.destroyEntity(this);
+    }
 }
+Entity.prototype.HAS_BITMAP_HITMASK = false;
+Entity.prototype.HAS_HITMASK = true;
 Entity.prototype.COST = {
     food: 0, wood: 0, stone: 0, gold: 0
 }

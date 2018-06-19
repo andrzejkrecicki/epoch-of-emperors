@@ -38,40 +38,11 @@ class Tree extends Entity {
         }
         return 0;
     }
-    setImage() {
-        this.image = new Graphics.Image({
-            x: -this.IMAGE_OFFSETS[this.state][this.imgChoice].x,
-            y: -this.IMAGE_OFFSETS[this.state][this.imgChoice].y,
-            image: this.IMAGES[this.state][this.imgChoice],
-            hasHitmap: true
-        });
-        this.add(this.image);
+    getOffset() {
+        return this.IMAGE_OFFSETS[this.state][this.imgChoice];
     }
-    createSelectionRect() {
-        let referenceSprite = this.IMAGES[this.state][this.imgChoice];
-        super.createSelectionRect({
-            x: Math.round(-this.IMAGE_OFFSETS[this.state][this.imgChoice].x),
-            y: Math.round(-this.IMAGE_OFFSETS[this.state][this.imgChoice].y),
-            width: referenceSprite.width,
-            height: referenceSprite.height
-        })
-    }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() - this.IMAGE_OFFSETS[this.state][this.imgChoice].x,
-            y: this.y() - this.IMAGE_OFFSETS[this.state][this.imgChoice].y,
-            w: this.image.width(),
-            h: this.image.height()
-        }
-    }
-    getBoundingBox() {
-        return this.boundingBox;
-    }
-    height() {
-        return this.image.height();
-    }
-    width() {
-        return this.image.width();
+    getSprite() {
+        return this.IMAGES[this.state][this.imgChoice];
     }
 }
 Tree.prototype.MAX_HP = 25;

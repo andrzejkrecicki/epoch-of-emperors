@@ -9,23 +9,11 @@ class FlatDrawable extends Entity {
         this.imgIdx = 0;
         this.setImage();
     }
-    setImage() {
-        this.add(this.image = new Graphics.Image({
-            x: -this.IMAGE_OFFSET.x,
-            y: -this.IMAGE_OFFSET.y,
-            image: this.IMAGES[this.imgIdx]
-        }))
+    getSprite() {
+        return this.IMAGES[this.imgIdx];
     }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() - this.IMAGE_OFFSET.x,
-            y: this.y() - this.IMAGE_OFFSET.y,
-            w: this.image.width(),
-            h: this.image.height()
-        }
-    }
-    getBoundingBox() {
-        return this.boundingBox;
+    getOffset() {
+        return this.IMAGE_OFFSET;
     }
     process(engine) {
         if (++this.age >= this.MAX_AGE) this.destroy(engine);
@@ -33,6 +21,7 @@ class FlatDrawable extends Entity {
 }
 FlatDrawable.prototype.SUBTILE_WIDTH = 0;
 FlatDrawable.prototype.MAX_AGE = Infinity;
+FlatDrawable.prototype.HAS_HITMASK = false;
 
 
 class TreeStump extends FlatDrawable {
@@ -61,23 +50,11 @@ class DeadBody extends Entity {
         this.age = 0;
         this.max_age = this.images.length * 15 * 35;
     }
-    setImage() {
-        this.add(this.image = new Graphics.Image({
-            x: -this.offsets.x,
-            y: -this.offsets.y,
-            image: Sprites.Colorize(this.images[this.imgIdx], this.player)
-        }))
+    getSprite() {
+        return this.images[this.imgIdx];
     }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() - this.offsets.x,
-            y: this.y() - this.offsets.y,
-            w: this.image.width(),
-            h: this.image.height()
-        }
-    }
-    getBoundingBox() {
-        return this.boundingBox;
+    getOffset() {
+        return this.offsets;
     }
     process(engine) {
         ++this.age;

@@ -5,6 +5,7 @@ import { Sprites } from './sprites.js';
 import { Tree, LeafTree } from './engine/trees.js';
 import { Villager } from './engine/units/villager.js';
 import { Unit } from './engine/units/unit.js';
+import { Building } from './engine/buildings/building.js';
 import { Entity } from './engine/entity.js';
 import { MINIMAP_PIXEL_COLORS, TERRAIN_IMAGES } from './mapdrawable_assets.js';
 
@@ -443,9 +444,9 @@ class EntityDetails extends Graphics.Node {
         this.entity = entity;
         if (this.entity.AVATAR) {
             if (this.entity.player) {
-                this.avatar.image(Sprites.Colorize(this.entity.AVATAR, this.entity.player));
+                this.avatar.image(Sprites.Colorize(this.entity.getAvatar(), this.entity.player));
             } else {
-                this.avatar.image(this.entity.AVATAR);
+                this.avatar.image(this.entity.getAvatar());
             }
             this.avatar.show();
         } else {
@@ -569,7 +570,7 @@ class EntityActions extends Graphics.Node {
             this.states = [];
             this.removeChildren();
         }
-        if (entity.ACTIONS) this.pushActions(entity.ACTIONS);
+        if (entity.ACTIONS) this.pushActions(entity.ACTIONS.filter((a) => a.isVisible(this.viewer)));
     }
     pushActions(actions) {
         if (this.states.length) this.removeChildren();
@@ -626,26 +627,32 @@ class ActionButton extends Graphics.Node {
     constructor(Action, pos, viewer) {
         super({ x: pos.x, y: pos.y });
         this.pressed = false;
+        this.viewer = viewer;
+        this.possible = Action.isPossible(viewer);
         this.bg = new Graphics.Image({
             image: ActionButton.prototype.BACKGROUND_IMAGE,
         })
         this.add(this.bg);
 
+        let entity = viewer.engine.selectedEntity;
+
         this.img = new Graphics.Image({
-            image: Sprites.Colorize(Action.prototype.IMAGE, viewer.engine.selectedEntity.player),
+            image: Sprites.Colorize(Action.getImage(entity), entity.player),
             x: ActionButton.prototype.BORDER_WIDTH,
             y: ActionButton.prototype.BORDER_WIDTH,
             hasHitmap: true
         });
+        if (!this.possible) this.img.opacity(.75);
         this.add(this.img);
 
         this.text = null;
-        if (Action.prototype.SUPPORTS_QUEUE && viewer.engine.selectedEntity.tasks_counts[Action.prototype.HASH]) {
+        if (Action.prototype.SUPPORTS_QUEUE && entity.tasks_counts[Action.prototype.HASH]) {
             this.add(this.text = new Graphics.StrokedText(this.TEXT_OPTIONS));
-            this.text.text(viewer.engine.selectedEntity.tasks_counts[Action.prototype.HASH]);
+            this.text.text(entity.tasks_counts[Action.prototype.HASH]);
         }
 
-        this.img.on("click", function(e) {
+        this.img.on("click", (e) => {
+            if (!this.possible) return;
             let action = new Action(viewer);
             action.execute();
         });
@@ -667,6 +674,9 @@ class ActionButton extends Graphics.Node {
     draw() {
         if (!this.attrs.visible) return;
         this.bg.draw();
+        let oldAlpha = this.layer.ctx.globalAlpha;
+        this.layer.ctx.globalAlpha *= this.img.attrs.opacity;
+
         this.layer.ctx.drawImage(
             this.img.attrs.image,
             0, 0,
@@ -677,6 +687,7 @@ class ActionButton extends Graphics.Node {
             this.img.attrs.image.width - this.pressed,
             this.img.attrs.image.height - this.pressed
         );
+        this.layer.ctx.globalAlpha = oldAlpha;
         if (this.text) this.text.draw();
         this.img.setHitmap();
     }
@@ -737,23 +748,27 @@ class ConstructionIndicator extends Graphics.Node {
     checkSubtiles() {
         let W = this.building.prototype.SUBTILE_WIDTH;
         let map = this.viewer.engine.map;
+        let player = this.viewer.engine.selectedEntity.player;
+
         if (this.sub.x >= 0 && this.sub.x + W <= map.edge_size * 2 &&
             this.sub.y >= 0 && this.sub.y + W <= map.edge_size * 2 &&
             map.areSubtilesEmpty(this.sub.x, this.sub.y, W) &&
             this.building.prototype.canConstructOn(map.countTerrainTiles(this.sub.x, this.sub.y, W))
         ) {
-            this.image.image(Sprites.Colorize(
-                this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player
-            ));
+            this.image.image(Sprites.Colorize(this.getSprite(), player));
             this.allow_construction = true;
         } else {
-            this.image.image(Graphics.Filters.RedFilter(Sprites.Colorize(
-                this.building.prototype.IMAGES[this.building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player
-            )));
+            this.image.image(Graphics.Filters.RedFilter(Sprites.Colorize(this.getSprite(), player)));
             this.allow_construction = false;
         }
+    }
+    getSprite() {
+        let player = this.viewer.engine.selectedEntity.player;
+        return this.building.prototype.IMAGES[Building.prototype.STATE.DONE][player.civ][player.age][0];
+    }
+    getOffset() {
+        let player = this.viewer.engine.selectedEntity.player;
+        return this.building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][player.civ][player.age];
     }
     process() {
         if (!this.viewer.isPlanningConstruction) return;
@@ -762,13 +777,11 @@ class ConstructionIndicator extends Graphics.Node {
     }
     setBuilding(building) {
         this.building = building;
+        let player = this.viewer.engine.selectedEntity.player;
         this.add(this.image = new Graphics.Image({
-            x: - building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].x,
-            y: -building.prototype.IMAGE_OFFSETS[building.prototype.STATE.DONE].y,
-            image: Sprites.Colorize(
-                building.prototype.IMAGES[building.prototype.STATE.DONE][0],
-                this.viewer.engine.selectedEntity.player
-            ),
+            x: - this.getOffset().x,
+            y: -this.getOffset().y,
+            image: Sprites.Colorize(this.getSprite(), player),
             hasHitmap: true
         }));
         this.move();
