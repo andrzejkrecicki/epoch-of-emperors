@@ -16,8 +16,8 @@ StoragePit.prototype.AVATAR = [
     [
         Sprites.Sprite("img/interface/avatars/storage_pit_01_all.png"),
         Sprites.Sprite("img/interface/avatars/storage_pit_01_all.png"),
-        Sprites.Sprite("img/interface/avatars/storage_pit_03_all.png"),
-        Sprites.Sprite("img/interface/avatars/storage_pit_04_all.png")
+        Sprites.Sprite("img/interface/avatars/storage_pit_03_greek.png"),
+        Sprites.Sprite("img/interface/avatars/storage_pit_04_greek.png")
     ]
 ];
 StoragePit.prototype.MAX_HP = 350;
