@@ -12,17 +12,19 @@ class House extends Building {
     setComplete() {
         super.setComplete();
 
-        this.fire_small.position({
-            x: 50 - this.getOffset().x,
-            y: 30 - this.getOffset().y
-        });
-        this.fire_small.show();
+        if (this.level == 0) {
+            this.fire_small.position({
+                x: 50 - this.getOffset().x,
+                y: 30 - this.getOffset().y
+            });
+            this.fire_small.show();
 
-        this.smoke_small.position({
-            x: 51 - this.getOffset().x,
-            y: 23 - this.getOffset().y
-        });
-        this.smoke_small.show();
+            this.smoke_small.position({
+                x: 51 - this.getOffset().x,
+                y: 23 - this.getOffset().y
+            });
+            this.smoke_small.show();
+        }
 
         this.player.max_population += House.prototype.PEOPLE_PER_HOUSE;
         let that = this;
@@ -31,6 +33,11 @@ class House extends Building {
                 return `${that.player.population}/${that.player.max_population}`;
             }
         }
+    }
+    levelUp() {
+        super.levelUp();
+        this.fire_small.hide();
+        this.smoke_small.hide();
     }
     destroy(engine) {
         super.destroy(engine);

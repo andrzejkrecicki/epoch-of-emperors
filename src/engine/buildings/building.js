@@ -37,6 +37,10 @@ class Building extends Entity {
         this.actions_changed = true;
         this.player.possessions[this.constructor.name] = (this.player.possessions[this.constructor.name] || 0) + 1;
     }
+    levelUp() {
+        ++this.level;
+        this.updateImage();
+    }
     actions() {
         return null;
     }

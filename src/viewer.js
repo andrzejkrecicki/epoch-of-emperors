@@ -657,7 +657,7 @@ class ActionButton extends Graphics.Node {
             action.execute();
         });
         this.img.on("mousedown", (e) => {
-            this.pressed = true;
+            if (this.possible) this.pressed = true;
         });
         this.img.on("mouseup", (e) => {
             this.pressed = false;
