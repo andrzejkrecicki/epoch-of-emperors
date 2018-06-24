@@ -21,7 +21,7 @@ class ClubMan extends Unit {
     }
 }
 ClubMan.prototype.SUBTILE_WIDTH = 1;
-ClubMan.prototype.NAME = "Clubman";
+ClubMan.prototype.NAME = ["Clubman", "Axeman"];
 ClubMan.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/clubman.png")];
 ClubMan.prototype.MAX_HP = 40;
 ClubMan.prototype.SPEED = 1;
@@ -46,19 +46,19 @@ ClubMan.prototype.FRAME_RATE = {
 
 
 ClubMan.prototype.IMAGES = {
-    [ClubMan.prototype.STATE.IDLE]: Sprites.DirectionSprites("img/units/clubman/idle/", 6),
-    [ClubMan.prototype.STATE.MOVING]: Sprites.DirectionSprites("img/units/clubman/moving/", 15),
-    [ClubMan.prototype.STATE.ATTACK]: Sprites.DirectionSprites("img/units/clubman/attack/", 15),
-    [ClubMan.prototype.STATE.DYING]: Sprites.DirectionSprites("img/units/clubman/dying/", 10),
-    [ClubMan.prototype.STATE.DEAD]: Sprites.DirectionSprites("img/units/clubman/dead/", 6),
+    [ClubMan.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/clubman/idle/", 6)],
+    [ClubMan.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/clubman/moving/", 15)],
+    [ClubMan.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/clubman/attack/", 15)],
+    [ClubMan.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/clubman/dying/", 10)],
+    [ClubMan.prototype.STATE.DEAD]: [Sprites.DirectionSprites("img/units/clubman/dead/", 6)],
 };
 
 ClubMan.prototype.IMAGE_OFFSETS = {
-    [ClubMan.prototype.STATE.IDLE]: { x: 3, y: 34 },
-    [ClubMan.prototype.STATE.MOVING]: { x: 2, y: 34 },
-    [ClubMan.prototype.STATE.ATTACK]: { x: 27, y: 45 },
-    [ClubMan.prototype.STATE.DYING]: { x: 50, y: 40 },
-    [ClubMan.prototype.STATE.DEAD]: { x: 55, y: 29 },
+    [ClubMan.prototype.STATE.IDLE]: [{ x: 3, y: 34 }, { x: 4, y: 35 }],
+    [ClubMan.prototype.STATE.MOVING]: [{ x: 2, y: 34 }, { x: 6, y: 35 }],
+    [ClubMan.prototype.STATE.ATTACK]: [{ x: 27, y: 45 }, { x: 30, y: 43 }],
+    [ClubMan.prototype.STATE.DYING]: [{ x: 50, y: 40 }, { x: 47, y: 39 }],
+    [ClubMan.prototype.STATE.DEAD]: [{ x: 55, y: 29 }, { x: 52, y: 23 }],
 };
 
 export { ClubMan }

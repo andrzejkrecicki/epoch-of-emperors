@@ -23,19 +23,22 @@ class Unit extends Entity {
         this.resetBoundingBox();
     }
     getSprite() {
-        return this.IMAGES[this.state][this.rotation][this.frame];
+        return this.IMAGES[this.state][this.level][this.rotation][this.frame];
     }
     getOffset() {
-        return this.IMAGE_OFFSETS[this.state];
+        return this.IMAGE_OFFSETS[this.state][this.level];
     }
     updateSprite() {
-        this.frame %= this.IMAGES[this.state][this.rotation].length;
+        this.frame %= this.IMAGES[this.state][this.level][this.rotation].length;
         this.image.image(Sprites.Colorize(this.getSprite(), this.COLORIZE && this.player));
         this.image.x(-this.getOffset().x);
         this.image.y(-this.getOffset().y);
     }
     getAvatar() {
         return this.AVATAR[this.level];
+    }
+    getName() {
+        return this.NAME[this.level];
     }
     destroy(engine) {
         super.destroy(engine);

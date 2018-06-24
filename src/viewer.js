@@ -452,7 +452,7 @@ class EntityDetails extends Graphics.Node {
         } else {
             this.avatar.hide();
         }
-        this.name.text(this.entity.NAME);
+        this.name.text(this.entity.getName());
         this.healthBar.setValue(this.entity.hp / this.entity.max_hp);
         this.hp.text(`${this.entity.hp}/${this.entity.max_hp}`);
 

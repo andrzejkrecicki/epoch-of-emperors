@@ -359,8 +359,8 @@ class Engine {
                 entity.subtile_x,
                 entity.subtile_y,
                 entity.position(),
-                entity.IMAGES[entity.state][entity.rotation],
-                entity.IMAGE_OFFSETS[entity.state],
+                entity.IMAGES[entity.state][entity.level][entity.rotation],
+                entity.IMAGE_OFFSETS[entity.state][entity.level],
                 entity.player
             );
             this.drawables.push(dead);

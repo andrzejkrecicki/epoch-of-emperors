@@ -102,6 +102,9 @@ class Entity extends Graphics.Node {
     getAvatar() {
         return this.AVATAR;
     }
+    getName() {
+        return this.NAME;
+    }
     updateImage() {
         this.image.image(Sprites.Colorize(this.getSprite(), this.COLORIZE && this.player));
         this.image.x(-this.getOffset().x);

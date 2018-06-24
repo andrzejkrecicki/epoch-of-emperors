@@ -28,7 +28,7 @@ class FishingBoat extends Unit {
     }
 }
 FishingBoat.prototype.SUBTILE_WIDTH = 2;
-FishingBoat.prototype.NAME = "Fishing Boat";
+FishingBoat.prototype.NAME = ["Fishing Boat"];
 FishingBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/fishing_boat.png")];
 FishingBoat.prototype.MAX_HP = 45;
 FishingBoat.prototype.SPEED = 2;
@@ -59,9 +59,9 @@ FishingBoat.prototype.IMAGES[FishingBoat.prototype.STATE.MOVING] = FishingBoat.p
 
 
 FishingBoat.prototype.IMAGE_OFFSETS = {
-    [FishingBoat.prototype.STATE.IDLE]: { x: 0, y: 29 },
-    [FishingBoat.prototype.STATE.MOVING]: { x: 0, y: 29 },
-    [FishingBoat.prototype.STATE.FISHING]: { x: 0, y: 29 },
+    [FishingBoat.prototype.STATE.IDLE]: [{ x: 0, y: 29 }],
+    [FishingBoat.prototype.STATE.MOVING]: [{ x: 0, y: 29 }],
+    [FishingBoat.prototype.STATE.FISHING]: [{ x: 0, y: 29 }],
 };
 
 

@@ -227,7 +227,7 @@ class HunterInteraction extends Interaction {
         } else if (this.active.ticks_waited == this.RATE) {
             this.engine.makeProjectile(Spear, this.active, this.passive);
             // this.active.hit(this.passive, engine);
-        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER][0].length) {
+        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER][this.active.level][0].length) {
             this.engine.interactOrder(this.active, this.passive);
         }
     }
@@ -302,7 +302,7 @@ class AttackInteraction extends Interaction {
             return;
         } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
             this.active.hit(this.passive, this.engine);
-        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.ATTACK][0].length) {
+        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.ATTACK][this.active.level][0].length) {
             this.active.ticks_waited = 0;
         }
         this.active.rotateToEntity(this.passive);
