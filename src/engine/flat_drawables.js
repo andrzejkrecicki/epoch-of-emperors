@@ -64,6 +64,9 @@ class DeadBody extends Entity {
         }
     }
 }
+DeadBody.prototype.SUBTILE_WIDTH = 0;
+DeadBody.prototype.HAS_HITMASK = false;
+DeadBody.prototype.COLORIZE = true;
 
 
 export { TreeStump, ExhaustedFarm, DeadBody }
