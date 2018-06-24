@@ -1,5 +1,6 @@
 import { Action } from './base_action.js';
 import { Sprites } from '../sprites.js';
+import { ClubMan } from './units/clubman.js';
 
 class Technology extends Action {
     getCost() {
@@ -19,15 +20,15 @@ class Technology extends Action {
 }
 
 class ToolAge extends Technology {
-    static isVisible(viewer) {
-        return !viewer.engine.selectedEntity.player.possessions.ToolAge;
+    static isVisible(entity) {
+        return !entity.player.possessions.ToolAge;
     }
-    static isPossible(viewer) {
+    static isPossible(entity) {
         return (
-            +!!viewer.engine.selectedEntity.player.possessions.Barracks +
-            +!!viewer.engine.selectedEntity.player.possessions.StoragePit +
-            +!!viewer.engine.selectedEntity.player.possessions.Granary +
-            +!!viewer.engine.selectedEntity.player.possessions.Dock
+            +!!entity.player.possessions.Barracks +
+            +!!entity.player.possessions.StoragePit +
+            +!!entity.player.possessions.Granary +
+            +!!entity.player.possessions.Dock
         ) >= 2;
     }
     finalize() {
@@ -50,8 +51,41 @@ ToolAge.prototype.COST = {
     food: 500, wood: 0, stone: 0, gold: 0
 }
 
+
+class BattleAxe extends Technology {
+    static isVisible(entity) {
+        return true;
+        return entity.player.possessions.ToolAge && !entity.player.possessions.BattleAxe;
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit instanceof ClubMan) {
+                unit.levelUp();
+                unit.max_hp += 10;
+                unit.hp += 10;
+                unit.attributes.attack += 2;
+            }
+        }
+        this.player.defaultEntityLevel.ClubMan = 1;
+        super.finalize();
+        return true;
+    }
+}
+BattleAxe.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/battle_axe.png");
+BattleAxe.prototype.TOOLTIP = "Upgrade to Battle Axe";
+BattleAxe.prototype.TIME = 200;
+BattleAxe.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+BattleAxe.prototype.COST = {
+    food: 100, wood: 0, stone: 0, gold: 0
+}
+
+
 let Technologies = {
-    ToolAge
+    ToolAge,
+    BattleAxe
 }
 
 export { Technologies };

@@ -570,7 +570,7 @@ class EntityActions extends Graphics.Node {
             this.states = [];
             this.removeChildren();
         }
-        if (entity.ACTIONS) this.pushActions(entity.ACTIONS.filter((a) => a.isVisible(this.viewer)));
+        if (entity.ACTIONS) this.pushActions(entity.ACTIONS.filter((a) => a.isVisible(entity)));
     }
     pushActions(actions) {
         if (this.states.length) this.removeChildren();
@@ -626,15 +626,15 @@ class ActionsSet extends Graphics.Node {
 class ActionButton extends Graphics.Node {
     constructor(Action, pos, viewer) {
         super({ x: pos.x, y: pos.y });
+        let entity = viewer.engine.selectedEntity;
+
         this.pressed = false;
         this.viewer = viewer;
-        this.possible = Action.isPossible(viewer);
+        this.possible = Action.isPossible(entity);
         this.bg = new Graphics.Image({
             image: ActionButton.prototype.BACKGROUND_IMAGE,
         })
         this.add(this.bg);
-
-        let entity = viewer.engine.selectedEntity;
 
         this.img = new Graphics.Image({
             image: Sprites.Colorize(Action.getImage(entity), entity.player),
@@ -663,7 +663,7 @@ class ActionButton extends Graphics.Node {
             this.pressed = false;
         });
         this.img.on("mouseover", (e) => {
-            viewer.tooltip.text(Action.prototype.toolTip());
+            viewer.tooltip.text(Action.prototype.toolTip(entity.player));
             viewer.tooltip.show();
         });
         this.img.on("mouseout", (e) => {

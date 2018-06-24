@@ -6,12 +6,15 @@ class Action {
         this.failed = false;
         this.progress = null;
     }
-    toolTip() {
-        let chunks = [this.TOOLTIP];
+    toolTip(player) {
+        let chunks = this.toolTipChunks(player);
         if (this.ACTION_KEY) chunks.push(`(${this.ACTION_KEY})`);
         let cost = this.getCost();
         if (cost) chunks.push(`(${this.costToString(cost)})`);
         return chunks.join(" ");
+    }
+    toolTipChunks() {
+        return [this.TOOLTIP];
     }
     getCost() {
         return null;

@@ -157,8 +157,8 @@ Repair.prototype.TOOLTIP = "Repair";
 Repair.prototype.ACTION_KEY = "R";
 
 class Stop extends Action {
-    static isVisible(viewer) {
-        return !(viewer.engine.selectedEntity.state & Unit.prototype.STATE.IDLE);
+    static isVisible(entity) {
+        return !(entity.state & Unit.prototype.STATE.IDLE);
     }
 }
 Stop.prototype.IMAGE = Sprites.Sprite("img/interface/command/stop.png");
@@ -244,8 +244,11 @@ let RecruitUnitFactory = function(Unit) {
 
             return rand_choice(possible_areas);
         }
+        toolTipChunks(player) {
+            return [this.TOOLTIP, Unit.prototype.NAME[player.defaultEntityLevel[Unit.name] || 0]];
+        }
     }
-    RecruitUnit.prototype.TOOLTIP = `Create ${Unit.prototype.NAME}`;
+    RecruitUnit.prototype.TOOLTIP = "Create";
     RecruitUnit.prototype.ACTION_KEY = Unit.prototype.ACTION_KEY;
     RecruitUnit.prototype.UNIT = Unit;
     RecruitUnit.prototype.SUPPORTS_QUEUE = true;

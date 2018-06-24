@@ -22,7 +22,10 @@ class ClubMan extends Unit {
 }
 ClubMan.prototype.SUBTILE_WIDTH = 1;
 ClubMan.prototype.NAME = ["Clubman", "Axeman"];
-ClubMan.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/clubman.png")];
+ClubMan.prototype.AVATAR = [
+    Sprites.Sprite("img/interface/avatars/clubman.png"),
+    Sprites.Sprite("img/interface/avatars/axeman.png")
+];
 ClubMan.prototype.MAX_HP = 40;
 ClubMan.prototype.SPEED = 1;
 ClubMan.prototype.CREATION_TIME = 26 * 35;
@@ -46,11 +49,26 @@ ClubMan.prototype.FRAME_RATE = {
 
 
 ClubMan.prototype.IMAGES = {
-    [ClubMan.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/clubman/idle/", 6)],
-    [ClubMan.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/clubman/moving/", 15)],
-    [ClubMan.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/clubman/attack/", 15)],
-    [ClubMan.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/clubman/dying/", 10)],
-    [ClubMan.prototype.STATE.DEAD]: [Sprites.DirectionSprites("img/units/clubman/dead/", 6)],
+    [ClubMan.prototype.STATE.IDLE]: [
+        Sprites.DirectionSprites("img/units/clubman/idle/", 6),
+        Sprites.DirectionSprites("img/units/axeman/idle/", 8)
+    ],
+    [ClubMan.prototype.STATE.MOVING]: [
+        Sprites.DirectionSprites("img/units/clubman/moving/", 15),
+        Sprites.DirectionSprites("img/units/axeman/moving/", 15)
+    ],
+    [ClubMan.prototype.STATE.ATTACK]: [
+        Sprites.DirectionSprites("img/units/clubman/attack/", 15),
+        Sprites.DirectionSprites("img/units/axeman/attack/", 15)
+    ],
+    [ClubMan.prototype.STATE.DYING]: [
+        Sprites.DirectionSprites("img/units/clubman/dying/", 10),
+        Sprites.DirectionSprites("img/units/axeman/dying/", 10)
+    ],
+    [ClubMan.prototype.STATE.DEAD]: [
+        Sprites.DirectionSprites("img/units/clubman/dead/", 6),
+        Sprites.DirectionSprites("img/units/axeman/dead/", 6)
+    ],
 };
 
 ClubMan.prototype.IMAGE_OFFSETS = {

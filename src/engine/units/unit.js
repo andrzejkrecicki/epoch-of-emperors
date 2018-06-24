@@ -40,6 +40,10 @@ class Unit extends Entity {
     getName() {
         return this.NAME[this.level];
     }
+    levelUp() {
+        ++this.level;
+        this.updateSprite();
+    }
     destroy(engine) {
         super.destroy(engine);
         --this.player.population;
