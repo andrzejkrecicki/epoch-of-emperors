@@ -1,5 +1,6 @@
 import { TownCenter } from './buildings/town_center';
 import { Barracks } from './buildings/barracks.js';
+import { ArcheryRange } from './buildings/archery_range.js';
 import { Stable } from './buildings/stable.js';
 import { Farm } from './buildings/farm.js';
 import { StoragePit } from './buildings/storage_pit.js';
@@ -144,6 +145,7 @@ Build.prototype.ACTIONS = [
     CreateBuildingFactory(Granary),
     CreateBuildingFactory(StoragePit),
     CreateBuildingFactory(Dock),
+    CreateBuildingFactory(ArcheryRange),
     CreateBuildingFactory(Stable),
     CreateBuildingFactory(Farm),
     CreateBuildingFactory(TownCenter),
