@@ -1,18 +1,10 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
-import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import * as interactions from '../interactions.js';
 
 class ClubMan extends Unit {
-    constructor() {
-        super(...arguments);
-        this.attributes = {
-            attack: ClubMan.prototype.ATTRIBUTES.ATTACK,
-            armor: ClubMan.prototype.ATTRIBUTES.ARMOR
-        }
-    }
     getInteractionType(object) {
         if (object instanceof Unit || object instanceof Building) return interactions.AttackInteraction;
     }
@@ -36,7 +28,6 @@ ClubMan.prototype.COST = {
     food: 50, wood: 0, stone: 0, gold: 0
 }
 
-ClubMan.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 ClubMan.prototype.ATTRIBUTES = {
     ATTACK: 3,
     ARMOR: 0

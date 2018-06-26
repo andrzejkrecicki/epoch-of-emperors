@@ -1,12 +1,14 @@
 import { Entity } from '../entity.js';
 import { Sprites } from '../../sprites.js';
+import { TERRAIN_TYPES } from '../terrain.js';
 
 class Unit extends Entity {
-    constructor(subtile_x, subtile_y, player, rotation=null) {
+    constructor(subtile_x, subtile_y, player, level=0, rotation=null) {
         super(...arguments);
         this.hp = this.MAX_HP;
         this.max_hp = this.MAX_HP;
         this.state = this.STATE.IDLE;
+        this.level = level;
         this.rotation = rotation != null ? rotation : Math.floor(Math.random() * 8);
         this.frame = 0;
         this.path = null;
@@ -17,6 +19,10 @@ class Unit extends Entity {
         this.hasFullPath = false;
         this.player = player;
         this.player.addUnit(this);
+
+        if (this.ATTRIBUTES.ATTACK != null) this.attributes.attack = this.ATTRIBUTES.ATTACK;
+        if (this.ATTRIBUTES.ARMOR != null) this.attributes.armor = this.ATTRIBUTES.ARMOR;
+        if (this.ATTRIBUTES.RANGE != null) this.attributes.range = this.ATTRIBUTES.RANGE;
 
         this.setImage();
         this.createSelectionRect();
@@ -71,6 +77,8 @@ class Unit extends Entity {
         }
     }
     getInteractionType(object) {
+    }
+    get ACTIONS() {
     }
     getProjectileOffset() {
         return { x: 0, y: 0 }
@@ -145,6 +153,9 @@ Unit.prototype.ROTATION = {
     N: 0, NE: 1, E: 2, SE: 3,
     S: 4, SW: 5, W: 6, NW: 7
 }
+
+Unit.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
+
 Unit.prototype.DIRECTIONS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 Unit.prototype.DIRECTIONS_DELTA = [
     { x: 0, y: -0.5656854249491516 }, { x: .8, y: -.4 }, { x: 1.1313708498983033, y: 0 }, { x: .8, y: .4 },

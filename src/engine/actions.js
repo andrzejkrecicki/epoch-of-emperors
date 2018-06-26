@@ -200,7 +200,7 @@ let RecruitUnitFactory = function(Unit) {
                 return false;
             }
 
-            let unit = new this.UNIT(pos.x, pos.y, this.player);
+            let unit = new this.UNIT(pos.x, pos.y, this.player, this.player.defaultEntityLevel[Unit.name]);
             this.viewer.engine.addUnit(unit);
             this.viewer.addEntity(unit);
             return true;

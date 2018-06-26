@@ -8,7 +8,6 @@ import { Animal } from './animal.js';
 import { Tree } from '../trees.js';
 import { Sprites } from '../../sprites.js';
 import { RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
-import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import { Spear } from '../projectiles.js';
 import * as interactions from '../interactions.js';
@@ -89,7 +88,6 @@ Villager.prototype.CAPACITY = {
     [RESOURCE_NAME[RESOURCE_TYPES.STONE]]: 10,
     [RESOURCE_NAME[RESOURCE_TYPES.GOLD]]: 10
 }
-Villager.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 Villager.prototype.ATTRIBUTES = {
     ATTACK: 3
 }

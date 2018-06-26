@@ -1,5 +1,4 @@
 import { Unit } from './unit.js';
-import { TERRAIN_TYPES } from '../terrain.js';
 import * as interactions from '../interactions.js';
 
 class Animal extends Unit {
@@ -54,7 +53,6 @@ class Animal extends Unit {
         return this.AVATAR;
     }
 }
-Animal.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
 Animal.prototype.DECAY_RATE = 4 * 35;
 Animal.prototype.COLORIZE = false;
 
