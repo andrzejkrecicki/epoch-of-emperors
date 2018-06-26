@@ -489,7 +489,7 @@ class EntityAttributes extends Graphics.Node {
     }
 }
 EntityAttributes.ALL_ATTRIBUTES = [
-    "attack", "armor", "progress", "population",
+    "attack", "armor", "range", "progress", "population",
     "food", "wood", "gold", "stone"
 ];
 EntityAttributes.ATTRIBUTES = {
@@ -501,6 +501,7 @@ EntityAttributes.ATTRIBUTES = {
     progress: Sprites.Sprite("img/interface/details/progress.png"),
     population: Sprites.Sprite("img/interface/details/population.png"),
     armor: Sprites.Sprite("img/interface/details/armor.png"),
+    range: Sprites.Sprite("img/interface/details/range.png"),
 }
 
 class EntityAttribute extends Graphics.Node {
