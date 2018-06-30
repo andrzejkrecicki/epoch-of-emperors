@@ -1,5 +1,6 @@
 import { Building } from './building.js';
 import { FishingBoat } from '../units/fishing_boat.js';
+import { TradeBoat } from '../units/trade_boat.js';
 import { Actions } from '../actions.js';
 import { leftpad, RESOURCE_TYPES } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
@@ -9,7 +10,8 @@ import { Sprites } from '../../sprites.js';
 class Dock extends Building {
     get ACTIONS() {
         if (this.isComplete) return [
-            Actions.RecruitUnitFactory(FishingBoat)
+            Actions.RecruitUnitFactory(FishingBoat),
+            Actions.RecruitUnitFactory(TradeBoat)
         ]; else return null;
     }
     canConstructOn(terrain_counts) {

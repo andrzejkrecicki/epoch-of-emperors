@@ -170,6 +170,26 @@ Stop.prototype.TOOLTIP = "Stop";
 Stop.prototype.ACTION_KEY = "S";
 
 
+class Trade extends Action {
+}
+
+class TradeFood extends Trade {
+}
+TradeFood.prototype.IMAGE = Sprites.Sprite("img/interface/command/trade_food.png");
+TradeFood.prototype.TOOLTIP = "Trade food for gold."
+
+class TradeWood extends Trade {
+}
+TradeWood.prototype.IMAGE = Sprites.Sprite("img/interface/command/trade_wood.png");
+TradeWood.prototype.TOOLTIP = "Trade wood for gold."
+
+class TradeStone extends Trade {
+}
+TradeStone.prototype.IMAGE = Sprites.Sprite("img/interface/command/trade_stone.png");
+TradeStone.prototype.TOOLTIP = "Trade stone for gold."
+
+
+
 let RecruitUnitFactory = function(Unit) {
     class RecruitUnit extends Action {
         execute() {
@@ -262,7 +282,8 @@ let RecruitUnitFactory = function(Unit) {
 
 
 let Actions = {
-    StandGround, Build, Repair, Stop, RecruitUnitFactory
+    StandGround, Build, Repair, Stop, RecruitUnitFactory,
+    TradeFood, TradeWood, TradeStone
 }
 
 export { Actions, Action };
