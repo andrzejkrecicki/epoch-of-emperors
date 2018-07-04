@@ -43,6 +43,6 @@ FishBig.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/fish.png");
 FishBig.prototype.TOOLTIP = "Fish here for food.";
 
 FishBig.prototype.IMAGES = Sprites.SpriteSequence("img/resources/fish_big/fish_", 30);
-FishBig.prototype.IMAGE_OFFSET =  { x: -5, y: 49 };
+FishBig.prototype.IMAGE_OFFSET = { x: -5, y: 49 };
 
 export { FishBig }

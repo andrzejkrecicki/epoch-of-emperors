@@ -61,7 +61,8 @@ class Entity extends Graphics.Node {
             hitmap.height
         );
 
-        this.layer.hitmap.drawImage(hitmap.ctx.canvas,
+        this.layer.hitmap.drawImage(
+            hitmap.ctx.canvas,
             this.absX() - hitmap.offset.x,
             this.absY() - hitmap.offset.y
         );
@@ -145,4 +146,4 @@ Entity.prototype.COST = {
 }
 Entity.prototype.COLORIZE = false;
 
-export { Entity };
+export { Entity }

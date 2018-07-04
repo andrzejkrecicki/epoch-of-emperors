@@ -19,7 +19,7 @@ class PlayerDefinition {
     }
 }
 
-let RESOURCE_TYPES = {
+const RESOURCE_TYPES = {
     NONE: 0,
     FOOD: 1,
     WOOD: 2,
@@ -27,9 +27,9 @@ let RESOURCE_TYPES = {
     GOLD: 4
 };
 
-let RESOURCE_NAME = [null, "food", "wood", "stone", "gold"]
+const RESOURCE_NAME = [null, "food", "wood", "stone", "gold"]
 
-let PLAYER_COLORS = [
+const PLAYER_COLORS = [
     'rgb(39, 63, 143)',
     'rgb(227, 11, 0)',
     'rgb(255, 255, 0)',
@@ -41,7 +41,7 @@ let PLAYER_COLORS = [
 ];
 
 
-let CIVILIZATIONS = {
+const CIVILIZATIONS = {
     GREEK: 0,
     EGYPTIAN: 1,
     BABYLONIAN: 2,
@@ -52,43 +52,43 @@ let CIVILIZATIONS = {
     3: "Asiatic",
     length: 4
 }
-let CIVILIZATIONS_NAMES = [
+const CIVILIZATIONS_NAMES = [
     "Greek",
     "Egyptian",
     "Babylonian",
     "Asiatic"
 ];
 
-let AGES = {
+const AGES = {
     STONE_AGE: 0,
     TOOL_AGE: 1,
     BRONZE_AGE: 2,
     IRON_AGE: 3,
 }
 
-var to_binary = function(num) {
+function to_binary(num) {
     let bin = (+num).toString(2);
     return "00000000".substr(bin.length) + bin;
 }
 
-var leftpad = function(val, width, pad) {
+function leftpad(val, width, pad) {
     let str = val.toString();
     return Array(width + 1).join(pad).substr(str.length) + val;
 }
 
-var rand_choice = function(choices) {
+function rand_choice(choices) {
     return choices[Math.floor(Math.random() * choices.length)];
 }
 
-var distance = function(p1, p2) {
-    return Math.sqrt(Math.pow(p1.x - p2.x, 2) + Math.pow(p1.y - p2.y, 2));
+function distance(p1, p2) {
+    return Math.sqrt(((p1.x - p2.x) ** 2) + ((p1.y - p2.y) ** 2));
 }
 
-var manhatan_subtile_distance = function(p1, p2) {
+function manhatan_subtile_distance(p1, p2) {
     return Math.abs(p1.subtile_x - p2.subtile_x) + Math.abs(p1.subtile_y - p2.subtile_y);
 }
 
-var rect_intersection = function(r1, r2) {
+function rect_intersection(r1, r2) {
     return !(
         r1.x + r1.w < r2.x || r1.x > r2.x + r2.w ||
         r1.y + r1.h < r2.y || r1.y > r2.y + r2.h

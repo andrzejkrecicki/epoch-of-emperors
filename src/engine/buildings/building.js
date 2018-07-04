@@ -75,14 +75,12 @@ class Building extends Entity {
         }
         if (this.ticks_waited < task.time()) {
             this.attributes.progress = Math.floor(100 * ++this.ticks_waited / task.time()) + "%";
-        } else {
-            if (task.finalize()) {
-                this.ticks_waited = 0;
-                this.attributes.progress = null;
-                if (task.SUPPORTS_QUEUE) --this.tasks_counts[task.HASH];
-                this.actions_changed = true;
-                this.tasks.shift();
-            }
+        } else if (task.finalize()) {
+            this.ticks_waited = 0;
+            this.attributes.progress = null;
+            if (task.SUPPORTS_QUEUE) --this.tasks_counts[task.HASH];
+            this.actions_changed = true;
+            this.tasks.shift();
         }
     }
     getPixelPerfectHitmap() {

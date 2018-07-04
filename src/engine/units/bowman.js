@@ -13,7 +13,7 @@ class BowMan extends Unit {
     }
 }
 BowMan.prototype.SUBTILE_WIDTH = 1;
-BowMan.prototype.NAME = ["BowMan"];
+BowMan.prototype.NAME = ["Bowman"];
 BowMan.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/bowman.png")];
 BowMan.prototype.MAX_HP = 35;
 BowMan.prototype.SPEED = 1.1;

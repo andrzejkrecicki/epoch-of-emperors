@@ -1,5 +1,4 @@
 import { Entity } from '../entity.js';
-import { rand_choice } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 
 class StoneMine extends Entity {
@@ -37,7 +36,6 @@ StoneMine.prototype.NAME = "Stone Mine";
 StoneMine.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/stone.png");
 StoneMine.prototype.MAX_HP = 25;
 StoneMine.prototype.TOOLTIP = "Mine here for stone.";
-
 
 StoneMine.prototype.IMAGES = Sprites.SpriteSequence("img/resources/stone/", 7);
 StoneMine.prototype.IMAGE_OFFSETS = { x: 12, y: 25 }

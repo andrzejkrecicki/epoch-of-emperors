@@ -1,5 +1,4 @@
 import { Map } from './engine/map.js';
-import { leftpad } from './utils.js';
 import { Sprites } from './sprites.js';
 
 const TERRAIN_IMAGES = {

@@ -58,4 +58,4 @@ Action.prototype.SUPPORTS_QUEUE = false;
 Action.prototype.ACTION_KEY = null;
 
 
-export { Action };
+export { Action }

@@ -1,6 +1,6 @@
 import { TextButton, MultiStateButton, Header, Label, DropDown, CheckBox, ColorSelect } from './ui.js';
 import { Sprites } from './sprites.js';
-import { PlayerDefinition, CIVILIZATIONS, CIVILIZATIONS_NAMES } from './utils.js';
+import { PlayerDefinition, CIVILIZATIONS_NAMES } from './utils.js';
 
 class Menu extends Graphics.Node {
     constructor(stage, nav) {
@@ -336,8 +336,8 @@ class RandomMapMenu extends Menu {
 
     }
     initialziePlayersSection() {
-        var that = this;
-        var offset = {
+        let that = this;
+        let offset = {
             x: 0, y: 0
         }
         for (let i = 0; i < this.game_definition.players.length; ++i) {
@@ -406,7 +406,7 @@ class RandomMapMenu extends Menu {
                 resources: 1,
                 difficulty: 2,
                 revealMap: false,
-                fullTech : false,
+                fullTech: false,
                 random: true
             }
         };

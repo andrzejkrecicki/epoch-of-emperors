@@ -35,7 +35,7 @@ class Game {
 Game.STAGE_WIDTH = 800;
 Game.STAGE_HEIGHT = 600;
 
-document.body.oncontextmenu = function() { return false; };
+document.oncontextmenu = function() { return false; };
 
 Sprites.ready.then(function() {
     let game = new Game('container');

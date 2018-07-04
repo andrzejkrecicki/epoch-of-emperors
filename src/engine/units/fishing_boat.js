@@ -16,9 +16,7 @@ class FishingBoat extends Unit {
         this.carriedResource = RESOURCE_TYPES.NONE;
     }
     get ACTIONS() {
-        if (this.state & Unit.prototype.STATE.IDLE) return [
-            Actions.StandGround
-        ]; else return [Actions.StandGround, Actions.Stop]
+        return [Actions.Stop]
     }
     getInteractionType(object) {
         if (object instanceof FishBig) return interactions.FishingInteraction;
@@ -52,8 +50,8 @@ FishingBoat.prototype.FRAME_RATE = {
 }
 
 FishingBoat.prototype.IMAGES = {
-    [FishingBoat.prototype.STATE.IDLE]: Sprites.DirectionSprites("img/units/fishing_boat/regular/", 1),
-    [FishingBoat.prototype.STATE.FISHING]: Sprites.DirectionSprites("img/units/fishing_boat/fishing/", 1)
+    [FishingBoat.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/fishing_boat/regular/", 1)],
+    [FishingBoat.prototype.STATE.FISHING]: [Sprites.DirectionSprites("img/units/fishing_boat/fishing/", 1)]
 }
 FishingBoat.prototype.IMAGES[FishingBoat.prototype.STATE.MOVING] = FishingBoat.prototype.IMAGES[FishingBoat.prototype.STATE.IDLE];
 

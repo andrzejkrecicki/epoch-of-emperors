@@ -1,6 +1,5 @@
 import { Entity } from './entity.js';
 import { TreeStump } from './flat_drawables.js';
-import { rand_choice } from '../utils.js';
 import { Sprites } from '../sprites.js';
 
 class Tree extends Entity {
@@ -68,9 +67,6 @@ Tree.prototype.IMAGE_OFFSETS = {
 
 
 class LeafTree extends Tree {
-    constructor(x, y) {
-        super(...arguments);
-    }
 }
 LeafTree.prototype.NAME = "Leaf Tree";
 LeafTree.prototype.IMAGES = {
@@ -91,9 +87,6 @@ LeafTree.prototype.IMAGE_OFFSETS = {
 };
 
 class PalmTree extends Tree {
-    constructor(x, y) {
-        super(...arguments);
-    }
 }
 PalmTree.prototype.NAME = "Palm";
 PalmTree.prototype.IMAGES = {
@@ -113,9 +106,6 @@ PalmTree.prototype.IMAGE_OFFSETS = {
 
 
 class PineTree extends Tree {
-    constructor(x, y) {
-        super(...arguments);
-    }
 }
 PineTree.prototype.NAME = "Pine";
 PineTree.prototype.IMAGES = {

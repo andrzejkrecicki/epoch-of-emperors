@@ -106,7 +106,6 @@ class BuilderInteraction extends Interaction {
 BuilderInteraction.prototype.RATE = 3;
 
 
-
 class ReturnResourcesInteraction extends Interaction {
     init() {
         if (this.passive.destroyed) {
@@ -148,7 +147,6 @@ class LumberInteraction extends Interaction {
     }
 }
 LumberInteraction.prototype.RATE = 15;
-
 
 
 class ChopInteraction extends ResourceExtractionInteraction {
@@ -308,7 +306,6 @@ class AttackInteraction extends Interaction {
         this.active.rotateToEntity(this.passive);
     }
 }
-
 
 
 export {

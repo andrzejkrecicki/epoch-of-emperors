@@ -9,9 +9,7 @@ import { Granary } from './buildings/granary.js';
 import { Market } from './buildings/market.js';
 import { House } from './buildings/house.js';
 import { Unit } from './units/unit.js';
-import { Villager } from './units/villager.js';
 import { rand_choice } from '../utils.js';
-import { MapDrawable } from '../viewer.js';
 import { Sprites } from '../sprites.js';
 import { Action } from './base_action.js';
 
@@ -31,7 +29,7 @@ RejectConstructionPlan.prototype.POS = {
 }
 
 
-let CreateBuildingFactory = function(Building) {
+function CreateBuildingFactory(Building) {
     class CreateBuilding extends Action {
         execute() {
             if (this.checkCost(this.BUILDING.prototype.COST) == false) return;
@@ -191,8 +189,7 @@ TradeStone.prototype.IMAGE = Sprites.Sprite("img/interface/command/trade_stone.p
 TradeStone.prototype.TOOLTIP = "Trade stone for gold."
 
 
-
-let RecruitUnitFactory = function(Unit) {
+function RecruitUnitFactory(Unit) {
     class RecruitUnit extends Action {
         execute() {
             if (this.checkCost(this.UNIT.prototype.COST) == false) return;
@@ -278,14 +275,14 @@ let RecruitUnitFactory = function(Unit) {
     RecruitUnit.prototype.ACTION_KEY = Unit.prototype.ACTION_KEY;
     RecruitUnit.prototype.UNIT = Unit;
     RecruitUnit.prototype.SUPPORTS_QUEUE = true;
-    RecruitUnit.prototype.HASH = Unit.constructor.name;
+    RecruitUnit.prototype.HASH = Unit.name;
     return RecruitUnit;
 }
 
 
-let Actions = {
+const Actions = {
     StandGround, Build, Repair, Stop, RecruitUnitFactory,
     TradeFood, TradeWood, TradeStone
 }
 
-export { Actions, Action };
+export { Actions, Action }

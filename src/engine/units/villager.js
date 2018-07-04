@@ -9,7 +9,6 @@ import { Tree } from '../trees.js';
 import { Sprites } from '../../sprites.js';
 import { RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
 import { Actions } from '../actions.js';
-import { Spear } from '../projectiles.js';
 import * as interactions from '../interactions.js';
 
 class Villager extends Unit {
@@ -192,36 +191,36 @@ Villager.prototype.IMAGES = {
     [Villager.prototype.STATE.FORAGE_MOVING]: [Sprites.DirectionSprites("img/units/villager/forage_moving/", 15)],
     [Villager.prototype.STATE.FORAGE_DYING]: [Sprites.DirectionSprites("img/units/villager/forage_dying/", 10)],
     [Villager.prototype.STATE.FORAGE_DEAD]: [Sprites.DirectionSprites("img/units/villager/forage_dead/", 6)],
-    
+
     [Villager.prototype.STATE.LUMBER]: [Sprites.DirectionSprites("img/units/villager/lumber/", 11)],
     [Villager.prototype.STATE.LUMBER_MOVING]: [Sprites.DirectionSprites("img/units/villager/lumber_moving/", 15)],
     [Villager.prototype.STATE.LUMBER_DYING]: [Sprites.DirectionSprites("img/units/villager/lumber_dying/", 10)],
     [Villager.prototype.STATE.LUMBER_DEAD]: [Sprites.DirectionSprites("img/units/villager/lumber_dead/", 6)],
-    
+
     [Villager.prototype.STATE.CHOP]: [Sprites.DirectionSprites("img/units/villager/chop/", 15)],
     [Villager.prototype.STATE.CARRY_WOOD_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_wood/", 15)],
-    
+
     [Villager.prototype.STATE.MINE]: [Sprites.DirectionSprites("img/units/villager/mine/", 13)],
     [Villager.prototype.STATE.MINE_MOVING]: [Sprites.DirectionSprites("img/units/villager/mine_moving/", 15)],
     [Villager.prototype.STATE.MINE_DYING]: [Sprites.DirectionSprites("img/units/villager/mine_dying/", 10)],
     [Villager.prototype.STATE.MINE_DEAD]: [Sprites.DirectionSprites("img/units/villager/mine_dead/", 6)],
-    
+
     [Villager.prototype.STATE.CARRY_GOLD_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_gold/", 15)],
     [Villager.prototype.STATE.CARRY_STONE_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_stone/", 15)],
-    
+
     [Villager.prototype.STATE.FARMER]: [Sprites.DirectionSprites("img/units/villager/farming/", 29)],
     [Villager.prototype.STATE.FARMER_MOVING]: [Sprites.DirectionSprites("img/units/villager/farmer_moving/", 15)],
     [Villager.prototype.STATE.FARMER_DYING]: [Sprites.DirectionSprites("img/units/villager/farmer_dying/", 10)],
     [Villager.prototype.STATE.FARMER_DEAD]: [Sprites.DirectionSprites("img/units/villager/farmer_dead/", 6)],
     [Villager.prototype.STATE.CARRY_FARM_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_farm/", 15)],
-    
+
     [Villager.prototype.STATE.HUNTER]: [Sprites.DirectionSprites("img/units/villager/hunter/", 23)],
     [Villager.prototype.STATE.HUNTER_MOVING]: [Sprites.DirectionSprites("img/units/villager/hunter_moving/", 15)],
     [Villager.prototype.STATE.HUNTER_DYING]: [Sprites.DirectionSprites("img/units/villager/hunter_dying/", 10)],
     [Villager.prototype.STATE.HUNTER_DEAD]: [Sprites.DirectionSprites("img/units/villager/hunter_dead/", 6)],
-    
+
     [Villager.prototype.STATE.BUTCHER]: [Sprites.DirectionSprites("img/units/villager/butcher/", 12)],
-    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: Sprites.DirectionSprites("img/units/villager/carry_meat/", 15)
+    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_meat/", 15)]
 
 
 }

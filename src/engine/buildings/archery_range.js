@@ -2,7 +2,6 @@ import { Building } from './building.js';
 import { BowMan } from '../units/bowman.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
-import { leftpad } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 
 class ArcheryRange extends Building {
@@ -21,7 +20,7 @@ ArcheryRange.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/archery_range_04_greek.png")
     ]
 ];
-ArcheryRange.prototype.MAX_HP = 3;
+ArcheryRange.prototype.MAX_HP = 350;
 ArcheryRange.prototype.SUBTILE_WIDTH = 5;
 
 ArcheryRange.prototype.ACTION_KEY = "A";

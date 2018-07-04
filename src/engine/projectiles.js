@@ -67,7 +67,6 @@ class LinearProjectile extends Graphics.Node {
 }
 
 
-
 class Spear extends LinearProjectile {
     constructor() {
         super(...arguments);

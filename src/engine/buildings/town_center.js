@@ -2,7 +2,6 @@ import { Building } from './building.js';
 import { Villager } from '../units/villager.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
-import { leftpad } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 
 class TownCenter extends Building {

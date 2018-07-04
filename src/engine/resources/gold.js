@@ -1,5 +1,4 @@
 import { Entity } from '../entity.js';
-import { rand_choice } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 
 class GoldMine extends Entity {

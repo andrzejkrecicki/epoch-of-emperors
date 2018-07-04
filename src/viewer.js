@@ -1,9 +1,7 @@
 import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
-import { rand_choice, rect_intersection } from './utils.js';
 import { Sprites } from './sprites.js';
-import { Tree, LeafTree } from './engine/trees.js';
-import { Villager } from './engine/units/villager.js';
+import { Tree } from './engine/trees.js';
 import { Unit } from './engine/units/unit.js';
 import { Building } from './engine/buildings/building.js';
 import { Entity } from './engine/entity.js';
@@ -142,7 +140,7 @@ class GameViewer {
         this.errorMessageTimeout = GameViewer.prototype.ERROR_MESSAGE_TIMEOUT;
     }
     addEntities() {
-        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
+        for (let entity of this.engine.map.entities) {
             this.entitiesHolder.add(entity);
         }
     }
@@ -154,7 +152,7 @@ class GameViewer {
         this.entitiesHolder.add(entity);
     }
     resetEntitiesCoords(entity) {
-        for (let entity, i = 0; entity = this.engine.map.entities[i++];) {
+        for (let entity of this.engine.map.entities) {
             entity.position(this.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2));
             entity.resetBoundingBox();
         }
@@ -164,31 +162,25 @@ class GameViewer {
         this.mouseY = e.evt.layerY;
     }
     handleScroll() {
-        let moved = false;
         if (this.mouseX < 30) {
             this.viewPort.x -= 20;
             this.mapDrawable.x(-this.viewPort.x);
             this.entitiesHolder.x(-this.viewPort.x);
-            moved = true;
         } else if (this.mouseX > this.stage.width() - 30) {
             this.viewPort.x += 20;
             this.mapDrawable.x(-this.viewPort.x);
             this.entitiesHolder.x(-this.viewPort.x);
-            moved = true;
         }
 
         if (this.mouseY < 30) {
             this.viewPort.y -= 20;
             this.mapDrawable.y(-this.viewPort.y);
             this.entitiesHolder.y(-this.viewPort.y);
-            moved = true;
         } else if (this.mouseY > this.stage.height() - 30) {
             this.viewPort.y += 20;
             this.mapDrawable.y(-this.viewPort.y);
             this.entitiesHolder.y(-this.viewPort.y);
-            moved = true;
         }
-
     }
     process() {
         this.handleScroll();
@@ -275,10 +267,10 @@ class MapDrawable extends Graphics.Node {
         return rnd;
     }
     insertTiles() {
-        var miniCanv = document.createElement("canvas");
+        let miniCanv = document.createElement("canvas");
         miniCanv.setAttribute("width", Map.SIZES[this.map.definition.size]);
         miniCanv.setAttribute("height", Map.SIZES[this.map.definition.size]);
-        var miniCtx = miniCanv.getContext('2d');
+        let miniCtx = miniCanv.getContext('2d');
 
         for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
@@ -378,10 +370,9 @@ TopBar.TEXT_OPTIONS = {
 };
 
 
-
 class BottomBar extends Graphics.Node {
     constructor(viewer, x=0, y=0) {
-        super({ x: x, y: y });
+        super({ x, y });
         this.image = new Graphics.Image({
             image: BottomBar.IMAGE,
             hasHitmap: true
@@ -389,7 +380,7 @@ class BottomBar extends Graphics.Node {
         this.add(this.image);
 
         this.viewer = viewer;
-        this.entityDetails = new EntityDetails();
+        this.entityDetails = new EntityDetails;
         this.entityDetails.hide();
         this.add(this.entityDetails);
         this.entityActions = new EntityActions(this.viewer, { x: 136, y: 5 });
@@ -438,7 +429,6 @@ class EntityDetails extends Graphics.Node {
 
         this.attributes = new EntityAttributes({ x: 65, y: 35 });
         this.add(this.attributes);
-
     }
     setEntity(entity) {
         this.entity = entity;
@@ -469,7 +459,7 @@ EntityDetails.TEXT_OPTIONS = {
 class EntityAttributes extends Graphics.Node {
     constructor() {
         super(...arguments);
-        for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
+        for (let attr of EntityAttributes.ALL_ATTRIBUTES) {
             this[attr] = new EntityAttribute(EntityAttributes.ATTRIBUTES[attr]);
             this.add(this[attr]);
         }
@@ -477,7 +467,7 @@ class EntityAttributes extends Graphics.Node {
     setEntity(entity) {
         this.entity = entity;
         let offset_y = 0;
-        for (let attr, i = 0; attr = EntityAttributes.ALL_ATTRIBUTES[i]; ++i) {
+        for (let attr of EntityAttributes.ALL_ATTRIBUTES) {
             if (this.entity.attributes[attr] != null) {
                 this[attr].text(this.entity.attributes[attr]);
                 this[attr].position({ x: 0, y: offset_y });
@@ -513,9 +503,7 @@ class EntityAttribute extends Graphics.Node {
             ...EntityDetails.TEXT_OPTIONS
         });
         this.add(this.value);
-        this.image = new Graphics.Image({
-            image: image,
-        });
+        this.image = new Graphics.Image({ image });
         this.add(this.image);
     }
     text() {
@@ -534,7 +522,7 @@ class HealthBarBig extends Graphics.Node {
         });
         this.add(this.red);
 
-        var _bar = document.createElement("canvas");
+        let _bar = document.createElement("canvas");
         _bar.setAttribute("width", HealthBarBig.BAR_GREEN.width);
         _bar.setAttribute("height", HealthBarBig.BAR_GREEN.height);
         this._barCtx = _bar.getContext('2d');
@@ -670,7 +658,6 @@ class ActionButton extends Graphics.Node {
         this.img.on("mouseout", (e) => {
             viewer.tooltip.hide();
         });
-
     }
     draw() {
         if (!this.attrs.visible) return;
@@ -705,6 +692,7 @@ ActionButton.prototype.TEXT_OPTIONS = {
     strokeStyle: 'black',
     lineWidth: 2
 }
+
 
 class ConstructionIndicator extends Graphics.Node {
     constructor(viewer, options) {
@@ -780,7 +768,7 @@ class ConstructionIndicator extends Graphics.Node {
         this.building = building;
         let player = this.viewer.engine.selectedEntity.player;
         this.add(this.image = new Graphics.Image({
-            x: - this.getOffset().x,
+            x: -this.getOffset().x,
             y: -this.getOffset().y,
             image: Sprites.Colorize(this.getSprite(), player),
             hasHitmap: true
@@ -811,7 +799,7 @@ class MoverOrderIndicator extends Graphics.Node {
         this.add(this.image);
     }
     show(x, y) {
-        this.position({ x: x, y: y });
+        this.position({ x, y });
         super.show();
         this.frame = this.counter = 0;
         this.image.image(this.FRAMES[this.frame]);

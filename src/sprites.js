@@ -9,7 +9,7 @@ let _resolve = null;
 
 const Sprites = {
     cache: {},
-    ready: new Promise(function(resolve) {
+    ready: new Promise((resolve) => {
         _resolve = resolve;
     }),
     Colorize(img, player) {
@@ -40,7 +40,7 @@ const Sprites = {
         for (let dir = 0; dir < 8; ++dir) {
             for (let i = start; i < start + count; ++i) {
                 this.ready.then(() => {
-                    sprites[dir].push(this.cache[path + `${DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`]);
+                    sprites[dir].push(this.cache[`${path}${DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`]);
                 })
             }
         }
@@ -50,7 +50,7 @@ const Sprites = {
         let sprites = [];
         for (let i = start; i < start + count; ++i) {
             this.ready.then(() => {
-                sprites.push(this.cache[path + `${leftpad(i, 2, "0")}.png`]);
+                sprites.push(this.cache[`${path}${leftpad(i, 2, "0")}.png`]);
             })
         }
         return sprites;
@@ -71,7 +71,7 @@ const Sprites = {
         return this.ready = new Promise(async (resolve) => {
             let [bin, json] = await Promise.all([fetch("dist/gfx.bin"), fetch("dist/gfx.json")]);
             [bin, json] = await Promise.all([bin.blob(), json.json()])
-            
+
             let promises = [];
             let offset = 0;
 

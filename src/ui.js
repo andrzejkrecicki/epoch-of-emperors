@@ -75,7 +75,7 @@ class DropDown extends Graphics.Node {
         });
         this.chosen.add(this.rect);
         this.valueText = new Label({
-            text: "" + this.values[this.chosenIndex],
+            text: this.values[this.chosenIndex],
             width: this.width,
             align: "center",
             textBaseline: "middle",
@@ -94,7 +94,7 @@ class DropDown extends Graphics.Node {
         for (let i= 0 ; i < values.length; ++i) {
             let option = new Option(
                 0, i * DropDown.DEFAULT_RECT_OPTIONS.height,
-                "" + values[i], i,
+                values[i], i,
                 this.rect.width(),
                 this.rect.height()
             );
@@ -103,7 +103,7 @@ class DropDown extends Graphics.Node {
             option.on("click", function(e) {
                 e.cancelBubble = true;
                 that.chosenIndex = this.index;
-                that.valueText.setText("" + values[this.index]);
+                that.valueText.setText(values[this.index]);
                 that.options.hide();
                 that.fire("update");
                 that.fire("refresh");
@@ -333,6 +333,8 @@ Header.DEFAULT_OPTIONS = {
     align: 'left',
     strokeWidth: 2,
 }
+
+
 class Label extends Graphics.Text {
     constructor(options) {
         super({ ...Label.DEFAULT_OPTIONS, ...options });
@@ -347,6 +349,7 @@ Label.DEFAULT_OPTIONS = {
     strokeWidth: 2,
 }
 
+
 export {
     TextButton, Header, Label, DropDown, MultiStateButton, CheckBox, ColorSelect
-};
+}

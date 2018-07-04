@@ -11,7 +11,7 @@ class BFSWalker {
         this.queue.push(seed);
     }
     run() {
-        var current;
+        let current;
         while(!(this.queue.empty() || this.extra_condition())) {
             current = this.queue.pop();
             this.visitor(current);
@@ -19,7 +19,7 @@ class BFSWalker {
         }
     }
     enqueueNeighbours(node) {
-        for (let i = 0, delta; delta = BFSWalker.NEIGHBOURS_DELTA[i++];) {
+        for (let delta of BFSWalker.NEIGHBOURS_DELTA) {
             if (!this.isVisited(node.x + delta.x, node.y + delta.y)) {
                 this.queue.push(this.node_getter(node.x + delta.x, node.y + delta.y, node));
                 this.setVisited(node.x + delta.x, node.y + delta.y);
@@ -55,7 +55,7 @@ class MultiSlotQueue {
         return true;
     }
     push(value) {
-        var num = Math.floor(Math.random() * this.numOfSlots);
+        let num = Math.floor(Math.random() * this.numOfSlots);
         this.slots[num].values.push(value);
     }
     pop() {
@@ -66,7 +66,6 @@ class MultiSlotQueue {
         }
         throw new Error();
     }
-
 }
 
 
@@ -119,10 +118,8 @@ class HeapQueue {
                     this.swap(idx * 2 + 1, idx);
                     this.fix_down(idx * 2 + 1);
                 }
-            } else {
-                if (this.nodes[idx * 2].priority < this.nodes[idx].priority) {
-                    this.swap(idx * 2, idx);
-                }
+            } else if (this.nodes[idx * 2].priority < this.nodes[idx].priority) {
+                this.swap(idx * 2, idx);
             }
         }
     }
@@ -344,7 +341,7 @@ class UnitPathFinder {
             var subtile = this.queue.pop();
             if (subtile.x == this.unit.subtile_x && subtile.y == this.unit.subtile_y) {
                 done = true;
-            } else for (let i = 0, delta; delta = UnitPathFinder.NEIGHBOURS_DELTA[i++];) {
+            } else for (let delta of UnitPathFinder.NEIGHBOURS_DELTA) {
                 let nx = subtile.x + delta.x, ny = subtile.y + delta.y;
                 if (this.checkSubtiles(nx, ny) && !this.isVisited(nx, ny)) {
                     this.queue.push({

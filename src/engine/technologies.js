@@ -54,7 +54,6 @@ ToolAge.prototype.COST = {
 
 class BattleAxe extends Technology {
     static isVisible(entity) {
-        return true;
         return entity.player.possessions.ToolAge && !entity.player.possessions.BattleAxe;
     }
     finalize() {
@@ -83,7 +82,7 @@ BattleAxe.prototype.COST = {
 }
 
 
-let Technologies = {
+const Technologies = {
     ToolAge,
     BattleAxe
 }

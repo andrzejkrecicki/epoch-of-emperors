@@ -110,7 +110,6 @@ Node.prototype.DEFAULT_ATTRS = {
     y: 0,
     visible: true,
     opacity: 1,
-    fill: "#ffffff",
     strokeWidth: 1,
     stroke: "#000000",
     fill: null,
@@ -321,17 +320,14 @@ class GridPreview extends Layer {
                     this.buff_ctx.fillStyle = "rgba(0, 0, 0, .25)";
                     this.buff_ctx.fillRect(x - begin_x, y - begin_y, 1, 1);
                 }
-
             }
         }
-
     }
     draw() {
         if (!this.attrs.visible) return;
         this.ctx.clearRect(0, 0, this.stage.width(), this.stage.height());
 
         this.ctx.drawImage(this.buff, -((-this.md.x()) % 32), -((-this.md.y()) % 16));
-
     }
     getNodeAt() {}
     makeHitmap() {}
@@ -591,7 +587,6 @@ function BasicHitmask(image, offset) {
 
 
 function ComposeHitmask(img1, img2, offset1, offset2) {
-    let loaded = 0;
     let wrap = {
         ctx: null,
         imageData: null,
@@ -630,17 +625,17 @@ function ComposeHitmask(img1, img2, offset1, offset2) {
 }
 
 window.Graphics = {
-    Node: Node,
-    Stage: Stage,
-    Layer: Layer,
-    HitlessLayer: HitlessLayer,
-    GridPreview: GridPreview,
-    Rect: Rect,
-    Text: Text,
-    StrokedText: StrokedText,
-    Path: Path,
-    Image: Image,
-    EntitiesHolder: EntitiesHolder,
+    Node,
+    Stage,
+    Layer,
+    HitlessLayer,
+    GridPreview,
+    Rect,
+    Text,
+    StrokedText,
+    Path,
+    Image,
+    EntitiesHolder,
     Filters: {
         RedFilter,
         ComposeHitmask,

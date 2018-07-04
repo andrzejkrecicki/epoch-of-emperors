@@ -2,7 +2,7 @@ import { Building } from './building.js';
 import { FishingBoat } from '../units/fishing_boat.js';
 import { TradeBoat } from '../units/trade_boat.js';
 import { Actions } from '../actions.js';
-import { leftpad, RESOURCE_TYPES } from '../../utils.js';
+import { RESOURCE_TYPES } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Sprites } from '../../sprites.js';
 

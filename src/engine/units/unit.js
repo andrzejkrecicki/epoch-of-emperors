@@ -181,4 +181,6 @@ Unit.prototype.FRAME_RATE = {
     [Unit.prototype.STATE.DYING]: 3
 }
 
+Unit.prototype.ATTRIBUTES = {};
+
 export { Unit }

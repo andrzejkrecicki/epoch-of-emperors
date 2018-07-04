@@ -1,7 +1,6 @@
 import { BFSWalker, MultiSlotQueue } from './algorithms.js';
-import { rand_choice, to_binary } from '../utils.js';
+import { rand_choice } from '../utils.js';
 import { PineTree, LeafTree, PalmTree } from './trees.js';
-import { MapDrawable } from '../viewer.js';
 import { TERRAIN_TYPES, SAND_TRANSFORMATIONS, GRASS_TRANSFORMATIONS } from './terrain.js'
 
 class Map {
@@ -179,7 +178,7 @@ class RandomMap extends Map {
 
                         if (!(bitmask in RandomMap.SAND_TRANSFORMATIONS)) {
                             changes_pending = true;
-                            for (let i = 0, vec; vec = Map.ALL_NEIGHBOURS_DELTA[i++];) {
+                            for (let vec of Map.ALL_NEIGHBOURS_DELTA) {
                                 let nx = x + vec.x;
                                 let ny = y + vec.y;
                                 this.terrain_tiles[nx][ny] = Map.TERRAIN_TYPES.WATER;
@@ -226,7 +225,6 @@ class RandomMap extends Map {
 RandomMap.SAND_TRANSFORMATIONS = SAND_TRANSFORMATIONS;
 RandomMap.LEGAL_MASKS = Object.keys(RandomMap.SAND_TRANSFORMATIONS);
 RandomMap.GRASS_TRANSFORMATIONS = GRASS_TRANSFORMATIONS;
-
 
 
 class CoastalMap extends RandomMap {

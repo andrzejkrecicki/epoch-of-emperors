@@ -1,4 +1,4 @@
-import { MapFactory } from './map.js';
+import { MapFactory, Map } from './map.js';
 import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
 import { Entity } from './entity.js';
@@ -11,7 +11,6 @@ import { GoldMine } from './resources/gold.js';
 import { StoneMine } from './resources/stone.js';
 import { LeafTree } from './trees.js';
 import { AStarPathFinder, AStarToEntity, BFSWalker, StandardQueue } from './algorithms.js';
-import { Map } from './map.js';
 import { distance, manhatan_subtile_distance } from '../utils.js'
 
 
@@ -36,7 +35,7 @@ class Engine {
         this.addSampleUnits();
     }
     processUnits() {
-        for (let entity, i = 0; entity = this.units[i++];) {
+        for (let entity of this.units) {
             if (entity.state & Unit.prototype.STATE.MOVING) {
                 this.processMovingUnit(entity);
             } else if (entity.state & Unit.prototype.STATE.IDLE && entity.path != null) {
@@ -184,7 +183,7 @@ class Engine {
         return found;
     }
     processBuildings() {
-        for (let entity, i = 0; entity = this.buildings[i++];) {
+        for (let entity of this.buildings) {
             if (entity.tasks.length) entity.processTasks();
         }
         this.buildings = this.buildings.filter((b) => !b.destroyed);
