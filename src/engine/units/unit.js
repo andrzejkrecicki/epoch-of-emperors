@@ -107,8 +107,10 @@ class Unit extends Entity {
         this.actions_changed = true;
     }
     hit(target, engine) {
-        // take into account technological attack bonuses etc
-        target.takeHit(this.attributes.attack, this, engine);
+        let base = this.attributes.attack;
+        let bonus = this.player.attributeBonus[this.TYPE].attack;
+
+        target.takeHit(base + bonus, this, engine);
     }
     takeHit(value, attacker, engine) {
         // take into account armour etc
@@ -155,6 +157,7 @@ Unit.prototype.ROTATION = {
 }
 
 Unit.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
+Unit.prototype.TYPE = "infantry";
 
 Unit.prototype.DIRECTIONS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 Unit.prototype.DIRECTIONS_DELTA = [

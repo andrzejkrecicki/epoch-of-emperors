@@ -1,5 +1,6 @@
 import { Building } from './building.js';
 import { RESOURCE_TYPES } from '../../utils.js';
+import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
 
 class StoragePit extends Building {
@@ -9,6 +10,11 @@ class StoragePit extends Building {
             type == RESOURCE_TYPES.STONE ||
             type == RESOURCE_TYPES.GOLD
         );
+    }
+    actions() {
+        if (this.isComplete) return [
+            Technologies.Toolworking
+        ]; else return null;
     }
 }
 StoragePit.prototype.NAME = "Storage Pit";

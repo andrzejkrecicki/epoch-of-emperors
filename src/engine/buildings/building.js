@@ -107,6 +107,7 @@ Building.prototype.HAS_BITMAP_HITMASK = true;
 Building.prototype.INTERACT_WHEN_COMPLETE = false;
 Building.prototype.COLORIZE = true;
 Building.prototype.TOOLTIP = "Click to select this building.";
+Building.prototype.TYPE = "other";
 
 Building.prototype.STATE = {
     CONSTRUCTION: 0,

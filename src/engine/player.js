@@ -17,6 +17,22 @@ class Player {
         this.buildings = [];
         this.possessions = {};
         this.defaultEntityLevel = {};
+
+        this.attributeBonus = {
+            infantry: {
+                attack: 0,
+                armor: 0
+            },
+            archer: {
+                attack: 0,
+                armor: 0
+            },
+            cavalry: {
+                attack: 0,
+                armor: 0
+            },
+            other: {}
+        }
     }
     addBuilding(building) {
         this.buildings.push(building);

@@ -469,7 +469,10 @@ class EntityAttributes extends Graphics.Node {
         let offset_y = 0;
         for (let attr of EntityAttributes.ALL_ATTRIBUTES) {
             if (this.entity.attributes[attr] != null) {
-                this[attr].text(this.entity.attributes[attr]);
+                let base = this.entity.attributes[attr];
+                let bonus = this.entity.player.attributeBonus[this.entity.TYPE][attr];
+                if (bonus) this[attr].text(`${base}+${bonus}`);
+                else this[attr].text(base);
                 this[attr].position({ x: 0, y: offset_y });
                 this[attr].show();
                 offset_y += EntityAttributes.ATTRIBUTES[attr].height + 1;
@@ -559,7 +562,10 @@ class EntityActions extends Graphics.Node {
             this.states = [];
             this.removeChildren();
         }
-        if (entity.ACTIONS) this.pushActions(entity.ACTIONS.filter((a) => a.isVisible(entity)));
+        if (entity.ACTIONS) {
+            let actions = entity.ACTIONS.filter((a) => a.isVisible(entity));
+            if (actions.length) this.pushActions(actions);
+        }
     }
     pushActions(actions) {
         if (this.states.length) this.removeChildren();

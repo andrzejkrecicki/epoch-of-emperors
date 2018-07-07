@@ -82,9 +82,34 @@ BattleAxe.prototype.COST = {
 }
 
 
+class Toolworking extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.Toolworking;
+    }
+    finalize() {
+        this.player.attributeBonus.infantry.attack += 2;
+        this.player.attributeBonus.cavalry.attack += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+Toolworking.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/toolworking.png");
+Toolworking.prototype.TOOLTIP = "Research Toolworking: +2 hand-to-hand unit attack.";
+Toolworking.prototype.TIME = 40 * 35;
+Toolworking.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+Toolworking.prototype.COST = {
+    food: 100, wood: 0, stone: 0, gold: 0
+}
+
+
 const Technologies = {
     ToolAge,
-    BattleAxe
+    BattleAxe,
+    Toolworking
 }
 
 export { Technologies };
