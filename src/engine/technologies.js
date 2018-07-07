@@ -106,10 +106,84 @@ Toolworking.prototype.COST = {
 }
 
 
+class LeatherArmorInfantry extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.LeatherArmorInfantry;
+    }
+    finalize() {
+        this.player.attributeBonus.infantry.armor += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+LeatherArmorInfantry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/leather_armor_infantry.png");
+LeatherArmorInfantry.prototype.TOOLTIP = "Research Leather Armor: +2 infantry armor.";
+LeatherArmorInfantry.prototype.TIME = 30 * 35;
+LeatherArmorInfantry.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+LeatherArmorInfantry.prototype.COST = {
+    food: 75, wood: 0, stone: 0, gold: 0
+}
+
+
+class LeatherArmorArcher extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.LeatherArmorArcher;
+    }
+    finalize() {
+        this.player.attributeBonus.archer.armor += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+LeatherArmorArcher.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/leather_armor_archer.png");
+LeatherArmorArcher.prototype.TOOLTIP = "Research Leather Armor: +2 archer armor.";
+LeatherArmorArcher.prototype.TIME = 30 * 35;
+LeatherArmorArcher.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+LeatherArmorArcher.prototype.COST = {
+    food: 100, wood: 0, stone: 0, gold: 0
+}
+
+
+class LeatherArmorCavalry extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.LeatherArmorCavalry;
+    }
+    finalize() {
+        this.player.attributeBonus.cavalry.armor += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+LeatherArmorCavalry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/leather_armor_cavalry.png");
+LeatherArmorCavalry.prototype.TOOLTIP = "Research Leather Armor: +2 cavalry armor.";
+LeatherArmorCavalry.prototype.TIME = 30 * 35;
+LeatherArmorCavalry.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+LeatherArmorCavalry.prototype.COST = {
+    food: 125, wood: 0, stone: 0, gold: 0
+}
+
+
+
+
 const Technologies = {
     ToolAge,
     BattleAxe,
-    Toolworking
+    Toolworking,
+    LeatherArmorInfantry,
+    LeatherArmorArcher,
+    LeatherArmorCavalry
 }
 
 export { Technologies };

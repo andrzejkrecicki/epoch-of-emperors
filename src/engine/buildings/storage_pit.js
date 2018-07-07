@@ -13,7 +13,10 @@ class StoragePit extends Building {
     }
     actions() {
         if (this.isComplete) return [
-            Technologies.Toolworking
+            Technologies.Toolworking,
+            Technologies.LeatherArmorInfantry,
+            Technologies.LeatherArmorArcher,
+            Technologies.LeatherArmorCavalry
         ]; else return null;
     }
 }
