@@ -470,7 +470,7 @@ class EntityAttributes extends Graphics.Node {
         for (let attr of EntityAttributes.ALL_ATTRIBUTES) {
             if (this.entity.attributes[attr] != null) {
                 let base = this.entity.attributes[attr];
-                let bonus = this.entity.player.attributeBonus[this.entity.TYPE][attr];
+                let bonus = this.entity.player && this.entity.player.attributeBonus[this.entity.TYPE][attr];
                 if (bonus) this[attr].text(`${base}+${bonus}`);
                 else this[attr].text(base);
                 this[attr].position({ x: 0, y: offset_y });

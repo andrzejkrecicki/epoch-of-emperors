@@ -175,6 +175,101 @@ LeatherArmorCavalry.prototype.COST = {
 }
 
 
+class Domestication extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.Domestication;
+    }
+    finalize() {
+        this.player.attributeBonus.farm.food += 75;
+
+        super.finalize();
+        return true;
+    }
+}
+Domestication.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/domestication.png");
+Domestication.prototype.TOOLTIP = "Research Domestication: +75 food production for farms.";
+Domestication.prototype.TIME = 40 * 35;
+Domestication.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+Domestication.prototype.COST = {
+    food: 200, wood: 50, stone: 0, gold: 0
+}
+
+
+class Woodworking extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.Woodworking;
+    }
+    finalize() {
+        this.player.interactionBonus.ChopInteraction += 16;
+        this.player.attributeBonus.villager.capacity.wood += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+Woodworking.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/woodworking.png");
+Woodworking.prototype.TOOLTIP = "Research Woodworking: +1 missile weapon range; +2 woodcutting";
+Woodworking.prototype.TIME = 60 * 35;
+Woodworking.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+Woodworking.prototype.COST = {
+    food: 120, wood: 75, stone: 0, gold: 0
+}
+
+
+class StoneMining extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.StoneMining;
+    }
+    finalize() {
+        this.player.interactionBonus.StoneMineInteraction += 31;
+        this.player.attributeBonus.villager.capacity.stone += 3;
+
+        super.finalize();
+        return true;
+    }
+}
+StoneMining.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/stone_mining.png");
+StoneMining.prototype.TOOLTIP = "Research Stone Mining: +3 stone mining; +1 Slinger attack range.";
+StoneMining.prototype.TIME = 60 * 35;
+StoneMining.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+StoneMining.prototype.COST = {
+    food: 100, wood: 0, stone: 50, gold: 0
+}
+
+
+class GoldMining extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.GoldMining;
+    }
+    finalize() {
+        this.player.interactionBonus.GoldMineInteraction += 31;
+        this.player.attributeBonus.villager.capacity.gold += 3;
+
+        super.finalize();
+        return true;
+    }
+}
+GoldMining.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/gold_mining.png");
+GoldMining.prototype.TOOLTIP = "Research Gold Mining: +3 gold mining.";
+GoldMining.prototype.TIME = 60 * 35;
+GoldMining.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+GoldMining.prototype.COST = {
+    food: 120, wood: 100, stone: 0, gold: 0
+}
+
+
 
 
 const Technologies = {
@@ -183,7 +278,11 @@ const Technologies = {
     Toolworking,
     LeatherArmorInfantry,
     LeatherArmorArcher,
-    LeatherArmorCavalry
+    LeatherArmorCavalry,
+    Domestication,
+    Woodworking,
+    StoneMining,
+    GoldMining
 }
 
 export { Technologies };

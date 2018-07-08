@@ -45,14 +45,15 @@ Interaction.prototype.DISTANCE = 0;
 
 class ResourceExtractionInteraction extends Interaction {
     process() {
+        let max_capacity = this.active.CAPACITY[this.RESOURCE_NAME] + this.active.player.attributeBonus.villager.capacity[this.RESOURCE_NAME];
         if (this.passive.destroyed) {
             if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
                 if (this.active.attributes[this.RESOURCE_NAME]) this.returnResources(engine)
                 else this.terminate()
             }
-        } else if (this.active.attributes[this.RESOURCE_NAME] == this.active.CAPACITY[this.RESOURCE_NAME]) {
+        } else if (this.active.attributes[this.RESOURCE_NAME] >= max_capacity) {
             this.returnResources(engine);
-        } else if (this.active.ticks_waited == this.RATE) {
+        } else if (this.active.ticks_waited == this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
             this.active.attributes[this.RESOURCE_NAME] += this.passive.getResource(engine);
             this.active.carriedResource = this.RESOURCE_TYPE;
             this.active.ticks_waited = 0;
@@ -146,7 +147,7 @@ class LumberInteraction extends Interaction {
         }
     }
 }
-LumberInteraction.prototype.RATE = 15;
+LumberInteraction.prototype.RATE = 11;
 
 
 class ChopInteraction extends ResourceExtractionInteraction {
@@ -162,7 +163,7 @@ class ChopInteraction extends ResourceExtractionInteraction {
 }
 ChopInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.WOOD;
 ChopInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.WOOD];
-ChopInteraction.prototype.RATE = 60;
+ChopInteraction.prototype.RATE = 63;
 
 
 class ForageInteraction extends ResourceExtractionInteraction {
@@ -189,7 +190,7 @@ class GoldMineInteraction extends ResourceExtractionInteraction {
 }
 GoldMineInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.GOLD;
 GoldMineInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.GOLD];
-GoldMineInteraction.prototype.RATE = 60;
+GoldMineInteraction.prototype.RATE = 77;
 
 
 class StoneMineInteraction extends ResourceExtractionInteraction {
@@ -206,7 +207,7 @@ class StoneMineInteraction extends ResourceExtractionInteraction {
 }
 StoneMineInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.STONE;
 StoneMineInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.STONE];
-StoneMineInteraction.prototype.RATE = 60;
+StoneMineInteraction.prototype.RATE = 77;
 
 
 class HunterInteraction extends Interaction {

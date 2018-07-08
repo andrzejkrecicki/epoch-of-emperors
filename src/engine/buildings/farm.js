@@ -15,7 +15,7 @@ class Farm extends Building {
     }
     setComplete() {
         super.setComplete();
-        this.attributes.food = 250;
+        this.attributes.food = 250 + this.player.attributeBonus.farm.food;
     }
 }
 Farm.prototype.NAME = "Farm";

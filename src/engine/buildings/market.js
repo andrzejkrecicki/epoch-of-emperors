@@ -4,6 +4,14 @@ import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
 
 class Market extends Building {
+    actions() {
+        if (this.isComplete) return [
+            Technologies.Domestication,
+            Technologies.Woodworking,
+            Technologies.StoneMining,
+            Technologies.GoldMining
+        ]; else return null;
+    }
 }
 Market.prototype.NAME = "Market";
 Market.prototype.AVATAR = [

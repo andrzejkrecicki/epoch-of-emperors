@@ -31,7 +31,27 @@ class Player {
                 attack: 0,
                 armor: 0
             },
+            farm: {
+                food: 0
+            },
+            villager: {
+                capacity: {
+                    food: 0,
+                    wood: 0,
+                    stone: 0,
+                    gold: 0
+                }
+            },
             other: {}
+        }
+        this.interactionBonus = {
+            FarmingInteraction: 0,
+            ChopInteraction: 0,
+            ForageInteraction: 0,
+            GoldMineInteraction: 0,
+            StoneMineInteraction: 0,
+            ButcherInteraction: 0,
+            FishingInteraction: 0
         }
     }
     addBuilding(building) {
