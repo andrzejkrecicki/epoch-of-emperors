@@ -270,6 +270,40 @@ GoldMining.prototype.COST = {
 }
 
 
+class SmallWall extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.SmallWall;
+    }
+}
+SmallWall.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/small_wall.png");
+SmallWall.prototype.TOOLTIP = "Research Small Wall.";
+SmallWall.prototype.TIME = 60 * 35;
+SmallWall.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+SmallWall.prototype.COST = {
+    food: 50, wood: 0, stone: 0, gold: 0
+}
+
+
+class WatchTower extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.ToolAge && !entity.player.possessions.WatchTower;
+    }
+}
+WatchTower.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/watch_tower.png");
+WatchTower.prototype.TOOLTIP = "Research Watch Tower.";
+WatchTower.prototype.TIME = 60 * 35;
+WatchTower.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+WatchTower.prototype.COST = {
+    food: 50, wood: 0, stone: 0, gold: 0
+}
+
+
 
 
 const Technologies = {
@@ -282,7 +316,9 @@ const Technologies = {
     Domestication,
     Woodworking,
     StoneMining,
-    GoldMining
+    GoldMining,
+    SmallWall,
+    WatchTower
 }
 
 export { Technologies };

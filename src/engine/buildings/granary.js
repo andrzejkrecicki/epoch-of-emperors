@@ -1,8 +1,15 @@
 import { Building } from './building.js';
 import { RESOURCE_TYPES } from '../../utils.js';
+import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
 
 class Granary extends Building {
+    actions() {
+        if (this.isComplete) return [
+            Technologies.SmallWall,
+            Technologies.WatchTower,
+        ]; else return null;
+    }
     acceptsResource(type) {
         return this.isComplete && type == RESOURCE_TYPES.FOOD;
     }
