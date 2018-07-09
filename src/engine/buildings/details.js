@@ -27,6 +27,13 @@ class SmokeSmall extends AnimatedDetail {}
 SmokeSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/smoke_small_", 17);
 SmokeSmall.prototype.IMAGE_OFFSETS = { x: 9, y: 27 }
 
+
+class SmallWallFlag extends AnimatedDetail {}
+SmallWallFlag.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/small_wall_flag_01_", 6);
+SmallWallFlag.prototype.IMAGE_OFFSETS = { x: 34, y: 36 }
+
+
+
 export {
-    FireSmall, SmokeSmall
+    FireSmall, SmokeSmall, SmallWallFlag
 }
