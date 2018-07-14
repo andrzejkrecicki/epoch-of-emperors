@@ -10,6 +10,7 @@ class Building extends Entity {
         this.max_hp = this.MAX_HP;
         this.construction_stage = 0;
         this.isComplete = false;
+        this.normalized = true;
         this.attributes.progress = "0%";
         this.state = this.STATE.CONSTRUCTION;
         this.tasks = [];
@@ -101,6 +102,8 @@ class Building extends Entity {
     }
     canConstructOn(terrain_counts) {
         return terrain_counts.get(TERRAIN_TYPES.WATER) == null;
+    }
+    normalize() {
     }
 }
 Building.prototype.HAS_BITMAP_HITMASK = true;

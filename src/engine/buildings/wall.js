@@ -17,6 +17,7 @@ class Wall extends Building {
             });
             this.flag.show();
         }
+        this.normalized = false;
     }
     levelUp() {
         super.levelUp();
@@ -36,6 +37,28 @@ class Wall extends Building {
             this.flag.hide();
             this.updateImage();
         }
+    }
+    normalize(map, depth=1) {
+        let v = 0;
+        let h = 0;
+        for (let vec of [{ x: 1, y: 0 }, { x: -1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }]) {
+            let x = this.subtile_x + vec.x * this.SUBTILE_WIDTH;
+            let y = this.subtile_y + vec.y * this.SUBTILE_WIDTH;
+            if (map.subtiles[x][y] instanceof Wall && map.subtiles[x][y].player == this.player) {
+                h += Math.abs(vec.x);
+                v += Math.abs(vec.y);
+                if (depth) map.subtiles[x][y].normalize(map, 0);
+            }
+        }
+        if (v == 2 && h == 0) this.state |= Wall.prototype.STATE.VERTICAL;
+        else if (h == 2 && v == 0) this.state |= Wall.prototype.STATE.HORIZONTAL;
+        else this.state &= 3;
+
+        if ((this.state | 3) == 3) this.flag.show();
+        else this.flag.hide();
+
+        this.updateImage();
+        this.normalized = true;
     }
 }
 Wall.prototype.NAME = "Small Wall";
@@ -62,7 +85,6 @@ Wall.prototype.STATE.VERTICAL = 8;
 Wall.prototype.STATE.DONE_H = Wall.prototype.STATE.DONE | Wall.prototype.STATE.HORIZONTAL;
 Wall.prototype.STATE.DONE_V = Wall.prototype.STATE.DONE | Wall.prototype.STATE.VERTICAL;
 
-Wall.prototype.STATE.DAMAGED_X = Wall.prototype.STATE.DAMAGED | Wall.prototype.STATE.HORIZONTAL | Wall.prototype.STATE.VERTICAL;
 Wall.prototype.STATE.DAMAGED_H = Wall.prototype.STATE.DAMAGED | Wall.prototype.STATE.HORIZONTAL;
 Wall.prototype.STATE.DAMAGED_V = Wall.prototype.STATE.DAMAGED | Wall.prototype.STATE.VERTICAL;
 
@@ -90,7 +112,7 @@ Wall.prototype.IMAGES = {
             [Sprites.Sprite("img/buildings/wall/01_all_v_fine.png")]
         ]
     ],
-    [Wall.prototype.STATE.DAMAGED_X]: [
+    [Wall.prototype.STATE.DAMAGED]: [
         [
             [Sprites.Sprite("img/buildings/wall/01_all_x_damaged.png")],
             [Sprites.Sprite("img/buildings/wall/01_all_x_damaged.png")],
