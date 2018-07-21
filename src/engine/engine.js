@@ -185,6 +185,7 @@ class Engine {
     processBuildings() {
         for (let entity of this.buildings) {
             if (entity.tasks.length) entity.processTasks();
+            if (!entity.normalized) entity.normalize(this.map);
         }
         this.buildings = this.buildings.filter((b) => !b.destroyed);
     }

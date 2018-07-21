@@ -37,17 +37,14 @@ function CreateBuildingFactory(Building) {
             this.viewer.isPlanningConstruction = true;
             this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
             this.viewer.constructionIndicator.setBuilding(this.BUILDING);
-            this.viewer.constructionIndicator.children[0].on("click", this.handleClick.bind(this));
+            this.viewer.constructionIndicator.on("confirm", this.confirmConstruction.bind(this));
+            this.viewer.constructionIndicator.on("reject", this.rejectConstruction.bind(this));
         }
         getCost() {
             return this.BUILDING.prototype.COST;
         }
         static getImage(entity) {
             return Building.prototype.AVATAR[entity.player.civ][entity.player.age];
-        }
-        handleClick(e) {
-            if (e.evt.button == 2 || e.evt.which == 3) this.rejectConstruction(e);
-            else this.confirmConstruction(e);
         }
         confirmConstruction(e) {
             if (!this.viewer.constructionIndicator.allow_construction) return;
@@ -120,6 +117,8 @@ NextBuildingsPage.prototype.POS = {
     y: 0
 }
 NextBuildingsPage.prototype.ACTIONS = [
+    CreateBuildingFactory(Market),
+    CreateBuildingFactory(TownCenter),
     PreviousPage,
     FirstPage,
 ];
@@ -149,8 +148,6 @@ Build.prototype.ACTIONS = [
     CreateBuildingFactory(Stable),
     CreateBuildingFactory(Farm),
     CreateBuildingFactory(Wall),
-    CreateBuildingFactory(Market),
-    CreateBuildingFactory(TownCenter),
     NextBuildingsPage,
     FirstPage
 ];

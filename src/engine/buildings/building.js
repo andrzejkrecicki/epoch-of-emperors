@@ -111,6 +111,7 @@ Building.prototype.INTERACT_WHEN_COMPLETE = false;
 Building.prototype.COLORIZE = true;
 Building.prototype.TOOLTIP = "Click to select this building.";
 Building.prototype.TYPE = "other";
+Building.prototype.CONTINUOUS_PREVIEW = false;
 
 Building.prototype.STATE = {
     CONSTRUCTION: 0,

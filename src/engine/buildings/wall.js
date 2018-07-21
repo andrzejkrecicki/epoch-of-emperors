@@ -47,7 +47,7 @@ class Wall extends Building {
             if (map.subtiles[x][y] instanceof Wall && map.subtiles[x][y].player == this.player) {
                 h += Math.abs(vec.x);
                 v += Math.abs(vec.y);
-                if (depth) map.subtiles[x][y].normalize(map, 0);
+                if (depth && map.subtiles[x][y].state != Wall.prototype.STATE.CONSTRUCTION) map.subtiles[x][y].normalize(map, 0);
             }
         }
         if (v == 2 && h == 0) this.state |= Wall.prototype.STATE.VERTICAL;
@@ -71,6 +71,7 @@ Wall.prototype.AVATAR = [
 ];
 Wall.prototype.MAX_HP = 200;
 Wall.prototype.SUBTILE_WIDTH = 2;
+Wall.prototype.CONTINUOUS_PREVIEW = true;
 
 Wall.prototype.ACTION_KEY = "W";
 Wall.prototype.COST = {
