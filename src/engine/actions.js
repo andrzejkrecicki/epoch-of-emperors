@@ -56,17 +56,17 @@ function CreateBuildingFactory(Building) {
             building.level = this.player.age;
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);
-            this.viewer.constructionIndicator.removeChildren();
             this.viewer.bottombar.entityActions.goToFirst();
             this.viewer.isPlanningConstruction = false;
+            this.viewer.constructionIndicator.hide();
             if (this.viewer.engine.selectedEntity) {
                 this.viewer.engine.interactOrder(this.viewer.engine.selectedEntity, building);
             }
         }
         rejectConstruction(e) {
-            this.viewer.constructionIndicator.removeChildren();
             this.viewer.bottombar.entityActions.popActions();
             this.viewer.isPlanningConstruction = false;
+            this.viewer.constructionIndicator.hide();
         }
     }
     CreateBuilding.prototype.BUILDING = Building;

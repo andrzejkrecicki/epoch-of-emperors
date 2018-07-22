@@ -716,6 +716,7 @@ class ConstructionIndicator extends Graphics.Node {
     move() {
         if (!this.viewer.isPlanningConstruction) return;
 
+        let W = this.building.prototype.SUBTILE_WIDTH;
         let prev = this.sub && this.viewer.mapDrawable.tileCoordsToScreen(this.sub.x / 2, this.sub.y / 2);
         // construction preview coordinates must be adjisted to subtile size
         // therefore we compute position of subtile under cursor and use it
@@ -724,7 +725,6 @@ class ConstructionIndicator extends Graphics.Node {
             this.viewer.mouseX + this.viewer.viewPort.x + MapDrawable.TILE_SIZE.width / 2,
             this.viewer.mouseY + this.viewer.viewPort.y
         );
-        let W = this.building.prototype.SUBTILE_WIDTH;
         this.sub.x -= Math.round(W / 2);
         this.sub.y -= Math.round(W / 2);
         if (this.building.prototype.CONTINUOUS_PREVIEW) {
@@ -744,19 +744,9 @@ class ConstructionIndicator extends Graphics.Node {
             if (Math.abs(diff.x) > Math.abs(diff.y)) vec.x = W * (diff.x > 0 ? 1 : -1);
             else vec.y = W * (diff.y > 0 ? 1 : -1);
 
-            let curr = { ...this.start_sub };
-            while ((vec.x && Math.abs(curr.x - this.sub.x) >= W) || (vec.y && Math.abs(curr.y - this.sub.y) >= W)) {
-                curr.x += vec.x;
-                curr.y += vec.y;
-                let pos = this.viewer.mapDrawable.tileCoordsToScreen(curr.x / 2, curr.y / 2);
+            let end = { ...this.sub };
+            this.sub = { ...this.start_sub };
 
-                this.add(this.image = new Graphics.Image({
-                    x: -this.getOffset().x - (screen.x - pos.x),
-                    y: -this.getOffset().y - (screen.y - pos.y),
-                    image: Sprites.Colorize(this.getSprite(), this.player),
-                    hasHitmap: true
-                }));
-            }
             let pos = this.viewer.mapDrawable.tileCoordsToScreen(this.start_sub.x / 2, this.start_sub.y / 2);
 
             this.add(this.image = new Graphics.Image({
@@ -765,7 +755,21 @@ class ConstructionIndicator extends Graphics.Node {
                 image: Sprites.Colorize(this.getSprite(), this.player),
                 hasHitmap: true
             }));
+            this.checkSubtiles();
 
+            while ((vec.x && Math.abs(this.sub.x - end.x) >= W) || (vec.y && Math.abs(this.sub.y - end.y) >= W)) {
+                this.sub.x += vec.x;
+                this.sub.y += vec.y;
+                let pos = this.viewer.mapDrawable.tileCoordsToScreen(this.sub.x / 2, this.sub.y / 2);
+
+                this.add(this.image = new Graphics.Image({
+                    x: -this.getOffset().x - (screen.x - pos.x),
+                    y: -this.getOffset().y - (screen.y - pos.y),
+                    image: Sprites.Colorize(this.getSprite(), this.player),
+                    hasHitmap: true
+                }));
+                this.checkSubtiles();
+            }
         }
         this.position({
             x: screen.x - this.viewer.viewPort.x,
@@ -803,14 +807,18 @@ class ConstructionIndicator extends Graphics.Node {
                 while ((vec.x && Math.abs(last.x - this.sub.x) >= W) || (vec.y && Math.abs(last.y - this.sub.y) >= W)) {
                     this.sub.x += vec.x;
                     this.sub.y += vec.y;
-                    this.fire("confirm");
+                    this.checkSubtiles();
+                    if (this.allow_construction) this.fire("confirm");
                 }
                 this.sub = this.start_sub;
-                this.fire("confirm");
+                this.checkSubtiles();
+                if (this.allow_construction) this.fire("confirm");
+
+                this.viewer.bottombar.entityActions.goToFirst();
+                this.viewer.isPlanningConstruction = false;
+                this.hide();
             }
         }
-        this.hide();
-        this.start_sub = null;
     }
     checkSubtiles() {
         let W = this.building.prototype.SUBTILE_WIDTH;
