@@ -707,7 +707,7 @@ class ConstructionIndicator extends Graphics.Node {
         this.current_opacity = .65;
         this.opacity_delta = .01;
         this.image = null;
-        this.building = null;
+        this.BUILDING = null;
         this.sub = null;
         this.start_sub = null;
         this.allow_construction = false;
@@ -716,7 +716,7 @@ class ConstructionIndicator extends Graphics.Node {
     move() {
         if (!this.viewer.isPlanningConstruction) return;
 
-        let W = this.building.prototype.SUBTILE_WIDTH;
+        let W = this.BUILDING.prototype.SUBTILE_WIDTH;
         let prev = this.sub && this.viewer.mapDrawable.tileCoordsToScreen(this.sub.x / 2, this.sub.y / 2);
         // construction preview coordinates must be adjisted to subtile size
         // therefore we compute position of subtile under cursor and use it
@@ -727,7 +727,7 @@ class ConstructionIndicator extends Graphics.Node {
         );
         this.sub.x -= Math.round(W / 2);
         this.sub.y -= Math.round(W / 2);
-        if (this.building.prototype.CONTINUOUS_PREVIEW) {
+        if (this.BUILDING.prototype.CONTINUOUS_PREVIEW) {
             this.sub.x -= this.sub.x % W;
             this.sub.y -= this.sub.y % W;
         }
@@ -738,7 +738,7 @@ class ConstructionIndicator extends Graphics.Node {
             y: this.sub.y - this.start_sub.y
         };
 
-        if (this.building.prototype.CONTINUOUS_PREVIEW && this.start_sub) {
+        if (this.BUILDING.prototype.CONTINUOUS_PREVIEW && this.start_sub) {
             this.removeChildren();
             let vec = { x: 0, y: 0 };
             if (Math.abs(diff.x) > Math.abs(diff.y)) vec.x = W * (diff.x > 0 ? 1 : -1);
@@ -790,13 +790,13 @@ class ConstructionIndicator extends Graphics.Node {
     handleMouseUp(e) {
         if (e.evt.button == 2 || e.evt.which == 3) this.fire("reject");
         else {
-            if (!this.building.prototype.CONTINUOUS_PREVIEW) this.fire("confirm");
+            if (!this.BUILDING.prototype.CONTINUOUS_PREVIEW) this.fire("confirm");
             else {
                 let diff = this.start_sub && {
                     x: this.sub.x - this.start_sub.x,
                     y: this.sub.y - this.start_sub.y
                 };
-                let W = this.building.prototype.SUBTILE_WIDTH;
+                let W = this.BUILDING.prototype.SUBTILE_WIDTH;
 
                 let vec = { x: 0, y: 0 };
                 if (Math.abs(diff.x) > Math.abs(diff.y)) vec.x = W * (diff.x > 0 ? 1 : -1);
@@ -821,13 +821,13 @@ class ConstructionIndicator extends Graphics.Node {
         }
     }
     checkSubtiles() {
-        let W = this.building.prototype.SUBTILE_WIDTH;
+        let W = this.BUILDING.prototype.SUBTILE_WIDTH;
         let map = this.viewer.engine.map;
 
         if (this.sub.x >= 0 && this.sub.x + W <= map.edge_size * 2 &&
             this.sub.y >= 0 && this.sub.y + W <= map.edge_size * 2 &&
             map.areSubtilesEmpty(this.sub.x, this.sub.y, W) &&
-            this.building.prototype.canConstructOn(map.countTerrainTiles(this.sub.x, this.sub.y, W))
+            this.BUILDING.prototype.canConstructOn(map.countTerrainTiles(this.sub.x, this.sub.y, W))
         ) {
             this.image.image(Sprites.Colorize(this.getSprite(), this.player));
             this.allow_construction = true;
@@ -837,10 +837,10 @@ class ConstructionIndicator extends Graphics.Node {
         }
     }
     getSprite() {
-        return this.building.prototype.IMAGES[Building.prototype.STATE.DONE][this.player.civ][this.player.age][0];
+        return this.BUILDING.prototype.IMAGES[Building.prototype.STATE.DONE][this.player.civ][this.player.age][0];
     }
     getOffset() {
-        return this.building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][this.player.civ][this.player.age];
+        return this.BUILDING.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][this.player.civ][this.player.age];
     }
     process() {
         if (!this.viewer.isPlanningConstruction) return;
@@ -858,8 +858,12 @@ class ConstructionIndicator extends Graphics.Node {
         this.on("mousedown", this.handleMouseDown.bind(this));
         this.on("mouseup", this.handleMouseUp.bind(this));
 
-        this.building = building;
+        this.removeChildren();
+        this.start_sub = null;
+        this.show();
+        this.BUILDING = building;
         this.player = this.viewer.engine.selectedEntity.player;
+
         this.add(this.image = new Graphics.Image({
             x: -this.getOffset().x,
             y: -this.getOffset().y,
