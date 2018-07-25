@@ -71,6 +71,7 @@ function CreateBuildingFactory(Building) {
     }
     CreateBuilding.prototype.BUILDING = Building;
     CreateBuilding.prototype.TOOLTIP = `Build ${Building.prototype.NAME}`;
+    if (Building.prototype.CONTINUOUS_PREVIEW) CreateBuilding.prototype.TOOLTIP += " (drag-n-drop)"
     CreateBuilding.prototype.ACTION_KEY = Building.prototype.ACTION_KEY;
     CreateBuilding.prototype.ACTIONS = [
         RejectConstructionPlan
