@@ -309,8 +309,37 @@ class AttackInteraction extends Interaction {
 }
 
 
+class DistantAttackInteraction extends Interaction {
+    init() {
+        if (this.active.hasFullPath) {
+            this.active.state = Unit.prototype.STATE.ATTACK;
+            super.init();
+        } else {
+            this.active.state = this.active.STATE.IDLE;
+        }
+    }
+    stop() {
+        this.active.state = this.active.STATE.IDLE;
+    }
+    process() {
+        if (this.passive.destroyed || this.passive.hp <= 0) {
+            this.terminate();
+        } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
+            this.engine.makeProjectile(this.active.getProjectileType(), this.active, this.passive);
+        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.ATTACK][this.active.level][0].length) {
+            this.engine.interactOrder(this.active, this.passive);
+        }
+        this.active.rotateToEntity(this.passive);
+    }
+    static getDistance(active) {
+        return Math.round(active.attributes.range * 1.5);
+    }
+}
+
+
 export {
     FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
     ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
-    HunterInteraction, ButcherInteraction, FishingInteraction, AttackInteraction
+    HunterInteraction, ButcherInteraction, FishingInteraction, AttackInteraction,
+    DistantAttackInteraction
 }

@@ -77,11 +77,23 @@ class Spear extends LinearProjectile {
 }
 Spear.prototype.SPEED = 10;
 Spear.prototype.RADIUS = 17;
-
 Spear.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/spear/", 32);
-
 Spear.prototype.IMAGE_OFFSETS = { x: 25, y: 9 };
 
+
+class Arrow extends LinearProjectile {
+    constructor(thrower, victim, position, target, subtile_x, subtile_y) {
+        super(thrower, victim, position, target, subtile_x, subtile_y);
+        this.attributes = {
+            attack: thrower.attributes.attack
+        };
+    }
+}
+Arrow.prototype.SPEED = 10;
+Arrow.prototype.RADIUS = 13;
+Arrow.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/arrow/", 72);
+Arrow.prototype.IMAGE_OFFSETS = { x: 20, y: 6 };
+
 export {
-    Spear
+    Spear, Arrow
 }

@@ -80,6 +80,8 @@ class Unit extends Entity {
     }
     get ACTIONS() {
     }
+    getProjectileType() {
+    }
     getProjectileOffset() {
         return { x: 0, y: 0 }
     }

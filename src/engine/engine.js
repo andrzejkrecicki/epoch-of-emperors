@@ -275,7 +275,7 @@ class Engine {
     }
     interactOrder(active, passive, subtilesLimit) {
         let Interaction = active.getInteractionType(passive);
-        let distance = Interaction == null ? 0 : Interaction.getDistance();
+        let distance = Interaction == null ? 0 : Interaction.getDistance(active);
 
         let finder = new AStarToEntity(active, this.map, passive, distance, subtilesLimit);
         let path = finder.run();
