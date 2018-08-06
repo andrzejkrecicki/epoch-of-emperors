@@ -68,6 +68,9 @@ class Building extends Entity {
         if (task.SUPPORTS_QUEUE) this.tasks_counts[task.HASH] = (this.tasks_counts[task.HASH] || 0) + 1;
         this.actions_changed = true;
     }
+    process() {
+        if (this.tasks.length) this.processTasks();
+    }
     processTasks() {
         let task = this.tasks[0];
         if (this.ticks_waited == 0 && !task.init()) {

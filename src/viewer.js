@@ -108,7 +108,7 @@ class GameViewer {
         let entity = e.target.parent;
         if (entity instanceof Entity) {
             this.engine.selectedEntity = entity;
-            entity.setSelected(true);
+            entity.setSelected(true, this.engine);
             this.bottombar.showDetails(entity);
         }
     }
@@ -484,7 +484,8 @@ class EntityAttributes extends Graphics.Node {
 }
 EntityAttributes.ALL_ATTRIBUTES = [
     "attack", "armor", "range", "progress", "population",
-    "food", "wood", "gold", "stone"
+    "food", "wood", "gold", "stone", "trade_units",
+    "trade_profit"
 ];
 EntityAttributes.ATTRIBUTES = {
     attack: Sprites.Sprite("img/interface/details/attack.png"),
@@ -492,6 +493,8 @@ EntityAttributes.ATTRIBUTES = {
     wood: Sprites.Sprite("img/interface/details/wood.png"),
     gold: Sprites.Sprite("img/interface/details/gold.png"),
     stone: Sprites.Sprite("img/interface/details/stone.png"),
+    trade_units: Sprites.Sprite("img/interface/details/trade_units.png"),
+    trade_profit: Sprites.Sprite("img/interface/details/gold.png"),
     progress: Sprites.Sprite("img/interface/details/progress.png"),
     population: Sprites.Sprite("img/interface/details/population.png"),
     armor: Sprites.Sprite("img/interface/details/armor.png"),

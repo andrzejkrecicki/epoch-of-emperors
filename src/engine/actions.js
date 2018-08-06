@@ -10,7 +10,7 @@ import { Market } from './buildings/market.js';
 import { Wall } from './buildings/wall.js';
 import { House } from './buildings/house.js';
 import { Unit } from './units/unit.js';
-import { rand_choice } from '../utils.js';
+import { RESOURCE_TYPES, RESOURCE_NAME, rand_choice } from '../utils.js';
 import { Sprites } from '../sprites.js';
 import { Action } from './base_action.js';
 
@@ -171,22 +171,30 @@ Stop.prototype.ACTION_KEY = "S";
 
 
 class Trade extends Action {
+    execute() {
+        this.entity.attributes[RESOURCE_NAME[this.entity.tradedResource]] = null;
+        this.entity.tradedResource = this.RESOURCE;
+        if (this.entity.attributes.gold == null) this.entity.attributes[RESOURCE_NAME[this.entity.tradedResource]] = "";
+    }
 }
 
 class TradeFood extends Trade {
 }
 TradeFood.prototype.IMAGE = Sprites.Sprite("img/interface/command/trade_food.png");
 TradeFood.prototype.TOOLTIP = "Trade food for gold."
+TradeFood.prototype.RESOURCE = RESOURCE_TYPES.FOOD;
 
 class TradeWood extends Trade {
 }
 TradeWood.prototype.IMAGE = Sprites.Sprite("img/interface/command/trade_wood.png");
 TradeWood.prototype.TOOLTIP = "Trade wood for gold."
+TradeWood.prototype.RESOURCE = RESOURCE_TYPES.WOOD;
 
 class TradeStone extends Trade {
 }
 TradeStone.prototype.IMAGE = Sprites.Sprite("img/interface/command/trade_stone.png");
 TradeStone.prototype.TOOLTIP = "Trade stone for gold."
+TradeStone.prototype.RESOURCE = RESOURCE_TYPES.STONE;
 
 
 function RecruitUnitFactory(Unit) {

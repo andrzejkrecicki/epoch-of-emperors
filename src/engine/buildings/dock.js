@@ -2,12 +2,16 @@ import { Building } from './building.js';
 import { FishingBoat } from '../units/fishing_boat.js';
 import { TradeBoat } from '../units/trade_boat.js';
 import { Actions } from '../actions.js';
-import { RESOURCE_TYPES } from '../../utils.js';
+import { RESOURCE_TYPES, manhatan_subtile_distance } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Sprites } from '../../sprites.js';
 
 
 class Dock extends Building {
+    constructor() {
+        super(...arguments);
+        this.attributes.trade_units = Dock.prototype.MAX_TRADE_UNITS;
+    }
     get ACTIONS() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(FishingBoat),
@@ -20,6 +24,27 @@ class Dock extends Building {
     }
     acceptsResource(type) {
         return this.isComplete && type == RESOURCE_TYPES.FOOD;
+    }
+    process(engine) {
+        if (engine.framesCount % Dock.prototype.TRADE_UNITS_RESTORE_DELAY == 0) {
+            this.attributes.trade_units = Math.min(Dock.prototype.MAX_TRADE_UNITS, this.attributes.trade_units + 1);
+        }
+        super.process();
+    }
+    getTradeProfit(other) {
+        let min_dist = Infinity;
+        for (let building of other.buildings) if (building instanceof Dock) {
+            let curr_dist = manhatan_subtile_distance(building, this);
+            if (min_dist > curr_dist) min_dist = curr_dist;
+        }
+        let value = Math.round((17 / 112) * min_dist - 19 / 7);
+        return Math.max(7, Math.min(75, value))
+    }
+    setSelected(value, engine) {
+        if (engine != null && this.player != engine.current_player) {
+            this.attributes.trade_profit = `${this.getTradeProfit(engine.current_player)}/20`;
+        } else this.attributes.trade_profit = null;
+        super.setSelected(value);
     }
 }
 Dock.prototype.NAME = "Dock";
@@ -38,6 +63,9 @@ Dock.prototype.ACTION_KEY = "D";
 Dock.prototype.COST = {
     food: 0, wood: 100, stone: 0, gold: 0
 }
+
+Dock.prototype.MAX_TRADE_UNITS = 100;
+Dock.prototype.TRADE_UNITS_RESTORE_DELAY = 35;
 
 Dock.prototype.IMAGES = {
     [Building.prototype.STATE.DONE]: [

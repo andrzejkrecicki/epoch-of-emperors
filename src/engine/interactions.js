@@ -275,6 +275,39 @@ FishingInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.FOOD];
 FishingInteraction.prototype.RATE = 60;
 
 
+class TradeInteraction extends ResourceExtractionInteraction {
+    preInit() {
+        this.active.carriedResource = this.active.tradedResource;
+        this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] = "";
+        this.active.attributes.gold = null;
+    }
+    init() {
+        if (this.active.hasFullPath) {
+            this.active.state = this.active.STATE.TRADING;
+            super.init();
+        } else this.terminate();
+    }
+    stop() {
+        this.active.state = this.active.STATE.IDLE;
+    }
+    process() {
+        let res = RESOURCE_NAME[this.active.tradedResource];
+        let cap = this.active.CAPACITY[res];
+        if (this.passive.attributes.trade_units >= cap && this.active.player.resources[res] >= cap) {
+            this.passive.attributes.trade_units -= cap;
+            this.active.player.resources[res] -= cap;
+            this.active.attributes[res] = null;
+            this.active.carriedResource = RESOURCE_TYPES.GOLD;
+            this.active.attributes.gold = this.passive.getTradeProfit(this.active.player);
+            this.returnResources(engine);
+        }
+    }
+    getReturnBuildingTypes() {
+        return ["Dock"];
+    }
+}
+
+
 class AttackInteraction extends Interaction {
     init() {
         if (this.active.hasFullPath) {
@@ -344,6 +377,6 @@ class DistantAttackInteraction extends Interaction {
 export {
     FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
     ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
-    HunterInteraction, ButcherInteraction, FishingInteraction, AttackInteraction,
-    DistantAttackInteraction
+    HunterInteraction, ButcherInteraction, FishingInteraction, TradeInteraction,
+    AttackInteraction, DistantAttackInteraction
 }
