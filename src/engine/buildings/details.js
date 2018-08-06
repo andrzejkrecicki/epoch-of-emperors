@@ -4,6 +4,7 @@ class AnimatedDetail extends Graphics.Node {
     constructor() {
         super(...arguments)
         this.frame = 0;
+        this._frame = 0;
         this.image = new Graphics.Image({
             x: -this.IMAGE_OFFSETS.x,
             y: -this.IMAGE_OFFSETS.y,
@@ -13,10 +14,12 @@ class AnimatedDetail extends Graphics.Node {
     }
     draw() {
         super.draw();
-        this.frame = (this.frame + .5) % this.IMAGES.length;
-        this.image.image(this.IMAGES[Math.floor(this.frame)]);
+        this._frame = this._frame + this.FRAME_DELTA;
+        this.frame = Math.floor(this._frame) % this.IMAGES.length;
+        this.image.image(this.IMAGES[this.frame]);
     }
 }
+AnimatedDetail.prototype.FRAME_DELTA = .5;
 
 class FireSmall extends AnimatedDetail {}
 FireSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/fire_small_", 20);
@@ -33,7 +36,31 @@ SmallWallFlag.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/s
 SmallWallFlag.prototype.IMAGE_OFFSETS = { x: 34, y: 36 }
 
 
+class SailSmall extends Graphics.Node {
+    constructor(rotation) {
+        super()
+        this.frame = 0;
+        this._frame = 0;
+        this.rotation = rotation;
+        this.image = new Graphics.Image({
+            x: -this.IMAGE_OFFSETS.x,
+            y: -this.IMAGE_OFFSETS.y,
+            image: this.IMAGES[this.rotation][this.frame]
+        });
+        this.add(this.image);
+    }
+    draw() {
+        super.draw();
+        this._frame = this._frame + this.FRAME_DELTA;
+        this.frame = Math.floor(this._frame) % this.IMAGES[0].length;
+        this.image.image(this.IMAGES[this.rotation][this.frame]);
+    }
+}
+SailSmall.prototype.IMAGES = Sprites.DirectionSprites("img/units/sail_small/", 9);
+SailSmall.prototype.IMAGE_OFFSETS = { x: 8, y: 50 }
+SailSmall.prototype.FRAME_DELTA = .125;
+
 
 export {
-    FireSmall, SmokeSmall, SmallWallFlag
+    FireSmall, SmokeSmall, SmallWallFlag, SailSmall
 }

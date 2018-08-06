@@ -354,7 +354,7 @@ class Engine {
             let leftovers = new entity.LEFTOVERS(entity.subtile_x, entity.subtile_y);
             this.drawables.push(leftovers);
             this.viewer.addEntity(leftovers);
-        } else if (entity instanceof Unit) {
+        } else if (entity instanceof Unit && entity.LEAVES_LEFTOVERS) {
             let dead = new DeadBody(
                 entity.subtile_x,
                 entity.subtile_y,

@@ -1,6 +1,7 @@
 import { Building } from './building.js';
 import { FishingBoat } from '../units/fishing_boat.js';
 import { TradeBoat } from '../units/trade_boat.js';
+import { ScoutShip } from '../units/scout_ship.js';
 import { Actions } from '../actions.js';
 import { RESOURCE_TYPES, manhatan_subtile_distance } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
@@ -15,7 +16,8 @@ class Dock extends Building {
     get ACTIONS() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(FishingBoat),
-            Actions.RecruitUnitFactory(TradeBoat)
+            Actions.RecruitUnitFactory(TradeBoat),
+            Actions.RecruitUnitFactory(ScoutShip)
         ]; else return null;
     }
     canConstructOn(terrain_counts) {
