@@ -46,14 +46,15 @@ const Sprites = {
         }
         return sprites;
     },
-    SpriteSequence(path, count, start=0) {
+    SpriteSequence(path, count, start=0, mul=0) {
         let sprites = [];
         for (let i = start; i < start + count; ++i) {
             this.ready.then(() => {
                 sprites.push(this.cache[`${path}${leftpad(i, 2, "0")}.png`]);
             })
         }
-        return sprites;
+        if (mul == 0) return sprites;
+        else return Array(mul).fill(sprites);
     },
     Sprite(path) {
         let canvas = document.createElement("canvas");

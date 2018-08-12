@@ -20,6 +20,10 @@ class ScoutShip extends Unit {
         super.updateSprite(...arguments);
         if (this.sail) this.sail.rotation = this.rotation;
     }
+    takeHit() {
+        super.takeHit(...arguments)
+        if (this.hp <= 0) this.sail.hide();
+    }
     getInteractionType(object) {
         if (object instanceof Unit || object instanceof Building) return interactions.DistantAttackInteraction;
     }
@@ -33,7 +37,7 @@ class ScoutShip extends Unit {
         return [Actions.StandGround, Actions.Stop];
     }
 }
-ScoutShip.prototype.SUBTILE_WIDTH = 1;
+ScoutShip.prototype.SUBTILE_WIDTH = 3;
 ScoutShip.prototype.NAME = ["Scout Ship"];
 ScoutShip.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/scout_ship.png")];
 ScoutShip.prototype.MAX_HP = 120;
@@ -58,18 +62,21 @@ ScoutShip.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
 
 ScoutShip.prototype.IMAGES = {
     [ScoutShip.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/scout_ship/idle/", 1)],
-    [ScoutShip.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/scout_ship/dying/", 1)],
+    [ScoutShip.prototype.STATE.DYING]: [
+        Sprites.SpriteSequence("img/units/ship_sink_small/", 5, 0, 8),
+        Sprites.SpriteSequence("img/units/ship_sink_medium/", 6, 0, 8),
+
+    ],
 };
 ScoutShip.prototype.IMAGES[ScoutShip.prototype.STATE.MOVING] = ScoutShip.prototype.IMAGES[ScoutShip.prototype.STATE.IDLE];
 ScoutShip.prototype.IMAGES[ScoutShip.prototype.STATE.ATTACK] = ScoutShip.prototype.IMAGES[ScoutShip.prototype.STATE.IDLE];
 
 
 ScoutShip.prototype.IMAGE_OFFSETS = {
-    [ScoutShip.prototype.STATE.IDLE]: [{ x: 58, y: 37 }],
-    [ScoutShip.prototype.STATE.MOVING]: [{ x: 58, y: 37 }],
-    [ScoutShip.prototype.STATE.ATTACK]: [{ x: 58, y: 37 }],
-    [ScoutShip.prototype.STATE.DYING]: [{ x: 22, y: 24 }],
-    [ScoutShip.prototype.STATE.DEAD]: [{ x: 58, y: 37 }],
+    [ScoutShip.prototype.STATE.IDLE]: [{ x: 39, y: 39 }],
+    [ScoutShip.prototype.STATE.MOVING]: [{ x: 39, y: 39 }],
+    [ScoutShip.prototype.STATE.ATTACK]: [{ x: 39, y: 39 }],
+    [ScoutShip.prototype.STATE.DYING]: [{ x: -17, y: 16 }, { x: 22, y: 24 }]
 };
 
 export { ScoutShip }

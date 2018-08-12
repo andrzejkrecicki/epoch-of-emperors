@@ -57,7 +57,7 @@ class SailSmall extends Graphics.Node {
     }
 }
 SailSmall.prototype.IMAGES = Sprites.DirectionSprites("img/units/sail_small/", 9);
-SailSmall.prototype.IMAGE_OFFSETS = { x: 8, y: 50 }
+SailSmall.prototype.IMAGE_OFFSETS = { x: -11, y: 52 }
 SailSmall.prototype.FRAME_DELTA = .125;
 
 

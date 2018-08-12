@@ -43,7 +43,7 @@ class Engine {
             } else if ((entity.state & ~Unit.prototype.BASE_STATE_MASK) == 0) {
                 this.processInteractingUnit(entity);
             } else if (entity.state & Unit.prototype.STATE.DYING) {
-                if (entity.frame < entity.IMAGES[Unit.prototype.STATE.DYING][0].length) {
+                if (entity.frame < entity.IMAGES[Unit.prototype.STATE.DYING][entity.level][0].length) {
                     entity.updateSprite();
                     if (this.framesCount % entity.FRAME_RATE[Unit.prototype.STATE.DYING] == 0) ++entity.frame;
                 } else entity.toggleDead(this);
