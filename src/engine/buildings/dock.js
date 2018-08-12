@@ -1,6 +1,7 @@
 import { Building } from './building.js';
 import { FishingBoat } from '../units/fishing_boat.js';
 import { TradeBoat } from '../units/trade_boat.js';
+import { TransportBoat } from '../units/transport_boat.js';
 import { ScoutShip } from '../units/scout_ship.js';
 import { Actions } from '../actions.js';
 import { RESOURCE_TYPES, manhatan_subtile_distance } from '../../utils.js';
@@ -17,6 +18,7 @@ class Dock extends Building {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(FishingBoat),
             Actions.RecruitUnitFactory(TradeBoat),
+            Actions.RecruitUnitFactory(TransportBoat),
             Actions.RecruitUnitFactory(ScoutShip)
         ]; else return null;
     }

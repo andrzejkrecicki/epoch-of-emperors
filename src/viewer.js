@@ -485,7 +485,7 @@ class EntityAttributes extends Graphics.Node {
 EntityAttributes.ALL_ATTRIBUTES = [
     "attack", "armor", "range", "progress", "population",
     "food", "wood", "gold", "stone", "trade_units",
-    "trade_profit"
+    "trade_profit", "load"
 ];
 EntityAttributes.ATTRIBUTES = {
     attack: Sprites.Sprite("img/interface/details/attack.png"),
@@ -496,6 +496,7 @@ EntityAttributes.ATTRIBUTES = {
     trade_units: Sprites.Sprite("img/interface/details/trade_units.png"),
     trade_profit: Sprites.Sprite("img/interface/details/gold.png"),
     progress: Sprites.Sprite("img/interface/details/progress.png"),
+    load: Sprites.Sprite("img/interface/details/population.png"),
     population: Sprites.Sprite("img/interface/details/population.png"),
     armor: Sprites.Sprite("img/interface/details/armor.png"),
     range: Sprites.Sprite("img/interface/details/range.png"),
