@@ -37,8 +37,8 @@ SmallWallFlag.prototype.IMAGE_OFFSETS = { x: 34, y: 36 }
 
 
 class SailSmall extends Graphics.Node {
-    constructor(rotation) {
-        super()
+    constructor(pos, rotation) {
+        super({ x: pos.x, y: pos.y })
         this.frame = 0;
         this._frame = 0;
         this.rotation = rotation;
@@ -57,7 +57,7 @@ class SailSmall extends Graphics.Node {
     }
 }
 SailSmall.prototype.IMAGES = Sprites.DirectionSprites("img/units/sail_small/", 9);
-SailSmall.prototype.IMAGE_OFFSETS = { x: -11, y: 52 }
+SailSmall.prototype.IMAGE_OFFSETS = { x: 38, y: 48 }
 SailSmall.prototype.FRAME_DELTA = .125;
 
 

@@ -12,7 +12,8 @@ class ScoutShip extends Unit {
     constructor() {
         super(...arguments);
         if (this.level < 2) {
-            this.sail = new SailSmall(this.rotation);
+            this.sail = new SailSmall(this.SAIL_OFFSET[this.level], this.rotation);
+            this.sail.rotation = this.rotation;
             this.add(this.sail);
         } else this.sail = null;
     }
@@ -49,7 +50,7 @@ ScoutShip.prototype.LEAVES_LEFTOVERS = false;
 
 ScoutShip.prototype.ACTION_KEY = "E";
 ScoutShip.prototype.COST = {
-    food: 135, wood: 0, stone: 0, gold: 0
+    food: 0, wood: 135, stone: 0, gold: 0
 }
 
 ScoutShip.prototype.ATTRIBUTES = {
@@ -64,8 +65,7 @@ ScoutShip.prototype.IMAGES = {
     [ScoutShip.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/scout_ship/idle/", 1)],
     [ScoutShip.prototype.STATE.DYING]: [
         Sprites.SpriteSequence("img/units/ship_sink_small/", 5, 0, 8),
-        Sprites.SpriteSequence("img/units/ship_sink_medium/", 6, 0, 8),
-
+        Sprites.SpriteSequence("img/units/ship_sink_medium/", 6, 0, 8)
     ],
 };
 ScoutShip.prototype.IMAGES[ScoutShip.prototype.STATE.MOVING] = ScoutShip.prototype.IMAGES[ScoutShip.prototype.STATE.IDLE];
@@ -78,5 +78,7 @@ ScoutShip.prototype.IMAGE_OFFSETS = {
     [ScoutShip.prototype.STATE.ATTACK]: [{ x: 39, y: 39 }],
     [ScoutShip.prototype.STATE.DYING]: [{ x: -17, y: 16 }, { x: 22, y: 24 }]
 };
+
+ScoutShip.prototype.SAIL_OFFSET = [{ x: 49, y: -2 }];
 
 export { ScoutShip }
