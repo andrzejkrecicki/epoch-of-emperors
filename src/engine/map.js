@@ -88,6 +88,14 @@ class RandomMap extends Map {
         }
         return true;
     }
+    isSuitableForUnit(subtile_x, subtile_y, unit) {
+        for (let x = Math.floor(subtile_x / 2); x < Math.round((subtile_x + unit.SUBTILE_WIDTH) / 2); ++x) {
+            for (let y = Math.floor(subtile_y / 2); y < Math.round((subtile_y + unit.SUBTILE_WIDTH) / 2); ++y) {
+                if (!unit.SUPPORTED_TERRAIN.has(this.initial_tiles[x][y])) return false;
+            }
+        }
+        return true;
+    }
     countTerrainTiles(subtile_x, subtile_y, width) {
         let counts = new window.Map();
         for (let x = Math.floor(subtile_x / 2); x < Math.round((subtile_x + width) / 2); ++x) {

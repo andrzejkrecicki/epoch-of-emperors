@@ -392,7 +392,8 @@ class EnterShipInteraction extends Interaction {
                     this.active.SUBTILE_WIDTH,
                     null
                 );
-                this.active.parent.removeChild(this.active);
+                if (this.engine.selectedEntity == this.active) this.engine.viewer.deselectEntity();
+                this.active.remove();
                 this.active.subtile_x = NaN;
                 this.active.subtile_y = NaN;
                 this.passive.loadUnit(this.active);

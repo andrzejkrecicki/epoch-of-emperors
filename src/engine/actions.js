@@ -198,6 +198,9 @@ TradeStone.prototype.RESOURCE = RESOURCE_TYPES.STONE;
 
 
 class Unload extends Action {
+    execute() {
+        this.entity.readyForUnload = true;
+    }
     static isVisible(entity) {
         return entity.load > 0;
     }

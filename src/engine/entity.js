@@ -135,7 +135,7 @@ class Entity extends Graphics.Node {
     destroy(engine) {
         if (this.player) --this.player.possessions[this.constructor.name];
         this.destroyed = true;
-        this.remove();
+        if (this.parent) this.remove();
         engine.destroyEntity(this);
     }
 }

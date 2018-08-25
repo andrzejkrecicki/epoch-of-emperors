@@ -107,6 +107,7 @@ class Engine {
                 if (entity.interaction === null) {
                     entity.frame = 0;
                     entity.interactionObject = null;
+                    entity.afterPath(this);
                 } else {
                     entity.initInteraction(this);
                 }
@@ -181,6 +182,29 @@ class Engine {
         entity.interactionSuccessor = found;
         if (found) this.interactOrder(active, found);
         return found;
+    }
+    unloadUnits(carrier) {
+        let count = 0;
+        let seed = { x: carrier.subtile_x, y: carrier.subtile_y };
+        let walker = new BFSWalker(seed, new StandardQueue, (node) => {
+                let { x, y } = node;
+                let unit = carrier.carriedUnits[carrier.load - 1];
+                if (this.map.areSubtilesEmpty(x, y, unit.SUBTILE_WIDTH) && this.map.isSuitableForUnit(x, y, unit)) {
+                    unit.subtile_x = x;
+                    unit.subtile_y = y;
+                    unit.position(this.viewer.mapDrawable.tileCoordsToScreen(unit.subtile_x / 2, unit.subtile_y / 2));
+                    this.viewer.entitiesHolder.add(unit);
+                    this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.SUBTILE_WIDTH, unit);
+                    --carrier.load;
+                    carrier.attributes.load = `${carrier.load}/${carrier.capacity}`;
+                    carrier.carriedUnits.pop();
+                }
+                ++count;
+            }, (x, y, node) => ({ x, y }),
+            () => (carrier.load == 0 || count > 100),
+            0, this.map.edge_size * 2 - 1
+        );
+        walker.run();
     }
     processBuildings() {
         for (let entity of this.buildings) {
@@ -271,6 +295,7 @@ class Engine {
             unit.swapPath(path);
             unit.setBaseState(Unit.prototype.STATE.MOVING);
             unit.rotateToSubtile(unit.path[0]);
+            unit.afterMoveOrder();
         }
     }
     interactOrder(active, passive, subtilesLimit) {
@@ -342,7 +367,9 @@ class Engine {
         this.buildings.push(building);
     }
     destroyEntity(entity) {
-        this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, null);
+        if (!isNaN(entity.subtile_x + entity.subtile_y)) {
+            this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, null);
+        }
         if (entity.hasPrelocatedArea) this.map.fillSubtilesWith(
             entity.path[entity.path_progress].x,
             entity.path[entity.path_progress].y,
@@ -350,6 +377,8 @@ class Engine {
             null
         );
         if (this.selectedEntity == entity) this.viewer.deselectEntity();
+        if (isNaN(entity.subtile_x + entity.subtile_y)) return;
+
         if (entity.LEFTOVERS != null) {
             let leftovers = new entity.LEFTOVERS(entity.subtile_x, entity.subtile_y);
             this.drawables.push(leftovers);

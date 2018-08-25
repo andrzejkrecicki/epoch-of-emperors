@@ -132,6 +132,10 @@ class Unit extends Entity {
     }
     afterStep() {
     }
+    afterPath() {
+    }
+    afterMoveOrder() {
+    }
     preInitInteraction() {
         this.interaction && this.interaction.preInit();
     }

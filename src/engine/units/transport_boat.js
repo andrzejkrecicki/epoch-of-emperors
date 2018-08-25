@@ -9,6 +9,8 @@ import * as interactions from '../interactions.js';
 class TransportBoat extends Unit {
     constructor() {
         super(...arguments);
+        this.isUnloading = false;
+        this.readyForUnload = false;
         this.load = 0;
         this.capacity = this.MAX_LOAD[this.level];
         this.carriedUnits = [];
@@ -33,6 +35,27 @@ class TransportBoat extends Unit {
         this.carriedUnits.push(entity);
         ++this.load;
         this.attributes.load = `${this.load}/${this.capacity}`;
+        this.actions_changed = true;
+    }
+    afterMoveOrder() {
+        if (this.readyForUnload) this.isUnloading = true;
+        else this.isUnloading = false;
+        this.readyForUnload = false;
+    }
+    afterPath(engine) {
+        if (this.isUnloading && this.load > 0) {
+            engine.unloadUnits(this);
+            this.actions_changed = true;
+        }
+        this.isUnloading = false;
+    }
+    takeHit() {
+        super.takeHit(...arguments)
+        if (this.hp <= 0) this.sail.hide();
+    }
+    destroy(engine) {
+        super.destroy(engine);
+        for (let unit of this.carriedUnits) unit.destroy(engine);
     }
     get ACTIONS() {
         return [Actions.Unload, Actions.Stop];
