@@ -47,6 +47,7 @@ ScoutShip.prototype.CREATION_TIME = 26 * 35;
 ScoutShip.prototype.ATTACK_RATE = 5 * 3;
 ScoutShip.prototype.SHOT_DELAY = 27;
 ScoutShip.prototype.LEAVES_LEFTOVERS = false;
+ScoutShip.prototype.CAN_ENTER_SHIP = false;
 
 ScoutShip.prototype.ACTION_KEY = "E";
 ScoutShip.prototype.COST = {

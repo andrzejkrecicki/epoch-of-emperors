@@ -85,6 +85,9 @@ class Unit extends Entity {
     getProjectileOffset() {
         return { x: 0, y: 0 }
     }
+    canCarry(object) {
+        return false;
+    }
     swapPath(path) {
         if (this.path == null) {
             // if unit currently has no path, just assign found path;
@@ -152,6 +155,7 @@ class Unit extends Entity {
 Unit.prototype.TOOLTIP = "Click to select this unit.";
 Unit.prototype.COLORIZE = true;
 Unit.prototype.LEAVES_LEFTOVERS = true;
+Unit.prototype.CAN_ENTER_SHIP = true;
 
 Unit.prototype.DIFF_TO_ROTATION = [6, 7, 0, 5, null, 1, 4, 3, 2];
 Unit.prototype.ROTATION = {

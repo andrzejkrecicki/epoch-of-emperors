@@ -197,6 +197,16 @@ TradeStone.prototype.TOOLTIP = "Trade stone for gold."
 TradeStone.prototype.RESOURCE = RESOURCE_TYPES.STONE;
 
 
+class Unload extends Action {
+    static isVisible(entity) {
+        return entity.load > 0;
+    }
+}
+Unload.prototype.IMAGE = Sprites.Sprite("img/interface/command/unload.png");
+Unload.prototype.TOOLTIP = "Unload"
+Unload.prototype.ACTION_KEY = "L";
+
+
 function RecruitUnitFactory(Unit) {
     class RecruitUnit extends Action {
         execute() {
@@ -290,7 +300,7 @@ function RecruitUnitFactory(Unit) {
 
 const Actions = {
     StandGround, Build, Repair, Stop, RecruitUnitFactory,
-    TradeFood, TradeWood, TradeStone
+    TradeFood, TradeWood, TradeStone, Unload
 }
 
 export { Actions, Action }

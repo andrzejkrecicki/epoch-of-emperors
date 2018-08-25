@@ -29,8 +29,9 @@ class Villager extends Unit {
         ];
     }
     getInteractionType(object) {
+        if (object instanceof Unit && object.canCarry(this)) return interactions.EnterShipInteraction;
         // TODO: check if its our farm or emymy's
-        if (object instanceof Farm && object.isComplete) return interactions.FarmingInteraction;
+        else if (object instanceof Farm && object.isComplete) return interactions.FarmingInteraction;
         // TODO: check if its our building or emymy's
         else if (object instanceof Building) {
             if (this.carriedResource && object.acceptsResource(this.carriedResource)) return interactions.ReturnResourcesInteraction;

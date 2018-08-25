@@ -10,7 +10,9 @@ class TransportBoat extends Unit {
     constructor() {
         super(...arguments);
         this.load = 0;
-        this.attributes.load = `${this.load}/${this.MAX_LOAD[this.level]}`;
+        this.capacity = this.MAX_LOAD[this.level];
+        this.carriedUnits = [];
+        this.attributes.load = `${this.load}/${this.capacity}`;
 
         if (this.level < 2) {
             this.sail = new SailSmall(this.SAIL_OFFSET[this.level], this.rotation);
@@ -24,8 +26,16 @@ class TransportBoat extends Unit {
     }
     getInteractionType(object) {
     }
+    canCarry(entity) {
+        return entity.CAN_ENTER_SHIP && entity.player == this.player;
+    }
+    loadUnit(entity) {
+        this.carriedUnits.push(entity);
+        ++this.load;
+        this.attributes.load = `${this.load}/${this.capacity}`;
+    }
     get ACTIONS() {
-        return [Actions.StandGround, Actions.Stop];
+        return [Actions.Unload, Actions.Stop];
     }
 }
 TransportBoat.prototype.SUBTILE_WIDTH = 2;

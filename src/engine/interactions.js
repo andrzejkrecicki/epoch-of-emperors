@@ -378,9 +378,34 @@ class DistantAttackInteraction extends Interaction {
 }
 
 
+class EnterShipInteraction extends Interaction {
+    init() {
+        if (this.passive.destroyed) {
+            this.interactWithSuccessor();
+        } else if (this.active.hasFullPath) {
+            this.terminate();
+
+            if (this.passive.load < this.passive.capacity) {
+                this.engine.map.fillSubtilesWith(
+                    this.active.subtile_x,
+                    this.active.subtile_y,
+                    this.active.SUBTILE_WIDTH,
+                    null
+                );
+                this.active.parent.removeChild(this.active);
+                this.active.subtile_x = NaN;
+                this.active.subtile_y = NaN;
+                this.passive.loadUnit(this.active);
+            }
+
+        } else this.active.setBaseState(this.active.STATE.IDLE);
+    }
+}
+
+
 export {
     FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
     ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
     HunterInteraction, ButcherInteraction, FishingInteraction, TradeInteraction,
-    AttackInteraction, DistantAttackInteraction
+    AttackInteraction, DistantAttackInteraction, EnterShipInteraction
 }
