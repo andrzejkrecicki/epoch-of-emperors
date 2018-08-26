@@ -2,12 +2,8 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
-import * as interactions from '../interactions.js';
 
 class ClubMan extends Unit {
-    getInteractionType(object) {
-        if (object instanceof Unit || object instanceof Building) return interactions.AttackInteraction;
-    }
     get ACTIONS() {
         return [Actions.StandGround, Actions.Stop];
     }

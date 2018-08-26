@@ -200,6 +200,7 @@ TradeStone.prototype.RESOURCE = RESOURCE_TYPES.STONE;
 class Unload extends Action {
     execute() {
         this.entity.readyForUnload = true;
+        this.viewer.setErrorMessage('Right click where you want the transport to unload.');
     }
     static isVisible(entity) {
         return entity.load > 0;

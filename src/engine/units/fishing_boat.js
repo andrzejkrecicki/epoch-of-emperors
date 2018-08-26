@@ -18,9 +18,9 @@ class FishingBoat extends Unit {
     get ACTIONS() {
         return [Actions.Stop]
     }
-    getInteractionType(object) {
+    getOwnInteractionType(object) {
         if (object instanceof FishBig) return interactions.FishingInteraction;
-        else if (object instanceof Building) {
+        else if (object instanceof Building && object.player == this.player) {
             if (this.carriedResource && object.acceptsResource(this.carriedResource)) return interactions.ReturnResourcesInteraction;
         }
     }
@@ -31,6 +31,7 @@ FishingBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/fishing_bo
 FishingBoat.prototype.MAX_HP = 45;
 FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;
+FishingBoat.prototype.CAN_ATTACK = false;
 
 FishingBoat.prototype.ACTION_KEY = "F";
 FishingBoat.prototype.COST = {

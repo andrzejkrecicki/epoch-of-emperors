@@ -4,7 +4,7 @@ import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import { SailSmall } from '../buildings/details.js';
-import * as interactions from '../interactions.js';
+
 
 class TransportBoat extends Unit {
     constructor() {
@@ -25,8 +25,6 @@ class TransportBoat extends Unit {
     updateSprite() {
         super.updateSprite(...arguments);
         if (this.sail) this.sail.rotation = this.rotation;
-    }
-    getInteractionType(object) {
     }
     canCarry(entity) {
         return entity.CAN_ENTER_SHIP && entity.player == this.player;
@@ -69,6 +67,8 @@ TransportBoat.prototype.SPEED = 3;
 TransportBoat.prototype.CREATION_TIME = 26 * 35;
 TransportBoat.prototype.MAX_LOAD = [5, 10];
 TransportBoat.prototype.LEAVES_LEFTOVERS = false;
+TransportBoat.prototype.CAN_ATTACK = false;
+
 
 TransportBoat.prototype.ACTION_KEY = "T";
 TransportBoat.prototype.COST = {

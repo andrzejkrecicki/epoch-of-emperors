@@ -192,7 +192,9 @@ class Engine {
                 if (this.map.areSubtilesEmpty(x, y, unit.SUBTILE_WIDTH) && this.map.isSuitableForUnit(x, y, unit)) {
                     unit.subtile_x = x;
                     unit.subtile_y = y;
+                    unit.frame = 0;
                     unit.position(this.viewer.mapDrawable.tileCoordsToScreen(unit.subtile_x / 2, unit.subtile_y / 2));
+                    unit.resetBoundingBox();
                     this.viewer.entitiesHolder.add(unit);
                     this.map.fillSubtilesWith(unit.subtile_x, unit.subtile_y, unit.SUBTILE_WIDTH, unit);
                     --carrier.load;

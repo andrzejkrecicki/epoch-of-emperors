@@ -5,7 +5,6 @@ import { TERRAIN_TYPES } from '../terrain.js';
 import { SailSmall } from '../buildings/details.js';
 import { Arrow } from '../projectiles.js';
 import { Actions } from '../actions.js';
-import * as interactions from '../interactions.js';
 
 
 class ScoutShip extends Unit {
@@ -24,9 +23,6 @@ class ScoutShip extends Unit {
     takeHit() {
         super.takeHit(...arguments)
         if (this.hp <= 0) this.sail.hide();
-    }
-    getInteractionType(object) {
-        if (object instanceof Unit || object instanceof Building) return interactions.DistantAttackInteraction;
     }
     getProjectileType() {
         return Arrow
@@ -48,6 +44,7 @@ ScoutShip.prototype.ATTACK_RATE = 5 * 3;
 ScoutShip.prototype.SHOT_DELAY = 27;
 ScoutShip.prototype.LEAVES_LEFTOVERS = false;
 ScoutShip.prototype.CAN_ENTER_SHIP = false;
+ScoutShip.prototype.ATTACKS_FROM_DISTANCE = true;
 
 ScoutShip.prototype.ACTION_KEY = "E";
 ScoutShip.prototype.COST = {

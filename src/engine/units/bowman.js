@@ -3,15 +3,11 @@ import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import { Arrow } from '../projectiles.js';
-import * as interactions from '../interactions.js';
 
 class BowMan extends Unit {
     constructor() {
         super(...arguments);
         this.lastShot = 0;
-    }
-    getInteractionType(object) {
-        if (object instanceof Unit || object instanceof Building) return interactions.DistantAttackInteraction;
     }
     getProjectileType() {
         return Arrow
@@ -32,6 +28,7 @@ BowMan.prototype.SPEED = 1.1;
 BowMan.prototype.CREATION_TIME = 26 * 35;
 BowMan.prototype.ATTACK_RATE = 7 * 3;
 BowMan.prototype.SHOT_DELAY = 27;
+BowMan.prototype.ATTACKS_FROM_DISTANCE = true;
 
 BowMan.prototype.ACTION_KEY = "T";
 BowMan.prototype.COST = {

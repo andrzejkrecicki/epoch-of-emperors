@@ -12,7 +12,7 @@ class Animal extends Unit {
         }
         return 0;
     }
-    getInteractionType(object) {
+    getOwnInteractionType(object) {
         if (object instanceof Unit) return interactions.AttackInteraction;
     }
     toggleDead(engine) {

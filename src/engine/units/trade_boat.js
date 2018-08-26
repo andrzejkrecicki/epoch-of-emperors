@@ -22,7 +22,7 @@ class TradeBoat extends Unit {
     get ACTIONS() {
         return [Actions.TradeFood, Actions.TradeWood, Actions.TradeStone, Actions.Stop]
     }
-    getInteractionType(object) {
+    getOwnInteractionType(object) {
         if (object instanceof Dock) {
             if (object.player != this.player) return interactions.TradeInteraction;
             else return interactions.ReturnResourcesInteraction
@@ -35,6 +35,8 @@ TradeBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/trade_boat.p
 TradeBoat.prototype.MAX_HP = 200;
 TradeBoat.prototype.SPEED = 3;
 TradeBoat.prototype.CREATION_TIME = 26 * 35;
+TradeBoat.prototype.CAN_ATTACK = false;
+
 
 TradeBoat.prototype.ACTION_KEY = "R";
 TradeBoat.prototype.COST = {

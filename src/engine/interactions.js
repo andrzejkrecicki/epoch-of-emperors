@@ -1,6 +1,4 @@
 import { RESOURCE_TYPES, RESOURCE_NAME } from '../utils.js';
-import { Unit } from './units/unit.js';
-import { Villager } from './units/villager.js';
 import { Spear } from './projectiles.js';
 
 class Interaction {
@@ -74,7 +72,7 @@ class ResourceExtractionInteraction extends Interaction {
 
 class FarmingInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.FARMER;
+        this.active.state = this.active.STATE.FARMER;
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FARM;
@@ -89,7 +87,7 @@ FarmingInteraction.prototype.RATE = 60;
 
 class BuilderInteraction extends Interaction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.BUILDING;
+        this.active.state = this.active.STATE.BUILDING;
     }
     process() {
         if (this.passive.destroyed) {
@@ -116,7 +114,7 @@ class ReturnResourcesInteraction extends Interaction {
             this.active.player.resources[res_name] += this.active.attributes[res_name];
             this.active.attributes[res_name] = null;
             this.active.carriedResource = RESOURCE_TYPES.NONE;
-            this.active.state = Villager.prototype.STATE.IDLE;
+            this.active.state = this.active.STATE.IDLE;
 
             if (this.active.prevInteractionObject == null) {
                 this.terminate();
@@ -128,7 +126,7 @@ class ReturnResourcesInteraction extends Interaction {
 
 class LumberInteraction extends Interaction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.LUMBER;
+        this.active.state = this.active.STATE.LUMBER;
         this.active.attributes.food = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     process() {
@@ -152,7 +150,7 @@ LumberInteraction.prototype.RATE = 11;
 
 class ChopInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.LUMBER;
+        this.active.state = this.active.STATE.LUMBER;
         this.active.attributes.food = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     stop() {
@@ -168,7 +166,7 @@ ChopInteraction.prototype.RATE = 63;
 
 class ForageInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.FORAGE;
+        this.active.state = this.active.STATE.FORAGE;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
     }
 }
@@ -179,7 +177,7 @@ ForageInteraction.prototype.RATE = 60;
 
 class GoldMineInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.MINE;
+        this.active.state = this.active.STATE.MINE;
         this.active.attributes.food = this.active.attributes.wood = this.active.attributes.stone = null;
     }
     stop() {
@@ -195,7 +193,7 @@ GoldMineInteraction.prototype.RATE = 77;
 
 class StoneMineInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.MINE;
+        this.active.state = this.active.STATE.MINE;
         this.active.attributes.food = this.active.attributes.wood = this.active.attributes.gold = null;
 
     }
@@ -212,7 +210,7 @@ StoneMineInteraction.prototype.RATE = 77;
 
 class HunterInteraction extends Interaction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.HUNTER;
+        this.active.state = this.active.STATE.HUNTER;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     process() {
@@ -221,7 +219,7 @@ class HunterInteraction extends Interaction {
                 if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.active.returnResources(engine)
                 else this.active.terminateInteraction()
             }
-        } else if (this.passive.state == Unit.prototype.STATE.DYING) {
+        } else if (this.passive.state == this.passive.STATE.DYING) {
             this.engine.interactOrder(this.active, this.passive);
         } else if (this.active.ticks_waited == this.RATE) {
             this.engine.makeProjectile(Spear, this.active, this.passive);
@@ -240,7 +238,7 @@ HunterInteraction.prototype.DISTANCE = 6;
 
 class ButcherInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = Villager.prototype.STATE.HUNTER;
+        this.active.state = this.active.STATE.HUNTER;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     init() {
@@ -316,7 +314,7 @@ class AttackInteraction extends Interaction {
                 this.engine.interactOrder(this.active, this.passive);
                 this.active.frame = frame;
             } else {
-                this.active.state = Unit.prototype.STATE.ATTACK;
+                this.active.state = this.active.STATE.ATTACK;
                 super.init();
             }
         } else {
@@ -345,7 +343,7 @@ class AttackInteraction extends Interaction {
 class DistantAttackInteraction extends Interaction {
     init() {
         if (this.active.hasFullPath) {
-            this.active.state = Unit.prototype.STATE.ATTACK;
+            this.active.state = this.active.STATE.ATTACK;
             super.init();
         } else {
             this.active.state = this.active.STATE.IDLE;

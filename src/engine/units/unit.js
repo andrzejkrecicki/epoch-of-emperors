@@ -1,6 +1,8 @@
 import { Entity } from '../entity.js';
 import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
+import { Building } from '../buildings/building.js';
+import * as interactions from '../interactions.js';
 
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, level=0, rotation=null) {
@@ -76,7 +78,14 @@ class Unit extends Entity {
             this.rotation = this.DIFF_TO_ROTATION[index];
         }
     }
+    getOwnInteractionType() {
+    }
     getInteractionType(object) {
+        if (object instanceof Unit && object.canCarry(this)) return interactions.EnterShipInteraction;
+        else if ((object instanceof Unit || object instanceof Building) && object.player != this.player) {
+            if (this.ATTACKS_FROM_DISTANCE) return interactions.DistantAttackInteraction;
+            else if (this.CAN_ATTACK) return interactions.AttackInteraction;
+        } else return this.getOwnInteractionType(object);
     }
     get ACTIONS() {
     }
@@ -160,6 +169,8 @@ Unit.prototype.TOOLTIP = "Click to select this unit.";
 Unit.prototype.COLORIZE = true;
 Unit.prototype.LEAVES_LEFTOVERS = true;
 Unit.prototype.CAN_ENTER_SHIP = true;
+Unit.prototype.CAN_ATTACK = true;
+Unit.prototype.ATTACKS_FROM_DISTANCE = false;
 
 Unit.prototype.DIFF_TO_ROTATION = [6, 7, 0, 5, null, 1, 4, 3, 2];
 Unit.prototype.ROTATION = {
