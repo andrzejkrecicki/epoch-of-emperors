@@ -73,6 +73,7 @@ Villager.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/villager.png"
 Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
 Villager.prototype.CREATION_TIME = 20 * 35;
+Villager.prototype.ATTACK_RATE = 10 * 3;
 
 Villager.prototype.ACTION_KEY = "C";
 Villager.prototype.COST = {
@@ -152,6 +153,7 @@ Villager.prototype.STATE.CARRY_MEAT_MOVING = Villager.prototype.STATE.MOVING | V
 
 
 Villager.prototype.FRAME_RATE = { ...Unit.prototype.FRAME_RATE,
+    [Villager.prototype.STATE.ATTACK]: 3,
     [Villager.prototype.STATE.DYING]: 3,
     [Villager.prototype.STATE.BUILDING]: 2,
     [Villager.prototype.STATE.FORAGE]: 4,
@@ -178,6 +180,7 @@ Villager.prototype.IMAGES = {
     [Villager.prototype.STATE.CARRY_MEAT_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_meat/", 1, 12)],
 
     [Villager.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/villager/moving/", 15)],
+    [Villager.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/villager/attack/", 15)],
     [Villager.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/villager/dying/", 10)],
     [Villager.prototype.STATE.DEAD]: [Sprites.DirectionSprites("img/units/villager/dead/", 6)],
     [Villager.prototype.STATE.BUILDING]: [Sprites.DirectionSprites("img/units/villager/building/", 16)],
@@ -226,6 +229,7 @@ Villager.prototype.IMAGES = {
 Villager.prototype.IMAGE_OFFSETS = {
     [Villager.prototype.STATE.IDLE]: [{ x: -5, y: 33 }],
     [Villager.prototype.STATE.MOVING]: [{ x: 2, y: 33 }],
+    [Villager.prototype.STATE.ATTACK]: [{ x: 30, y: 46 }],
     [Villager.prototype.STATE.DYING]: [{ x: 27, y: 40 }],
     [Villager.prototype.STATE.DEAD]: [{ x: 28, y: 23 }],
 
