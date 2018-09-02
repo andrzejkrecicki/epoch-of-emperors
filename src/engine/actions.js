@@ -7,6 +7,7 @@ import { StoragePit } from './buildings/storage_pit.js';
 import { Dock } from './buildings/dock.js';
 import { Granary } from './buildings/granary.js';
 import { Market } from './buildings/market.js';
+import { Tower } from './buildings/tower.js';
 import { Wall } from './buildings/wall.js';
 import { House } from './buildings/house.js';
 import { Unit } from './units/unit.js';
@@ -148,6 +149,7 @@ Build.prototype.ACTIONS = [
     CreateBuildingFactory(ArcheryRange),
     CreateBuildingFactory(Stable),
     CreateBuildingFactory(Farm),
+    CreateBuildingFactory(Tower),
     CreateBuildingFactory(Wall),
     NextBuildingsPage,
     FirstPage
