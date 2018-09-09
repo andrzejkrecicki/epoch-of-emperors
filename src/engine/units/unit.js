@@ -15,7 +15,6 @@ class Unit extends Entity {
         this.frame = 0;
         this.path = null;
         this.path_progress = 0;
-        this.interaction = null;
         this.interactionObject = null;
         this.prevInteractionObject = null;
         this.hasFullPath = false;
@@ -144,25 +143,6 @@ class Unit extends Entity {
     afterPath() {
     }
     afterMoveOrder() {
-    }
-    preInitInteraction() {
-        this.interaction && this.interaction.preInit();
-    }
-    initInteraction() {
-        this.ticks_waited = 0;
-        this.interaction && this.interaction.init();
-    }
-    processInteraction() {
-        if (this.interaction == null) return;
-        this.interaction.process();
-        ++this.ticks_waited;
-    }
-    stopInteraction() {
-        this.interaction && this.interaction.stop();
-        this.interaction = null;
-    }
-    terminateInteraction() {
-        this.interaction && this.interaction.terminate();
     }
 }
 Unit.prototype.TOOLTIP = "Click to select this unit.";

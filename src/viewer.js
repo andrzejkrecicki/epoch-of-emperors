@@ -113,7 +113,7 @@ class GameViewer {
         }
     }
     handleRightClick(e) {
-        if (this.engine.selectedEntity instanceof Unit) {
+        if (this.engine.selectedEntity instanceof Unit || this.engine.selectedEntity instanceof Building) {
             let sx = (e.evt.layerX - this.mapDrawable.x());
             let sy = (e.evt.layerY - this.mapDrawable.y());
             let subtile = this.mapDrawable.screenCoordsToSubtile(sx, sy);

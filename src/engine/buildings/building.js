@@ -42,6 +42,8 @@ class Building extends Entity {
         ++this.level;
         this.updateImage();
     }
+    getInteractionType(object) {
+    }
     actions() {
         return null;
     }
@@ -70,6 +72,7 @@ class Building extends Entity {
     }
     process() {
         if (this.tasks.length) this.processTasks();
+        this.processInteraction();
     }
     processTasks() {
         let task = this.tasks[0];

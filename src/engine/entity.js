@@ -12,6 +12,7 @@ class Entity extends Graphics.Node {
         this.selected = false;
         this.attributes = {};
         this.actions_changed = false;
+        this.interaction = null;
         this.interactionSuccessor = null;
         this.destroyed = false;
         this.isFlat = false;
@@ -110,6 +111,25 @@ class Entity extends Graphics.Node {
         this.image.image(Sprites.Colorize(this.getSprite(), this.COLORIZE && this.player));
         this.image.x(-this.getOffset().x);
         this.image.y(-this.getOffset().y);
+    }
+    preInitInteraction() {
+        this.interaction && this.interaction.preInit();
+    }
+    initInteraction() {
+        this.ticks_waited = 0;
+        this.interaction && this.interaction.init();
+    }
+    processInteraction() {
+        if (this.interaction == null) return;
+        this.interaction.process();
+        ++this.ticks_waited;
+    }
+    stopInteraction() {
+        this.interaction && this.interaction.stop();
+        this.interaction = null;
+    }
+    terminateInteraction() {
+        this.interaction && this.interaction.terminate();
     }
     resetBoundingBox() {
         this.boundingBox = {

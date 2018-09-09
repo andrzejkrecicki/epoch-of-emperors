@@ -280,13 +280,15 @@ class Engine {
         this.viewer.stage.draw();
     }
     handleRightClick(point) {
+        let target = this.map.subtiles[point.x][point.y];
         if (this.selectedEntity instanceof Unit) {
-            let target = this.map.subtiles[point.x][point.y];
             if (target == null || target == this.selectedEntity) {
                 this.moveOrder(this.selectedEntity, point);
             } else if (target instanceof Entity) {
-                this.interactOrder(this.selectedEntity, this.map.subtiles[point.x][point.y]);
+                this.interactOrder(this.selectedEntity, target);
             }
+        } else if (this.selectedEntity instanceof Building && target instanceof Entity) {
+            this.interactImmediately(this.selectedEntity, target);
         }
     }
     moveOrder(unit, point) {

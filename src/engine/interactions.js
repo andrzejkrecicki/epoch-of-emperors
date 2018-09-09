@@ -376,6 +376,41 @@ class DistantAttackInteraction extends Interaction {
 }
 
 
+class TowerAttackInteraction extends Interaction {
+    init() {
+        if (this.passive.destroyed) this.terminate();
+    }
+    stop() {
+    }
+    terminate() {
+        this.active.ticks_waited = 0;
+        this.active.interaction = null;
+    }
+    process() {
+        let dist = Math.max(
+            Math.abs(this.active.getCenterSubtile().subtile_x - this.passive.getCenterSubtile().subtile_x),
+            Math.abs(this.active.getCenterSubtile().subtile_y - this.passive.getCenterSubtile().subtile_y)
+        );
+
+        if (dist > (this.active.SUBTILE_WIDTH + this.passive.SUBTILE_WIDTH) / 2 + this.active.attributes.range * 1.5) {
+            this.terminate();
+        } else if (this.engine.framesCount - this.active.lastShot < this.active.SHOT_DELAY) {
+            this.active.ticks_waited = 0;
+        } else if (this.passive.destroyed || this.passive.hp <= 0) {
+            this.terminate();
+        } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
+            this.engine.makeProjectile(this.active.getProjectileType(), this.active, this.passive);
+        } else if (this.active.ticks_waited > this.active.ATTACK_RATE) {
+            this.active.lastShot = this.engine.framesCount;
+            this.engine.interactImmediately(this.active, this.passive);
+        }
+    }
+    static getDistance(active) {
+        return Math.round(active.attributes.range * 1.5);
+    }
+}
+
+
 class EnterShipInteraction extends Interaction {
     init() {
         if (this.passive.destroyed) {
@@ -406,5 +441,5 @@ export {
     FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
     ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
     HunterInteraction, ButcherInteraction, FishingInteraction, TradeInteraction,
-    AttackInteraction, DistantAttackInteraction, EnterShipInteraction
+    AttackInteraction, DistantAttackInteraction, TowerAttackInteraction, EnterShipInteraction
 }

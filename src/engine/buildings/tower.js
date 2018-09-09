@@ -1,6 +1,10 @@
 import { Building } from './building.js';
+import { Unit } from '../units/unit.js';
 import { FireSmall } from './details.js';
 import { Sprites } from '../../sprites.js';
+import { Arrow } from '../projectiles.js';
+import * as interactions from '../interactions.js';
+
 
 class Tower extends Building {
     constructor() {
@@ -24,8 +28,20 @@ class Tower extends Building {
         }
     }
     levelUp() {
+        super.levelUp();
         ++this.attributes.attack;
         ++this.attributes.range;
+    }
+    getProjectileType() {
+        return Arrow
+    }
+    getProjectileOffset() {
+        return { x: 15, y: -55 }
+    }
+    getInteractionType(object) {
+        if ((object instanceof Unit || object instanceof Building) && object.player != this.player) {
+            return interactions.TowerAttackInteraction;
+        }
     }
     getName() {
         return this.NAME[this.level];
@@ -41,6 +57,8 @@ Tower.prototype.AVATAR = [
     ]
 ];
 Tower.prototype.MAX_HP = 100;
+Tower.prototype.ATTACK_RATE = 7 * 3;
+Tower.prototype.SHOT_DELAY = 27;
 Tower.prototype.SUBTILE_WIDTH = 4;
 
 Tower.prototype.ACTION_KEY = "T";
