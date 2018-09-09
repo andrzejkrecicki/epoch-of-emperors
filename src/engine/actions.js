@@ -47,6 +47,9 @@ function CreateBuildingFactory(Building) {
         static getImage(entity) {
             return Building.prototype.AVATAR[entity.player.civ][entity.player.age];
         }
+        static isPossible(entity) {
+            return Building.isResearched(entity.player);
+        }
         confirmConstruction(e) {
             if (!this.viewer.constructionIndicator.allow_construction) return;
             if (this.checkCost(this.BUILDING.prototype.COST) == false) return;

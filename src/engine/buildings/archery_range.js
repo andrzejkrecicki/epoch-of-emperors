@@ -10,6 +10,9 @@ class ArcheryRange extends Building {
             Actions.RecruitUnitFactory(BowMan)
         ]; else return null;
     }
+    static isResearched(player) {
+        return entity.player.possessions.Barracks && entity.player.possessions.ToolAge;
+    }
 }
 ArcheryRange.prototype.NAME = "Archery Range";
 ArcheryRange.prototype.AVATAR = [

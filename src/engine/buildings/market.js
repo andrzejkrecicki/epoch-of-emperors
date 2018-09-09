@@ -11,6 +11,9 @@ class Market extends Building {
             Technologies.GoldMining
         ]; else return null;
     }
+    static isResearched(player) {
+        return entity.player.possessions.Granary && entity.player.possessions.ToolAge;
+    }
 }
 Market.prototype.NAME = "Market";
 Market.prototype.AVATAR = [

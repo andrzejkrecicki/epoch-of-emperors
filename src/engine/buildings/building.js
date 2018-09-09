@@ -111,6 +111,9 @@ class Building extends Entity {
     }
     normalize() {
     }
+    static isResearched(player) {
+        return true;
+    }
 }
 Building.prototype.HAS_BITMAP_HITMASK = true;
 Building.prototype.INTERACT_WHEN_COMPLETE = false;

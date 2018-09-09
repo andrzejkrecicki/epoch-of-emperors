@@ -10,6 +10,9 @@ class Stable extends Building {
             Actions.RecruitUnitFactory(Scout)
         ]; else return null;
     }
+    static isResearched(player) {
+        return entity.player.possessions.Barracks && entity.player.possessions.ToolAge;
+    }
 }
 Stable.prototype.NAME = "Stable";
 Stable.prototype.AVATAR = [
