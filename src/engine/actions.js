@@ -31,7 +31,7 @@ RejectConstructionPlan.prototype.POS = {
 }
 
 
-function CreateBuildingFactory(Building) {
+function CreateBuildingFactory(BUILDING) {
     class CreateBuilding extends Action {
         execute() {
             if (this.checkCost(this.BUILDING.prototype.COST) == false) return;
@@ -45,10 +45,15 @@ function CreateBuildingFactory(Building) {
             return this.BUILDING.prototype.COST;
         }
         static getImage(entity) {
-            return Building.prototype.AVATAR[entity.player.civ][entity.player.age];
+            return BUILDING.prototype.AVATAR[entity.player.civ][this.getLevel(entity.player)];
         }
         static isPossible(entity) {
-            return Building.isResearched(entity.player);
+            return BUILDING.isResearched(entity.player);
+        }
+        static getLevel(player) {
+            let age = player.defaultEntityLevel[BUILDING.name];
+            if (age == null) age = player.age;
+            return age;
         }
         confirmConstruction(e) {
             if (!this.viewer.constructionIndicator.allow_construction) return;
@@ -57,7 +62,7 @@ function CreateBuildingFactory(Building) {
 
             let sub = this.viewer.constructionIndicator.sub;
             let building = new this.BUILDING(sub.x, sub.y, this.player);
-            building.level = this.player.age;
+            building.level = CreateBuilding.getLevel(this.player);
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);
             this.viewer.bottombar.entityActions.goToFirst();
@@ -73,10 +78,10 @@ function CreateBuildingFactory(Building) {
             this.viewer.constructionIndicator.hide();
         }
     }
-    CreateBuilding.prototype.BUILDING = Building;
-    CreateBuilding.prototype.TOOLTIP = `Build ${Building.prototype.NAME}`;
-    if (Building.prototype.CONTINUOUS_PREVIEW) CreateBuilding.prototype.TOOLTIP += " (drag-n-drop)"
-    CreateBuilding.prototype.ACTION_KEY = Building.prototype.ACTION_KEY;
+    CreateBuilding.prototype.BUILDING = BUILDING;
+    CreateBuilding.prototype.TOOLTIP = `Build ${BUILDING.prototype.NAME}`;
+    if (BUILDING.prototype.CONTINUOUS_PREVIEW) CreateBuilding.prototype.TOOLTIP += " (drag-n-drop)"
+    CreateBuilding.prototype.ACTION_KEY = BUILDING.prototype.ACTION_KEY;
     CreateBuilding.prototype.ACTIONS = [
         RejectConstructionPlan
     ];

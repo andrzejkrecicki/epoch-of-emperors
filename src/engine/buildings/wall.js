@@ -75,6 +75,7 @@ Wall.prototype.AVATAR = [
 Wall.prototype.MAX_HP = 200;
 Wall.prototype.SUBTILE_WIDTH = 2;
 Wall.prototype.CONTINUOUS_PREVIEW = true;
+Wall.prototype.LEVELS_UP_ON_AGE = false;
 
 Wall.prototype.ACTION_KEY = "W";
 Wall.prototype.COST = {

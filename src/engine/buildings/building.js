@@ -121,6 +121,7 @@ Building.prototype.COLORIZE = true;
 Building.prototype.TOOLTIP = "Click to select this building.";
 Building.prototype.TYPE = "other";
 Building.prototype.CONTINUOUS_PREVIEW = false;
+Building.prototype.LEVELS_UP_ON_AGE = true;
 
 Building.prototype.STATE = {
     CONSTRUCTION: 0,

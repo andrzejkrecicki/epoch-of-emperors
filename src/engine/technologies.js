@@ -34,7 +34,7 @@ class ToolAge extends Technology {
     finalize() {
         ++this.player.age;
         for (let building of this.player.buildings) {
-            if (!building.wasConverted) building.levelUp();
+            if (!building.wasConverted && building.LEVELS_UP_ON_AGE) building.levelUp();
         }
         super.finalize();
         return true;

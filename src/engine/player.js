@@ -16,7 +16,10 @@ class Player {
         this.units = [];
         this.buildings = [];
         this.possessions = {};
-        this.defaultEntityLevel = {};
+        this.defaultEntityLevel = {
+            Tower: 0,
+            Wall: 0
+        };
 
         this.attributeBonus = {
             infantry: {

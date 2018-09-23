@@ -63,6 +63,7 @@ Tower.prototype.MAX_HP = 100;
 Tower.prototype.ATTACK_RATE = 7 * 3;
 Tower.prototype.SHOT_DELAY = 27;
 Tower.prototype.SUBTILE_WIDTH = 4;
+Tower.prototype.LEVELS_UP_ON_AGE = false;
 
 Tower.prototype.ACTION_KEY = "T";
 Tower.prototype.COST = {
