@@ -43,8 +43,8 @@ StoragePit.prototype.IMAGES = {
         [
             [Sprites.Sprite("img/buildings/storage_pit/01_all.png")],
             [Sprites.Sprite("img/buildings/storage_pit/01_all.png")],
-            [Sprites.Sprite("img/buildings/storage_pit/01_all.png")],
-            [Sprites.Sprite("img/buildings/storage_pit/01_all.png")]
+            [Sprites.Sprite("img/buildings/storage_pit/03_greek.png")],
+            [Sprites.Sprite("img/buildings/storage_pit/04_greek.png")]
         ]
     ]
 }
@@ -52,7 +52,7 @@ StoragePit.prototype.IMAGES = {
 StoragePit.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: 1, y: 64 }, { x: 1, y: 64 }, { x: 1, y: 64 }, { x: 1, y: 64 }]
+        [{ x: 1, y: 64 }, { x: 1, y: 64 }, { x: 2, y: 59 }, { x: 3, y: 53 }]
     ]
 }
 
@@ -74,13 +74,13 @@ StoragePit.prototype.HITMAP = {
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/storage_pit/01_all.png"),
+                Sprites.Sprite("img/buildings/storage_pit/03_greek.png"),
                 StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
                 StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/storage_pit/01_all.png"),
+                Sprites.Sprite("img/buildings/storage_pit/04_greek.png"),
                 StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
                 StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
             )

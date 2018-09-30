@@ -83,7 +83,7 @@ Tower.prototype.IMAGES = {
     [Building.prototype.STATE.DONE]: [
         [
             [Sprites.Sprite("img/buildings/tower/01_all.png")],
-            [Sprites.Sprite("img/buildings/tower/01_all.png")],
+            [Sprites.Sprite("img/buildings/tower/02_all.png")],
             [Sprites.Sprite("img/buildings/tower/01_all.png")],
             [Sprites.Sprite("img/buildings/tower/01_all.png")]
         ]
@@ -120,7 +120,7 @@ Tower.prototype.HITMAP = {
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Sprites.Sprite("img/buildings/tower/01_all.png"),
+                Sprites.Sprite("img/buildings/tower/02_all.png"),
                 Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
                 Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
             ),

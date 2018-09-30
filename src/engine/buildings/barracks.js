@@ -35,8 +35,8 @@ Barracks.prototype.IMAGES = {
         [
             [Sprites.Sprite("img/buildings/barracks/01_all.png")],
             [Sprites.Sprite("img/buildings/barracks/01_all.png")],
-            [Sprites.Sprite("img/buildings/barracks/01_all.png")],
-            [Sprites.Sprite("img/buildings/barracks/01_all.png")]
+            [Sprites.Sprite("img/buildings/barracks/03_greek.png")],
+            [Sprites.Sprite("img/buildings/barracks/04_greek.png")]
         ]
     ]
 };
@@ -44,7 +44,7 @@ Barracks.prototype.IMAGES = {
 Barracks.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: 11, y: 82 }, { x: 11, y: 82 }, { x: 11, y: 82 }, { x: 11, y: 82 }]
+        [{ x: 11, y: 82 }, { x: 11, y: 82 }, { x: 12, y: 72 }, { x: 15, y: 72 }]
     ]
 }
 
@@ -66,13 +66,13 @@ Barracks.prototype.HITMAP = {
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/barracks/01_all.png"),
+                Sprites.Sprite("img/buildings/barracks/03_greek.png"),
                 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
                 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/barracks/01_all.png"),
+                Sprites.Sprite("img/buildings/barracks/04_greek.png"),
                 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
                 Barracks.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
             )

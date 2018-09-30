@@ -46,7 +46,7 @@ ArcheryRange.prototype.IMAGES = {
 ArcheryRange.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: 86 - 80, y: 60 }, { x: 86 - 80, y: 60 }, { x: 86 - 80, y: 60 }, { x: 88, y: 78 }]
+        [{ x: 6, y: 60 }, { x: 6, y: 60 }, { x: 6, y: 60 }, { x: 8, y: 78 }]
     ]
 }
 

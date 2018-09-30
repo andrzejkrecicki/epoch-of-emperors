@@ -76,8 +76,8 @@ Dock.prototype.IMAGES = {
         [
             [Sprites.Sprite("img/buildings/dock/01_all.png")],
             [Sprites.Sprite("img/buildings/dock/01_all.png")],
-            [Sprites.Sprite("img/buildings/dock/01_all.png")],
-            [Sprites.Sprite("img/buildings/dock/01_all.png")]
+            [Sprites.Sprite("img/buildings/dock/03_greek.png")],
+            [Sprites.Sprite("img/buildings/dock/04_greek.png")]
         ]
     ],
     [Building.prototype.STATE.CONSTRUCTION]: [
@@ -96,7 +96,7 @@ Dock.prototype.IMAGE_OFFSETS = {
         [{ x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }]
     ],
     [Building.prototype.STATE.DONE]: [
-        [{ x: -22, y: 36 }, { x: -22, y: 36 }, { x: -22, y: 36 }, { x: -22, y: 36 }]
+        [{ x: -22, y: 36 }, { x: -22, y: 36 }, { x: 11, y: 45 }, { x: 3, y: 55 }]
     ]
 }
 
@@ -118,13 +118,13 @@ Dock.prototype.HITMAP = {
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/dock/01_all.png"),
+                Sprites.Sprite("img/buildings/dock/03_greek.png"),
                 Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
                 Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/dock/01_all.png"),
+                Sprites.Sprite("img/buildings/dock/04_greek.png"),
                 Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
                 Dock.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
             )

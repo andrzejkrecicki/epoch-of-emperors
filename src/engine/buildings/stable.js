@@ -46,7 +46,7 @@ Stable.prototype.IMAGES = {
 Stable.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: 9, y: 55 }, { x: 15, y: 71 }, { x: 15, y: 71 }, { x: 15, y: 71 }]
+        [{ x: 9, y: 55 }, { x: 9, y: 55 }, { x: 7, y: 70 }, { x: 7, y: 70 }]
     ]
 }
 

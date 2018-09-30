@@ -38,7 +38,7 @@ Granary.prototype.IMAGES = {
             [Sprites.Sprite("img/buildings/granary/01_greek.png")],
             [Sprites.Sprite("img/buildings/granary/01_greek.png")],
             [Sprites.Sprite("img/buildings/granary/01_greek.png")],
-            [Sprites.Sprite("img/buildings/granary/01_greek.png")]
+            [Sprites.Sprite("img/buildings/granary/04_greek.png")]
         ]
     ]
 }
@@ -46,7 +46,7 @@ Granary.prototype.IMAGES = {
 Granary.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: -11, y: 70 }, { x: -11, y: 70 }, { x: -11, y: 70 }, { x: -11, y: 70 }]
+        [{ x: -11, y: 70 }, { x: -11, y: 70 }, { x: -11, y: 70 }, { x: -18, y: 59 }]
     ]
 }
 
@@ -74,7 +74,7 @@ Granary.prototype.HITMAP = {
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/granary/01_greek.png"),
+                Sprites.Sprite("img/buildings/granary/04_greek.png"),
                 Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
                 Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
             )

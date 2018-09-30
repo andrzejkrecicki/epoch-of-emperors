@@ -38,8 +38,8 @@ TownCenter.prototype.IMAGES = {
         [
             [Sprites.Sprite("img/buildings/town_center/01_all.png")],
             [Sprites.Sprite("img/buildings/town_center/02_all.png")],
-            [Sprites.Sprite("img/buildings/town_center/01_all.png")],
-            [Sprites.Sprite("img/buildings/town_center/01_all.png")]
+            [Sprites.Sprite("img/buildings/town_center/03_greek.png")],
+            [Sprites.Sprite("img/buildings/town_center/04_greek.png")]
         ]
     ]
 }
@@ -47,7 +47,7 @@ TownCenter.prototype.IMAGES = {
 TownCenter.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: 3, y: 54 }, { x: 10, y: 61 }, { x: 10, y: 61 }, { x: 10, y: 61 }]
+        [{ x: 3, y: 54 }, { x: 10, y: 61 }, { x: -2, y: 58 }, { x: 11, y: 64 }]
     ]
 }
 
