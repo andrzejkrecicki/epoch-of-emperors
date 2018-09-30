@@ -35,6 +35,7 @@ TradeBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/trade_boat.p
 TradeBoat.prototype.MAX_HP = 200;
 TradeBoat.prototype.SPEED = 3;
 TradeBoat.prototype.CREATION_TIME = 26 * 35;
+TradeBoat.prototype.LEAVES_LEFTOVERS = false;
 TradeBoat.prototype.CAN_ATTACK = false;
 
 
@@ -56,6 +57,10 @@ TradeBoat.prototype.STATE.TRADING = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH +
 
 TradeBoat.prototype.IMAGES = {
     [TradeBoat.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/trade_boat/", 1)],
+    [TradeBoat.prototype.STATE.DYING]: [
+        Sprites.SpriteSequence("img/units/ship_sink_small/", 5, 0, 8),
+        Sprites.SpriteSequence("img/units/ship_sink_small/", 5, 0, 8)
+    ]
 }
 TradeBoat.prototype.IMAGES[TradeBoat.prototype.STATE.MOVING] = TradeBoat.prototype.IMAGES[TradeBoat.prototype.STATE.IDLE];
 TradeBoat.prototype.IMAGES[TradeBoat.prototype.STATE.TRADING] = TradeBoat.prototype.IMAGES[TradeBoat.prototype.STATE.IDLE];
@@ -65,6 +70,8 @@ TradeBoat.prototype.IMAGE_OFFSETS = {
     [TradeBoat.prototype.STATE.IDLE]: [{ x: 13, y: 41 }],
     [TradeBoat.prototype.STATE.MOVING]: [{ x: 13, y: 41 }],
     [TradeBoat.prototype.STATE.TRADING]: [{ x: 13, y: 41 }],
+    [TradeBoat.prototype.STATE.DYING]: [{ x: -4, y: 6 }],
+    [TradeBoat.prototype.STATE.DEAD]: [{ x: -4, y: 6 }],
 };
 
 

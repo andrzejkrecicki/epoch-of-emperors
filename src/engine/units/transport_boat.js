@@ -92,8 +92,8 @@ TransportBoat.prototype.IMAGE_OFFSETS = {
     [TransportBoat.prototype.STATE.IDLE]: [{ x: 20, y: 34 }],
     [TransportBoat.prototype.STATE.MOVING]: [{ x: 20, y: 34 }],
     [TransportBoat.prototype.STATE.ATTACK]: [{ x: 20, y: 34 }],
-    [TransportBoat.prototype.STATE.DYING]: [{ x: 38, y: 24 }],
-    [TransportBoat.prototype.STATE.DEAD]: [{ x: 20, y: 34 }],
+    [TransportBoat.prototype.STATE.DYING]: [{ x: -5, y: 20 }],
+    [TransportBoat.prototype.STATE.DEAD]: [{ x: -5, y: 20 }],
 };
 
 TransportBoat.prototype.SAIL_OFFSET = [{ x: 35, y: -9 }]
