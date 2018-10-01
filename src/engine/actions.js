@@ -51,9 +51,9 @@ function CreateBuildingFactory(BUILDING) {
             return BUILDING.isResearched(entity.player);
         }
         static getLevel(player) {
-            let age = player.defaultEntityLevel[BUILDING.name];
-            if (age == null) age = player.age;
-            return age;
+            let level = player.defaultEntityLevel[BUILDING.name];
+            if (level == null) level = player.age;
+            return level;
         }
         confirmConstruction(e) {
             if (!this.viewer.constructionIndicator.allow_construction) return;

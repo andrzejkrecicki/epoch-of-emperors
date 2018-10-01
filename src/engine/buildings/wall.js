@@ -54,7 +54,7 @@ class Wall extends Building {
         else if (h == 2 && v == 0) this.state |= Wall.prototype.STATE.HORIZONTAL;
         else this.state &= 3;
 
-        if ((this.state | 3) == 3) this.flag.show();
+        if ((this.state | 3) == 3 && this.level == 0) this.flag.show();
         else this.flag.hide();
 
         this.updateImage();
@@ -99,42 +99,42 @@ Wall.prototype.IMAGES = {
     [Wall.prototype.STATE.DONE]: [
         [
             [Sprites.Sprite("img/buildings/wall/01_all_x_fine.png")],
-            [Sprites.Sprite("img/buildings/wall/01_all_x_fine.png")],
+            [Sprites.Sprite("img/buildings/wall/02_greek_x_fine.png")],
             [Sprites.Sprite("img/buildings/wall/01_all_x_fine.png")]
         ]
     ],
     [Wall.prototype.STATE.DONE_H]: [
         [
             [Sprites.Sprite("img/buildings/wall/01_all_h_fine.png")],
-            [Sprites.Sprite("img/buildings/wall/01_all_h_fine.png")],
+            [Sprites.Sprite("img/buildings/wall/02_greek_h_fine.png")],
             [Sprites.Sprite("img/buildings/wall/01_all_h_fine.png")]
         ]
     ],
     [Wall.prototype.STATE.DONE_V]: [
         [
             [Sprites.Sprite("img/buildings/wall/01_all_v_fine.png")],
-            [Sprites.Sprite("img/buildings/wall/01_all_v_fine.png")],
+            [Sprites.Sprite("img/buildings/wall/02_greek_v_fine.png")],
             [Sprites.Sprite("img/buildings/wall/01_all_v_fine.png")]
         ]
     ],
     [Wall.prototype.STATE.DAMAGED]: [
         [
             [Sprites.Sprite("img/buildings/wall/01_all_x_damaged.png")],
-            [Sprites.Sprite("img/buildings/wall/01_all_x_damaged.png")],
+            [Sprites.Sprite("img/buildings/wall/02_greek_x_damaged.png")],
             [Sprites.Sprite("img/buildings/wall/01_all_x_damaged.png")]
         ]
     ],
     [Wall.prototype.STATE.DAMAGED_H]: [
         [
             [Sprites.Sprite("img/buildings/wall/01_all_h_damaged.png")],
-            [Sprites.Sprite("img/buildings/wall/01_all_h_damaged.png")],
+            [Sprites.Sprite("img/buildings/wall/02_greek_h_damaged.png")],
             [Sprites.Sprite("img/buildings/wall/01_all_h_damaged.png")]
         ]
     ],
     [Wall.prototype.STATE.DAMAGED_V]: [
         [
             [Sprites.Sprite("img/buildings/wall/01_all_v_damaged.png")],
-            [Sprites.Sprite("img/buildings/wall/01_all_v_damaged.png")],
+            [Sprites.Sprite("img/buildings/wall/02_greek_v_damaged.png")],
             [Sprites.Sprite("img/buildings/wall/01_all_v_damaged.png")]
         ]
     ],
@@ -155,13 +155,13 @@ Wall.prototype.IMAGE_OFFSETS = {
         [{ x: -6, y: 20 }, { x: -6, y: 20 }, { x: -6, y: 20 }, { x: -6, y: 20 }]
     ],
     [Wall.prototype.STATE.DONE]: [
-        [{ x: -8, y: 36 }, { x: -8, y: 36 }, { x: -8, y: 36 }, { x: -8, y: 36 }]
+        [{ x: -8, y: 36 }, { x: -4, y: 43 }, { x: -8, y: 36 }, { x: -8, y: 36 }]
     ],
     [Wall.prototype.STATE.DONE_H]: [
-        [{ x: -5, y: 39 }, { x: -5, y: 39 }, { x: -5, y: 39 }, { x: -5, y: 39 }]
+        [{ x: -5, y: 39 }, { x: -16, y: 34 }, { x: -5, y: 39 }, { x: -5, y: 39 }]
     ],
     [Wall.prototype.STATE.DONE_V]: [
-        [{ x: -2, y: 37 }, { x: -2, y: 37 }, { x: -2, y: 37 }, { x: -2, y: 37 }]
+        [{ x: -2, y: 37 }, { x: -15, y: 33 }, { x: -2, y: 37 }, { x: -2, y: 37 }]
     ]
 }
 

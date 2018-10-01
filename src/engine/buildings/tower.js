@@ -16,21 +16,27 @@ class Tower extends Building {
         this.attributes.attack = this.ATTRIBUTES.ATTACK + this.level;
         this.attributes.range = this.ATTRIBUTES.RANGE + this.level;
 
-        if (this.level == 0) {
-            for (let pos of this.FLAMES_POSITIONS) {
-                let flame = new FireSmall({
-                    x: pos.x - this.getOffset().x,
-                    y: pos.y - this.getOffset().y
-                });
-                this.flames.push(flame);
-                this.add(flame);
-            }
+        for (let pos of this.FLAMES_POSITIONS[this.level]) {
+            let flame = new FireSmall();
+            this.flames.push(flame);
+            this.add(flame);
         }
+        this.fixFlames();
     }
     levelUp() {
         super.levelUp();
+        this.fixFlames();
         ++this.attributes.attack;
         ++this.attributes.range;
+    }
+    fixFlames() {
+        for (let i = 0; i < this.flames.length; ++i) {
+            let pos = this.FLAMES_POSITIONS[this.level][i];
+            this.flames[i].position({
+                x: pos.x - this.getOffset().x,
+                y: pos.y - this.getOffset().y
+            });
+        }
     }
     getProjectileType() {
         return Arrow
@@ -54,7 +60,7 @@ Tower.prototype.NAME = ["Watch Tower"];
 Tower.prototype.AVATAR = [
     [
         Sprites.Sprite("img/interface/avatars/tower_01_all.png"),
-        Sprites.Sprite("img/interface/avatars/tower_01_all.png"),
+        Sprites.Sprite("img/interface/avatars/tower_02_all.png"),
         Sprites.Sprite("img/interface/avatars/tower_01_all.png"),
         Sprites.Sprite("img/interface/avatars/tower_01_all.png")
     ]
@@ -76,7 +82,10 @@ Tower.prototype.ATTRIBUTES = {
 }
 
 
-Tower.prototype.FLAMES_POSITIONS = [{ x: 13, y: 10 }, { x: 28, y: 0 }, { x: 37, y: 17 }, { x: 53, y: 11 }]
+Tower.prototype.FLAMES_POSITIONS = [
+    [{ x: 13, y: 10 }, { x: 28, y: 0 }, { x: 37, y: 17 }, { x: 53, y: 11 }],
+    [{ x: 24, y: 12 }, { x: 42, y: 1 }, { x: 45, y: 18 }, { x: 66, y: 12 }],
+]
 
 Tower.prototype.IMAGES = {
     ...Building.prototype.IMAGES,
@@ -101,7 +110,7 @@ Tower.prototype.IMAGES = {
 Tower.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: -27, y: 92 }, { x: -27, y: 92 }, { x: -27, y: 92 }, { x: -27, y: 92 }]
+        [{ x: -27, y: 92 }, { x: -17, y: 93 }, { x: -27, y: 92 }, { x: -27, y: 92 }]
     ],
     [Building.prototype.STATE.CONSTRUCTION]: [
         [{ x: -6, y: 35 }, { x: -6, y: 35 }, { x: -6, y: 35 }, { x: -6, y: 35 }]

@@ -878,10 +878,15 @@ class ConstructionIndicator extends Graphics.Node {
         return state;
     }
     getSprite() {
-        return this.BUILDING.prototype.IMAGES[this.getSpriteState()][this.player.civ][this.player.age][0];
+        return this.BUILDING.prototype.IMAGES[this.getSpriteState()][this.player.civ][this.getLevel()][0];
     }
     getOffset() {
-        return this.BUILDING.prototype.IMAGE_OFFSETS[this.getSpriteState()][this.player.civ][this.player.age];
+        return this.BUILDING.prototype.IMAGE_OFFSETS[this.getSpriteState()][this.player.civ][this.getLevel()];
+    }
+    getLevel() {
+        let level = this.player.defaultEntityLevel[this.BUILDING.name];
+        if (level == null) level = this.player.age;
+        return level;
     }
     process() {
         if (!this.viewer.isPlanningConstruction) return;
