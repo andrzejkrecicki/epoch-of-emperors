@@ -19,7 +19,24 @@ class Technology extends Action {
     }
 }
 
-class ToolAge extends Technology {
+
+class Age extends Technology {
+    finalize() {
+        ++this.player.age;
+        for (let building of this.player.buildings) {
+            if (!building.wasConverted && building.LEVELS_UP_ON_AGE) building.levelUp();
+        }
+        super.finalize();
+        return true;
+    }
+}
+Age.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+
+
+class ToolAge extends Age {
     static isVisible(entity) {
         return !entity.player.possessions.ToolAge;
     }
@@ -31,22 +48,10 @@ class ToolAge extends Technology {
             +!!entity.player.possessions.Dock
         ) >= 2;
     }
-    finalize() {
-        ++this.player.age;
-        for (let building of this.player.buildings) {
-            if (!building.wasConverted && building.LEVELS_UP_ON_AGE) building.levelUp();
-        }
-        super.finalize();
-        return true;
-    }
 }
 ToolAge.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/tool_age.png");
 ToolAge.prototype.TOOLTIP = "Advance to Tool Age. Requires two buildings from Stone Age";
 ToolAge.prototype.TIME = 200;
-ToolAge.prototype.POS = {
-    x: Action.prototype.MARGIN,
-    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
-}
 ToolAge.prototype.COST = {
     food: 500, wood: 0, stone: 0, gold: 0
 }
@@ -305,6 +310,28 @@ WatchTower.prototype.COST = {
 
 
 
+class BronzeAge extends Age {
+    static isVisible(entity) {
+        return !entity.player.possessions.BronzeAge && entity.player.possessions.ToolAge;
+    }
+    static isPossible(entity) {
+        return (
+            +!!entity.player.possessions.ArcheryRange +
+            +!!entity.player.possessions.Stable +
+            +!!entity.player.possessions.Farm +
+            +!!entity.player.possessions.Tower +
+            +!!entity.player.possessions.Market
+        ) >= 2;
+    }
+}
+BronzeAge.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/bronze_age.png");
+BronzeAge.prototype.TOOLTIP = "Advance to Bronze Age. Requires two buildings from Tool Age";
+BronzeAge.prototype.TIME = 200;
+BronzeAge.prototype.COST = {
+    food: 800, wood: 0, stone: 0, gold: 0
+}
+
+
 
 const Technologies = {
     ToolAge,
@@ -318,7 +345,8 @@ const Technologies = {
     StoneMining,
     GoldMining,
     SmallWall,
-    WatchTower
+    WatchTower,
+    BronzeAge
 }
 
 export { Technologies };
