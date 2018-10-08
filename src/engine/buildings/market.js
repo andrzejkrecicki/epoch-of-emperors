@@ -20,7 +20,7 @@ Market.prototype.AVATAR = [
     [
         Sprites.Sprite("img/interface/avatars/market_01_all.png"),
         Sprites.Sprite("img/interface/avatars/market_01_all.png"),
-        Sprites.Sprite("img/interface/avatars/market_01_all.png"),
+        Sprites.Sprite("img/interface/avatars/market_03_greek.png"),
         Sprites.Sprite("img/interface/avatars/market_01_all.png")
     ]
 ];
@@ -38,7 +38,7 @@ Market.prototype.IMAGES = {
         [
             [Sprites.Sprite("img/buildings/market/01_all.png")],
             [Sprites.Sprite("img/buildings/market/01_all.png")],
-            [Sprites.Sprite("img/buildings/market/01_all.png")],
+            [Sprites.Sprite("img/buildings/market/03_greek.png")],
             [Sprites.Sprite("img/buildings/market/04_greek.png")]
         ]
     ]
@@ -47,7 +47,7 @@ Market.prototype.IMAGES = {
 Market.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
-        [{ x: -3, y: 45 }, { x: -3, y: 45 }, { x: -3, y: 45 }, { x: 13, y: 65 }]
+        [{ x: -3, y: 45 }, { x: -3, y: 45 }, { x: 12, y: 55 }, { x: 13, y: 65 }]
     ]
 }
 
@@ -69,7 +69,7 @@ Market.prototype.HITMAP = {
             ),
             Graphics.Filters.ComposeHitmask(
                 Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/market/01_all.png"),
+                Sprites.Sprite("img/buildings/market/03_greek.png"),
                 Market.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
                 Market.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
             ),
