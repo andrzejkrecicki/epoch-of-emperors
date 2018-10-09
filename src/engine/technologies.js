@@ -332,6 +332,33 @@ BronzeAge.prototype.COST = {
 }
 
 
+class Artisanship extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.Woodworking &&
+            !entity.player.possessions.Artisanship
+        );
+    }
+    finalize() {
+        this.player.interactionBonus.ChopInteraction += 12;
+        this.player.attributeBonus.villager.capacity.wood += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+Artisanship.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/artisanship.png");
+Artisanship.prototype.TOOLTIP = "Research Artisanship: +1 missile weapon range; +2 woodcutting";
+Artisanship.prototype.TIME = 80 * 35;
+Artisanship.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+Artisanship.prototype.COST = {
+    food: 170, wood: 150, stone: 0, gold: 0
+}
+
 
 const Technologies = {
     ToolAge,
@@ -346,7 +373,8 @@ const Technologies = {
     GoldMining,
     SmallWall,
     WatchTower,
-    BronzeAge
+    BronzeAge,
+    Artisanship
 }
 
 export { Technologies };
