@@ -360,6 +360,60 @@ Artisanship.prototype.COST = {
 }
 
 
+class Plow extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.Domestication &&
+            !entity.player.possessions.Plow
+        );
+    }
+    finalize() {
+        this.player.attributeBonus.farm.food += 75;
+
+        super.finalize();
+        return true;
+    }
+}
+Plow.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/plow.png");
+Plow.prototype.TOOLTIP = "Research Plow: +75 food production for farms.";
+Plow.prototype.TIME = 75 * 35;
+Plow.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+Plow.prototype.COST = {
+    food: 250, wood: 75, stone: 0, gold: 0
+}
+
+
+class Wheel extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.Wheel
+        );
+    }
+    finalize() {
+        this.player.attributeBonus.villager.speed += .3;
+
+        super.finalize();
+        return true;
+    }
+}
+Wheel.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/wheel.png");
+Wheel.prototype.TOOLTIP = "Research Wheel: Villagers 30% faster. Required for chariots.";
+Wheel.prototype.TIME = 75 * 35;
+Wheel.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN,
+}
+Wheel.prototype.COST = {
+    food: 175, wood: 75, stone: 0, gold: 0
+}
+
+
+
 const Technologies = {
     ToolAge,
     BattleAxe,
@@ -373,8 +427,11 @@ const Technologies = {
     GoldMining,
     SmallWall,
     WatchTower,
+
     BronzeAge,
-    Artisanship
+    Artisanship,
+    Plow,
+    Wheel
 }
 
 export { Technologies };

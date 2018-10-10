@@ -56,6 +56,9 @@ class Villager extends Unit {
         if (this.state & Villager.prototype.STATE.BUTCHER) this.state = Villager.prototype.STATE.HUNTER;
         if (this.state & Villager.prototype.STATE.CARRY_MEAT) this.state = Villager.prototype.STATE.HUNTER;
     }
+    getSpeed() {
+        return this.SPEED + this.player.attributeBonus.villager.speed;
+    }
     takeHit(value, attacker, engine) {
         // take into account armour etc
         this.hp -= value;

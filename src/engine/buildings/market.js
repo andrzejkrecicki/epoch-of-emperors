@@ -9,7 +9,9 @@ class Market extends Building {
             Technologies.Woodworking,
             Technologies.StoneMining,
             Technologies.GoldMining,
-            Technologies.Artisanship
+            Technologies.Artisanship,
+            Technologies.Plow,
+            Technologies.Wheel
         ]; else return null;
     }
     static isResearched(player) {

@@ -63,7 +63,7 @@ class Engine {
             entity.path[entity.path_progress].x / 2,
             entity.path[entity.path_progress].y / 2
         );
-        if (distance(entity.realPosition, tmp_target) < entity.SPEED * distance(entity.DIRECTIONS_DELTA[entity.rotation], { x: 0, y: 0 })) {
+        if (distance(entity.realPosition, tmp_target) < entity.getSpeed() * distance(entity.DIRECTIONS_DELTA[entity.rotation], { x: 0, y: 0 })) {
             // transition between two subtiles is done which can be considered as done step
             if (entity.path_progress > 0) {
                 // if first step was already done, we have to release previously occupied area
@@ -118,8 +118,8 @@ class Engine {
             if (old_rotation != entity.rotation) entity.frame = 0;
 
             entity.position({
-                x: entity.realPosition.x + entity.SPEED * entity.DIRECTIONS_DELTA[entity.rotation].x,
-                y: entity.realPosition.y + entity.SPEED * entity.DIRECTIONS_DELTA[entity.rotation].y
+                x: entity.realPosition.x + entity.getSpeed() * entity.DIRECTIONS_DELTA[entity.rotation].x,
+                y: entity.realPosition.y + entity.getSpeed() * entity.DIRECTIONS_DELTA[entity.rotation].y
             });
         }
         entity.updateSprite();

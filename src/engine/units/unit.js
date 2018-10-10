@@ -51,6 +51,9 @@ class Unit extends Entity {
         ++this.level;
         this.updateSprite();
     }
+    getSpeed() {
+        return this.SPEED;
+    }
     destroy(engine) {
         super.destroy(engine);
         --this.player.population;
