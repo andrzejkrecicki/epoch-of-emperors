@@ -1,6 +1,7 @@
 import { Action } from './base_action.js';
 import { Sprites } from '../sprites.js';
 import { ClubMan } from './units/clubman.js';
+import { ImprovedBowMan } from './units/improved_bowman.js';
 
 class Technology extends Action {
     getCost() {
@@ -434,6 +435,41 @@ ImprovedBow.prototype.COST = {
 }
 
 
+class CompositeBow extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.ImprovedBow &&
+            !entity.player.possessions.CompositeBow
+        );
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit instanceof ImprovedBowMan) {
+                unit.levelUp();
+                unit.max_hp += 5;
+                unit.hp += 5;
+                unit.attributes.attack += 1;
+                unit.attributes.range += 1;
+            }
+        }
+        this.player.defaultEntityLevel.ImprovedBowMan = 1;
+        super.finalize();
+        return true;
+    }
+}
+CompositeBow.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/composite_bow.png");
+CompositeBow.prototype.TOOLTIP = "Upgrade to Composite Bow.";
+CompositeBow.prototype.TIME = 100 * 35;
+CompositeBow.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2,
+}
+CompositeBow.prototype.COST = {
+    food: 180, wood: 100, stone: 0, gold: 0
+}
+
+
 
 
 const Technologies = {
@@ -454,7 +490,8 @@ const Technologies = {
     Artisanship,
     Plow,
     Wheel,
-    ImprovedBow
+    ImprovedBow,
+    CompositeBow
 }
 
 export { Technologies };

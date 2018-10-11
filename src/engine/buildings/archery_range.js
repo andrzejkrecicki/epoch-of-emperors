@@ -10,7 +10,8 @@ class ArcheryRange extends Building {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(BowMan),
             Actions.RecruitUnitFactory(ImprovedBowMan),
-            Technologies.ImprovedBow
+            Technologies.ImprovedBow,
+            Technologies.CompositeBow
         ]; else return null;
     }
     static isResearched(player) {
