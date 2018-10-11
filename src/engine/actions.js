@@ -221,11 +221,11 @@ Unload.prototype.TOOLTIP = "Unload"
 Unload.prototype.ACTION_KEY = "L";
 
 
-function RecruitUnitFactory(Unit) {
+function RecruitUnitFactory(UNIT) {
     class RecruitUnit extends Action {
         execute() {
-            if (this.checkCost(this.UNIT.prototype.COST) == false) return;
-            this.player.subtractResources(this.UNIT.prototype.COST);
+            if (this.checkCost(UNIT.prototype.COST) == false) return;
+            this.player.subtractResources(UNIT.prototype.COST);
             this.entity.addTask(this);
         }
         init() {
@@ -239,7 +239,7 @@ function RecruitUnitFactory(Unit) {
             }
         }
         finalize() {
-            let pos = this.findEmptyArea(this.UNIT.prototype.SUBTILE_WIDTH);
+            let pos = this.findEmptyArea(UNIT.prototype.SUBTILE_WIDTH);
             if (pos == null) {
                 if (!this.failed) this.viewer.setErrorMessage('Not enough room to place unit.');
                 this.failed = true;
@@ -251,19 +251,22 @@ function RecruitUnitFactory(Unit) {
                 return false;
             }
 
-            let unit = new this.UNIT(pos.x, pos.y, this.player, this.player.defaultEntityLevel[Unit.name]);
+            let unit = new UNIT(pos.x, pos.y, this.player, this.player.defaultEntityLevel[UNIT.name]);
             this.viewer.engine.addUnit(unit);
             this.viewer.addEntity(unit);
             return true;
         }
         getCost() {
-            return this.UNIT.prototype.COST;
+            return UNIT.prototype.COST;
         }
         static getImage(entity) {
-            return Unit.prototype.AVATAR[entity.player.defaultEntityLevel[Unit.name] || 0];
+            return UNIT.prototype.AVATAR[entity.player.defaultEntityLevel[UNIT.name] || 0];
         }
         time() {
-            return this.UNIT.prototype.CREATION_TIME;
+            return UNIT.prototype.CREATION_TIME;
+        }
+        static isPossible(entity) {
+            return UNIT.isResearched(entity);
         }
         findEmptyArea(width) {
             // iterate clockwise around all available areas adjecent to building
@@ -286,7 +289,7 @@ function RecruitUnitFactory(Unit) {
                     let terrain_counts = this.viewer.engine.map.countTerrainTiles(curr.x, curr.y, width);
                     let allowed_terrain = true;
                     for (let terrain of terrain_counts.keys())
-                        if (!this.UNIT.prototype.SUPPORTED_TERRAIN.has(terrain)) allowed_terrain = false;
+                        if (!UNIT.prototype.SUPPORTED_TERRAIN.has(terrain)) allowed_terrain = false;
 
                     let empty = this.viewer.engine.map.areSubtilesEmpty(curr.x, curr.y, width);
                     if (empty && allowed_terrain) {
@@ -300,14 +303,13 @@ function RecruitUnitFactory(Unit) {
             return rand_choice(possible_areas);
         }
         toolTipChunks(player) {
-            return [this.TOOLTIP, Unit.prototype.NAME[player.defaultEntityLevel[Unit.name] || 0]];
+            return [this.TOOLTIP, UNIT.prototype.NAME[player.defaultEntityLevel[UNIT.name] || 0]];
         }
     }
     RecruitUnit.prototype.TOOLTIP = "Create";
     RecruitUnit.prototype.ACTION_KEY = Unit.prototype.ACTION_KEY;
-    RecruitUnit.prototype.UNIT = Unit;
     RecruitUnit.prototype.SUPPORTS_QUEUE = true;
-    RecruitUnit.prototype.HASH = Unit.name;
+    RecruitUnit.prototype.HASH = UNIT.name;
     return RecruitUnit;
 }
 

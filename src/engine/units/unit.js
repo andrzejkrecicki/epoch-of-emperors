@@ -58,6 +58,9 @@ class Unit extends Entity {
         super.destroy(engine);
         --this.player.population;
     }
+    static isResearched(entity) {
+        return true;
+    }
     rotateToSubtile(subtile) {
         let index = (subtile.y - this.subtile_y + 1) * 3 + (subtile.x - this.subtile_x) + 1
         if (index !== 4) {
