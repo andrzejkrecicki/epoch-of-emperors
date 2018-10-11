@@ -1,5 +1,6 @@
 import { Building } from './building.js';
 import { BowMan } from '../units/bowman.js';
+import { ImprovedBowMan } from '../units/improved_bowman.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
@@ -8,6 +9,7 @@ class ArcheryRange extends Building {
     actions() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(BowMan),
+            Actions.RecruitUnitFactory(ImprovedBowMan),
             Technologies.ImprovedBow
         ]; else return null;
     }
