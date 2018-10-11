@@ -7,7 +7,8 @@ import { Sprites } from '../../sprites.js';
 class ArcheryRange extends Building {
     actions() {
         if (this.isComplete) return [
-            Actions.RecruitUnitFactory(BowMan)
+            Actions.RecruitUnitFactory(BowMan),
+            Technologies.ImprovedBow
         ]; else return null;
     }
     static isResearched(player) {

@@ -414,6 +414,28 @@ Wheel.prototype.COST = {
 
 
 
+class ImprovedBow extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.ImprovedBow
+        );
+    }
+}
+ImprovedBow.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/improved_bow.png");
+ImprovedBow.prototype.TOOLTIP = "Research Improved Bow.";
+ImprovedBow.prototype.TIME = 60 * 35;
+ImprovedBow.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2,
+}
+ImprovedBow.prototype.COST = {
+    food: 140, wood: 80, stone: 0, gold: 0
+}
+
+
+
+
 const Technologies = {
     ToolAge,
     BattleAxe,
@@ -431,7 +453,8 @@ const Technologies = {
     BronzeAge,
     Artisanship,
     Plow,
-    Wheel
+    Wheel,
+    ImprovedBow
 }
 
 export { Technologies };
