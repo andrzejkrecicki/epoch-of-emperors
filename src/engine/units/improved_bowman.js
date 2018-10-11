@@ -23,8 +23,11 @@ class ImprovedBowMan extends Unit {
     }
 }
 ImprovedBowMan.prototype.SUBTILE_WIDTH = 1;
-ImprovedBowMan.prototype.NAME = ["Improved Bowman"];
-ImprovedBowMan.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/improved_bowman.png")];
+ImprovedBowMan.prototype.NAME = ["Improved Bowman", "Composite Bowman"];
+ImprovedBowMan.prototype.AVATAR = [
+    Sprites.Sprite("img/interface/avatars/improved_bowman.png"),
+    Sprites.Sprite("img/interface/avatars/composite_bowman.png")
+];
 ImprovedBowMan.prototype.TYPE = "archer";
 ImprovedBowMan.prototype.MAX_HP = 40;
 ImprovedBowMan.prototype.SPEED = 1.1;
@@ -53,19 +56,34 @@ ImprovedBowMan.prototype.FRAME_RATE = {
 
 
 ImprovedBowMan.prototype.IMAGES = {
-    [ImprovedBowMan.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/improved_bowman/idle/", 5)],
-    [ImprovedBowMan.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/improved_bowman/moving/", 10)],
-    [ImprovedBowMan.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/improved_bowman/attack/", 10)],
-    [ImprovedBowMan.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/improved_bowman/dying/", 10)],
-    [ImprovedBowMan.prototype.STATE.DEAD]: [Sprites.DirectionSprites("img/units/improved_bowman/dead/", 6)],
+    [ImprovedBowMan.prototype.STATE.IDLE]: [
+        Sprites.DirectionSprites("img/units/improved_bowman/idle/", 5),
+        Sprites.DirectionSprites("img/units/composite_bowman/idle/", 5)
+    ],
+    [ImprovedBowMan.prototype.STATE.MOVING]: [
+        Sprites.DirectionSprites("img/units/improved_bowman/moving/", 10),
+        Sprites.DirectionSprites("img/units/composite_bowman/moving/", 10)
+    ],
+    [ImprovedBowMan.prototype.STATE.ATTACK]: [
+        Sprites.DirectionSprites("img/units/improved_bowman/attack/", 10),
+        Sprites.DirectionSprites("img/units/composite_bowman/attack/", 10)
+    ],
+    [ImprovedBowMan.prototype.STATE.DYING]: [
+        Sprites.DirectionSprites("img/units/improved_bowman/dying/", 10),
+        Sprites.DirectionSprites("img/units/composite_bowman/dying/", 10)
+    ],
+    [ImprovedBowMan.prototype.STATE.DEAD]: [
+        Sprites.DirectionSprites("img/units/improved_bowman/dead/", 6),
+        Sprites.DirectionSprites("img/units/composite_bowman/dead/", 6)
+    ],
 };
 
 ImprovedBowMan.prototype.IMAGE_OFFSETS = {
-    [ImprovedBowMan.prototype.STATE.IDLE]: [{ x: 10, y: 35 }],
-    [ImprovedBowMan.prototype.STATE.MOVING]: [{ x: 8, y: 43 }],
-    [ImprovedBowMan.prototype.STATE.ATTACK]: [{ x: 13, y: 49 }],
-    [ImprovedBowMan.prototype.STATE.DYING]: [{ x: 31, y: 35 }],
-    [ImprovedBowMan.prototype.STATE.DEAD]: [{ x: 34, y: 20 }],
+    [ImprovedBowMan.prototype.STATE.IDLE]: [{ x: 10, y: 35 }, { x: 10, y: 36 }],
+    [ImprovedBowMan.prototype.STATE.MOVING]: [{ x: 8, y: 43 }, { x: 11, y: 44 }],
+    [ImprovedBowMan.prototype.STATE.ATTACK]: [{ x: 13, y: 49 }, { x: 15, y: 50 }],
+    [ImprovedBowMan.prototype.STATE.DYING]: [{ x: 31, y: 35 }, { x: 49, y: 52 }],
+    [ImprovedBowMan.prototype.STATE.DEAD]: [{ x: 34, y: 20 }, { x: 59, y: 24 }],
 };
 
 export { ImprovedBowMan }
