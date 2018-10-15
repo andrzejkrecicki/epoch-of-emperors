@@ -52,7 +52,7 @@ class ToolAge extends Age {
 }
 ToolAge.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/tool_age.png");
 ToolAge.prototype.TOOLTIP = "Advance to Tool Age. Requires two buildings from Stone Age";
-ToolAge.prototype.TIME = 200;
+ToolAge.prototype.TIME = 120 * 35;
 ToolAge.prototype.COST = {
     food: 500, wood: 0, stone: 0, gold: 0
 }
@@ -78,7 +78,7 @@ class BattleAxe extends Technology {
 }
 BattleAxe.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/battle_axe.png");
 BattleAxe.prototype.TOOLTIP = "Upgrade to Battle Axe";
-BattleAxe.prototype.TIME = 200;
+BattleAxe.prototype.TIME = 40 * 35;
 BattleAxe.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -242,7 +242,7 @@ class StoneMining extends Technology {
 }
 StoneMining.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/stone_mining.png");
 StoneMining.prototype.TOOLTIP = "Research Stone Mining: +3 stone mining; +1 Slinger attack range.";
-StoneMining.prototype.TIME = 60 * 35;
+StoneMining.prototype.TIME = 30 * 35;
 StoneMining.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -266,7 +266,7 @@ class GoldMining extends Technology {
 }
 GoldMining.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/gold_mining.png");
 GoldMining.prototype.TOOLTIP = "Research Gold Mining: +3 gold mining.";
-GoldMining.prototype.TIME = 60 * 35;
+GoldMining.prototype.TIME = 50 * 35;
 GoldMining.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -283,7 +283,7 @@ class SmallWall extends Technology {
 }
 SmallWall.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/small_wall.png");
 SmallWall.prototype.TOOLTIP = "Research Small Wall.";
-SmallWall.prototype.TIME = 60 * 35;
+SmallWall.prototype.TIME = 10 * 35;
 SmallWall.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -300,7 +300,7 @@ class WatchTower extends Technology {
 }
 WatchTower.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/watch_tower.png");
 WatchTower.prototype.TOOLTIP = "Research Watch Tower.";
-WatchTower.prototype.TIME = 60 * 35;
+WatchTower.prototype.TIME = 10 * 35;
 WatchTower.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -320,14 +320,13 @@ class BronzeAge extends Age {
             +!!entity.player.possessions.ArcheryRange +
             +!!entity.player.possessions.Stable +
             +!!entity.player.possessions.Farm +
-            +!!entity.player.possessions.Tower +
             +!!entity.player.possessions.Market
         ) >= 2;
     }
 }
 BronzeAge.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/bronze_age.png");
 BronzeAge.prototype.TOOLTIP = "Advance to Bronze Age. Requires two buildings from Tool Age";
-BronzeAge.prototype.TIME = 200;
+BronzeAge.prototype.TIME = 140 * 35;
 BronzeAge.prototype.COST = {
     food: 800, wood: 0, stone: 0, gold: 0
 }
