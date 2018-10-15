@@ -18,8 +18,8 @@ class Building extends Entity {
         this.player = player;
         this.player.addBuilding(this);
 
-        this.setImage();
         this.createSelectionRect();
+        this.setImage();
         this.resetBoundingBox();
     }
     getSprite() {

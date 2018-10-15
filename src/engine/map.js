@@ -1,4 +1,4 @@
-import { BFSWalker, MultiSlotQueue } from './algorithms.js';
+import { BFSWalker, MultiSlotQueue, StandardQueue } from './algorithms.js';
 import { rand_choice } from '../utils.js';
 import { PineTree, LeafTree, PalmTree } from './trees.js';
 import { TERRAIN_TYPES, SAND_TRANSFORMATIONS, GRASS_TRANSFORMATIONS } from './terrain.js'
@@ -54,8 +54,27 @@ class RandomMap extends Map {
         }); 
 
         this.randomizeTerrain();
+        this.makeLake(50, 75, 10);
+        this.makeLake(50 - 10, 75 + 10, 10);
+        this.makeLake(50 - 20, 75 + 20, 10);
+        this.makeLake(50 - 30, 75 + 30, 10);
         this.normalizeNeighbouringTiles();
         // this.plantTrees();
+    }
+    makeLake(x, y, radius) {
+        let done = 0;
+        let walker = new BFSWalker({ x, y }, new StandardQueue(4), (node) => {
+                let dist = Math.pow(x - node.x, 2) + Math.pow(y - node.y, 2);
+                ++done;
+                this.terrain_tiles[node.x][node.y] = Map.TERRAIN_TYPES.WATER;
+            }, function(x, y, node) {
+                return { x: x, y: y }
+            }, function() {
+                return done > 400
+            }, 0, this.edge_size - 1
+        );
+        walker.run();
+
     }
     getNeighboursIdentityVector(x, y, synonyms=[]) {
         let neighbours_vector = 0;

@@ -9,11 +9,10 @@ class FishBig extends Entity {
         };
         this.hp = FishBig.prototype.MAX_HP;
         this.max_hp = FishBig.prototype.MAX_HP;
-
-        this.createSelectionRect();
-
         this.frame = 0;
         this._frame = 0;
+
+        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }
@@ -33,7 +32,7 @@ class FishBig extends Entity {
         return this.IMAGE_OFFSET;
     }
     getSprite() {
-        return this.IMAGES[this.state][this.frame];
+        return this.IMAGES[this.frame];
     }
 }
 FishBig.prototype.MAX_HP = 25;

@@ -395,9 +395,9 @@ class RandomMapMenu extends Menu {
         return {
             players: [
                 new PlayerDefinition(0, "You", 0, 0, null),
-                new PlayerDefinition(1, "Computer 1", null, 1, null, true),
-                new PlayerDefinition(2, "Computer 2", null, 2, null, true),
-                new PlayerDefinition(3, "Computer 3", null, 3, null, true)
+                new PlayerDefinition(1, "Computer 1", 0, 1, null, true),
+                new PlayerDefinition(2, "Computer 2", 0, 2, null, true),
+                new PlayerDefinition(3, "Computer 3", 0, 3, null, true)
             ],
             map: {
                 size: 0,

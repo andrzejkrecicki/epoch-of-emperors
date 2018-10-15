@@ -25,8 +25,8 @@ class Unit extends Entity {
         if (this.ATTRIBUTES.ARMOR != null) this.attributes.armor = this.ATTRIBUTES.ARMOR;
         if (this.ATTRIBUTES.RANGE != null) this.attributes.range = this.ATTRIBUTES.RANGE;
 
-        this.setImage();
         this.createSelectionRect();
+        this.setImage();
         this.resetBoundingBox();
     }
     getSprite() {

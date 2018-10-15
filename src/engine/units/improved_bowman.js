@@ -36,7 +36,7 @@ ImprovedBowMan.prototype.ATTACK_RATE = 6 * 3;
 ImprovedBowMan.prototype.SHOT_DELAY = 27;
 ImprovedBowMan.prototype.ATTACKS_FROM_DISTANCE = true;
 
-ImprovedBowMan.prototype.ACTION_KEY = "B";
+ImprovedBowMan.prototype.ACTION_KEY = "A";
 ImprovedBowMan.prototype.COST = {
     food: 40, wood: 0, stone: 0, gold: 20
 }

@@ -1,12 +1,25 @@
 import { MapFactory, Map } from './map.js';
 import { Unit } from './units/unit.js';
 import { Villager } from './units/villager.js';
+import { ClubMan } from './units/clubman.js';
+import { BowMan } from './units/bowman.js';
+import { FishingBoat } from './units/fishing_boat.js';
+import { TradeBoat } from './units/trade_boat.js';
+import { ScoutShip } from './units/scout_ship.js';
+import { TransportBoat } from './units/transport_boat.js';
+import { Gazelle } from './units/gazelle.js';
+import { Lion } from './units/lion.js';
+import { Alligator } from './units/alligator.js';
+import { Elephant } from './units/elephant.js';
 import { Entity } from './entity.js';
 import { Player } from './player.js';
 import { DeadBody } from './flat_drawables.js';
 import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
+import { Tower } from './buildings/tower.js';
+import { Dock } from './buildings/dock.js';
 import { Bush } from './resources/bush.js';
+import { FishBig } from './resources/fish.js';
 import { GoldMine } from './resources/gold.js';
 import { StoneMine } from './resources/stone.js';
 import { LeafTree } from './trees.js';
@@ -506,14 +519,90 @@ class Engine {
         this.map.fillSubtilesWith(stone.subtile_x, stone.subtile_y, stone.SUBTILE_WIDTH, stone);
         this.map.entities.push(stone);
 
-        this.addUnit(new Villager(d.x - 1, d.y - 6, this.current_player));
+        this.addUnit(new ClubMan(d.x - 1, d.y - 6, this.current_player));
+        this.addUnit(new ClubMan(d.x - 5, d.y - 6, this.players[1]));
         this.addUnit(new Villager(d.x + 7, d.y - 10, this.current_player));
-        this.addUnit(new Villager(d.x + 2, d.y, this.current_player));
+        this.addUnit(new BowMan(d.x + 2, d.y, this.current_player));
+
+        var vill;
+        vill = new Villager(150, 100, this.current_player, 0, 3);
+        this.addUnit(vill);
+        vill = new Villager(151, 100, this.current_player, 0, 4);
+        this.addUnit(vill);
+        vill = new Villager(151, 101, this.current_player, 0, 5);
+        this.addUnit(vill);
+        vill = new Villager(151, 102, this.current_player, 0, 6);
+        this.addUnit(vill);
+        vill = new Villager(150, 102, this.current_player, 0, 7);
+        this.addUnit(vill);
+        vill = new Villager(149, 102, this.current_player, 0, 0);
+        this.addUnit(vill);
+        vill = new Villager(149, 101, this.current_player, 0, 1);
+        this.addUnit(vill);
+        vill = new Villager(149, 100, this.current_player, 0, 2);
+        this.addUnit(vill);
+
+        let ship = new Tower(140, 90, this.current_player)
+        this.addBuilding(ship)
+
+        var vill;
+        for (let i = 0; i < 14; ++i) {
+            vill = new Villager(130 + i, 100, this.current_player);
+            this.addUnit(vill);
+            setTimeout((function(vill) {
+                this.interactOrder(vill, ship)
+            }).bind(this, vill))
+        }
+
+
+
+        this.addUnit(new Gazelle(d.x + 10, d.y - 8, this.current_player))
+        let lion = new Lion(150, 107, this.current_player);
+        this.addUnit(lion)
+        this.addUnit(new Alligator(150, 110, this.current_player))
+        let elephant = new Elephant(150, 120, this.current_player)
+        this.addUnit(elephant)
+
+        for (let i = 0; i < 5; ++i) this.addUnit(new Villager(145 + i, 115, this.current_player));
+        for (let i = 0; i < 5; ++i) this.addUnit(new Villager(145 + i, 118, this.players[1]));
+        for (let i = 0; i < 5; ++i) this.addUnit(new Villager(145 + i, 121, this.players[2]));
+        for (let i = 0; i < 5; ++i) this.addUnit(new Villager(145 + i, 124, this.players[3]));
+
 
         let towncenter = new TownCenter(d.x + 1, d.y - 8, this.current_player);
         towncenter.setComplete();
         this.addBuilding(towncenter);
 
+        this.addUnit(new TransportBoat(106, 138, this.current_player))
+        this.addUnit(new Villager(114, 133, this.current_player))
+        this.addUnit(new Villager(115, 132, this.current_player))
+        this.addUnit(new Villager(116, 131, this.current_player))
+        this.addUnit(new Villager(117, 130, this.current_player))
+        this.addUnit(new Villager(118, 129, this.current_player))
+        this.addUnit(new Villager(119, 128, this.current_player))
+        this.addUnit(new Villager(120, 127, this.current_player))
+
+        let dock_1 = new Dock(107, 128, this.current_player);
+        dock_1.setComplete();
+        this.addBuilding(dock_1);
+
+        let dock_2 = new Dock(111, 167, this.players[1]);
+        dock_2.setComplete();
+        this.addBuilding(dock_2);
+
+        let dock_3 = new Dock(246, 246, this.players[1]);
+        dock_3.setComplete();
+        this.addBuilding(dock_3);
+
+        let dock_4 = new Dock(7, 246, this.players[1]);
+        dock_4.setComplete();
+        this.addBuilding(dock_4);
+
+        this.addUnit(new FishingBoat(110, 145, this.current_player));
+
+        let fish = new FishBig(110, 150);
+        this.map.fillSubtilesWith(fish.subtile_x, fish.subtile_y, fish.SUBTILE_WIDTH, fish);
+        this.map.entities.push(fish);
     }
 }
 Engine.prototype.frameRate = 35;
