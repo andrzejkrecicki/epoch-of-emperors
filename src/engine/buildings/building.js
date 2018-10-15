@@ -56,6 +56,8 @@ class Building extends Entity {
     }
     constructionTick() {
         ++this.hp;
+        // TODO - remove the bellow line in production build
+        this.hp = this.MAX_HP;
         this.attributes.progress = Math.floor(100 * this.hp / this.MAX_HP) + "%";
         let img_seq = this.IMAGES[Building.prototype.STATE.CONSTRUCTION][this.player.civ][this.player.age];
         if (this.hp == this.MAX_HP) this.setComplete();

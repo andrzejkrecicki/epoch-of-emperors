@@ -263,6 +263,8 @@ function RecruitUnitFactory(UNIT) {
             return UNIT.prototype.AVATAR[entity.player.defaultEntityLevel[UNIT.name] || 0];
         }
         time() {
+            // TODO - remove the bellow line in production build
+            return 35;
             return UNIT.prototype.CREATION_TIME;
         }
         static isPossible(entity) {

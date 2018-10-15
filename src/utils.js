@@ -13,6 +13,17 @@ class PlayerDefinition {
             stone: 400,
             gold: 400
         };
+
+        // TODO - remove the bellow line in production build
+        this.resources = {
+            wood: 40000,
+            food: 40000,
+            stone: 40000,
+            gold: 40000
+        };
+
+
+
         this.color = color;
         this.team = team;
         this.is_cpu = is_cpu;

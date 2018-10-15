@@ -11,6 +11,9 @@ class Player {
         this.resources = { ...definition.resources };
         this.population = 0;
         this.max_population = Player.prototype.DEFAULT_POPULATION;
+        // TODO - remove the bellow line in production build
+        this.max_population = 1000;
+
         this.age = map.startingAge;
 
         this.units = [];
