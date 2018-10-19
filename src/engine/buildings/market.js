@@ -15,7 +15,7 @@ class Market extends Building {
         ]; else return null;
     }
     static isResearched(player) {
-        return entity.player.possessions.Granary && entity.player.possessions.ToolAge;
+        return player.possessions.Granary && player.possessions.ToolAge;
     }
 }
 Market.prototype.NAME = "Market";

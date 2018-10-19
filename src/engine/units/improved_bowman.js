@@ -18,8 +18,8 @@ class ImprovedBowMan extends Unit {
     get ACTIONS() {
         return [Actions.StandGround, Actions.Stop];
     }
-    static isResearched(entity) {
-        return entity.player.possessions.ImprovedBow;
+    static isResearched(player) {
+        return player.possessions.ImprovedBow;
     }
 }
 ImprovedBowMan.prototype.SUBTILE_WIDTH = 1;

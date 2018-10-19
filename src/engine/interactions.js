@@ -46,13 +46,13 @@ class ResourceExtractionInteraction extends Interaction {
         let max_capacity = this.active.CAPACITY[this.RESOURCE_NAME] + this.active.player.attributeBonus.villager.capacity[this.RESOURCE_NAME];
         if (this.passive.destroyed) {
             if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
-                if (this.active.attributes[this.RESOURCE_NAME]) this.returnResources(engine)
+                if (this.active.attributes[this.RESOURCE_NAME]) this.returnResources(this.engine)
                 else this.terminate()
             }
         } else if (this.active.attributes[this.RESOURCE_NAME] >= max_capacity) {
-            this.returnResources(engine);
+            this.returnResources(this.engine);
         } else if (this.active.ticks_waited == this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
-            this.active.attributes[this.RESOURCE_NAME] += this.passive.getResource(engine);
+            this.active.attributes[this.RESOURCE_NAME] += this.passive.getResource(this.engine);
             this.active.carriedResource = this.RESOURCE_TYPE;
             this.active.ticks_waited = 0;
         }
@@ -132,7 +132,7 @@ class LumberInteraction extends Interaction {
     process() {
         if (this.passive.destroyed) {
             if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
-                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.active.returnResources(engine);
+                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.active.returnResources(this.engine);
                 else this.terminate()
             }
         } else {
@@ -216,7 +216,7 @@ class HunterInteraction extends Interaction {
     process() {
         if (this.passive.destroyed) {
             if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
-                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.active.returnResources(engine)
+                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.active.returnResources(this.engine)
                 else this.active.terminateInteraction()
             }
         } else if (this.passive.state == this.passive.STATE.DYING) {
@@ -297,7 +297,7 @@ class TradeInteraction extends ResourceExtractionInteraction {
             this.active.attributes[res] = null;
             this.active.carriedResource = RESOURCE_TYPES.GOLD;
             this.active.attributes.gold = this.passive.getTradeProfit(this.active.player);
-            this.returnResources(engine);
+            this.returnResources(this.engine);
         }
     }
     getReturnBuildingTypes() {

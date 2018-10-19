@@ -18,8 +18,8 @@ class ChariotArcher extends Unit {
     get ACTIONS() {
         return [Actions.StandGround, Actions.Stop];
     }
-    static isResearched(entity) {
-        return entity.player.possessions.Wheel;
+    static isResearched(player) {
+        return player.possessions.Wheel;
     }
 }
 ChariotArcher.prototype.SUBTILE_WIDTH = 2;

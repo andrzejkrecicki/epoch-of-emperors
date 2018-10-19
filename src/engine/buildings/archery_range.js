@@ -17,7 +17,7 @@ class ArcheryRange extends Building {
         ]; else return null;
     }
     static isResearched(player) {
-        return entity.player.possessions.Barracks && entity.player.possessions.ToolAge;
+        return player.possessions.Barracks && player.possessions.ToolAge;
     }
 }
 ArcheryRange.prototype.NAME = "Archery Range";

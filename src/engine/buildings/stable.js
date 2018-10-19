@@ -11,7 +11,7 @@ class Stable extends Building {
         ]; else return null;
     }
     static isResearched(player) {
-        return entity.player.possessions.Barracks && entity.player.possessions.ToolAge;
+        return player.possessions.Barracks && player.possessions.ToolAge;
     }
 }
 Stable.prototype.NAME = "Stable";

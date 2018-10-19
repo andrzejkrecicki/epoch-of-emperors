@@ -18,7 +18,7 @@ class Farm extends Building {
         this.attributes.food = 250 + this.player.attributeBonus.farm.food;
     }
     static isResearched(player) {
-        return entity.player.possessions.Market && entity.player.possessions.ToolAge;
+        return player.possessions.Market && player.possessions.ToolAge;
     }
 }
 Farm.prototype.NAME = "Farm";

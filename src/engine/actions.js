@@ -268,7 +268,7 @@ function RecruitUnitFactory(UNIT) {
             return UNIT.prototype.CREATION_TIME;
         }
         static isPossible(entity) {
-            return UNIT.isResearched(entity);
+            return UNIT.isResearched(entity.player);
         }
         findEmptyArea(width) {
             // iterate clockwise around all available areas adjecent to building

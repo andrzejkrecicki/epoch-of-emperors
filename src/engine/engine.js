@@ -258,7 +258,7 @@ class Engine {
     }
     processDrawables() {
         for (let drawable of this.drawables) {
-            drawable.process(engine);
+            drawable.process(this);
         }
         this.drawables = this.drawables.filter((p) => !p.destroyed);
     }

@@ -61,7 +61,7 @@ class Wall extends Building {
         this.normalized = true;
     }
     static isResearched(player) {
-        return entity.player.possessions.SmallWall;
+        return player.possessions.SmallWall;
     }
 }
 Wall.prototype.NAME = "Small Wall";

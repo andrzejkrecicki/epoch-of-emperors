@@ -58,7 +58,7 @@ class Unit extends Entity {
         super.destroy(engine);
         --this.player.population;
     }
-    static isResearched(entity) {
+    static isResearched(player) {
         return true;
     }
     rotateToSubtile(subtile) {

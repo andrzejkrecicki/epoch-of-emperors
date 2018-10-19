@@ -53,7 +53,7 @@ class Tower extends Building {
         return this.NAME[this.level];
     }
     static isResearched(player) {
-        return entity.player.possessions.WatchTower;
+        return player.possessions.WatchTower;
     }
 }
 Tower.prototype.NAME = ["Watch Tower"];

@@ -48,6 +48,7 @@ class Villager extends Unit {
         return { x: 16, y: -30 }
     }
     preDead() {
+        if (this.state & Villager.prototype.STATE.ATTACK) this.state = Villager.prototype.STATE.IDLE;
         if (this.state & Villager.prototype.STATE.CHOP) this.state = Villager.prototype.STATE.LUMBER;
         if (this.state & Villager.prototype.STATE.CARRY_WOOD) this.state = Villager.prototype.STATE.LUMBER;
         if (this.state & Villager.prototype.STATE.CARRY_GOLD) this.state = Villager.prototype.STATE.MINE;
