@@ -1,5 +1,6 @@
 import { Building } from './building.js';
 import { ClubMan } from '../units/clubman.js';
+import { SwordsMan } from '../units/swordsman.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
@@ -8,7 +9,9 @@ class Barracks extends Building {
     actions() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(ClubMan),
-            Technologies.BattleAxe
+            Technologies.BattleAxe,
+            Technologies.ShortSword,
+            Actions.RecruitUnitFactory(SwordsMan),
         ]; else return null;
     }
 }

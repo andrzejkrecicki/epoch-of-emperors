@@ -472,6 +472,29 @@ CompositeBow.prototype.COST = {
 
 
 
+class ShortSword extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.BattleAxe &&
+            !entity.player.possessions.ShortSword
+        );
+    }
+}
+ShortSword.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/short_sword.png");
+ShortSword.prototype.TOOLTIP = "Research Short Sword";
+ShortSword.prototype.TIME = 50 * 35;
+ShortSword.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+ShortSword.prototype.COST = {
+    food: 120, wood: 0, stone: 0, gold: 50
+}
+
+
+
+
 
 const Technologies = {
     ToolAge,
@@ -492,7 +515,8 @@ const Technologies = {
     Plow,
     Wheel,
     ImprovedBow,
-    CompositeBow
+    CompositeBow,
+    ShortSword
 }
 
 export { Technologies };
