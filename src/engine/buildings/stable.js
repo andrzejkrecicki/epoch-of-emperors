@@ -1,6 +1,7 @@
 import { Building } from './building.js';
 import { Scout } from '../units/scout.js';
 import { Cavalry } from '../units/cavalry.js';
+import { Chariot } from '../units/chariot.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
@@ -9,7 +10,8 @@ class Stable extends Building {
     actions() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(Scout),
-            Actions.RecruitUnitFactory(Cavalry)
+            Actions.RecruitUnitFactory(Cavalry),
+            Actions.RecruitUnitFactory(Chariot)
         ]; else return null;
     }
     static isResearched(player) {
