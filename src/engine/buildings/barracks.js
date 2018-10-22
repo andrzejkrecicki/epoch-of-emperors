@@ -9,9 +9,10 @@ class Barracks extends Building {
     actions() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(ClubMan),
+            Actions.RecruitUnitFactory(SwordsMan),
             Technologies.BattleAxe,
             Technologies.ShortSword,
-            Actions.RecruitUnitFactory(SwordsMan),
+            Technologies.BroadSword
         ]; else return null;
     }
 }

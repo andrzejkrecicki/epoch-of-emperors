@@ -1,6 +1,7 @@
 import { Action } from './base_action.js';
 import { Sprites } from '../sprites.js';
 import { ClubMan } from './units/clubman.js';
+import { SwordsMan } from './units/swordsman.js';
 import { ImprovedBowMan } from './units/improved_bowman.js';
 
 class Technology extends Action {
@@ -493,7 +494,38 @@ ShortSword.prototype.COST = {
 }
 
 
-
+class BroadSword extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.ShortSword &&
+            !entity.player.possessions.BroadSword
+        );
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit instanceof SwordsMan) {
+                unit.levelUp();
+                unit.max_hp += 10;
+                unit.hp += 10;
+                unit.attributes.attack += 2;
+            }
+        }
+        this.player.defaultEntityLevel.SwordsMan = 1;
+        super.finalize();
+        return true;
+    }
+}
+BroadSword.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/broad_sword.png");
+BroadSword.prototype.TOOLTIP = "Upgrade to Broad Sword";
+BroadSword.prototype.TIME = 80 * 35;
+BroadSword.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+BroadSword.prototype.COST = {
+    food: 140, wood: 0, stone: 0, gold: 50
+}
 
 
 const Technologies = {
@@ -516,7 +548,8 @@ const Technologies = {
     Wheel,
     ImprovedBow,
     CompositeBow,
-    ShortSword
+    ShortSword,
+    BroadSword
 }
 
 export { Technologies };
