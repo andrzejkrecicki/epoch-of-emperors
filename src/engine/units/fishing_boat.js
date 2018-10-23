@@ -28,6 +28,7 @@ class FishingBoat extends Unit {
 FishingBoat.prototype.SUBTILE_WIDTH = 2;
 FishingBoat.prototype.NAME = ["Fishing Boat"];
 FishingBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/fishing_boat.png")];
+FishingBoat.prototype.TYPE = "ship";
 FishingBoat.prototype.MAX_HP = 45;
 FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;

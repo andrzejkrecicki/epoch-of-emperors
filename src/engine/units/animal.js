@@ -55,5 +55,6 @@ class Animal extends Unit {
 }
 Animal.prototype.DECAY_RATE = 4 * 35;
 Animal.prototype.COLORIZE = false;
+Animal.prototype.TYPE = "other";
 
 export { Animal }

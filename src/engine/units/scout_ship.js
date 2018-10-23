@@ -37,6 +37,7 @@ class ScoutShip extends Unit {
 ScoutShip.prototype.SUBTILE_WIDTH = 3;
 ScoutShip.prototype.NAME = ["Scout Ship"];
 ScoutShip.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/scout_ship.png")];
+ScoutShip.prototype.TYPE = "ship";
 ScoutShip.prototype.MAX_HP = 120;
 ScoutShip.prototype.SPEED = 3;
 ScoutShip.prototype.CREATION_TIME = 26 * 35;

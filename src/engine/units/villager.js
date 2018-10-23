@@ -74,6 +74,7 @@ class Villager extends Unit {
 Villager.prototype.SUBTILE_WIDTH = 1;
 Villager.prototype.NAME = ["Villager"];
 Villager.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/villager.png")];
+Villager.prototype.TYPE = "villager";
 Villager.prototype.MAX_HP = 25;
 Villager.prototype.SPEED = 1;
 // TODO - remove the bellow line in production build

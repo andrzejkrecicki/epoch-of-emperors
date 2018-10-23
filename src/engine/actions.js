@@ -309,7 +309,7 @@ function RecruitUnitFactory(UNIT) {
         }
     }
     RecruitUnit.prototype.TOOLTIP = "Create";
-    RecruitUnit.prototype.ACTION_KEY = Unit.prototype.ACTION_KEY;
+    RecruitUnit.prototype.ACTION_KEY = UNIT.prototype.ACTION_KEY;
     RecruitUnit.prototype.SUPPORTS_QUEUE = true;
     RecruitUnit.prototype.HASH = UNIT.name;
     return RecruitUnit;

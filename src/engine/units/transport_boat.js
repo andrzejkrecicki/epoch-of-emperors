@@ -62,6 +62,7 @@ class TransportBoat extends Unit {
 TransportBoat.prototype.SUBTILE_WIDTH = 2;
 TransportBoat.prototype.NAME = ["Light Transport"];
 TransportBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/transport_boat.png")];
+TransportBoat.prototype.TYPE = "ship";
 TransportBoat.prototype.MAX_HP = 150;
 TransportBoat.prototype.SPEED = 3;
 TransportBoat.prototype.CREATION_TIME = 26 * 35;

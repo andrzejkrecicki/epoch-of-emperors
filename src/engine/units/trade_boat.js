@@ -32,6 +32,7 @@ class TradeBoat extends Unit {
 TradeBoat.prototype.SUBTILE_WIDTH = 2;
 TradeBoat.prototype.NAME = ["Trade Boat"];
 TradeBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/trade_boat.png")];
+TradeBoat.prototype.TYPE = "ship";
 TradeBoat.prototype.MAX_HP = 200;
 TradeBoat.prototype.SPEED = 3;
 TradeBoat.prototype.CREATION_TIME = 26 * 35;

@@ -469,9 +469,11 @@ class EntityAttributes extends Graphics.Node {
         this.entity = entity;
         let offset_y = 0;
         for (let attr of EntityAttributes.ALL_ATTRIBUTES) {
-            if (this.entity.attributes[attr] != null) {
-                let base = this.entity.attributes[attr];
-                let bonus = this.entity.player && this.entity.player.attributeBonus[this.entity.TYPE][attr];
+            let base = this.entity.attributes[attr];
+            let bonus = this.entity.player && this.entity.player.attributeBonus[this.entity.TYPE][attr];
+
+            if (base != null || bonus) {
+                base = base || 0;
                 if (bonus) this[attr].text(`${base}+${bonus}`);
                 else this[attr].text(base);
                 this[attr].position({ x: 0, y: offset_y });
@@ -483,9 +485,9 @@ class EntityAttributes extends Graphics.Node {
     }
 }
 EntityAttributes.ALL_ATTRIBUTES = [
-    "attack", "armor", "range", "progress", "population",
-    "food", "wood", "gold", "stone", "trade_units",
-    "trade_profit", "load"
+    "attack", "armor", "missile_armor", "range", "progress",
+    "population", "food", "wood", "gold", "stone",
+    "trade_units", "trade_profit", "load"
 ];
 EntityAttributes.ATTRIBUTES = {
     attack: Sprites.Sprite("img/interface/details/attack.png"),
@@ -499,6 +501,7 @@ EntityAttributes.ATTRIBUTES = {
     load: Sprites.Sprite("img/interface/details/population.png"),
     population: Sprites.Sprite("img/interface/details/population.png"),
     armor: Sprites.Sprite("img/interface/details/armor.png"),
+    missile_armor: Sprites.Sprite("img/interface/details/missile_armor.png"),
     range: Sprites.Sprite("img/interface/details/range.png"),
 }
 

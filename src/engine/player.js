@@ -27,15 +27,18 @@ class Player {
         this.attributeBonus = {
             infantry: {
                 attack: 0,
-                armor: 0
+                armor: 0,
+                missile_armor: 0
             },
             archer: {
                 attack: 0,
-                armor: 0
+                armor: 0,
+                missile_armor: 0
             },
             cavalry: {
                 attack: 0,
-                armor: 0
+                armor: 0,
+                missile_armor: 0
             },
             farm: {
                 food: 0
@@ -49,6 +52,7 @@ class Player {
                 },
                 speed: 0
             },
+            ship: {},
             other: {}
         }
         this.interactionBonus = {

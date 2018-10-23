@@ -23,6 +23,7 @@ class Unit extends Entity {
 
         if (this.ATTRIBUTES.ATTACK != null) this.attributes.attack = this.ATTRIBUTES.ATTACK;
         if (this.ATTRIBUTES.ARMOR != null) this.attributes.armor = this.ATTRIBUTES.ARMOR;
+        if (this.ATTRIBUTES.MISSILE_ARMOR != null) this.attributes.missile_armor = this.ATTRIBUTES.MISSILE_ARMOR;
         if (this.ATTRIBUTES.RANGE != null) this.attributes.range = this.ATTRIBUTES.RANGE;
 
         this.createSelectionRect();
