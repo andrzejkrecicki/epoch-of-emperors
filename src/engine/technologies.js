@@ -528,6 +528,143 @@ BroadSword.prototype.COST = {
 }
 
 
+
+class Metalworking extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.Toolworking &&
+            !entity.player.possessions.Metalworking
+        );
+    }
+    finalize() {
+        this.player.attributeBonus.infantry.attack += 2;
+        this.player.attributeBonus.cavalry.attack += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+Metalworking.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/metalworking.png");
+Metalworking.prototype.TOOLTIP = "Research Metalworking: +2 hand-to-hand unit attack.";
+Metalworking.prototype.TIME = 75 * 35;
+Metalworking.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+Metalworking.prototype.COST = {
+    food: 200, wood: 0, stone: 0, gold: 120
+}
+
+
+class ScaleArmorInfantry extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.LeatherArmorInfantry &&
+            !entity.player.possessions.ScaleArmorInfantry
+        );
+    }
+    finalize() {
+        this.player.attributeBonus.infantry.armor += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+ScaleArmorInfantry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/scale_armor_infantry.png");
+ScaleArmorInfantry.prototype.TOOLTIP = "Research Scale Armor: +2 infantry armor.";
+ScaleArmorInfantry.prototype.TIME = 60 * 35;
+ScaleArmorInfantry.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+ScaleArmorInfantry.prototype.COST = {
+    food: 100, wood: 0, stone: 0, gold: 50
+}
+
+
+
+class ScaleArmorArcher extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.LeatherArmorArcher &&
+            !entity.player.possessions.ScaleArmorArcher
+        );
+    }
+    finalize() {
+        this.player.attributeBonus.archer.armor += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+ScaleArmorArcher.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/scale_armor_archer.png");
+ScaleArmorArcher.prototype.TOOLTIP = "Research Scale Armor: +2 archer armor.";
+ScaleArmorArcher.prototype.TIME = 60 * 35;
+ScaleArmorArcher.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+ScaleArmorArcher.prototype.COST = {
+    food: 125, wood: 0, stone: 0, gold: 50
+}
+
+
+class ScaleArmorCavalry extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.LeatherArmorCavalry &&
+            !entity.player.possessions.ScaleArmorCavalry
+        );
+    }
+    finalize() {
+        this.player.attributeBonus.cavalry.armor += 2;
+
+        super.finalize();
+        return true;
+    }
+}
+ScaleArmorCavalry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/scale_armor_cavalry.png");
+ScaleArmorCavalry.prototype.TOOLTIP = "Research Scale Armor: +2 cavalry armor.";
+ScaleArmorCavalry.prototype.TIME = 60 * 35;
+ScaleArmorCavalry.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+ScaleArmorCavalry.prototype.COST = {
+    food: 150, wood: 0, stone: 0, gold: 50
+}
+
+
+class BronzeShield extends Technology {
+    static isVisible(entity) {
+        return entity.player.possessions.BronzeAge && !entity.player.possessions.BronzeShield;
+    }
+    finalize() {
+        this.player.attributeBonus.infantry.missile_armor += 1;
+
+        super.finalize();
+        return true;
+    }
+}
+BronzeShield.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/bronze_shield.png");
+BronzeShield.prototype.TOOLTIP = "Research Bronze Shield: +1 infantry armor vs. missile weapons.";
+BronzeShield.prototype.TIME = 50 * 35;
+BronzeShield.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 4 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+BronzeShield.prototype.COST = {
+    food: 150, wood: 0, stone: 0, gold: 180
+}
+
+
+
+
+
 const Technologies = {
     ToolAge,
     BattleAxe,
@@ -549,7 +686,12 @@ const Technologies = {
     ImprovedBow,
     CompositeBow,
     ShortSword,
-    BroadSword
+    BroadSword,
+    Metalworking,
+    ScaleArmorInfantry,
+    ScaleArmorArcher,
+    ScaleArmorCavalry,
+    BronzeShield
 }
 
 export { Technologies };

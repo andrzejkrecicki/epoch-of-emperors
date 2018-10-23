@@ -16,7 +16,13 @@ class StoragePit extends Building {
             Technologies.Toolworking,
             Technologies.LeatherArmorInfantry,
             Technologies.LeatherArmorArcher,
-            Technologies.LeatherArmorCavalry
+            Technologies.LeatherArmorCavalry,
+
+            Technologies.Metalworking,
+            Technologies.ScaleArmorInfantry,
+            Technologies.ScaleArmorArcher,
+            Technologies.ScaleArmorCavalry,
+            Technologies.BronzeShield,
         ]; else return null;
     }
 }
