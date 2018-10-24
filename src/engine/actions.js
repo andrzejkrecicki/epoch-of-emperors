@@ -77,10 +77,20 @@ function CreateBuildingFactory(BUILDING) {
             this.viewer.isPlanningConstruction = false;
             this.viewer.constructionIndicator.hide();
         }
+        toolTipChunks(player) {
+            let chunks = [this.TOOLTIP];
+            let lev = player.defaultEntityLevel[BUILDING.name];
+
+            if (lev != null) chunks.push(BUILDING.prototype.NAME[lev]);
+            else chunks.push(BUILDING.prototype.NAME);
+
+            if (BUILDING.prototype.CONTINUOUS_PREVIEW) chunks.push("(drag-n-drop)");
+
+            return chunks;
+        }
     }
     CreateBuilding.prototype.BUILDING = BUILDING;
-    CreateBuilding.prototype.TOOLTIP = `Build ${BUILDING.prototype.NAME}`;
-    if (BUILDING.prototype.CONTINUOUS_PREVIEW) CreateBuilding.prototype.TOOLTIP += " (drag-n-drop)"
+    CreateBuilding.prototype.TOOLTIP = "Build";
     CreateBuilding.prototype.ACTION_KEY = BUILDING.prototype.ACTION_KEY;
     CreateBuilding.prototype.ACTIONS = [
         RejectConstructionPlan

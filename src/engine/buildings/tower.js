@@ -56,7 +56,7 @@ class Tower extends Building {
         return player.possessions.WatchTower;
     }
 }
-Tower.prototype.NAME = ["Watch Tower"];
+Tower.prototype.NAME = ["Watch Tower", "Sentry Tower"];
 Tower.prototype.AVATAR = [
     [
         Sprites.Sprite("img/interface/avatars/tower_01_all.png"),

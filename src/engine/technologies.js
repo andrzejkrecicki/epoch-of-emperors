@@ -3,6 +3,8 @@ import { Sprites } from '../sprites.js';
 import { ClubMan } from './units/clubman.js';
 import { SwordsMan } from './units/swordsman.js';
 import { ImprovedBowMan } from './units/improved_bowman.js';
+import { Wall } from './buildings/wall.js';
+import { Tower } from './buildings/tower.js';
 
 class Technology extends Action {
     getCost() {
@@ -662,6 +664,73 @@ BronzeShield.prototype.COST = {
 }
 
 
+class MediumWall extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.SmallWall &&
+            !entity.player.possessions.MediumWall
+        );
+    }
+    finalize() {
+        for (let building of this.player.buildings) {
+            if (!building.wasConverted && building instanceof Wall) {
+                building.levelUp();
+                building.max_hp += 100;
+                building.hp += 100;
+            }
+        }
+        this.player.defaultEntityLevel.Wall = 1;
+        super.finalize();
+        return true;
+    }
+}
+MediumWall.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/medium_wall.png");
+MediumWall.prototype.TOOLTIP = "Upgrade to Medium Wall.";
+MediumWall.prototype.TIME = 60 * 35;
+MediumWall.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+MediumWall.prototype.COST = {
+    food: 180, wood: 0, stone: 100, gold: 0
+}
+
+
+class SentryTower extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            entity.player.possessions.WatchTower &&
+            !entity.player.possessions.SentryTower
+        );
+    }
+    finalize() {
+        for (let building of this.player.buildings) {
+            if (!building.wasConverted && building instanceof Tower) {
+                building.levelUp();
+                building.max_hp += 50;
+                building.hp += 50;
+            }
+        }
+        this.player.defaultEntityLevel.Tower = 1;
+        super.finalize();
+        return true;
+    }
+}
+SentryTower.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/sentry_tower.png");
+SentryTower.prototype.TOOLTIP = "Upgrade to Sentry Tower.";
+SentryTower.prototype.TIME = 30 * 35;
+SentryTower.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+SentryTower.prototype.COST = {
+    food: 120, wood: 0, stone: 50, gold: 0
+}
+
+
+
 
 
 
@@ -691,7 +760,9 @@ const Technologies = {
     ScaleArmorInfantry,
     ScaleArmorArcher,
     ScaleArmorCavalry,
-    BronzeShield
+    BronzeShield,
+    MediumWall,
+    SentryTower
 }
 
 export { Technologies };

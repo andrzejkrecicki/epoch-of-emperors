@@ -8,6 +8,8 @@ class Granary extends Building {
         if (this.isComplete) return [
             Technologies.SmallWall,
             Technologies.WatchTower,
+            Technologies.MediumWall,
+            Technologies.SentryTower
         ]; else return null;
     }
     acceptsResource(type) {

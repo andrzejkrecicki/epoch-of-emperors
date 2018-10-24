@@ -60,11 +60,14 @@ class Wall extends Building {
         this.updateImage();
         this.normalized = true;
     }
+    getName() {
+        return this.NAME[this.level];
+    }
     static isResearched(player) {
         return player.possessions.SmallWall;
     }
 }
-Wall.prototype.NAME = "Small Wall";
+Wall.prototype.NAME = ["Small Wall", "Medium Wall"];
 Wall.prototype.AVATAR = [
     [
         Sprites.Sprite("img/interface/avatars/wall_01_all.png"),
