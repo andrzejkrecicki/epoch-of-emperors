@@ -52,6 +52,11 @@ class Player {
                 },
                 speed: 0
             },
+            fishing_boat: {
+                capacity: {
+                    food: 0
+                }
+            },
             ship: {},
             other: {}
         }

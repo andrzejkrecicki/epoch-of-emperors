@@ -3,6 +3,7 @@ import { Sprites } from '../sprites.js';
 import { ClubMan } from './units/clubman.js';
 import { SwordsMan } from './units/swordsman.js';
 import { ImprovedBowMan } from './units/improved_bowman.js';
+import { FishingBoat } from './units/fishing_boat.js';
 import { Wall } from './buildings/wall.js';
 import { Tower } from './buildings/tower.js';
 
@@ -731,6 +732,38 @@ SentryTower.prototype.COST = {
 
 
 
+class FishingShip extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.FishingShip
+        );
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit instanceof FishingBoat) {
+                unit.levelUp();
+                unit.max_hp += 30;
+                unit.hp += 30;
+                this.player.attributeBonus.fishing_boat.capacity.food += 5;
+            }
+        }
+        this.player.defaultEntityLevel.FishingBoat = 1;
+        super.finalize();
+        return true;
+    }
+}
+FishingShip.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/fishing_ship.png");
+FishingShip.prototype.TOOLTIP = "Upgrade to Fishing Ship";
+FishingShip.prototype.TIME = 15 * 35;
+FishingShip.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+FishingShip.prototype.COST = {
+    food: 50, wood: 100, stone: 0, gold: 0
+}
+
 
 
 
@@ -762,7 +795,8 @@ const Technologies = {
     ScaleArmorCavalry,
     BronzeShield,
     MediumWall,
-    SentryTower
+    SentryTower,
+    FishingShip
 }
 
 export { Technologies };

@@ -43,7 +43,8 @@ Interaction.prototype.DISTANCE = 0;
 
 class ResourceExtractionInteraction extends Interaction {
     process() {
-        let max_capacity = this.active.CAPACITY[this.RESOURCE_NAME] + this.active.player.attributeBonus.villager.capacity[this.RESOURCE_NAME];
+        let bonus = this.active.player.attributeBonus[this.active.TYPE].capacity[this.RESOURCE_NAME];
+        let max_capacity = this.active.CAPACITY[this.RESOURCE_NAME] + bonus;
         if (this.passive.destroyed) {
             if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
                 if (this.active.attributes[this.RESOURCE_NAME]) this.returnResources(this.engine)

@@ -26,9 +26,12 @@ class FishingBoat extends Unit {
     }
 }
 FishingBoat.prototype.SUBTILE_WIDTH = 2;
-FishingBoat.prototype.NAME = ["Fishing Boat"];
-FishingBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/fishing_boat.png")];
-FishingBoat.prototype.TYPE = "ship";
+FishingBoat.prototype.NAME = ["Fishing Boat", "Fishing Ship"];
+FishingBoat.prototype.AVATAR = [
+    Sprites.Sprite("img/interface/avatars/fishing_boat.png"),
+    Sprites.Sprite("img/interface/avatars/fishing_ship.png")
+];
+FishingBoat.prototype.TYPE = "fishing_boat";
 FishingBoat.prototype.MAX_HP = 45;
 FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;
@@ -54,8 +57,14 @@ FishingBoat.prototype.FRAME_RATE = {
 }
 
 FishingBoat.prototype.IMAGES = {
-    [FishingBoat.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/fishing_boat/regular/", 1)],
-    [FishingBoat.prototype.STATE.FISHING]: [Sprites.DirectionSprites("img/units/fishing_boat/fishing/", 1)],
+    [FishingBoat.prototype.STATE.IDLE]: [
+        Sprites.DirectionSprites("img/units/fishing_boat/regular/", 1),
+        Sprites.DirectionSprites("img/units/fishing_ship/regular/", 1)
+    ],
+    [FishingBoat.prototype.STATE.FISHING]: [
+        Sprites.DirectionSprites("img/units/fishing_boat/fishing/", 1),
+        Sprites.DirectionSprites("img/units/fishing_ship/fishing/", 1)
+    ],
     [FishingBoat.prototype.STATE.DYING]: [
         Sprites.SpriteSequence("img/units/ship_sink_small/", 5, 0, 8),
         Sprites.SpriteSequence("img/units/ship_sink_small/", 5, 0, 8)
@@ -65,11 +74,11 @@ FishingBoat.prototype.IMAGES[FishingBoat.prototype.STATE.MOVING] = FishingBoat.p
 
 
 FishingBoat.prototype.IMAGE_OFFSETS = {
-    [FishingBoat.prototype.STATE.IDLE]: [{ x: 0, y: 29 }],
-    [FishingBoat.prototype.STATE.MOVING]: [{ x: 0, y: 29 }],
-    [FishingBoat.prototype.STATE.FISHING]: [{ x: 0, y: 29 }],
-    [FishingBoat.prototype.STATE.DYING]: [{ x: -4, y: 10 }],
-    [FishingBoat.prototype.STATE.DEAD]: [{ x: -4, y: 10 }],
+    [FishingBoat.prototype.STATE.IDLE]: [{ x: 0, y: 29 }, { x: 20, y: 62 }],
+    [FishingBoat.prototype.STATE.MOVING]: [{ x: 0, y: 29 }, { x: 20, y: 62 }],
+    [FishingBoat.prototype.STATE.FISHING]: [{ x: 0, y: 29 }, { x: 20, y: 62 }],
+    [FishingBoat.prototype.STATE.DYING]: [{ x: -4, y: 10 }, { x: -4, y: 10 }],
+    [FishingBoat.prototype.STATE.DEAD]: [{ x: -4, y: 10 }, { x: -4, y: 10 }],
 };
 
 
