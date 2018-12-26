@@ -21,7 +21,8 @@ class Dock extends Building {
             Actions.RecruitUnitFactory(TradeBoat),
             Actions.RecruitUnitFactory(TransportBoat),
             Actions.RecruitUnitFactory(ScoutShip),
-            Technologies.FishingShip
+            Technologies.FishingShip,
+            Technologies.MerchantShip
         ]; else return null;
     }
     canConstructOn(terrain_counts) {

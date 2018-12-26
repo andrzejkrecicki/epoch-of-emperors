@@ -4,6 +4,7 @@ import { ClubMan } from './units/clubman.js';
 import { SwordsMan } from './units/swordsman.js';
 import { ImprovedBowMan } from './units/improved_bowman.js';
 import { FishingBoat } from './units/fishing_boat.js';
+import { TradeBoat } from './units/trade_boat.js';
 import { Wall } from './buildings/wall.js';
 import { Tower } from './buildings/tower.js';
 
@@ -731,7 +732,6 @@ SentryTower.prototype.COST = {
 }
 
 
-
 class FishingShip extends Technology {
     static isVisible(entity) {
         return (
@@ -762,6 +762,38 @@ FishingShip.prototype.POS = {
 }
 FishingShip.prototype.COST = {
     food: 50, wood: 100, stone: 0, gold: 0
+}
+
+
+class MerchantShip extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.MerchantShip
+        );
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit instanceof TradeBoat) {
+                unit.levelUp();
+                unit.max_hp += 50;
+                unit.hp += 50;
+            }
+        }
+        this.player.defaultEntityLevel.TradeBoat = 1;
+        super.finalize();
+        return true;
+    }
+}
+MerchantShip.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/merchant_ship.png");
+MerchantShip.prototype.TOOLTIP = "Upgrade to Merchant Ship";
+MerchantShip.prototype.TIME = 30 * 35;
+MerchantShip.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+MerchantShip.prototype.COST = {
+    food: 200, wood: 75, stone: 0, gold: 0
 }
 
 
@@ -796,7 +828,8 @@ const Technologies = {
     BronzeShield,
     MediumWall,
     SentryTower,
-    FishingShip
+    FishingShip,
+    MerchantShip
 }
 
 export { Technologies };
