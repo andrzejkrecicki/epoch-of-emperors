@@ -5,6 +5,7 @@ import { SwordsMan } from './units/swordsman.js';
 import { ImprovedBowMan } from './units/improved_bowman.js';
 import { FishingBoat } from './units/fishing_boat.js';
 import { TradeBoat } from './units/trade_boat.js';
+import { ScoutShip } from './units/scout_ship.js';
 import { Wall } from './buildings/wall.js';
 import { Tower } from './buildings/tower.js';
 
@@ -797,6 +798,40 @@ MerchantShip.prototype.COST = {
 }
 
 
+class WarGallery extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.WarGallery
+        );
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit instanceof ScoutShip) {
+                unit.levelUp();
+                unit.max_hp += 40;
+                unit.hp += 40;
+                unit.attributes.attack += 3;
+                unit.attributes.range += 1;
+            }
+        }
+        this.player.defaultEntityLevel.ScoutShip = 1;
+        super.finalize();
+        return true;
+    }
+}
+WarGallery.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/war_gallery.png");
+WarGallery.prototype.TOOLTIP = "Upgrade to War Gallery";
+WarGallery.prototype.TIME = 38 * 35;
+WarGallery.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+WarGallery.prototype.COST = {
+    food: 150, wood: 75, stone: 0, gold: 0
+}
+
+
 
 
 const Technologies = {
@@ -829,7 +864,8 @@ const Technologies = {
     MediumWall,
     SentryTower,
     FishingShip,
-    MerchantShip
+    MerchantShip,
+    WarGallery
 }
 
 export { Technologies };

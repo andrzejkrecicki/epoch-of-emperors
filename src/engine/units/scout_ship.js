@@ -35,8 +35,11 @@ class ScoutShip extends Unit {
     }
 }
 ScoutShip.prototype.SUBTILE_WIDTH = 3;
-ScoutShip.prototype.NAME = ["Scout Ship"];
-ScoutShip.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/scout_ship.png")];
+ScoutShip.prototype.NAME = ["Scout Ship", "War Gallery"];
+ScoutShip.prototype.AVATAR = [
+    Sprites.Sprite("img/interface/avatars/scout_ship.png"),
+    Sprites.Sprite("img/interface/avatars/war_gallery.png")
+];
 ScoutShip.prototype.TYPE = "ship";
 ScoutShip.prototype.MAX_HP = 120;
 ScoutShip.prototype.SPEED = 3;
@@ -61,7 +64,10 @@ ScoutShip.prototype.ATTRIBUTES = {
 ScoutShip.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
 
 ScoutShip.prototype.IMAGES = {
-    [ScoutShip.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/scout_ship/idle/", 1)],
+    [ScoutShip.prototype.STATE.IDLE]: [
+        Sprites.DirectionSprites("img/units/scout_ship/idle/", 1),
+        Sprites.DirectionSprites("img/units/war_gallery/idle/", 1)
+    ],
     [ScoutShip.prototype.STATE.DYING]: [
         Sprites.SpriteSequence("img/units/ship_sink_small/", 5, 0, 8),
         Sprites.SpriteSequence("img/units/ship_sink_medium/", 6, 0, 8)
@@ -72,12 +78,12 @@ ScoutShip.prototype.IMAGES[ScoutShip.prototype.STATE.ATTACK] = ScoutShip.prototy
 
 
 ScoutShip.prototype.IMAGE_OFFSETS = {
-    [ScoutShip.prototype.STATE.IDLE]: [{ x: 39, y: 39 }],
-    [ScoutShip.prototype.STATE.MOVING]: [{ x: 39, y: 39 }],
-    [ScoutShip.prototype.STATE.ATTACK]: [{ x: 39, y: 39 }],
+    [ScoutShip.prototype.STATE.IDLE]: [{ x: 39, y: 39 }, { x: 21, y: 45 }],
+    [ScoutShip.prototype.STATE.MOVING]: [{ x: 39, y: 39 }, { x: 21, y: 45 }],
+    [ScoutShip.prototype.STATE.ATTACK]: [{ x: 39, y: 39 }, { x: 21, y: 45 }],
     [ScoutShip.prototype.STATE.DYING]: [{ x: -17, y: 16 }, { x: 22, y: 24 }]
 };
 
-ScoutShip.prototype.SAIL_OFFSET = [{ x: 49, y: -2 }];
+ScoutShip.prototype.SAIL_OFFSET = [{ x: 49, y: -2 }, { x: 49, y: -2 }];
 
 export { ScoutShip }
