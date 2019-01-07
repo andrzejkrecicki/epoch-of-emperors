@@ -7,6 +7,7 @@ import { StoragePit } from './buildings/storage_pit.js';
 import { Dock } from './buildings/dock.js';
 import { Granary } from './buildings/granary.js';
 import { Market } from './buildings/market.js';
+import { GovernmentCenter } from './buildings/government_center.js';
 import { Tower } from './buildings/tower.js';
 import { Wall } from './buildings/wall.js';
 import { House } from './buildings/house.js';
@@ -138,6 +139,7 @@ NextBuildingsPage.prototype.POS = {
 }
 NextBuildingsPage.prototype.ACTIONS = [
     CreateBuildingFactory(Market),
+    CreateBuildingFactory(GovernmentCenter),
     CreateBuildingFactory(TownCenter),
     PreviousPage,
     FirstPage,
