@@ -15,6 +15,9 @@ class TownCenter extends Building {
     acceptsResource(type) {
         return this.isComplete;
     }
+    static isResearched(player) {
+        return player.possessions.BronzeAge;
+    }
 }
 TownCenter.prototype.NAME = "Town Center";
 TownCenter.prototype.AVATAR = [
