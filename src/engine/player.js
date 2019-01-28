@@ -28,17 +28,20 @@ class Player {
             infantry: {
                 attack: 0,
                 armor: 0,
-                missile_armor: 0
+                missile_armor: 0,
+                hp_multiplier: 1
             },
             archer: {
                 attack: 0,
                 armor: 0,
-                missile_armor: 0
+                missile_armor: 0,
+                hp_multiplier: 1
             },
             cavalry: {
                 attack: 0,
                 armor: 0,
-                missile_armor: 0
+                missile_armor: 0,
+                hp_multiplier: 1
             },
             farm: {
                 food: 0
@@ -50,12 +53,14 @@ class Player {
                     stone: 0,
                     gold: 0
                 },
-                speed: 0
+                speed: 0,
+                hp_multiplier: 1
             },
             fishing_boat: {
                 capacity: {
                     food: 0
-                }
+                },
+                hp_multiplier: 1
             },
             ship: {},
             other: {}

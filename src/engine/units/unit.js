@@ -7,8 +7,8 @@ import * as interactions from '../interactions.js';
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, level=0, rotation=null) {
         super(...arguments);
-        this.hp = this.MAX_HP;
-        this.max_hp = this.MAX_HP;
+        this.hp = Math.floor(this.MAX_HP * player.attributeBonus[this.TYPE].hp_multiplier);
+        this.max_hp = Math.floor(this.MAX_HP * player.attributeBonus[this.TYPE].hp_multiplier);
         this.state = this.STATE.IDLE;
         this.level = level;
         this.rotation = rotation != null ? rotation : Math.floor(Math.random() * 8);

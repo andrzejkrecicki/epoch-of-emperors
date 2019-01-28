@@ -832,6 +832,37 @@ WarGallery.prototype.COST = {
 }
 
 
+class Nobility extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.Nobility
+        );
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit.TYPE == "cavalry") {
+                let delta = Math.floor(unit.max_hp * 0.15);
+                unit.max_hp += delta;
+                unit.hp += delta;
+            }
+        }
+        this.player.attributeBonus.cavalry.hp_multiplier = 1.15;
+        super.finalize();
+        return true;
+    }
+}
+Nobility.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/nobility.png");
+Nobility.prototype.TOOLTIP = "Research Nobility: +15% Cavalry, Chariot, Horse Archer hit points.";
+Nobility.prototype.TIME = 70 * 35;
+Nobility.prototype.POS = {
+    x: Action.prototype.MARGIN,
+    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+}
+Nobility.prototype.COST = {
+    food: 175, wood: 0, stone: 0, gold: 120
+}
+
 
 
 const Technologies = {
@@ -865,7 +896,8 @@ const Technologies = {
     SentryTower,
     FishingShip,
     MerchantShip,
-    WarGallery
+    WarGallery,
+    Nobility
 }
 
 export { Technologies };

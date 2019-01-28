@@ -6,10 +6,11 @@ import { Sprites } from '../../sprites.js';
 class GovernmentCenter extends Building {
     actions() {
         if (this.isComplete) return [
+            Technologies.Nobility
         ]; else return null;
     }
     static isResearched(player) {
-        return player.possessions.BronzeAge;
+        return player.possessions.BronzeAge && player.possessions.Market;
     }
 }
 GovernmentCenter.prototype.NAME = "Government Center";
