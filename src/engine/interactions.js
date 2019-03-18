@@ -52,7 +52,7 @@ class ResourceExtractionInteraction extends Interaction {
             }
         } else if (this.active.attributes[this.RESOURCE_NAME] >= max_capacity) {
             this.returnResources(this.engine);
-        } else if (this.active.ticks_waited == this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
+        } else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
             this.active.attributes[this.RESOURCE_NAME] += this.passive.getResource(this.engine);
             this.active.carriedResource = this.RESOURCE_TYPE;
             this.active.ticks_waited = 0;
@@ -97,7 +97,7 @@ class BuilderInteraction extends Interaction {
             this.engine.interactImmediately(this.active, this.passive);
         } else if (this.passive.isComplete)
             this.terminate();
-        else if (this.active.ticks_waited == (this.RATE - this.active.player.interactionBonus[this.constructor.name])) {
+        else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
             this.passive.constructionTick();
             this.active.ticks_waited = 0;
         }
