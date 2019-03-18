@@ -97,7 +97,7 @@ class BuilderInteraction extends Interaction {
             this.engine.interactImmediately(this.active, this.passive);
         } else if (this.passive.isComplete)
             this.terminate();
-        else if (this.active.ticks_waited == this.RATE) {
+        else if (this.active.ticks_waited == (this.RATE - this.active.player.interactionBonus[this.constructor.name])) {
             this.passive.constructionTick();
             this.active.ticks_waited = 0;
         }

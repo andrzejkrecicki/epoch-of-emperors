@@ -7,7 +7,7 @@ class Building extends Entity {
     constructor(subtile_x, subtile_y, player) {
         super(...arguments);
         this.hp = 1;
-        this.max_hp = this.MAX_HP;
+        this.max_hp = Math.floor(this.MAX_HP * player.attributeBonus[this.TYPE].hp_multiplier);
         this.construction_stage = 0;
         this.isComplete = false;
         this.normalized = true;
@@ -29,7 +29,7 @@ class Building extends Entity {
         return this.IMAGE_OFFSETS[this.state][this.player.civ][this.level];
     }
     setComplete() {
-        this.hp = this.MAX_HP;
+        this.hp = this.max_hp;
         this.state = this.STATE.DONE;
         this.isComplete = true;
         this.construction_stage = 0;
@@ -57,12 +57,12 @@ class Building extends Entity {
     constructionTick() {
         ++this.hp;
         // TODO - remove the bellow line in production build
-        this.hp = this.MAX_HP;
-        this.attributes.progress = Math.floor(100 * this.hp / this.MAX_HP) + "%";
+        this.hp = this.max_hp;
+        this.attributes.progress = Math.floor(100 * this.hp / this.max_hp) + "%";
         let img_seq = this.IMAGES[Building.prototype.STATE.CONSTRUCTION][this.player.civ][this.player.age];
-        if (this.hp == this.MAX_HP) this.setComplete();
-        else if (this.hp % Math.ceil(this.MAX_HP / img_seq.length) == 0) {
-            ++this.construction_stage;
+        if (this.hp == this.max_hp) this.setComplete();
+        else if (this.hp % Math.ceil(this.max_hp / img_seq.length) == 0) {
+            this.construction_stage = this.hp / Math.ceil(this.max_hp / img_seq.length);
             this.updateImage();
         }
     }
@@ -121,7 +121,7 @@ Building.prototype.HAS_BITMAP_HITMASK = true;
 Building.prototype.INTERACT_WHEN_COMPLETE = false;
 Building.prototype.COLORIZE = true;
 Building.prototype.TOOLTIP = "Click to select this building.";
-Building.prototype.TYPE = "other";
+Building.prototype.TYPE = "building";
 Building.prototype.CONTINUOUS_PREVIEW = false;
 Building.prototype.LEVELS_UP_ON_AGE = true;
 

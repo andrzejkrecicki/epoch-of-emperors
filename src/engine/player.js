@@ -63,9 +63,13 @@ class Player {
                 hp_multiplier: 1
             },
             ship: {},
+            building: {
+                hp_multiplier: 1
+            },
             other: {}
         }
         this.interactionBonus = {
+            BuilderInteraction: 0,
             FarmingInteraction: 0,
             ChopInteraction: 0,
             ForageInteraction: 0,

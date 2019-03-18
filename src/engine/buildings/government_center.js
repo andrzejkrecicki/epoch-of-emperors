@@ -6,7 +6,9 @@ import { Sprites } from '../../sprites.js';
 class GovernmentCenter extends Building {
     actions() {
         if (this.isComplete) return [
-            Technologies.Nobility
+            Technologies.Nobility,
+            Technologies.Writing,
+            Technologies.Architecture
         ]; else return null;
     }
     static isResearched(player) {

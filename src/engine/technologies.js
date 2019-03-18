@@ -857,10 +857,63 @@ Nobility.prototype.TOOLTIP = "Research Nobility: +15% Cavalry, Chariot, Horse Ar
 Nobility.prototype.TIME = 70 * 35;
 Nobility.prototype.POS = {
     x: Action.prototype.MARGIN,
-    y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
+    y: Action.prototype.MARGIN
 }
 Nobility.prototype.COST = {
     food: 175, wood: 0, stone: 0, gold: 120
+}
+
+
+class Writing extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.Writing
+        );
+    }
+}
+Writing.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/writing.png");
+Writing.prototype.TOOLTIP = "Research Writing: Shared exploration with allies.";
+Writing.prototype.TIME = 60 * 35;
+Writing.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+Writing.prototype.COST = {
+    food: 200, wood: 0, stone: 0, gold: 75
+}
+
+
+class Architecture extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.Architecture
+        );
+    }
+    finalize() {
+        for (let building of this.player.buildings) {
+            if (!building.wasConverted) {
+                let delta = Math.floor(building.max_hp * 0.2);
+                building.max_hp += delta;
+                if (building.isComplete) building.hp += delta;
+            }
+        }
+        this.player.interactionBonus.BuilderInteraction += 1;
+        this.player.attributeBonus.building.hp_multiplier += 0.2;
+        super.finalize();
+        return true;
+    }
+}
+Architecture.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/architecture.png");
+Architecture.prototype.TOOLTIP = "Research Architecture: -33% build time; +20% building/wall HPs";
+Architecture.prototype.TIME = 50 * 35;
+Architecture.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+Architecture.prototype.COST = {
+    food: 175, wood: 0, stone: 0, gold: 150
 }
 
 
@@ -897,7 +950,9 @@ const Technologies = {
     FishingShip,
     MerchantShip,
     WarGallery,
-    Nobility
+    Nobility,
+    Writing,
+    Architecture
 }
 
 export { Technologies };
