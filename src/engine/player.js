@@ -62,11 +62,21 @@ class Player {
                 },
                 hp_multiplier: 1
             },
-            ship: {},
+            ship: {
+                attack: 0,
+                armor: 0,
+                missile_armor: 0,
+                hp_multiplier: 1
+            },
             building: {
                 hp_multiplier: 1
             },
-            other: {}
+            other: {
+                attack: 0,
+                armor: 0,
+                missile_armor: 0,
+                hp_multiplier: 1
+            }
         }
         this.interactionBonus = {
             BuilderInteraction: 0,
