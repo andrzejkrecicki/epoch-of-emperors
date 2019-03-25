@@ -1,4 +1,5 @@
 import { Building } from './building.js';
+import { Hoplite } from '../units/hoplite.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
@@ -6,6 +7,7 @@ import { Sprites } from '../../sprites.js';
 class Academy extends Building {
     actions() {
         if (this.isComplete) return [
+            Actions.RecruitUnitFactory(Hoplite),
         ]; else return null;
     }
 }
