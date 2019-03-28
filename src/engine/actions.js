@@ -235,6 +235,20 @@ Unload.prototype.TOOLTIP = "Unload"
 Unload.prototype.ACTION_KEY = "L";
 
 
+class Heal extends Action {
+}
+Heal.prototype.IMAGE = Sprites.Sprite("img/interface/command/heal.png");
+Heal.prototype.TOOLTIP = "Heal";
+Heal.prototype.ACTION_KEY = "E";
+
+
+class Convert extends Action {
+}
+Convert.prototype.IMAGE = Sprites.Sprite("img/interface/command/convert.png");
+Convert.prototype.TOOLTIP = "Convert";
+Convert.prototype.ACTION_KEY = "C";
+
+
 function RecruitUnitFactory(UNIT) {
     class RecruitUnit extends Action {
         execute() {
@@ -332,7 +346,7 @@ function RecruitUnitFactory(UNIT) {
 
 const Actions = {
     StandGround, Build, Repair, Stop, RecruitUnitFactory,
-    TradeFood, TradeWood, TradeStone, Unload
+    TradeFood, TradeWood, TradeStone, Unload, Heal, Convert
 }
 
 export { Actions, Action }

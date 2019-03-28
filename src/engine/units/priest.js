@@ -9,7 +9,7 @@ class Priest extends Unit {
         this.attributes.progress = '100%';
     }
     get ACTIONS() {
-        return [Actions.StandGround, Actions.Stop];
+        return [Actions.Heal, Actions.Convert, Actions.Stop];
     }
 }
 Priest.prototype.SUBTILE_WIDTH = 1;
