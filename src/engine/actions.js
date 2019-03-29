@@ -9,6 +9,7 @@ import { Granary } from './buildings/granary.js';
 import { Market } from './buildings/market.js';
 import { GovernmentCenter } from './buildings/government_center.js';
 import { Academy } from './buildings/academy.js';
+import { Temple } from './buildings/temple.js';
 import { Tower } from './buildings/tower.js';
 import { Wall } from './buildings/wall.js';
 import { House } from './buildings/house.js';
@@ -141,6 +142,7 @@ NextBuildingsPage.prototype.POS = {
 NextBuildingsPage.prototype.ACTIONS = [
     CreateBuildingFactory(Market),
     CreateBuildingFactory(GovernmentCenter),
+    CreateBuildingFactory(Temple),
     CreateBuildingFactory(TownCenter),
     CreateBuildingFactory(Academy),
     PreviousPage,
