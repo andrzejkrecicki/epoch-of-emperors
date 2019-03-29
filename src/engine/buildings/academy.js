@@ -10,6 +10,9 @@ class Academy extends Building {
             Actions.RecruitUnitFactory(Hoplite),
         ]; else return null;
     }
+    static isResearched(player) {
+        return player.possessions.BronzeAge && player.possessions.Stable;
+    }
 }
 Academy.prototype.NAME = "Academy";
 Academy.prototype.AVATAR = [
