@@ -68,6 +68,7 @@ class Engine {
                     this.interactOrder(entity, entity.interactionObject, Math.floor((dist + 5) ** 2));
                 }
             }
+            if (entity.needsProcessing) entity.process();
         }
         this.units = this.units.filter((u) => !u.destroyed);
     }

@@ -440,11 +440,16 @@ class EnterShipInteraction extends Interaction {
 
 class ConversionInteraction extends Interaction {
     init() {
-        if (this.active.hasFullPath) {
+        let convertionError = this.active.canConvert(this.passive);
+
+        if (!this.active.hasFullPath) {
+            this.active.state = this.active.STATE.IDLE;
+        } else if (convertionError) {
+            this.terminate();
+            this.engine.viewer.setErrorMessage(convertionError);
+        } else {
             this.active.state = this.active.STATE.ATTACK;
             super.init();
-        } else {
-            this.active.state = this.active.STATE.IDLE;
         }
     }
     stop() {
@@ -475,7 +480,9 @@ class ConversionInteraction extends Interaction {
                 this.passive.updateImage();
             }
 
+            this.active.mana = 0;
             this.active.attributes.progress = '0%';
+            this.active.needsProcessing = true;
             this.terminate();
         }
         this.active.rotateToEntity(this.passive);

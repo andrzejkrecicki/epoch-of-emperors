@@ -11,17 +11,29 @@ class Priest extends Unit {
     constructor() {
         super(...arguments);
         this.attributes.progress = '100%';
-        this.mana = Priest.prototype.MAX_MANA; // TODO - check rejuvenation rate
+        this.mana = Priest.prototype.MAX_MANA;
     }
     getOwnInteractionType(object) {
-        if (this.mana < Priest.prototype.MAX_MANA) return;
-        else if (object.player !== this.player) {
-            if (object instanceof TownCenter) return;
-            else if (object instanceof Building || object instanceof Priest) {
-                if (this.player.possessions.Monotheism) return interactions.ConversionInteraction;
-                else return;
-            } else if (!(object instanceof Animal) && object instanceof Unit) return interactions.ConversionInteraction;
+        if (object instanceof Unit || object instanceof Building) {
+            if (object.player !== this.player && !(object instanceof Animal)) return interactions.ConversionInteraction;
         }
+    }
+    canConvert(object) {
+        if (this.mana < this.MAX_MANA) {
+            return "Not enough faith to perform a conversion.";
+        } else if (object instanceof TownCenter) {
+            return "Town Centers cannot be converted.";
+        } else if (object instanceof Building && !this.player.possessions.Monotheism) {
+            return "You must research monotheism before you can convert enemy buildings.";
+        } else if (object instanceof Priest && !this.player.possessions.Monotheism) {
+            return "You must research monotheism before you can convert enemy priests.";
+        }
+    }
+    process() {
+        if (this.mana < this.MAX_MANA) {
+            ++this.mana;
+            this.attributes.progress = Math.floor(100 * this.mana / this.MAX_MANA) + '%';
+        } else this.needsProcessing = false;
     }
     get ACTIONS() {
         return [Actions.Heal, Actions.Convert, Actions.Stop];
@@ -36,7 +48,7 @@ Priest.prototype.SPEED = 0.7;
 Priest.prototype.CREATION_TIME = 50 * 35;
 Priest.prototype.ATTACK_RATE = 5 * 3;
 Priest.prototype.CAN_ATTACK = false;
-Priest.prototype.MAX_MANA = 100;
+Priest.prototype.MAX_MANA = 50 * 35;
 
 Priest.prototype.ACTION_KEY = "T";
 Priest.prototype.COST = {

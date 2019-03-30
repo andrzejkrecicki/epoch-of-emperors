@@ -13,6 +13,7 @@ class Unit extends Entity {
         this.level = level;
         this.rotation = rotation != null ? rotation : Math.floor(Math.random() * 8);
         this.frame = 0;
+        this.needsProcessing = false;
         this.path = null;
         this.path_progress = 0;
         this.interactionObject = null;
@@ -94,6 +95,8 @@ class Unit extends Entity {
         } else return this.getOwnInteractionType(object);
     }
     get ACTIONS() {
+    }
+    process() {
     }
     getProjectileType() {
     }
