@@ -1,5 +1,6 @@
 import { RESOURCE_TYPES, RESOURCE_NAME } from '../utils.js';
 import { Spear } from './projectiles.js';
+import { Unit } from './units/unit.js';
 
 class Interaction {
     constructor(active, passive, engine) {
@@ -68,7 +69,6 @@ class ResourceExtractionInteraction extends Interaction {
         this.active.prevInteractionObject = this.active.interactionObject;
         this.engine.interactOrder(this.active, building);
     }
-
 }
 
 class FarmingInteraction extends ResourceExtractionInteraction {
@@ -438,9 +438,60 @@ class EnterShipInteraction extends Interaction {
 }
 
 
+class ConversionInteraction extends Interaction {
+    init() {
+        if (this.active.hasFullPath) {
+            this.active.state = this.active.STATE.ATTACK;
+            super.init();
+        } else {
+            this.active.state = this.active.STATE.IDLE;
+        }
+    }
+    stop() {
+        this.active.state = this.active.STATE.IDLE;
+    }
+    process() {
+        let dist = Math.max(
+            Math.abs(this.active.getCenterSubtile().subtile_x - this.passive.getCenterSubtile().subtile_x),
+            Math.abs(this.active.getCenterSubtile().subtile_y - this.passive.getCenterSubtile().subtile_y)
+        );
+
+        if (dist > (this.active.SUBTILE_WIDTH + this.passive.SUBTILE_WIDTH) / 2 + this.active.attributes.range * 1.5) {
+            this.engine.interactOrder(this.active, this.passive);
+        } else if (this.passive.destroyed || this.passive.hp <= 0) {
+            this.terminate();
+        } else if (this.active.ticks_waited > this.MINIMAL_TIME && Math.random() < this.SUCCESS_PROBABILITY) {
+            this.passive.wasConverted = true;
+            this.passive.terminateInteraction();
+
+            if (this.passive instanceof Unit) {
+                this.passive.stopMoving();
+                --this.passive.player.population;
+                ++this.active.player.population;
+                this.passive.player = this.active.player;
+                this.passive.updateSprite();
+            } else {
+                this.passive.player = this.active.player;
+                this.passive.updateImage();
+            }
+
+            this.active.attributes.progress = '0%';
+            this.terminate();
+        }
+        this.active.rotateToEntity(this.passive);
+    }
+    static getDistance(active) {
+        return active.attributes.range;
+    }
+}
+ConversionInteraction.prototype.SUCCESS_PROBABILITY = 1 / 200;
+ConversionInteraction.prototype.MINIMAL_TIME = 35 * 4;
+
+
 export {
     FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
     ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
     HunterInteraction, ButcherInteraction, FishingInteraction, TradeInteraction,
-    AttackInteraction, DistantAttackInteraction, TowerAttackInteraction, EnterShipInteraction
+    AttackInteraction, DistantAttackInteraction, TowerAttackInteraction, EnterShipInteraction,
+    ConversionInteraction
 }

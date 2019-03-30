@@ -1,12 +1,27 @@
 import { Unit } from './unit.js';
+import { Animal } from './animal.js';
 import { Building } from '../buildings/building.js';
+import { TownCenter } from '../buildings/town_center.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
+import * as interactions from '../interactions.js';
+
 
 class Priest extends Unit {
     constructor() {
         super(...arguments);
         this.attributes.progress = '100%';
+        this.mana = Priest.prototype.MAX_MANA; // TODO - check rejuvenation rate
+    }
+    getOwnInteractionType(object) {
+        if (this.mana < Priest.prototype.MAX_MANA) return;
+        else if (object.player !== this.player) {
+            if (object instanceof TownCenter) return;
+            else if (object instanceof Building || object instanceof Priest) {
+                if (this.player.possessions.Monotheism) return interactions.ConversionInteraction;
+                else return;
+            } else if (!(object instanceof Animal) && object instanceof Unit) return interactions.ConversionInteraction;
+        }
     }
     get ACTIONS() {
         return [Actions.Heal, Actions.Convert, Actions.Stop];
@@ -20,6 +35,8 @@ Priest.prototype.MAX_HP = 25;
 Priest.prototype.SPEED = 0.7;
 Priest.prototype.CREATION_TIME = 50 * 35;
 Priest.prototype.ATTACK_RATE = 5 * 3;
+Priest.prototype.CAN_ATTACK = false;
+Priest.prototype.MAX_MANA = 100;
 
 Priest.prototype.ACTION_KEY = "T";
 Priest.prototype.COST = {
