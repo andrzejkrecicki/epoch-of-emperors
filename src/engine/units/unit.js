@@ -88,9 +88,9 @@ class Unit extends Entity {
     }
     getInteractionType(object) {
         if (object instanceof Unit && object.canCarry(this)) return interactions.EnterShipInteraction;
-        else if ((object instanceof Unit || object instanceof Building) && object.player != this.player) {
+        else if ((object instanceof Unit || object instanceof Building) && object.player != this.player && this.CAN_ATTACK) {
             if (this.ATTACKS_FROM_DISTANCE) return interactions.DistantAttackInteraction;
-            else if (this.CAN_ATTACK) return interactions.AttackInteraction;
+            else return interactions.AttackInteraction;
         } else return this.getOwnInteractionType(object);
     }
     get ACTIONS() {
@@ -120,6 +120,15 @@ class Unit extends Entity {
             }
             this.path_progress = 1;
         }
+    }
+    stopMoving() {
+       if (this.path && this.path.length >= this.path_progress) this.path = [this.path[this.path_progress]];
+       else {
+           this.path = null;
+           this.frame = 0;
+           this.setBaseState(Unit.prototype.STATE.IDLE);
+       }
+       this.path_progress = 0;
     }
     setBaseState(state) {
         this.state &= this.BASE_STATE_MASK;
