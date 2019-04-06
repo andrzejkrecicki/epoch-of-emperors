@@ -917,6 +917,32 @@ Architecture.prototype.COST = {
 }
 
 
+class Astrology extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.Astrology
+        );
+    }
+    finalize() {
+        this.player.interactionBonus.ConversionInteraction += 0.3;
+        super.finalize();
+        return true;
+    }
+}
+Astrology.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/astrology.png");
+Astrology.prototype.TOOLTIP = "Research Astrology: Conversion 30% more effective";
+Astrology.prototype.TIME = 50 * 35;
+Astrology.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+Astrology.prototype.COST = {
+    food: 0, wood: 0, stone: 0, gold: 150
+}
+
+
+
 
 const Technologies = {
     ToolAge,
@@ -952,7 +978,8 @@ const Technologies = {
     WarGallery,
     Nobility,
     Writing,
-    Architecture
+    Architecture,
+    Astrology
 }
 
 export { Technologies };

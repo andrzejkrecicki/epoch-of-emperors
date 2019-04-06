@@ -456,6 +456,7 @@ class ConversionInteraction extends Interaction {
         this.active.state = this.active.STATE.IDLE;
     }
     process() {
+        let chance = this.SUCCESS_PROBABILITY * (1 + this.active.player.interactionBonus.ConversionInteraction);
         let dist = Math.max(
             Math.abs(this.active.getCenterSubtile().subtile_x - this.passive.getCenterSubtile().subtile_x),
             Math.abs(this.active.getCenterSubtile().subtile_y - this.passive.getCenterSubtile().subtile_y)
@@ -465,7 +466,7 @@ class ConversionInteraction extends Interaction {
             this.engine.interactOrder(this.active, this.passive);
         } else if (this.passive.destroyed || this.passive.hp <= 0) {
             this.terminate();
-        } else if (this.active.ticks_waited > this.MINIMAL_TIME && Math.random() < this.SUCCESS_PROBABILITY) {
+        } else if (this.active.ticks_waited > this.MINIMAL_TIME && Math.random() < chance) {
             this.passive.wasConverted = true;
             this.passive.terminateInteraction();
 

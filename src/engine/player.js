@@ -89,7 +89,8 @@ class Player {
             GoldMineInteraction: 0,
             StoneMineInteraction: 0,
             ButcherInteraction: 0,
-            FishingInteraction: 0
+            FishingInteraction: 0,
+            ConversionInteraction: 0
         }
     }
     addBuilding(building) {
