@@ -495,10 +495,44 @@ ConversionInteraction.prototype.SUCCESS_PROBABILITY = 1 / 200;
 ConversionInteraction.prototype.MINIMAL_TIME = 35 * 4;
 
 
+class HealInteraction extends Interaction {
+    init() {
+        if (this.active.hasFullPath) {
+            if (!this.active.isAdjecentTo(this.passive)) {
+                let frame = this.active.frame;
+                this.engine.interactOrder(this.active, this.passive);
+                this.active.frame = frame;
+            } else {
+                this.active.state = this.active.STATE.HEAL;
+                super.init();
+            }
+        } else {
+            this.active.state = this.active.STATE.IDLE;
+        }
+    }
+    stop() {
+        this.active.state = this.active.STATE.IDLE;
+    }
+    process() {
+        if (this.passive.destroyed || this.passive.hp == this.passive.max_hp) {
+            this.terminate();
+        } else if (!this.active.isAdjecentTo(this.passive)) {
+            this.engine.interactOrder(this.active, this.passive);
+            return;
+        } else if (this.active.ticks_waited == this.RATE) {
+            ++this.passive.hp;
+            this.active.ticks_waited = 0;
+        }
+        this.active.rotateToEntity(this.passive);
+    }
+}
+HealInteraction.prototype.RATE = 12;
+
+
 export {
     FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
     ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
     HunterInteraction, ButcherInteraction, FishingInteraction, TradeInteraction,
     AttackInteraction, DistantAttackInteraction, TowerAttackInteraction, EnterShipInteraction,
-    ConversionInteraction
+    ConversionInteraction, HealInteraction
 }

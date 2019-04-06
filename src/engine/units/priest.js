@@ -14,7 +14,9 @@ class Priest extends Unit {
         this.mana = Priest.prototype.MAX_MANA;
     }
     getOwnInteractionType(object) {
-        if (object instanceof Unit || object instanceof Building) {
+        if (object instanceof Unit && object.player == this.player) {
+            return interactions.HealInteraction;
+        } else if (object instanceof Unit || object instanceof Building) {
             if (object.player !== this.player && !(object instanceof Animal)) return interactions.ConversionInteraction;
         }
     }
@@ -60,18 +62,21 @@ Priest.prototype.ATTRIBUTES = {
     RANGE: 10,
 }
 
+Priest.prototype.STATE = { ...Priest.prototype.STATE };
+Priest.prototype.STATE.HEAL = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH + 1);
 
 Priest.prototype.FRAME_RATE = {
     ...Unit.prototype.FRAME_RATE,
     [Priest.prototype.STATE.MOVING]: 3,
-    [Priest.prototype.STATE.ATTACK]: 4
+    [Priest.prototype.STATE.ATTACK]: 4,
+    [Priest.prototype.STATE.HEAL]: 4
 }
-
 
 Priest.prototype.IMAGES = {
     [Priest.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/priest/idle/", 10)],
     [Priest.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/priest/moving/", 15)],
     [Priest.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/priest/attack/", 10)],
+    [Priest.prototype.STATE.HEAL]: [Sprites.DirectionSprites("img/units/priest/attack/", 10)],
     [Priest.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/priest/dying/", 10)],
     [Priest.prototype.STATE.DEAD]: [Sprites.DirectionSprites("img/units/priest/dead/", 6)],
 };
@@ -80,6 +85,7 @@ Priest.prototype.IMAGE_OFFSETS = {
     [Priest.prototype.STATE.IDLE]: [{ x: 4, y: 40 }],
     [Priest.prototype.STATE.MOVING]: [{ x: 8, y: 43 }],
     [Priest.prototype.STATE.ATTACK]: [{ x: 14, y: 43 }],
+    [Priest.prototype.STATE.HEAL]: [{ x: 14, y: 43 }],
     [Priest.prototype.STATE.DYING]: [{ x: 38, y: 41 }],
     [Priest.prototype.STATE.DEAD]: [{ x: 36, y: 23 }],
 };
