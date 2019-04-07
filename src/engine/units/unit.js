@@ -54,7 +54,7 @@ class Unit extends Entity {
         this.updateSprite();
     }
     getSpeed() {
-        return this.SPEED;
+        return this.player ? this.SPEED + this.player.attributeBonus[this.TYPE].speed : this.SPEED;
     }
     destroy(engine) {
         super.destroy(engine);

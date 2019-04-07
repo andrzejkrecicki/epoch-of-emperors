@@ -29,25 +29,29 @@ class Player {
                 attack: 0,
                 armor: 0,
                 missile_armor: 0,
-                hp_multiplier: 1
+                hp_multiplier: 1,
+                speed: 0
             },
             archer: {
                 attack: 0,
                 armor: 0,
                 missile_armor: 0,
-                hp_multiplier: 1
+                hp_multiplier: 1,
+                speed: 0
             },
             cavalry: {
                 attack: 0,
                 armor: 0,
                 missile_armor: 0,
-                hp_multiplier: 1
+                hp_multiplier: 1,
+                speed: 0
             },
             priest: {
                 attack: 0,
                 armor: 0,
                 missile_armor: 0,
-                hp_multiplier: 1
+                hp_multiplier: 1,
+                speed: 0
             },
             farm: {
                 food: 0
@@ -63,19 +67,21 @@ class Player {
                 armor: 0,
                 missile_armor: 0,
                 hp_multiplier: 1,
-                speed: 0,
+                speed: 0
             },
             fishing_boat: {
                 capacity: {
                     food: 0
                 },
-                hp_multiplier: 1
+                hp_multiplier: 1,
+                speed: 0
             },
             ship: {
                 attack: 0,
                 armor: 0,
                 missile_armor: 0,
-                hp_multiplier: 1
+                hp_multiplier: 1,
+                speed: 0
             },
             building: {
                 hp_multiplier: 1
@@ -84,7 +90,8 @@ class Player {
                 attack: 0,
                 armor: 0,
                 missile_armor: 0,
-                hp_multiplier: 1
+                hp_multiplier: 1,
+                speed: 0
             }
         }
         this.interactionBonus = {

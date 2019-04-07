@@ -942,7 +942,6 @@ Astrology.prototype.COST = {
 }
 
 
-
 class Mysticism extends Technology {
     static isVisible(entity) {
         return (
@@ -971,6 +970,31 @@ Mysticism.prototype.POS = {
     y: Action.prototype.MARGIN
 }
 Mysticism.prototype.COST = {
+    food: 0, wood: 0, stone: 0, gold: 120
+}
+
+
+class Polytheism extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.Polytheism
+        );
+    }
+    finalize() {
+        this.player.attributeBonus.priest.speed += .3;
+        super.finalize();
+        return true;
+    }
+}
+Polytheism.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/polytheism.png");
+Polytheism.prototype.TOOLTIP = "Research Polytheism: Priest moves 40% faster";
+Polytheism.prototype.TIME = 50 * 35;
+Polytheism.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+Polytheism.prototype.COST = {
     food: 0, wood: 0, stone: 0, gold: 120
 }
 
@@ -1013,7 +1037,8 @@ const Technologies = {
     Writing,
     Architecture,
     Astrology,
-    Mysticism
+    Mysticism,
+    Polytheism
 }
 
 export { Technologies };
