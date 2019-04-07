@@ -43,6 +43,12 @@ class Player {
                 missile_armor: 0,
                 hp_multiplier: 1
             },
+            priest: {
+                attack: 0,
+                armor: 0,
+                missile_armor: 0,
+                hp_multiplier: 1
+            },
             farm: {
                 food: 0
             },

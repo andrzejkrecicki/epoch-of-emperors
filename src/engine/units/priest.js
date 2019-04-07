@@ -44,7 +44,7 @@ class Priest extends Unit {
 Priest.prototype.SUBTILE_WIDTH = 1;
 Priest.prototype.NAME = ["Priest"];
 Priest.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/priest.png")];
-Priest.prototype.TYPE = "infantry";
+Priest.prototype.TYPE = "priest";
 Priest.prototype.MAX_HP = 25;
 Priest.prototype.SPEED = 0.7;
 Priest.prototype.CREATION_TIME = 50 * 35;

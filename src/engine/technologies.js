@@ -943,6 +943,39 @@ Astrology.prototype.COST = {
 
 
 
+class Misticism extends Technology {
+    static isVisible(entity) {
+        return (
+            entity.player.possessions.BronzeAge &&
+            !entity.player.possessions.Misticism
+        );
+    }
+    finalize() {
+        for (let unit of this.player.units) {
+            if (!unit.wasConverted && unit.TYPE == "priest") {
+                let delta = Math.floor(unit.max_hp * 1);
+                unit.max_hp += delta;
+                unit.hp += delta;
+            }
+        }
+        this.player.attributeBonus.priest.hp_multiplier = 2;
+        super.finalize();
+        return true;
+    }
+}
+Misticism.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/misticism.png");
+Misticism.prototype.TOOLTIP = "Research Misticism: Double Priest hit points";
+Misticism.prototype.TIME = 50 * 35;
+Misticism.prototype.POS = {
+    x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
+    y: Action.prototype.MARGIN
+}
+Misticism.prototype.COST = {
+    food: 0, wood: 0, stone: 0, gold: 120
+}
+
+
+
 
 const Technologies = {
     ToolAge,
@@ -979,7 +1012,8 @@ const Technologies = {
     Nobility,
     Writing,
     Architecture,
-    Astrology
+    Astrology,
+    Misticism
 }
 
 export { Technologies };
