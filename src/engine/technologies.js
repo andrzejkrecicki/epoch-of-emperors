@@ -943,11 +943,11 @@ Astrology.prototype.COST = {
 
 
 
-class Misticism extends Technology {
+class Mysticism extends Technology {
     static isVisible(entity) {
         return (
             entity.player.possessions.BronzeAge &&
-            !entity.player.possessions.Misticism
+            !entity.player.possessions.Mysticism
         );
     }
     finalize() {
@@ -963,14 +963,14 @@ class Misticism extends Technology {
         return true;
     }
 }
-Misticism.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/misticism.png");
-Misticism.prototype.TOOLTIP = "Research Misticism: Double Priest hit points";
-Misticism.prototype.TIME = 50 * 35;
-Misticism.prototype.POS = {
+Mysticism.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/mysticism.png");
+Mysticism.prototype.TOOLTIP = "Research Mysticism: Double Priest hit points";
+Mysticism.prototype.TIME = 50 * 35;
+Mysticism.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
 }
-Misticism.prototype.COST = {
+Mysticism.prototype.COST = {
     food: 0, wood: 0, stone: 0, gold: 120
 }
 
@@ -1013,7 +1013,7 @@ const Technologies = {
     Writing,
     Architecture,
     Astrology,
-    Misticism
+    Mysticism
 }
 
 export { Technologies };

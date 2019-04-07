@@ -9,7 +9,7 @@ class Temple extends Building {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(Priest),
             Technologies.Astrology,
-            Technologies.Misticism,
+            Technologies.Mysticism,
         ]; else return null;
     }
     static isResearched(player) {
