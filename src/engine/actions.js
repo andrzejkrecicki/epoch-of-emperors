@@ -8,6 +8,7 @@ import { Dock } from './buildings/dock.js';
 import { Granary } from './buildings/granary.js';
 import { Market } from './buildings/market.js';
 import { GovernmentCenter } from './buildings/government_center.js';
+import { SiegeWorkshop } from './buildings/siege_workshop.js';
 import { Academy } from './buildings/academy.js';
 import { Temple } from './buildings/temple.js';
 import { Tower } from './buildings/tower.js';
@@ -144,6 +145,7 @@ NextBuildingsPage.prototype.ACTIONS = [
     CreateBuildingFactory(GovernmentCenter),
     CreateBuildingFactory(Temple),
     CreateBuildingFactory(TownCenter),
+    CreateBuildingFactory(SiegeWorkshop),
     CreateBuildingFactory(Academy),
     PreviousPage,
     FirstPage,
