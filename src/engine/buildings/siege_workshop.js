@@ -1,4 +1,5 @@
 import { Building } from './building.js';
+import { StoneThrower } from '../units/stone_thrower.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
@@ -6,6 +7,7 @@ import { Sprites } from '../../sprites.js';
 class SiegeWorkshop extends Building {
     actions() {
         if (this.isComplete) return [
+            Actions.RecruitUnitFactory(StoneThrower)
         ]; else return null;
     }
     static isResearched(player) {
