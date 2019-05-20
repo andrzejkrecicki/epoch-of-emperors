@@ -2,7 +2,7 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
-import { Arrow } from '../projectiles.js';
+import { Stone } from '../projectiles.js';
 
 class StoneThrower extends Unit {
     constructor() {
@@ -10,10 +10,10 @@ class StoneThrower extends Unit {
         this.lastShot = 0;
     }
     getProjectileType() {
-        return Arrow
+        return Stone
     }
     getProjectileOffset() {
-        return { x: 17, y: -25 }
+        return { x: 22, y: -63 }
     }
     get ACTIONS() {
         return [Actions.StandGround, Actions.Stop];
@@ -26,7 +26,7 @@ StoneThrower.prototype.TYPE = "cavalry";
 StoneThrower.prototype.MAX_HP = 75;
 StoneThrower.prototype.SPEED = 0.72;
 StoneThrower.prototype.CREATION_TIME = 60 * 35;
-StoneThrower.prototype.ATTACK_RATE = 8 * 3;
+StoneThrower.prototype.ATTACK_RATE = 3 * 3;
 StoneThrower.prototype.SHOT_DELAY = 35 * 5;
 StoneThrower.prototype.ATTACKS_FROM_DISTANCE = true;
 

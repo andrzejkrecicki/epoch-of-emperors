@@ -94,6 +94,28 @@ Arrow.prototype.RADIUS = 13;
 Arrow.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/arrow/", 72);
 Arrow.prototype.IMAGE_OFFSETS = { x: 20, y: 6 };
 
+
+class Stone extends LinearProjectile {
+    constructor(thrower, victim, position, target, subtile_x, subtile_y) {
+        super(thrower, victim, position, target, subtile_x, subtile_y);
+        this.attributes = {
+            attack: thrower.attributes.attack
+        };
+        this.image.image(this.IMAGES[0]);
+        this.TTL = 350;
+    }
+    draw() {
+        this.image.image(this.IMAGES[this.TTL % this.IMAGES.length]);
+        super.draw();
+    }
+}
+Stone.prototype.SPEED = 5;
+Stone.prototype.RADIUS = 6;
+Stone.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/stone/", 3);
+Stone.prototype.IMAGE_OFFSETS = { x: 5, y: 4 };
+
+
+
 export {
-    Spear, Arrow
+    Spear, Arrow, Stone
 }
