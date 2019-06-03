@@ -88,7 +88,7 @@ House.prototype.IMAGE_OFFSETS = {
         [{ x: -2, y: 30 }, { x: -2, y: 30 }, { x: -2, y: 30 }, { x: -2, y: 30 }]
     ],
     [Building.prototype.STATE.DONE]: [
-        [{ x: -9, y: 25 }, { x: -19, y: 47 }, { x: -7, y: 43 }, { x: 10, y: 51 }]
+        [{ x: -9, y: 25 }, { x: -13, y: 45 }, { x: -7, y: 43 }, { x: 10, y: 51 }]
     ]
 }
 

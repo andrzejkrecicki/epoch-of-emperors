@@ -100,7 +100,7 @@ Dock.prototype.IMAGE_OFFSETS = {
         [{ x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }]
     ],
     [Building.prototype.STATE.DONE]: [
-        [{ x: -22, y: 36 }, { x: -22, y: 36 }, { x: 11, y: 45 }, { x: 3, y: 55 }]
+        [{ x: -22, y: 36 }, { x: -22, y: 36 }, { x: 11, y: 45 }, { x: 3, y: 79 }]
     ]
 }
 
