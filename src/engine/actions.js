@@ -192,6 +192,17 @@ class Stop extends Action {
     static isVisible(entity) {
         return !(entity.state & Unit.prototype.STATE.IDLE);
     }
+    execute() {
+        if (((entity.state & ~Unit.prototype.BASE_STATE_MASK) == 0)) {
+            this.entity.terminateInteraction();
+            this.entity.updateImage();
+        } else {
+            this.entity.interaction = null;
+            this.entity.interactionObject = null;
+            this.entity.prevInteractionObject = null;
+        }
+        this.entity.stop();
+    }
 }
 Stop.prototype.IMAGE = Sprites.Sprite("img/interface/command/stop.png");
 Stop.prototype.TOOLTIP = "Stop";
@@ -240,6 +251,10 @@ Unload.prototype.ACTION_KEY = "L";
 
 
 class Heal extends Action {
+    execute() {
+        this.viewer.setErrorMessage('Right click the unit to heal.');
+        this.entity.forcedHeal = true;
+    }
 }
 Heal.prototype.IMAGE = Sprites.Sprite("img/interface/command/heal.png");
 Heal.prototype.TOOLTIP = "Heal";
@@ -247,6 +262,10 @@ Heal.prototype.ACTION_KEY = "E";
 
 
 class Convert extends Action {
+    execute() {
+        this.viewer.setErrorMessage('Right click the unit to convert.');
+        this.entity.forcedConvert = true;
+    }
 }
 Convert.prototype.IMAGE = Sprites.Sprite("img/interface/command/convert.png");
 Convert.prototype.TOOLTIP = "Convert";

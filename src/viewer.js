@@ -118,7 +118,7 @@ class GameViewer {
             let sy = (e.evt.layerY - this.mapDrawable.y());
             let subtile = this.mapDrawable.screenCoordsToSubtile(sx, sy);
             if (!this.isPlanningConstruction && !this.engine.map.getEntityAtSubtile(subtile.x, subtile.y)) {
-                this.orderIndicator.show(e.evt.layerX, e.evt.layerY);
+                if (this.engine.selectedEntity instanceof Unit) this.orderIndicator.show(e.evt.layerX, e.evt.layerY);
             }
             this.engine.handleRightClick(subtile);
         }

@@ -124,14 +124,16 @@ class Unit extends Entity {
             this.path_progress = 1;
         }
     }
-    stopMoving() {
-       if (this.path && this.path.length >= this.path_progress) this.path = [this.path[this.path_progress]];
-       else {
+    stop() {
+       if (this.path && this.path.length >= this.path_progress) {
+           this.path = [{ x: this.subtile_x, y: this.subtile_y }, this.path[this.path_progress]];
+           this.path_progress = 1;
+       } else {
            this.path = null;
            this.frame = 0;
+           this.path_progress = 0;
            this.setBaseState(Unit.prototype.STATE.IDLE);
        }
-       this.path_progress = 0;
     }
     setBaseState(state) {
         this.state &= this.BASE_STATE_MASK;

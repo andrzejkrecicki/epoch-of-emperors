@@ -45,7 +45,8 @@ StoneThrower.prototype.ATTRIBUTES = {
 StoneThrower.prototype.FRAME_RATE = {
     ...Unit.prototype.FRAME_RATE,
     [StoneThrower.prototype.STATE.MOVING]: 8,
-    [StoneThrower.prototype.STATE.ATTACK]: 3
+    [StoneThrower.prototype.STATE.ATTACK]: 3,
+    [StoneThrower.prototype.STATE.DYING]: 4
 }
 
 

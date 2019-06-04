@@ -12,11 +12,15 @@ class Priest extends Unit {
         super(...arguments);
         this.attributes.progress = '100%';
         this.mana = Priest.prototype.MAX_MANA;
+
+        // Heal and Convert action buttons force right clicked object to be healed or converted
+        this.forcedHeal = false;
+        this.forcedConvert = false;
     }
     getOwnInteractionType(object) {
-        if (object instanceof Unit && object.player == this.player) {
+        if (object instanceof Unit && object.player == this.player && !this.forcedConvert) {
             return interactions.HealInteraction;
-        } else if (object instanceof Unit || object instanceof Building) {
+        } else if ((object instanceof Unit || object instanceof Building) && !this.forcedHeal) {
             if (object.player !== this.player && !(object instanceof Animal)) return interactions.ConversionInteraction;
         }
     }
@@ -39,6 +43,11 @@ class Priest extends Unit {
     }
     get ACTIONS() {
         return [Actions.Heal, Actions.Convert, Actions.Stop];
+    }
+    setSelected(value) {
+        super.setSelected(value);
+        this.forcedHeal = false;
+        this.forcedConvert = false;
     }
 }
 Priest.prototype.SUBTILE_WIDTH = 1;

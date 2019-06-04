@@ -131,6 +131,7 @@ class Entity extends Graphics.Node {
     terminateInteraction() {
         this.interaction && this.interaction.terminate();
     }
+    stop() {}
     resetBoundingBox() {
         this.boundingBox = {
             x: this.x() -this.getOffset().x,

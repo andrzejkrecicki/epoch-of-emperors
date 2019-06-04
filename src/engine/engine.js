@@ -287,9 +287,9 @@ class Engine {
     processLoop() {
         ++this.framesCount;
         this.viewer.process();
+        this.processProjectiles();
         this.processUnits();
         this.processBuildings();
-        this.processProjectiles();
         this.processDrawables();
         this.viewer.stage.draw();
     }

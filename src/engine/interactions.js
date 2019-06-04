@@ -471,7 +471,7 @@ class ConversionInteraction extends Interaction {
             this.passive.terminateInteraction();
 
             if (this.passive instanceof Unit) {
-                this.passive.stopMoving();
+                this.passive.stop();
                 --this.passive.player.population;
                 ++this.active.player.population;
                 this.passive.player = this.active.player;
