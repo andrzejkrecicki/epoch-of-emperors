@@ -40,6 +40,7 @@ class Interaction {
     }
 }
 Interaction.prototype.DISTANCE = 0;
+Interaction.prototype.CURSOR = 'pointer';
 
 
 class ResourceExtractionInteraction extends Interaction {
@@ -339,6 +340,7 @@ class AttackInteraction extends Interaction {
         this.active.rotateToEntity(this.passive);
     }
 }
+AttackInteraction.prototype.CURSOR = 'attack';
 
 
 class DistantAttackInteraction extends Interaction {
@@ -375,6 +377,7 @@ class DistantAttackInteraction extends Interaction {
         return Math.round(active.attributes.range * 1.5);
     }
 }
+DistantAttackInteraction.prototype.CURSOR = 'attack';
 
 
 class TowerAttackInteraction extends Interaction {
@@ -410,6 +413,7 @@ class TowerAttackInteraction extends Interaction {
         return Math.round(active.attributes.range * 1.5);
     }
 }
+TowerAttackInteraction.prototype.CURSOR = 'attack';
 
 
 class EnterShipInteraction extends Interaction {
@@ -436,6 +440,7 @@ class EnterShipInteraction extends Interaction {
         } else this.active.setBaseState(this.active.STATE.IDLE);
     }
 }
+EnterShipInteraction.prototype.CURSOR = 'affect';
 
 
 class ConversionInteraction extends Interaction {
@@ -494,6 +499,7 @@ class ConversionInteraction extends Interaction {
 }
 ConversionInteraction.prototype.SUCCESS_PROBABILITY = 1 / 200;
 ConversionInteraction.prototype.MINIMAL_TIME = 35 * 4;
+ConversionInteraction.prototype.CURSOR = 'affect';
 
 
 class HealInteraction extends Interaction {
@@ -528,6 +534,7 @@ class HealInteraction extends Interaction {
     }
 }
 HealInteraction.prototype.RATE = 12;
+HealInteraction.prototype.CURSOR = 'affect';
 
 
 export {

@@ -89,6 +89,15 @@ class GameViewer {
         this.errorMessage.hide();
         this.layers.interface.add(this.errorMessage);
 
+        this.hoveredEntity = null;
+
+        this.cursors = {
+            arrow: new Cursor(Sprites.Sprite("img/interface/cursors/arrow.png")),
+            pointer: new Cursor(Sprites.Sprite("img/interface/cursors/pointer.png")),
+            attack: new Cursor(Sprites.Sprite("img/interface/cursors/attack.png")),
+            affect: new Cursor(Sprites.Sprite("img/interface/cursors/affect.png")),
+        }
+
         // this.layers.grid.init(this.mapDrawable);
 
         this.engine.startLoop();
@@ -129,10 +138,12 @@ class GameViewer {
         if (e.target.parent instanceof Entity) {
             this.tooltip.text(e.target.parent.TOOLTIP);
             this.tooltip.show();
+            this.hoveredEntity = e.target.parent;
         }
     }
     handleMouseOut(e) {
         this.tooltip.hide();
+        this.hoveredEntity = null;
     }
     setErrorMessage(text) {
         this.errorMessage.text(text);
@@ -182,6 +193,19 @@ class GameViewer {
             this.entitiesHolder.y(-this.viewPort.y);
         }
     }
+    setCursor() {
+        let cursor = this.cursors.arrow;
+
+        if (this.hoveredEntity != null) cursor = this.cursors.pointer;
+
+        if (this.engine.selectedEntity instanceof Unit || this.engine.selectedEntity instanceof Building) {
+            if (this.hoveredEntity != null) {
+                let Interaction = this.engine.selectedEntity.getInteractionType(this.hoveredEntity);
+                if (Interaction) cursor = this.cursors[Interaction.prototype.CURSOR];
+            }
+        }
+        this.stage.container.style.cursor = cursor.cssRule;
+    }
     process() {
         if (this.moved) this.reposition();
         this.handleScroll();
@@ -197,6 +221,12 @@ class GameViewer {
         if (this.errorMessageTimeout > 0) if (--this.errorMessageTimeout == 0) this.errorMessage.hide();
         this.constructionIndicator.process();
         this.orderIndicator.process();
+
+        if (this.layers.interface.getNodeAt(this.mouseX, this.mouseY) == null) {
+            let node = this.layers.entities.getNodeAt(this.mouseX, this.mouseY);
+            this.hoveredEntity = node && node.parent;
+        }
+        this.setCursor();
     }
 }
 GameViewer.prototype.ERROR_MESSAGE_TIMEOUT = 35 * 6;
@@ -208,6 +238,22 @@ GameViewer.prototype.TOOLTIP_OPTIONS = {
     strokeStyle: 'black',
     lineWidth: 3
 }
+
+
+class Cursor {
+    constructor(sprite) {
+        this.sprite = sprite;
+        this.dataURL = '';
+        this.cssRule = '';
+        sprite.ready.then(this.setCssRule.bind(this));
+    }
+    setCssRule() {
+        this.dataURL = this.sprite.toDataURL();
+        this.cssRule = `url("${this.dataURL}") ${this.OFFSET_X} ${this.OFFSET_Y}, auto`;
+    }
+}
+Cursor.prototype.OFFSET_X = 40;
+Cursor.prototype.OFFSET_Y = 20;
 
 
 class MapDrawable extends Graphics.Node {
