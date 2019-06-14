@@ -69,7 +69,21 @@ class Entity extends Graphics.Node {
         );
     }
     getPixelPerfectHitmap() {
-        return null;
+        let image = this.getSprite();
+        let tmp = document.createElement("canvas");
+        tmp.setAttribute("width", image.width);
+        tmp.setAttribute("height", image.height);
+        let ctx = tmp.getContext("2d");
+        ctx.drawImage(image, 0, 0);
+        ctx.globalCompositeOperation = "source-in";
+
+        return {
+            ctx,
+            width: image.width,
+            height: image.height,
+            imageData: null,
+            offset: this.getOffset()
+        }
     }
     getCenterSubtile() {
         return {
@@ -160,7 +174,7 @@ class Entity extends Graphics.Node {
         engine.destroyEntity(this);
     }
 }
-Entity.prototype.HAS_BITMAP_HITMASK = false;
+Entity.prototype.HAS_BITMAP_HITMASK = true;
 Entity.prototype.HAS_HITMASK = true;
 Entity.prototype.COST = {
     food: 0, wood: 0, stone: 0, gold: 0

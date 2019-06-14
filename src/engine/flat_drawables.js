@@ -65,6 +65,7 @@ class DeadBody extends Entity {
     }
 }
 DeadBody.prototype.SUBTILE_WIDTH = 0;
+DeadBody.prototype.HAS_BITMAP_HITMASK = false;
 DeadBody.prototype.HAS_HITMASK = false;
 DeadBody.prototype.COLORIZE = true;
 

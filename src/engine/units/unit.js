@@ -32,7 +32,8 @@ class Unit extends Entity {
         this.resetBoundingBox();
     }
     getSprite() {
-        return this.IMAGES[this.state][this.level][this.rotation][this.frame];
+        let set = this.IMAGES[this.state][this.level][this.rotation]
+        return set[this.frame % set.length];
     }
     getOffset() {
         return this.IMAGE_OFFSETS[this.state][this.level];

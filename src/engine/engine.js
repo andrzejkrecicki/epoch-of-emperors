@@ -294,7 +294,7 @@ class Engine {
         this.viewer.stage.draw();
     }
     handleRightClick(point) {
-        let target = this.map.subtiles[point.x][point.y];
+        let target = this.viewer.hoveredEntity;
         if (this.selectedEntity instanceof Unit) {
             if (target == null || target == this.selectedEntity) {
                 this.moveOrder(this.selectedEntity, point);

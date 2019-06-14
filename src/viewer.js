@@ -114,7 +114,7 @@ class GameViewer {
     handleLeftClick(e) {
         this.deselectEntity();
 
-        let entity = e.target.parent;
+        let entity = e.target.parent || this.hoveredEntity;
         if (entity instanceof Entity) {
             this.engine.selectedEntity = entity;
             entity.setSelected(true, this.engine);
@@ -126,7 +126,8 @@ class GameViewer {
             let sx = (e.evt.layerX - this.mapDrawable.x());
             let sy = (e.evt.layerY - this.mapDrawable.y());
             let subtile = this.mapDrawable.screenCoordsToSubtile(sx, sy);
-            if (!this.isPlanningConstruction && !this.engine.map.getEntityAtSubtile(subtile.x, subtile.y)) {
+
+            if (!this.isPlanningConstruction && !this.hoveredEntity) {
                 if (this.engine.selectedEntity instanceof Unit) this.orderIndicator.show(e.evt.layerX, e.evt.layerY);
             }
             this.engine.handleRightClick(subtile);
@@ -206,26 +207,40 @@ class GameViewer {
         }
         this.stage.container.style.cursor = cursor.cssRule;
     }
+    setBottomBarActions() {
+        this.bottombar.entityDetails.setEntity(this.engine.selectedEntity);
+
+        if (this.engine.selectedEntity.actions_changed) {
+            this.engine.selectedEntity.actions_changed = false;
+            this.bottombar.entityActions.setEntity(this.engine.selectedEntity);
+        }
+    }
+    setHoveredEntity() {
+        this.hoveredEntity = null;
+        if (this.layers.interface.getNodeAt(this.mouseX, this.mouseY) == null) {
+            let node = this.layers.entities.getNodeAt(this.mouseX, this.mouseY);
+            if (node) this.hoveredEntity = node.parent;
+            else {
+                let subtile = this.mapDrawable.screenCoordsToSubtile(
+                    this.mouseX - this.mapDrawable.x(),
+                    this.mouseY - this.mapDrawable.y()
+                );
+                let size = this.engine.map.edge_size;
+                if (size * 2 > subtile.x > 0 && size * 2 > subtile.y > 0) {
+                    this.hoveredEntity = this.engine.map.getEntityAtSubtile(subtile.x, subtile.y);
+                }
+            }
+        }
+    }
     process() {
         if (this.moved) this.reposition();
         this.handleScroll();
         this.topbar.process(this.engine.current_player);
-        if (this.engine.selectedEntity != null) {
-            this.bottombar.entityDetails.setEntity(this.engine.selectedEntity);
-
-            if (this.engine.selectedEntity.actions_changed) {
-                this.engine.selectedEntity.actions_changed = false;
-                this.bottombar.entityActions.setEntity(this.engine.selectedEntity);
-            }
-        }
+        if (this.engine.selectedEntity != null) this.setBottomBarActions();
         if (this.errorMessageTimeout > 0) if (--this.errorMessageTimeout == 0) this.errorMessage.hide();
         this.constructionIndicator.process();
         this.orderIndicator.process();
-
-        if (this.layers.interface.getNodeAt(this.mouseX, this.mouseY) == null) {
-            let node = this.layers.entities.getNodeAt(this.mouseX, this.mouseY);
-            this.hoveredEntity = node && node.parent;
-        }
+        this.setHoveredEntity();
         this.setCursor();
     }
 }
