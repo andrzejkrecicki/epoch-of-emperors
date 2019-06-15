@@ -9,11 +9,14 @@ let _resolve = null;
 
 const Sprites = {
     cache: {},
+    hitmaskCache: new Map(),
+    colorizedCache: Array(8).fill(null).map(() => new Map),
     ready: new Promise((resolve) => {
         _resolve = resolve;
     }),
     Colorize(img, player) {
         if (!player) return img;
+        if (this.colorizedCache[player.color].has(img)) return this.colorizedCache[player.color].get(img);
 
         let canvas = document.createElement("canvas");
         canvas.width = img.width;
@@ -33,6 +36,7 @@ const Sprites = {
             }
         }
         ctx.putImageData(data, 0, 0);
+        this.colorizedCache[player.color].set(img, canvas);
         return canvas;
     },
     DirectionSprites(path, count, start=0) {
@@ -67,6 +71,18 @@ const Sprites = {
             return canvas;
         });
         return canvas;
+    },
+    Hitmask(image) {
+        if (this.hitmaskCache.has(image)) return this.hitmaskCache.get(image);
+        let tmp = document.createElement("canvas");
+        tmp.setAttribute("width", image.width);
+        tmp.setAttribute("height", image.height);
+        let ctx = tmp.getContext("2d");
+        ctx.drawImage(image, 0, 0);
+        ctx.globalCompositeOperation = "source-in";
+
+        this.hitmaskCache.set(image, ctx);
+        return ctx;
     },
     preload() {
         return this.ready = new Promise(async (resolve) => {

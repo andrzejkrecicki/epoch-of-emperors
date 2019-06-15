@@ -51,39 +51,23 @@ class Entity extends Graphics.Node {
         if (this.HAS_BITMAP_HITMASK) this.setHitmap();
     }
     setHitmap() {
-        let hitmap = this.getPixelPerfectHitmap();
-        hitmap.ctx.fillStyle = this.image.hitColor;
+        let offset = this.getOffset();
+        let hitmap = Sprites.Hitmask(this.getSprite());
+        hitmap.fillStyle = this.image.hitColor;
         // hitmask bitmaps use source-in as a composite operation
         // therefore fillRect bellow does not overlay whole hitmask
         // but instead repaints only its non-transparent pixels
-        hitmap.ctx.fillRect(
+        hitmap.fillRect(
             0, 0,
-            hitmap.width,
-            hitmap.height
+            hitmap.canvas.width,
+            hitmap.canvas.height
         );
 
         this.layer.hitmap.drawImage(
-            hitmap.ctx.canvas,
-            this.absX() - hitmap.offset.x,
-            this.absY() - hitmap.offset.y
+            hitmap.canvas,
+            this.absX() - offset.x,
+            this.absY() - offset.y
         );
-    }
-    getPixelPerfectHitmap() {
-        let image = this.getSprite();
-        let tmp = document.createElement("canvas");
-        tmp.setAttribute("width", image.width);
-        tmp.setAttribute("height", image.height);
-        let ctx = tmp.getContext("2d");
-        ctx.drawImage(image, 0, 0);
-        ctx.globalCompositeOperation = "source-in";
-
-        return {
-            ctx,
-            width: image.width,
-            height: image.height,
-            imageData: null,
-            offset: this.getOffset()
-        }
     }
     getCenterSubtile() {
         return {
