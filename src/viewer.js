@@ -178,20 +178,24 @@ class GameViewer {
             this.viewPort.x -= 20;
             this.mapDrawable.x(-this.viewPort.x);
             this.entitiesHolder.x(-this.viewPort.x);
+            this.orderIndicator.attrs.x += 20;
         } else if (this.mouseX > this.stage.width() - 30) {
             this.viewPort.x += 20;
             this.mapDrawable.x(-this.viewPort.x);
             this.entitiesHolder.x(-this.viewPort.x);
+            this.orderIndicator.attrs.x -= 20;
         }
 
         if (this.mouseY < 30) {
             this.viewPort.y -= 20;
             this.mapDrawable.y(-this.viewPort.y);
             this.entitiesHolder.y(-this.viewPort.y);
+            this.orderIndicator.attrs.y += 20;
         } else if (this.mouseY > this.stage.height() - 30) {
             this.viewPort.y += 20;
             this.mapDrawable.y(-this.viewPort.y);
             this.entitiesHolder.y(-this.viewPort.y);
+            this.orderIndicator.attrs.y -= 20;
         }
     }
     setCursor() {
