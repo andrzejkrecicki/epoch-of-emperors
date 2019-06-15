@@ -62,36 +62,5 @@ StoragePit.prototype.IMAGE_OFFSETS = {
     ]
 }
 
-StoragePit.prototype.HITMAP = {
-    ...Building.prototype.HITMAP,
-    [StoragePit.prototype.STATE.DONE]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/storage_pit/01_all.png"),
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/storage_pit/01_all.png"),
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/storage_pit/03_greek.png"),
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/storage_pit/04_greek.png"),
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
-                StoragePit.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
-            )
-        ]
-    ]
-}
 
 export { StoragePit }

@@ -56,37 +56,5 @@ ArcheryRange.prototype.IMAGE_OFFSETS = {
     ]
 }
 
-ArcheryRange.prototype.HITMAP = {
-    ...Building.prototype.HITMAP,
-    [ArcheryRange.prototype.STATE.DONE]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/archery_range/02_greek.png"),
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/archery_range/02_greek.png"),
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/archery_range/02_greek.png"),
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/archery_range/04_greek.png"),
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
-                ArcheryRange.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
-            )
-        ]
-    ]
-};
-
 
 export { ArcheryRange }

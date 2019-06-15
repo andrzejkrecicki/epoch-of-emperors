@@ -52,36 +52,5 @@ Granary.prototype.IMAGE_OFFSETS = {
     ]
 }
 
-Granary.prototype.HITMAP = {
-    ...Building.prototype.HITMAP,
-    [Granary.prototype.STATE.DONE]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/granary/01_greek.png"),
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/granary/01_greek.png"),
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/granary/01_greek.png"),
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/granary/04_greek.png"),
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
-                Granary.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
-            )
-        ]
-    ]
-}
 
 export { Granary }

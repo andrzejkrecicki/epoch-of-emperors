@@ -92,36 +92,5 @@ House.prototype.IMAGE_OFFSETS = {
     ]
 }
 
-House.prototype.HITMAP = {
-    ...Building.prototype.HITMAP,
-    [House.prototype.STATE.DONE]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/house/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/house/01_all.png"),
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/house/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/house/02_greek.png"),
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/house/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/house/03_greek.png"),
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/house/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/house/04_greek.png"),
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
-                House.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
-            )
-        ]
-    ]
-}
 
 export { House }

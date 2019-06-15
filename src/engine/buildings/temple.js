@@ -53,37 +53,5 @@ Temple.prototype.IMAGE_OFFSETS = {
     ]
 }
 
-Temple.prototype.HITMAP = {
-    ...Building.prototype.HITMAP,
-    [Temple.prototype.STATE.DONE]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/temple/03_greek.png"),
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/temple/03_greek.png"),
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/temple/03_greek.png"),
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Sprites.Sprite("img/buildings/temple/04_greek.png"),
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
-                Temple.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
-            )
-        ]
-    ]
-};
-
 
 export { Temple }

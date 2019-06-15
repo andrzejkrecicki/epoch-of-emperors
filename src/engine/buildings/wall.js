@@ -26,9 +26,6 @@ class Wall extends Building {
     getOffset() {
         return this.IMAGE_OFFSETS[this.state & ~2][this.player.civ][this.level];
     }
-    getPixelPerfectHitmap() {
-        return this.HITMAP[this.state & ~2][this.player.civ][this.level];
-    }
     takeHit(value, attacker, engine) {
         super.takeHit(value, attacker, engine);
         if (this.hp < this.MAX_HP / 2) {
@@ -166,76 +163,6 @@ Wall.prototype.IMAGE_OFFSETS = {
     [Wall.prototype.STATE.DONE_V]: [
         [{ x: -2, y: 37 }, { x: -15, y: 33 }, { x: -2, y: 37 }, { x: -2, y: 37 }]
     ]
-}
-
-Wall.prototype.HITMAP = {
-    ...Building.prototype.HITMAP,
-    [Wall.prototype.STATE.DONE]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_x_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][0],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_x_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][1],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_x_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][2],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE][0][2]
-            )
-        ]
-    ],
-    [Wall.prototype.STATE.DONE_H]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_h_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][0],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE_H][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_h_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][1],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE_H][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_h_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][2],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE_H][0][2]
-            )
-        ]
-    ],
-    [Wall.prototype.STATE.DONE_V]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_v_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][0],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE_V][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_v_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][1],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE_V][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/wall/base_hit_01_all.png"),
-                Sprites.Sprite("img/buildings/wall/01_all_v_fine.png"),
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.CONSTRUCTION][0][2],
-                Wall.prototype.IMAGE_OFFSETS[Wall.prototype.STATE.DONE_V][0][2]
-            )
-        ]
-    ],
 }
 
 export { Wall }

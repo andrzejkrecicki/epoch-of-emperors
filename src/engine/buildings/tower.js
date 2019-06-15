@@ -117,57 +117,5 @@ Tower.prototype.IMAGE_OFFSETS = {
     ]
 }
 
-Tower.prototype.HITMAP = {
-    ...Building.prototype.HITMAP,
-    [Tower.prototype.STATE.DONE]: [
-        [
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Sprites.Sprite("img/buildings/tower/01_all.png"),
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0],
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][0]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Sprites.Sprite("img/buildings/tower/02_all.png"),
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1],
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][1]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Sprites.Sprite("img/buildings/tower/01_all.png"),
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2],
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][2]
-            ),
-            Graphics.Filters.ComposeHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Sprites.Sprite("img/buildings/tower/01_all.png"),
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3],
-                Tower.prototype.IMAGE_OFFSETS[Building.prototype.STATE.DONE][0][3]
-            )
-        ]
-    ],
-    [Tower.prototype.STATE.CONSTRUCTION]: [
-        [
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Tower.prototype.IMAGE_OFFSETS[Tower.prototype.STATE.CONSTRUCTION][0][0]
-            ),
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Tower.prototype.IMAGE_OFFSETS[Tower.prototype.STATE.CONSTRUCTION][0][1]
-            ),
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Tower.prototype.IMAGE_OFFSETS[Tower.prototype.STATE.CONSTRUCTION][0][2]
-            ),
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_small.png"),
-                Tower.prototype.IMAGE_OFFSETS[Tower.prototype.STATE.CONSTRUCTION][0][3]
-            )
-        ]
-    ]
-};
-
 
 export { Tower }

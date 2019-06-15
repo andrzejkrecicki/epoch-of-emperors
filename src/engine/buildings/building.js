@@ -92,9 +92,6 @@ class Building extends Entity {
             this.tasks.shift();
         }
     }
-    getPixelPerfectHitmap() {
-        return this.HITMAP[this.state][this.player.civ][this.level];
-    }
     getAvatar() {
         return this.AVATAR[this.player.civ][this.level];
     }
@@ -147,27 +144,5 @@ Building.prototype.IMAGE_OFFSETS = {
     ]
 }
 
-Building.prototype.HITMAP = {
-    [Building.prototype.STATE.CONSTRUCTION]: [
-        [
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][0]
-            ),
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][1]
-            ),
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][2]
-            ),
-            Graphics.Filters.BasicHitmask(
-                Sprites.Sprite("img/buildings/base_hit_big.png"),
-                Building.prototype.IMAGE_OFFSETS[Building.prototype.STATE.CONSTRUCTION][0][3]
-            )
-        ]
-    ]
-}
 
 export { Building }
