@@ -18,9 +18,12 @@ class Building extends Entity {
         this.player = player;
         this.player.addBuilding(this);
 
-        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
+    }
+    createSelectionRect() {
+        this.selectionRect = new Graphics.SelectionRect(this.SUBTILE_WIDTH, 6, 3);
+        this.add(this.selectionRect);
     }
     getSprite() {
         return this.IMAGES[this.state][this.player.civ][this.level][this.construction_stage];

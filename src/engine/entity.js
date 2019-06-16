@@ -19,17 +19,11 @@ class Entity extends Graphics.Node {
         this.player = null;
         this.wasConverted = false;
         this.level = 0;
+
+        this.createSelectionRect();
     }
     createSelectionRect() {
-        this.selectionRect = new Graphics.Rect({
-            stroke: 'white',
-            strokeWidth: 1,
-            visible: false,
-            x: Math.round(-this.getOffset().x),
-            y: Math.round(-this.getOffset().y),
-            width: this.getSprite().width,
-            height: this.getSprite().height
-        });
+        this.selectionRect = new Graphics.SelectionRect(this.SUBTILE_WIDTH);
         this.add(this.selectionRect);
     }
     position(pos) {

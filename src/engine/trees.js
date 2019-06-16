@@ -14,7 +14,6 @@ class Tree extends Entity {
         if (imgChoice == -1) this.imgChoice = Math.floor(Math.random() * this.IMAGES[this.state].length);
         else this.imgChoice = imgChoice;
 
-        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }
@@ -25,7 +24,6 @@ class Tree extends Entity {
             this.imgChoice = Math.floor(Math.random() * this.IMAGES[this.state].length);
             this.image.remove();
             this.selectionRect.remove();
-            this.createSelectionRect();
             this.setImage();
             this.resetBoundingBox();
         }

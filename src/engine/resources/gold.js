@@ -13,7 +13,6 @@ class GoldMine extends Entity {
         this.hp = this.MAX_HP;
         this.max_hp = this.MAX_HP;
 
-        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }

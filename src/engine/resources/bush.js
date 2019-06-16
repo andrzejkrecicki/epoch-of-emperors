@@ -10,7 +10,6 @@ class Bush extends Entity {
         this.hp = Bush.prototype.MAX_HP;
         this.max_hp = Bush.prototype.MAX_HP;
 
-        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }

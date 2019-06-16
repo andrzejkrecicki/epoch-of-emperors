@@ -27,7 +27,6 @@ class Unit extends Entity {
         if (this.ATTRIBUTES.MISSILE_ARMOR != null) this.attributes.missile_armor = this.ATTRIBUTES.MISSILE_ARMOR;
         if (this.ATTRIBUTES.RANGE != null) this.attributes.range = this.ATTRIBUTES.RANGE;
 
-        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }

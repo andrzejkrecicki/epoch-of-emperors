@@ -326,6 +326,30 @@ class GridPreview extends Layer {
 }
 
 
+class SelectionRect extends Node {
+    constructor(width, pad_x=0, pad_y=0) {
+        super();
+        this.dx = width * 16;
+        this.dy = width * 8;
+        this.pad_x = pad_x;
+        this.pad_y = pad_y;
+        this.attrs.visible = false;
+    }
+    draw() {
+        if (!this.attrs.visible) return;
+        this.layer.ctx.lineWidth = 1;
+        this.layer.ctx.strokeStyle = '#fff';
+        this.layer.ctx.beginPath();
+        this.layer.ctx.moveTo(this.absX() - this.pad_x, this.absY());
+        this.layer.ctx.lineTo(this.absX() + this.dx, this.absY() - this.dy - this.pad_y);
+        this.layer.ctx.lineTo(this.absX() + 2 * this.dx + this.pad_x, this.absY());
+        this.layer.ctx.lineTo(this.absX() + this.dx, this.absY() + this.dy + this.pad_y);
+        this.layer.ctx.lineTo(this.absX() - this.pad_x, this.absY());
+        this.layer.ctx.stroke();
+    }
+}
+
+
 class Rect extends Node {
     constructor(options) {
         super(options || {});
@@ -614,6 +638,7 @@ window.Graphics = {
     Layer,
     HitlessLayer,
     GridPreview,
+    SelectionRect,
     Rect,
     Text,
     StrokedText,

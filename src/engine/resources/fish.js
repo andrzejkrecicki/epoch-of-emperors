@@ -12,7 +12,6 @@ class FishBig extends Entity {
         this.frame = 0;
         this._frame = 0;
 
-        this.createSelectionRect();
         this.setImage();
         this.resetBoundingBox();
     }
