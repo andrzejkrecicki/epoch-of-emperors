@@ -51,8 +51,6 @@ class GameViewer {
 
         this.layers.terrain.on("click", this.handleClick.bind(this));
         this.layers.entities.on("click", this.handleClick.bind(this));
-        this.layers.entities.on("mouseover", this.handleMouseOver.bind(this));
-        this.layers.entities.on("mouseout", this.handleMouseOut.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
 
         this.constructionIndicator = new ConstructionIndicator(this);
@@ -135,17 +133,6 @@ class GameViewer {
         e.evt.preventDefault();
         return false;
     }
-    handleMouseOver(e) {
-        if (e.target.parent instanceof Entity) {
-            this.tooltip.text(e.target.parent.TOOLTIP);
-            this.tooltip.show();
-            this.hoveredEntity = e.target.parent;
-        }
-    }
-    handleMouseOut(e) {
-        this.tooltip.hide();
-        this.hoveredEntity = null;
-    }
     setErrorMessage(text) {
         this.errorMessage.text(text);
         this.errorMessage.show();
@@ -220,8 +207,10 @@ class GameViewer {
         }
     }
     setHoveredEntity() {
-        this.hoveredEntity = null;
         if (this.layers.interface.getNodeAt(this.mouseX, this.mouseY) == null) {
+            this.hoveredEntity = null;
+            this.tooltip.hide();
+
             let node = this.layers.entities.getNodeAt(this.mouseX, this.mouseY);
             if (node) this.hoveredEntity = node.parent;
             else {
@@ -233,6 +222,10 @@ class GameViewer {
                 if (size * 2 > subtile.x > 0 && size * 2 > subtile.y > 0) {
                     this.hoveredEntity = this.engine.map.getEntityAtSubtile(subtile.x, subtile.y);
                 }
+            }
+            if (this.hoveredEntity) {
+                this.tooltip.text(this.hoveredEntity.TOOLTIP);
+                this.tooltip.show();
             }
         }
     }
