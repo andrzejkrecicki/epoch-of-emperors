@@ -1,4 +1,4 @@
-import { leftpad } from './utils.js';
+import { leftpad, getCanvasContext } from './utils.js';
 import { rgb, palette, color_idx } from './palette.js';
 
 
@@ -18,13 +18,10 @@ const Sprites = {
         if (!player) return img;
         if (this.colorizedCache[player.color].has(img)) return this.colorizedCache[player.color].get(img);
 
-        let canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
-        let ctx = canvas.getContext("2d");
+        let ctx = getCanvasContext(img.width, img.height);
         ctx.drawImage(img, 0, 0);
 
-        let data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let data = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
 
         for (let i = 0; i < data.data.length; i += 4) {
             let color = rgb(data.data[i], data.data[i + 1], data.data[i + 2]);
@@ -36,8 +33,8 @@ const Sprites = {
             }
         }
         ctx.putImageData(data, 0, 0);
-        this.colorizedCache[player.color].set(img, canvas);
-        return canvas;
+        this.colorizedCache[player.color].set(img, ctx.canvas);
+        return ctx.canvas;
     },
     DirectionSprites(path, count, start=0) {
         let sprites = new Array(8).fill(null).map(() => []);
@@ -62,7 +59,7 @@ const Sprites = {
     },
     Sprite(path) {
         let canvas = document.createElement("canvas");
-        canvas.ready = this.ready.then(() => {
+        this.ready.then(() => {
             let img = this.cache[path];
             canvas.width = img.width;
             canvas.height = img.height;
@@ -74,10 +71,8 @@ const Sprites = {
     },
     Hitmask(image) {
         if (this.hitmaskCache.has(image)) return this.hitmaskCache.get(image);
-        let tmp = document.createElement("canvas");
-        tmp.setAttribute("width", image.width);
-        tmp.setAttribute("height", image.height);
-        let ctx = tmp.getContext("2d");
+
+        let ctx = getCanvasContext(image.width, image.height);
         ctx.drawImage(image, 0, 0);
         ctx.globalCompositeOperation = "source-in";
 

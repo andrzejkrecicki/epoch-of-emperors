@@ -1,4 +1,4 @@
-import { rect_intersection } from '../utils.js';
+import { rect_intersection, getCanvasContext } from '../utils.js';
 
 
 class Node {
@@ -167,12 +167,10 @@ class Stage extends Node {
         this.initEvents();
     }
     add(layer) {
-        let canvas = document.createElement("canvas");
-        canvas.setAttribute("width", this.attrs.width)
-        canvas.setAttribute("height", this.attrs.height)
-        layer.canvas = canvas;
-        layer.ctx = canvas.getContext('2d');
-        this.container.appendChild(canvas);
+        let ctx = getCanvasContext(this.attrs.width, this.attrs.height);
+        layer.canvas = ctx.canvas;
+        layer.ctx = ctx;
+        this.container.appendChild(ctx.canvas);
         layer.stage = this;
         layer.makeHitmap();
         this.children.push(layer);
@@ -254,11 +252,7 @@ class Layer extends Node {
         this.hitmap.clearRect(0, 0, this.stage.width(), this.stage.height());
     }
     makeHitmap() {
-        let canvas = document.createElement("canvas");
-        canvas.setAttribute("width", this.stage.width());
-        canvas.setAttribute("height", this.stage.height());
-        this.hitmap = canvas.getContext('2d');
-
+        this.hitmap = getCanvasContext(this.stage.width(), this.stage.height())
         this.hitmap.clearRect(0, 0, this.stage.width(), this.stage.height());
     }
     getNodeAt(x, y) {
@@ -297,10 +291,7 @@ class GridPreview extends Layer {
     constructor(stage) {
         super();
         this.stage = stage;
-        this.buff = document.createElement("canvas");
-        this.buff.setAttribute("width", this.stage.width() + 32);
-        this.buff.setAttribute("height", this.stage.height() + 16);
-        this.buff_ctx = this.buff.getContext("2d");
+        this.buff = getCanvasContext(this.stage.width() + 32, this.stage.height() + 16);
         this.attrs.visible = false;
     }
     init(md) {
@@ -317,8 +308,8 @@ class GridPreview extends Layer {
                 let cy = point.y;
 
                 if (cx % 2 == cy % 2) {
-                    this.buff_ctx.fillStyle = "rgba(0, 0, 0, .25)";
-                    this.buff_ctx.fillRect(x - begin_x, y - begin_y, 1, 1);
+                    this.buff.fillStyle = "rgba(0, 0, 0, .25)";
+                    this.buff.fillRect(x - begin_x, y - begin_y, 1, 1);
                 }
             }
         }
@@ -327,7 +318,7 @@ class GridPreview extends Layer {
         if (!this.attrs.visible) return;
         this.ctx.clearRect(0, 0, this.stage.width(), this.stage.height());
 
-        this.ctx.drawImage(this.buff, -((-this.md.x()) % 32), -((-this.md.y()) % 16));
+        this.ctx.drawImage(this.buff.canvas, -((-this.md.x()) % 32), -((-this.md.y()) % 16));
     }
     getNodeAt() {}
     makeHitmap() {}
@@ -545,10 +536,7 @@ class EntitiesHolder extends Node {
 }
 
 function RedFilter(image) {
-    let tmp = document.createElement("canvas");
-    tmp.setAttribute("width", image.width);
-    tmp.setAttribute("height", image.height);
-    let ctx = tmp.getContext("2d");
+    let ctx = getCanvasContext(image.width, image.height);
     ctx.drawImage(image, 0, 0);
     let imageData = ctx.getImageData(0, 0, image.width, image.height);
     for (let i = 0; i < imageData.data.length; i += 4) {
@@ -557,7 +545,7 @@ function RedFilter(image) {
         imageData.data[i + 2] = Math.max(0, imageData.data[i + 2] - 40);
     }
     ctx.putImageData(imageData, 0, 0);
-    return tmp;
+    return ctx.canvas;
 }
 
 
@@ -571,10 +559,7 @@ function BasicHitmask(image, offset) {
     };
 
     image.ready.then(function(image) {
-        let tmp = document.createElement("canvas");
-        tmp.setAttribute("width", image.width);
-        tmp.setAttribute("height", image.height);
-        let ctx = tmp.getContext("2d");
+        let ctx = getCanvasContext(image.width, image.height);
         ctx.drawImage(image, 0, 0);
         ctx.globalCompositeOperation = "source-in";
         wrap.ctx = ctx;
@@ -596,11 +581,10 @@ function ComposeHitmask(img1, img2, offset1, offset2) {
     }
 
     let callback = function([img1, img2]) {
-        let tmp = document.createElement("canvas");
-        tmp.setAttribute("width", Math.max(img1.width, img2.width));
-        tmp.setAttribute("height", Math.max(img1.height, img2.height));
-
-        let ctx = tmp.getContext("2d");
+        let ctx = getCanvasContext(
+            Math.max(img1.width, img2.width),
+            Math.max(img1.height, img2.height)
+        );
         ctx.drawImage(img1,
             Math.max(offset1.x, offset2.x) - offset1.x,
             Math.max(offset1.y, offset2.y) - offset1.y
@@ -611,9 +595,9 @@ function ComposeHitmask(img1, img2, offset1, offset2) {
         );
         ctx.globalCompositeOperation = "source-in";
         wrap.ctx = ctx;
-        wrap.width = tmp.width;
-        wrap.height = tmp.height;
-        wrap.imageData = ctx.getImageData(0, 0, tmp.width, tmp.height);
+        wrap.width = ctx.canvas.width;
+        wrap.height = ctx.canvas.height;
+        wrap.imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
         wrap.offset = {
             x: Math.max(offset1.x, offset2.x),
             y: Math.max(offset1.y, offset2.y)

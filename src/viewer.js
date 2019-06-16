@@ -6,6 +6,8 @@ import { Unit } from './engine/units/unit.js';
 import { Building } from './engine/buildings/building.js';
 import { Entity } from './engine/entity.js';
 import { MINIMAP_PIXEL_COLORS, TERRAIN_IMAGES } from './mapdrawable_assets.js';
+import { getCanvasContext } from './utils.js';
+
 
 class GameViewer {
     constructor(definition, navigator, layers) {
@@ -257,7 +259,7 @@ class Cursor {
         this.sprite = sprite;
         this.dataURL = '';
         this.cssRule = '';
-        sprite.ready.then(this.setCssRule.bind(this));
+        Sprites.ready.then(this.setCssRule.bind(this));
     }
     setCssRule() {
         this.dataURL = this.sprite.toDataURL();
@@ -326,10 +328,7 @@ class MapDrawable extends Graphics.Node {
         return rnd;
     }
     insertTiles() {
-        let miniCanv = document.createElement("canvas");
-        miniCanv.setAttribute("width", Map.SIZES[this.map.definition.size]);
-        miniCanv.setAttribute("height", Map.SIZES[this.map.definition.size]);
-        let miniCtx = miniCanv.getContext('2d');
+        let miniCtx = getCanvasContext(Map.SIZES[this.map.definition.size], Map.SIZES[this.map.definition.size]);
 
         for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
             for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
@@ -341,8 +340,8 @@ class MapDrawable extends Graphics.Node {
             }
         }
 
-        miniCanv.className = "tmpMiniMap";
-        document.body.appendChild(miniCanv);
+        miniCtx.canvas.className = "tmpMiniMap";
+        document.body.appendChild(miniCtx.canvas);
     }
     tileCoordsToScreen(tx, ty) {
         let H = MapDrawable.TILE_SIZE.height;
@@ -591,14 +590,11 @@ class HealthBarBig extends Graphics.Node {
         });
         this.add(this.red);
 
-        let _bar = document.createElement("canvas");
-        _bar.setAttribute("width", HealthBarBig.BAR_GREEN.width);
-        _bar.setAttribute("height", HealthBarBig.BAR_GREEN.height);
-        this._barCtx = _bar.getContext('2d');
+        this._barCtx = getCanvasContext(HealthBarBig.BAR_GREEN.width, HealthBarBig.BAR_GREEN.height);
         this.setValue(1);
 
         this.green = new Graphics.Image({
-            image: _bar,
+            image: this._barCtx.canvas,
         });
         this.add(this.green);
     }

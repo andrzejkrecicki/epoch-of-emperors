@@ -106,8 +106,16 @@ function rect_intersection(r1, r2) {
     );
 }
 
+function getCanvasContext(width, height) {
+    let canvas = document.createElement("canvas");
+    canvas.width = width;
+    canvas.height = height;
+    return canvas.getContext("2d");
+}
+
 export {
-    PlayerDefinition, PLAYER_COLORS, CIVILIZATIONS, CIVILIZATIONS_NAMES,
-    to_binary, leftpad, rand_choice, rect_intersection, distance,
-    manhatan_subtile_distance, RESOURCE_TYPES, RESOURCE_NAME, AGES
+    PlayerDefinition, PLAYER_COLORS, RESOURCE_TYPES, RESOURCE_NAME,
+    AGES, CIVILIZATIONS, CIVILIZATIONS_NAMES, to_binary, leftpad,
+    rand_choice, rect_intersection, distance,
+    manhatan_subtile_distance, getCanvasContext
 }
