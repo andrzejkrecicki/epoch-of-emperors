@@ -433,7 +433,7 @@ class Engine {
     }
     addSampleUnits() {
 
-        let d = { x: Math.floor(Map.SIZES[this.map.definition.size]), y: Math.floor(Map.SIZES[this.map.definition.size]) }
+        let d = { x: Math.floor(this.map.edge_size), y: Math.floor(this.map.edge_size) }
 
         let bush = new Bush(129, 132);
         this.map.fillSubtilesWith(bush.subtile_x, bush.subtile_y, bush.SUBTILE_WIDTH, bush);

@@ -20,7 +20,7 @@ class GameViewer {
         this.mouseX = this.stage.width() / 2;
         this.mouseY = this.stage.height() / 2;
 
-        let size = Map.SIZES[this.engine.map.definition.size];
+        let size = this.engine.map.edge_size;
         this.viewPort = {
             x: Math.round(size * MapDrawable.TILE_SIZE.width / 2 - this.stage.width() / 2),
             y: Math.round(size * MapDrawable.TILE_SIZE.height / 2 - this.stage.height() / 2),
@@ -42,8 +42,8 @@ class GameViewer {
             y: -this.viewPort.y
         }, {
             mapSize: size,
-            width: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.width,
-            height: Map.SIZES[this.engine.map.definition.size] * MapDrawable.TILE_SIZE.height,
+            width: size * MapDrawable.TILE_SIZE.width,
+            height: size * MapDrawable.TILE_SIZE.height,
             viewPortWidth: this.stage.width(),
             viewPortHeight: this.stage.height() - BottomBar.IMAGE.height
         });
@@ -214,7 +214,7 @@ class GameViewer {
                     this.mouseY - this.mapDrawable.y()
                 );
                 let size = this.engine.map.edge_size;
-                if (size * 2 > subtile.x > 0 && size * 2 > subtile.y > 0) {
+                if (size * 2 > subtile.x && subtile.x > 0 && size * 2 > subtile.y && subtile.y > 0) {
                     this.hoveredEntity = this.engine.map.getEntityAtSubtile(subtile.x, subtile.y);
                 }
             }
@@ -305,10 +305,10 @@ class MapDrawable extends Graphics.Node {
         return rnd;
     }
     insertTiles() {
-        let miniCtx = getCanvasContext(Map.SIZES[this.map.definition.size], Map.SIZES[this.map.definition.size]);
+        let miniCtx = getCanvasContext(this.map.edge_size, this.map.edge_size);
 
-        for (let y = 0; y < Map.SIZES[this.map.definition.size]; ++y) {
-            for (let x = 0; x < Map.SIZES[this.map.definition.size]; ++x) {
+        for (let y = 0; y < this.map.edge_size; ++y) {
+            for (let x = 0; x < this.map.edge_size; ++x) {
 
                 miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
                 if (this.map.getEntityAtSubtile(x * 2, y * 2) instanceof Tree) miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS.TREE;
@@ -323,7 +323,7 @@ class MapDrawable extends Graphics.Node {
     tileCoordsToScreen(tx, ty) {
         let H = MapDrawable.TILE_SIZE.height;
         let W = MapDrawable.TILE_SIZE.width;
-        let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
+        let UH = MapDrawable.TILE_SIZE.height * this.map.edge_size;
 
         let x = tx * W * 0.5 + ty * W * 0.5;
         let y = 0.5 * UH - tx * 0.5 * H + ty * 0.5 * H;
@@ -332,7 +332,7 @@ class MapDrawable extends Graphics.Node {
     screenCoordsToTile(sx, sy) {
         let H = MapDrawable.TILE_SIZE.height;
         let W = MapDrawable.TILE_SIZE.width;
-        let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
+        let UH = MapDrawable.TILE_SIZE.height * this.map.edge_size;
 
         let x = Math.floor((sx * H - W * sy + 0.5 * W * UH) / (W * H));
         let y = Math.floor((sy - 0.5 * UH) / (0.5 * H) + (sx * H - W * sy + 0.5 * UH * W) / (H * W));
@@ -341,7 +341,7 @@ class MapDrawable extends Graphics.Node {
     screenCoordsToSubtile(sx, sy) {
         let H = MapDrawable.TILE_SIZE.height / 2;
         let W = MapDrawable.TILE_SIZE.width / 2;
-        let UH = MapDrawable.TILE_SIZE.height * Map.SIZES[this.map.definition.size];
+        let UH = MapDrawable.TILE_SIZE.height * this.map.edge_size;
 
         let x = Math.floor((sx * H - W * sy + 0.5 * W * UH) / (W * H));
         let y = Math.floor((sy - 0.5 * UH) / (0.5 * H) + (sx * H - W * sy + 0.5 * UH * W) / (H * W));
