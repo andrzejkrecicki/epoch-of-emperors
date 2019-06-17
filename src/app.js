@@ -34,10 +34,28 @@ class Game {
 }
 Game.STAGE_WIDTH = 800;
 Game.STAGE_HEIGHT = 600;
+Game.CURSORS = [
+    ["arrow", Sprites.Sprite("img/interface/cursors/arrow.png")],
+    ["pointer", Sprites.Sprite("img/interface/cursors/pointer.png")],
+    ["attack", Sprites.Sprite("img/interface/cursors/attack.png")],
+    ["affect", Sprites.Sprite("img/interface/cursors/affect.png")],
+];
 
 document.oncontextmenu = function() { return false; };
 
 Sprites.ready.then(function() {
+
+    const offset_x = 40;
+    const offset_y = 20;
+
+    let sheet = document.head.querySelector("style").sheet;
+    for (let [className, sprite] of Game.CURSORS) {
+        sheet.addRule(
+            `#container.${className}`,
+            `cursor: url("${sprite.toDataURL()}") ${offset_x} ${offset_y}, auto`
+        );
+    }
+
     let game = new Game('container');
     game.draw();
 })

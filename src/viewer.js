@@ -91,13 +91,6 @@ class GameViewer {
 
         this.hoveredEntity = null;
 
-        this.cursors = {
-            arrow: new Cursor(Sprites.Sprite("img/interface/cursors/arrow.png")),
-            pointer: new Cursor(Sprites.Sprite("img/interface/cursors/pointer.png")),
-            attack: new Cursor(Sprites.Sprite("img/interface/cursors/attack.png")),
-            affect: new Cursor(Sprites.Sprite("img/interface/cursors/affect.png")),
-        }
-
         // this.layers.grid.init(this.mapDrawable);
 
         this.engine.startLoop();
@@ -188,17 +181,17 @@ class GameViewer {
         }
     }
     setCursor() {
-        let cursor = this.cursors.arrow;
+        let cursor = "arrow";
 
-        if (this.hoveredEntity != null) cursor = this.cursors.pointer;
+        if (this.hoveredEntity != null) cursor = "pointer";
 
         if (this.engine.selectedEntity instanceof Unit || this.engine.selectedEntity instanceof Building) {
-            if (this.hoveredEntity != null) {
+            if (this.hoveredEntity != null && this.engine.selectedEntity != this.hoveredEntity) {
                 let Interaction = this.engine.selectedEntity.getInteractionType(this.hoveredEntity);
-                if (Interaction) cursor = this.cursors[Interaction.prototype.CURSOR];
+                if (Interaction) cursor = Interaction.prototype.CURSOR;
             }
         }
-        this.stage.container.style.cursor = cursor.cssRule;
+        this.stage.container.className = cursor;
     }
     setBottomBarActions() {
         this.bottombar.entityDetails.setEntity(this.engine.selectedEntity);
@@ -252,22 +245,6 @@ GameViewer.prototype.TOOLTIP_OPTIONS = {
     strokeStyle: 'black',
     lineWidth: 3
 }
-
-
-class Cursor {
-    constructor(sprite) {
-        this.sprite = sprite;
-        this.dataURL = '';
-        this.cssRule = '';
-        Sprites.ready.then(this.setCssRule.bind(this));
-    }
-    setCssRule() {
-        this.dataURL = this.sprite.toDataURL();
-        this.cssRule = `url("${this.dataURL}") ${this.OFFSET_X} ${this.OFFSET_Y}, auto`;
-    }
-}
-Cursor.prototype.OFFSET_X = 40;
-Cursor.prototype.OFFSET_Y = 20;
 
 
 class MapDrawable extends Graphics.Node {
