@@ -33,7 +33,6 @@ class StoneMine extends Entity {
 StoneMine.prototype.SUBTILE_WIDTH = 2;
 StoneMine.prototype.NAME = "Stone Mine";
 StoneMine.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/stone.png");
-StoneMine.prototype.MAX_HP = 25;
 StoneMine.prototype.TOOLTIP = "Mine here for stone.";
 
 StoneMine.prototype.IMAGES = Sprites.SpriteSequence("img/resources/stone/", 7);

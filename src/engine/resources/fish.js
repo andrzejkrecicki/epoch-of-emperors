@@ -7,8 +7,6 @@ class FishBig extends Entity {
         this.attributes = {
             food: 250
         };
-        this.hp = FishBig.prototype.MAX_HP;
-        this.max_hp = FishBig.prototype.MAX_HP;
         this.frame = 0;
         this._frame = 0;
 
@@ -34,7 +32,6 @@ class FishBig extends Entity {
         return this.IMAGES[this.frame];
     }
 }
-FishBig.prototype.MAX_HP = 25;
 FishBig.prototype.SUBTILE_WIDTH = 3;
 FishBig.prototype.NAME = "Fish";
 FishBig.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/fish.png");

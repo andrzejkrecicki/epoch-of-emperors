@@ -10,9 +10,6 @@ class GoldMine extends Entity {
         if (imgChoice == -1) this.imgChoice = Math.floor(Math.random() * this.IMAGES.length);
         else this.imgChoice = imgChoice;
 
-        this.hp = this.MAX_HP;
-        this.max_hp = this.MAX_HP;
-
         this.setImage();
         this.resetBoundingBox();
     }
@@ -33,7 +30,6 @@ class GoldMine extends Entity {
 GoldMine.prototype.SUBTILE_WIDTH = 2;
 GoldMine.prototype.NAME = "Gold Mine";
 GoldMine.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/gold.png");
-GoldMine.prototype.MAX_HP = 25;
 GoldMine.prototype.TOOLTIP = "Mine here for gold.";
 
 GoldMine.prototype.IMAGES = Sprites.SpriteSequence("img/resources/gold/", 7);

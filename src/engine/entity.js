@@ -6,7 +6,7 @@ class Entity extends Graphics.Node {
         this.subtile_x = subtile_x;
         this.subtile_y = subtile_y;
         this.realPosition = { x: null, y: null };
-        this.hp = 0;
+        this.hp = null;
         this.max_hp = 0;
         this.ticks_waited = 0;
         this.selected = false;

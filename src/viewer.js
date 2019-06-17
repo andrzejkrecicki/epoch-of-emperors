@@ -501,8 +501,15 @@ class EntityDetails extends Graphics.Node {
             this.avatar.hide();
         }
         this.name.text(this.entity.getName());
-        this.healthBar.setValue(this.entity.hp / this.entity.max_hp);
-        this.hp.text(`${this.entity.hp}/${this.entity.max_hp}`);
+        if (this.entity.hp != null) {
+            this.healthBar.setValue(this.entity.hp / this.entity.max_hp);
+            this.healthBar.show();
+            this.hp.text(`${this.entity.hp}/${this.entity.max_hp}`);
+            this.hp.show();
+        } else {
+            this.healthBar.hide();
+            this.hp.hide();
+        }
 
         this.attributes.setEntity(entity);
     }

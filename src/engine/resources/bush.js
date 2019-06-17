@@ -7,8 +7,6 @@ class Bush extends Entity {
         this.attributes = {
             food: 150
         };
-        this.hp = Bush.prototype.MAX_HP;
-        this.max_hp = Bush.prototype.MAX_HP;
 
         this.setImage();
         this.resetBoundingBox();
@@ -27,7 +25,6 @@ class Bush extends Entity {
         return this.IMAGE;
     }
 }
-Bush.prototype.MAX_HP = 25;
 Bush.prototype.SUBTILE_WIDTH = 2;
 Bush.prototype.NAME = "Berry Bush";
 Bush.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/bush.png");
