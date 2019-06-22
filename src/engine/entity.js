@@ -14,6 +14,8 @@ class Entity extends Graphics.Node {
         this.actions_changed = false;
         this.interaction = null;
         this.interactionSuccessor = null;
+        this.selectionRect = null;
+        this.healthBar = null;
         this.destroyed = false;
         this.isFlat = false;
         this.player = null;
@@ -25,6 +27,10 @@ class Entity extends Graphics.Node {
     createSelectionRect() {
         this.selectionRect = new Graphics.SelectionRect(this.SUBTILE_WIDTH);
         this.add(this.selectionRect);
+    }
+    createHealthBar() {
+        this.healthBar = new Graphics.HealthBar(this);
+        this.add(this.healthBar);
     }
     position(pos) {
         if (pos == null) return super.position();
@@ -144,6 +150,7 @@ class Entity extends Graphics.Node {
     setSelected(value) {
         this.selected = !!value;
         this.selectionRect.setVisible(this.selected);
+        if (this.healthBar) this.healthBar.setVisible(this.selected);
     }
     destroy(engine) {
         if (this.player) --this.player.possessions[this.constructor.name];

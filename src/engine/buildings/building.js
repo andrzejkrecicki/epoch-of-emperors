@@ -20,6 +20,7 @@ class Building extends Entity {
 
         this.setImage();
         this.resetBoundingBox();
+        this.createHealthBar();
     }
     createSelectionRect() {
         this.selectionRect = new Graphics.SelectionRect(this.SUBTILE_WIDTH, 6, 3);

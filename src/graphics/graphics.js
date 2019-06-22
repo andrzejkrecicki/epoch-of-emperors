@@ -350,6 +350,30 @@ class SelectionRect extends Node {
 }
 
 
+class HealthBar extends Node {
+    constructor(entity) {
+        let x = 16 * entity.SUBTILE_WIDTH - HealthBar.prototype.WIDTH / 2;
+        let y = -[40, 54, 54, 54, 75, 75][entity.SUBTILE_WIDTH - 1];
+        super({ x, y });
+        this.entity = entity;
+        this.attrs.visible = false;
+    }
+    draw() {
+        if (!this.attrs.visible || this.layer == null) return;
+
+        this.layer.ctx.fillStyle = this.RED;
+        this.layer.ctx.fillRect(this.absX(), this.absY(), this.WIDTH, this.HEIGHT);
+        this.layer.ctx.fillStyle = this.GREEN;
+        let val = Math.floor(this.WIDTH * this.entity.hp / this.entity.max_hp);
+        this.layer.ctx.fillRect(this.absX(), this.absY(), val, this.HEIGHT);
+    }
+}
+HealthBar.prototype.GREEN = "#0f0";
+HealthBar.prototype.RED = "#f00";
+HealthBar.prototype.WIDTH = 24;
+HealthBar.prototype.HEIGHT = 2;
+
+
 class Rect extends Node {
     constructor(options) {
         super(options || {});
@@ -639,6 +663,7 @@ window.Graphics = {
     HitlessLayer,
     GridPreview,
     SelectionRect,
+    HealthBar,
     Rect,
     Text,
     StrokedText,

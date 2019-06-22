@@ -29,6 +29,7 @@ class Unit extends Entity {
 
         this.setImage();
         this.resetBoundingBox();
+        this.createHealthBar();
     }
     getSprite() {
         let set = this.IMAGES[this.state][this.level][this.rotation]
