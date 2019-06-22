@@ -91,6 +91,11 @@ class GameViewer {
 
         this.hoveredEntity = null;
 
+        this.scroll_acc = {
+            x: 0,
+            y: 0
+        };
+
         // this.layers.grid.init(this.mapDrawable);
 
         this.engine.startLoop();
@@ -156,29 +161,33 @@ class GameViewer {
         this.mouseY = e.evt.layerY;
     }
     handleScroll() {
-        if (this.mouseX < 30) {
-            this.viewPort.x -= 20;
-            this.mapDrawable.x(-this.viewPort.x);
-            this.entitiesHolder.x(-this.viewPort.x);
-            this.orderIndicator.attrs.x += 20;
-        } else if (this.mouseX > this.stage.width() - 30) {
-            this.viewPort.x += 20;
-            this.mapDrawable.x(-this.viewPort.x);
-            this.entitiesHolder.x(-this.viewPort.x);
-            this.orderIndicator.attrs.x -= 20;
+        if (this.mouseX < GameViewer.prototype.SCROLL_MARGIN) {
+            this.scroll_acc.x = Math.min(this.scroll_acc.x + 1, GameViewer.prototype.MAX_SCROLL_SPEED);
+        } else if (this.mouseX > this.stage.width() - GameViewer.prototype.SCROLL_MARGIN) {
+            this.scroll_acc.x = Math.max(this.scroll_acc.x - 1, -GameViewer.prototype.MAX_SCROLL_SPEED);
+        } else {
+            this.scroll_acc.x -= Math.sign(this.scroll_acc.x) * 2;
+            this.scroll_acc.x &= -2;
         }
 
-        if (this.mouseY < 30) {
-            this.viewPort.y -= 20;
-            this.mapDrawable.y(-this.viewPort.y);
-            this.entitiesHolder.y(-this.viewPort.y);
-            this.orderIndicator.attrs.y += 20;
-        } else if (this.mouseY > this.stage.height() - 30) {
-            this.viewPort.y += 20;
-            this.mapDrawable.y(-this.viewPort.y);
-            this.entitiesHolder.y(-this.viewPort.y);
-            this.orderIndicator.attrs.y -= 20;
+        if (this.mouseY < GameViewer.prototype.SCROLL_MARGIN) {
+            this.scroll_acc.y = Math.min(this.scroll_acc.y + 1, GameViewer.prototype.MAX_SCROLL_SPEED);
+        } else if (this.mouseY > this.stage.height() - GameViewer.prototype.SCROLL_MARGIN) {
+            this.scroll_acc.y = Math.max(this.scroll_acc.y - 1, -GameViewer.prototype.MAX_SCROLL_SPEED);
+        } else {
+            this.scroll_acc.y -= Math.sign(this.scroll_acc.y) * 2;
+            this.scroll_acc.y &= -2
         }
+
+        this.viewPort.x -= this.scroll_acc.x;
+        this.mapDrawable.x(-this.viewPort.x);
+        this.entitiesHolder.x(-this.viewPort.x);
+        this.orderIndicator.attrs.x += this.scroll_acc.x;
+
+        this.viewPort.y -= this.scroll_acc.y;
+        this.mapDrawable.y(-this.viewPort.y);
+        this.entitiesHolder.y(-this.viewPort.y);
+        this.orderIndicator.attrs.y += this.scroll_acc.y;
     }
     setCursor() {
         let cursor = "arrow";
@@ -237,6 +246,8 @@ class GameViewer {
     }
 }
 GameViewer.prototype.ERROR_MESSAGE_TIMEOUT = 35 * 6;
+GameViewer.prototype.MAX_SCROLL_SPEED = 40;
+GameViewer.prototype.SCROLL_MARGIN = 30;
 GameViewer.prototype.TOOLTIP_OPTIONS = {
     fontSize: 15,
     fontFamily: 'helvetica',
