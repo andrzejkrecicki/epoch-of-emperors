@@ -13,7 +13,7 @@ import { Alligator } from './units/alligator.js';
 import { Elephant } from './units/elephant.js';
 import { Entity } from './entity.js';
 import { Player } from './player.js';
-import { DeadBody } from './flat_drawables.js';
+import { DeadBody, Rubble } from './flat_drawables.js';
 import { Building } from './buildings/building.js';
 import { TownCenter } from './buildings/town_center.js';
 import { Tower } from './buildings/tower.js';
@@ -412,6 +412,15 @@ class Engine {
             );
             this.drawables.push(dead);
             this.viewer.addEntity(dead, true);
+        } else if (entity instanceof Building && entity.LEAVES_LEFTOVERS) {
+            let rubble = new Rubble(
+                entity.subtile_x,
+                entity.subtile_y,
+                entity.IMAGES[entity.state][entity.player.civ][entity.level][0],
+                entity.IMAGE_OFFSETS[entity.state][entity.player.civ][entity.level],
+            );
+            this.drawables.push(rubble);
+            this.viewer.addEntity(rubble);
         }
     }
     makeProjectile(Projectile, thrower, victim) {

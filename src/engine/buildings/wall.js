@@ -145,6 +145,14 @@ Wall.prototype.IMAGES = {
             Sprites.SpriteSequence("img/buildings/wall/construction_all_all_", 4),
             Sprites.SpriteSequence("img/buildings/wall/construction_all_all_", 4)
         ]
+    ],
+    [Wall.prototype.STATE.DESTROYED]: [
+        [
+            [Sprites.Sprite("img/buildings/wall/01_all_rubble.png")],
+            [Sprites.Sprite("img/buildings/wall/02_all_rubble.png")],
+            [Sprites.Sprite("img/buildings/wall/02_all_rubble.png")],
+            [Sprites.Sprite("img/buildings/wall/02_all_rubble.png")]
+        ]
     ]
 }
 
@@ -162,6 +170,9 @@ Wall.prototype.IMAGE_OFFSETS = {
     ],
     [Wall.prototype.STATE.DONE_V]: [
         [{ x: -2, y: 37 }, { x: -15, y: 33 }, { x: -2, y: 37 }, { x: -2, y: 37 }]
+    ],
+    [Wall.prototype.STATE.DESTROYED]: [
+        [{ x: -2, y: 18 }, { x: -6, y: 19 }, { x: -6, y: 19 }, { x: -6, y: 19 }]
     ]
 }
 

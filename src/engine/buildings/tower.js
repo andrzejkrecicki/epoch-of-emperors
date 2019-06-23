@@ -104,6 +104,14 @@ Tower.prototype.IMAGES = {
             Sprites.SpriteSequence("img/buildings/construction_small_", 4),
             Sprites.SpriteSequence("img/buildings/construction_small_", 4)
         ]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [
+            [Sprites.Sprite("img/buildings/rubble_medium.png")],
+            [Sprites.Sprite("img/buildings/rubble_medium.png")],
+            [Sprites.Sprite("img/buildings/rubble_medium.png")],
+            [Sprites.Sprite("img/buildings/rubble_medium.png")]
+        ]
     ]
 };
 
@@ -114,6 +122,9 @@ Tower.prototype.IMAGE_OFFSETS = {
     ],
     [Building.prototype.STATE.CONSTRUCTION]: [
         [{ x: -6, y: 35 }, { x: -6, y: 35 }, { x: -6, y: 35 }, { x: -6, y: 35 }]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [{ x: -3, y: 25 }, { x: -3, y: 25 }, { x: -3, y: 25 }, { x: -3, y: 25 }]
     ]
 }
 

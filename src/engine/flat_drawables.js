@@ -30,12 +30,6 @@ TreeStump.prototype.IMAGES = [Sprites.Sprite('img/trees/stump.png')];
 TreeStump.prototype.IMAGE_OFFSET = { x: -11, y: 10 }
 
 
-class ExhaustedFarm extends FlatDrawable {
-}
-ExhaustedFarm.prototype.IMAGES = [Sprites.Sprite('img/buildings/farm/exhausted.png')];
-ExhaustedFarm.prototype.IMAGE_OFFSET = { x: 17 - 15, y: 44 - 10 }
-ExhaustedFarm.prototype.MAX_AGE = 35 * 45;
-
 
 class DeadBody extends Entity {
     constructor(subtile_x, subtile_y, position, images, offsets, player) {
@@ -69,5 +63,34 @@ DeadBody.prototype.HAS_BITMAP_HITMASK = false;
 DeadBody.prototype.HAS_HITMASK = false;
 DeadBody.prototype.COLORIZE = true;
 
+class Rubble extends Entity {
+    constructor(subtile_x, subtile_y, image, offset) {
+        super(subtile_x, subtile_y);
+        this.isFlat = true;
+        this.image = image;
+        this.offset = offset;
+        this.setImage();
+        this.age = 0;
+        this.max_age = 60 * 35;
+    }
+    getSprite() {
+        return this.image;
+    }
+    getOffset() {
+        return this.offset;
+    }
+    process(engine) {
+        ++this.age;
+        if (this.age >= this.max_age) {
+            if (this.attrs.opacity > 0.04) {
+                this.attrs.opacity -= 0.04;
+            } else this.destroy(engine);
+        }
+    }
+}
+Rubble.prototype.SUBTILE_WIDTH = 0;
+Rubble.prototype.HAS_BITMAP_HITMASK = false;
+Rubble.prototype.HAS_HITMASK = false;
 
-export { TreeStump, ExhaustedFarm, DeadBody }
+
+export { TreeStump, DeadBody, Rubble }

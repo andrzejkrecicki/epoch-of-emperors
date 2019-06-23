@@ -106,6 +106,10 @@ class Building extends Entity {
             this.destroy(engine);
         }
     }
+    destroy(engine) {
+        this.state = this.STATE.DESTROYED;
+        super.destroy(engine);
+    }
     acceptsResource(type) {
         return false;
     }
@@ -125,10 +129,13 @@ Building.prototype.TOOLTIP = "Click to select this building.";
 Building.prototype.TYPE = "building";
 Building.prototype.CONTINUOUS_PREVIEW = false;
 Building.prototype.LEVELS_UP_ON_AGE = true;
+Building.prototype.LEAVES_LEFTOVERS = true;
+
 
 Building.prototype.STATE = {
     CONSTRUCTION: 0,
     DONE: 1,
+    DESTROYED: 2,
     DENIED: 100,
 }
 Building.prototype.IMAGES = {
@@ -139,12 +146,23 @@ Building.prototype.IMAGES = {
             Sprites.SpriteSequence("img/buildings/construction_big_", 4),
             Sprites.SpriteSequence("img/buildings/construction_big_", 4)
         ]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [
+            [Sprites.Sprite("img/buildings/rubble_big.png")],
+            [Sprites.Sprite("img/buildings/rubble_big.png")],
+            [Sprites.Sprite("img/buildings/rubble_big.png")],
+            [Sprites.Sprite("img/buildings/rubble_big.png")]
+        ]
     ]
 }
 
 Building.prototype.IMAGE_OFFSETS = {
     [Building.prototype.STATE.CONSTRUCTION]: [
         [{ x: 5, y: 47 }, { x: 5, y: 47 }, { x: 5, y: 47 }, { x: 5, y: 47 }]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [{ x: -11, y: 40 }, { x: -11, y: 40 }, { x: -11, y: 40 }, { x: -11, y: 40 }]
     ]
 }
 

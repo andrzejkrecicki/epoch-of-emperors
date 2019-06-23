@@ -1,5 +1,4 @@
 import { Building } from './building.js';
-import { ExhaustedFarm } from '../flat_drawables.js';
 import { Sprites } from '../../sprites.js';
 
 class Farm extends Building {
@@ -33,7 +32,6 @@ Farm.prototype.AVATAR = [
 Farm.prototype.MAX_HP = 50;
 Farm.prototype.SUBTILE_WIDTH = 5;
 Farm.prototype.INTERACT_WHEN_COMPLETE = true;
-Farm.prototype.LEFTOVERS = ExhaustedFarm;
 
 Farm.prototype.ACTION_KEY = "F";
 Farm.prototype.COST = {
@@ -49,6 +47,14 @@ Farm.prototype.IMAGES = {
             [Sprites.Sprite("img/buildings/farm/all.png")],
             [Sprites.Sprite("img/buildings/farm/all.png")]
         ]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [
+            [Sprites.Sprite("img/buildings/farm/exhausted.png")],
+            [Sprites.Sprite("img/buildings/farm/exhausted.png")],
+            [Sprites.Sprite("img/buildings/farm/exhausted.png")],
+            [Sprites.Sprite("img/buildings/farm/exhausted.png")]
+        ]
     ]
 }
 
@@ -56,6 +62,9 @@ Farm.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.DONE]: [
         [{ x: 17, y: 44 }, { x: 17, y: 44 }, { x: 17, y: 44 }, { x: 17, y: 44 }]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [{ x: -1, y: 33 }, { x: -1, y: 33 }, { x: -1, y: 33 }, { x: -1, y: 33 }]
     ]
 }
 

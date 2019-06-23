@@ -91,6 +91,14 @@ Dock.prototype.IMAGES = {
             Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3),
             Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3)
         ]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [
+            [Sprites.Sprite("img/buildings/dock/rubble.png")],
+            [Sprites.Sprite("img/buildings/dock/rubble.png")],
+            [Sprites.Sprite("img/buildings/dock/rubble.png")],
+            [Sprites.Sprite("img/buildings/dock/rubble.png")]
+        ]
     ]
 }
 
@@ -101,6 +109,9 @@ Dock.prototype.IMAGE_OFFSETS = {
     ],
     [Building.prototype.STATE.DONE]: [
         [{ x: -22, y: 36 }, { x: -22, y: 36 }, { x: 11, y: 45 }, { x: 3, y: 79 }]
+    ],
+    [Building.prototype.STATE.DESTROYED]: [
+        [{ x: -23, y: 26 }, { x: -23, y: 26 }, { x: -23, y: 26 }, { x: -23, y: 26 }]
     ]
 }
 
