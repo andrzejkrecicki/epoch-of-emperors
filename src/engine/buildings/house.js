@@ -75,14 +75,14 @@ House.prototype.IMAGES = {
     [Building.prototype.STATE.CONSTRUCTION]: [
         [
             Sprites.SpriteSequence("img/buildings/house/construction_01_all_", 4),
-            Sprites.SpriteSequence("img/buildings/house/construction_01_all_", 4),
-            Sprites.SpriteSequence("img/buildings/house/construction_01_all_", 4),
-            Sprites.SpriteSequence("img/buildings/house/construction_01_all_", 4)
+            Sprites.SpriteSequence("img/buildings/construction_small_", 4),
+            Sprites.SpriteSequence("img/buildings/construction_small_", 4),
+            Sprites.SpriteSequence("img/buildings/construction_small_", 4)
         ]
     ],
     [Building.prototype.STATE.DESTROYED]: [
         [
-            [Sprites.Sprite("img/buildings/rubble_medium.png")],
+            [Sprites.Sprite("img/buildings/house/01_all_rubble.png")],
             [Sprites.Sprite("img/buildings/rubble_medium.png")],
             [Sprites.Sprite("img/buildings/rubble_medium.png")],
             [Sprites.Sprite("img/buildings/rubble_medium.png")]
@@ -93,13 +93,13 @@ House.prototype.IMAGES = {
 House.prototype.IMAGE_OFFSETS = {
     ...Building.prototype.IMAGE_OFFSETS,
     [Building.prototype.STATE.CONSTRUCTION]: [
-        [{ x: -2, y: 30 }, { x: -2, y: 30 }, { x: -2, y: 30 }, { x: -2, y: 30 }]
+        [{ x: -2, y: 30 }, { x: 9, y: 35 }, { x: 9, y: 35 }, { x: 9, y: 35 }]
     ],
     [Building.prototype.STATE.DONE]: [
         [{ x: -9, y: 25 }, { x: -13, y: 45 }, { x: -7, y: 43 }, { x: 10, y: 51 }]
     ],
     [Building.prototype.STATE.DESTROYED]: [
-        [{ x: 12, y: 25 }, { x: 12, y: 25 }, { x: 12, y: 25 }, { x: 12, y: 25 }]
+        [{ x: -21, y: 17 }, { x: 12, y: 25 }, { x: 12, y: 25 }, { x: 12, y: 25 }]
     ]
 }
 
