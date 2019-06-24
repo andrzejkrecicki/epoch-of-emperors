@@ -71,6 +71,8 @@ Tower.prototype.SHOT_DELAY = 27;
 Tower.prototype.SUBTILE_WIDTH = 4;
 Tower.prototype.LEVELS_UP_ON_AGE = false;
 
+Tower.prototype.FLAME_POSITIONS = [{ x: 64, y: 0 }];
+
 Tower.prototype.ACTION_KEY = "T";
 Tower.prototype.COST = {
     food: 0, wood: 0, stone: 150, gold: 0

@@ -77,6 +77,8 @@ Wall.prototype.SUBTILE_WIDTH = 2;
 Wall.prototype.CONTINUOUS_PREVIEW = true;
 Wall.prototype.LEVELS_UP_ON_AGE = false;
 
+Wall.prototype.FLAME_POSITIONS = [];
+
 Wall.prototype.ACTION_KEY = "W";
 Wall.prototype.COST = {
     food: 0, wood: 0, stone: 5, gold: 0

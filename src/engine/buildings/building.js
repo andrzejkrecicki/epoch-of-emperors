@@ -1,6 +1,7 @@
 import { Entity } from '../entity.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Sprites } from '../../sprites.js';
+import { Flame } from './details.js';
 
 
 class Building extends Entity {
@@ -19,6 +20,7 @@ class Building extends Entity {
         this.player.addBuilding(this);
 
         this.setImage();
+        this.createFlames();
         this.resetBoundingBox();
         this.createHealthBar();
     }
@@ -45,6 +47,17 @@ class Building extends Entity {
     levelUp() {
         ++this.level;
         this.updateImage();
+    }
+    createFlames() {
+        this.flames = [];
+        for (let pos of this.FLAME_POSITIONS) {
+            let flame = new Flame(pos.x, pos.y, this.flames.length % 2, -1);
+            this.flames.push(flame);
+            this.add(flame);
+        }
+    }
+    adjustFlames(percentage) {
+        for (let flame of this.flames) flame.setPercentage(percentage);
     }
     getInteractionType(object) {
     }
@@ -101,6 +114,7 @@ class Building extends Entity {
     }
     takeHit(value, attacker, engine) {
         this.hp -= value;
+        if (this.isComplete) this.adjustFlames((this.max_hp - this.hp) / this.max_hp);
         if (this.hp <= 0) {
             this.hp = 0;
             this.destroy(engine);
@@ -130,6 +144,7 @@ Building.prototype.TYPE = "building";
 Building.prototype.CONTINUOUS_PREVIEW = false;
 Building.prototype.LEVELS_UP_ON_AGE = true;
 Building.prototype.LEAVES_LEFTOVERS = true;
+Building.prototype.FLAME_POSITIONS = [{ x: 34, y: 0 }, { x: 84, y: 20 }, { x: 136, y: 2 }, { x: 83, y: -26 }];
 
 
 Building.prototype.STATE = {

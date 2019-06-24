@@ -57,6 +57,8 @@ House.prototype.MAX_HP = 75;
 House.prototype.SUBTILE_WIDTH = 3;
 House.prototype.PEOPLE_PER_HOUSE = 4;
 
+House.prototype.FLAME_POSITIONS = [{ x: 48, y: 0 }];
+
 House.prototype.ACTION_KEY = "E";
 House.prototype.COST = {
     food: 0, wood: 30, stone: 0, gold: 0
