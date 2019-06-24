@@ -9,30 +9,30 @@ import * as interactions from '../interactions.js';
 class Tower extends Building {
     constructor() {
         super(...arguments);
-        this.flames = [];
+        this.torches = [];
     }
     setComplete() {
         super.setComplete();
         this.attributes.attack = this.ATTRIBUTES.ATTACK + this.level;
         this.attributes.range = this.ATTRIBUTES.RANGE + this.level;
 
-        for (let pos of this.FLAMES_POSITIONS[this.level]) {
-            let flame = new FireSmall();
-            this.flames.push(flame);
-            this.add(flame);
+        for (let pos of this.TORCH_POSITIONS[this.level]) {
+            let torch = new FireSmall();
+            this.torches.push(torch);
+            this.add(torch);
         }
-        this.fixFlames();
+        this.fixTorches();
     }
     levelUp() {
         super.levelUp();
-        this.fixFlames();
+        this.fixTorches();
         ++this.attributes.attack;
         ++this.attributes.range;
     }
-    fixFlames() {
-        for (let i = 0; i < this.flames.length; ++i) {
-            let pos = this.FLAMES_POSITIONS[this.level][i];
-            this.flames[i].position({
+    fixTorches() {
+        for (let i = 0; i < this.torches.length; ++i) {
+            let pos = this.TORCH_POSITIONS[this.level][i];
+            this.torches[i].position({
                 x: pos.x - this.getOffset().x,
                 y: pos.y - this.getOffset().y
             });
@@ -82,7 +82,7 @@ Tower.prototype.ATTRIBUTES = {
 }
 
 
-Tower.prototype.FLAMES_POSITIONS = [
+Tower.prototype.TORCH_POSITIONS = [
     [{ x: 13, y: 10 }, { x: 28, y: 0 }, { x: 37, y: 17 }, { x: 53, y: 11 }],
     [{ x: 24, y: 12 }, { x: 42, y: 1 }, { x: 45, y: 18 }, { x: 66, y: 12 }],
 ]
