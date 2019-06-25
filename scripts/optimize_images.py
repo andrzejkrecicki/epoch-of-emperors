@@ -18,13 +18,21 @@ if __name__ == "__main__":
 
     null = open(os.devnull, 'w')
 
+    sizes = []
+
     for root, dirs, files in os.walk(args.input):
         for i, name in enumerate(files):
             if name.endswith("." + args.ext):
                 path = os.path.join(root, name)
+                sizes.append((path, os.path.getsize(path)))
                 subprocess.Popen(
                     args.cmd + path,
                     stderr=null
                 )
 
-    print time.time() - t0
+    for path, size in sizes:
+        new_size = os.path.getsize(path)
+        if new_size != size:
+            print "{} {} -> {} ({}%)".format(path, size, new_size, round(100 * new_size / size, 1))
+
+    print "{} files processed. Took {}s".format(len(sizes), round(time.time() - t0, 2))
