@@ -18,8 +18,6 @@ class Technology extends Action {
         this.entity.addTask(this);
     }
     time() {
-        // TODO - remove the bellow line in production build
-        return 35;
         return this.TIME;
     }
     finalize() {
