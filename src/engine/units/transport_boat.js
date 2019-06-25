@@ -69,6 +69,7 @@ TransportBoat.prototype.CREATION_TIME = 26 * 35;
 TransportBoat.prototype.MAX_LOAD = [5, 10];
 TransportBoat.prototype.LEAVES_LEFTOVERS = false;
 TransportBoat.prototype.CAN_ATTACK = false;
+TransportBoat.prototype.CAN_ENTER_SHIP = false;
 
 
 TransportBoat.prototype.ACTION_KEY = "T";

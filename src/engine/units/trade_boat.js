@@ -41,6 +41,7 @@ TradeBoat.prototype.SPEED = 3;
 TradeBoat.prototype.CREATION_TIME = 26 * 35;
 TradeBoat.prototype.LEAVES_LEFTOVERS = false;
 TradeBoat.prototype.CAN_ATTACK = false;
+TradeBoat.prototype.CAN_ENTER_SHIP = false;
 
 
 TradeBoat.prototype.ACTION_KEY = "R";

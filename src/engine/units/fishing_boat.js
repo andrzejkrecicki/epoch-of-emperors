@@ -37,6 +37,8 @@ FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;
 FishingBoat.prototype.LEAVES_LEFTOVERS = false;
 FishingBoat.prototype.CAN_ATTACK = false;
+FishingBoat.prototype.CAN_ENTER_SHIP = false;
+
 
 FishingBoat.prototype.ACTION_KEY = "F";
 FishingBoat.prototype.COST = {
