@@ -44,6 +44,13 @@ class Player {
                 hp_multiplier: 1,
                 speed: 0
             },
+            siege: {
+                attack: 0,
+                armor: 0,
+                missile_armor: 0,
+                hp_multiplier: 1,
+                speed: 0
+            },
             priest: {
                 attack: 0,
                 armor: 0,
@@ -84,7 +91,7 @@ class Player {
             building: {
                 hp_multiplier: 1
             },
-            other: {
+            animal: {
                 attack: 0,
                 armor: 0,
                 missile_armor: 0,

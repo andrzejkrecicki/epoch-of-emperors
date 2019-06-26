@@ -227,9 +227,20 @@ class GameViewer {
                     this.hoveredEntity = this.engine.map.getEntityAtSubtile(subtile.x, subtile.y);
                 }
             }
+
             if (this.hoveredEntity) {
-                this.tooltip.text(this.hoveredEntity.TOOLTIP);
+                this.tooltip.text(this.hoveredEntity.toolTip());
                 this.tooltip.show();
+            }
+            if (this.engine.selectedEntity instanceof Unit || this.engine.selectedEntity instanceof Building) {
+                if (this.hoveredEntity != null && this.engine.selectedEntity != this.hoveredEntity) {
+                    let Interaction = this.engine.selectedEntity.getInteractionType(this.hoveredEntity);
+                    if (Interaction) {
+                        let interaction = new Interaction(this.selectedEntity, this.hoveredEntity, this.engine);
+                        this.tooltip.text(interaction.toolTip());
+                        this.tooltip.show();
+                    }
+                }
             }
         }
     }

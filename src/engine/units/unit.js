@@ -57,6 +57,9 @@ class Unit extends Entity {
     getSpeed() {
         return this.player ? this.SPEED + this.player.attributeBonus[this.TYPE].speed : this.SPEED;
     }
+    toolTip() {
+        return this.TOOLTIP[this.TYPE];
+    }
     destroy(engine) {
         super.destroy(engine);
         --this.player.population;
@@ -167,7 +170,16 @@ class Unit extends Entity {
     afterMoveOrder() {
     }
 }
-Unit.prototype.TOOLTIP = "Click to select this unit.";
+Unit.prototype.TOOLTIP = {
+    "villager": "Click to select this villager.",
+    "infantry": "Click to select this military unit.",
+    "archer": "Click to select this military unit.",
+    "cavalry": "Click to select this military unit.",
+    "fishing_boat": "Click to select this boat.",
+    "ship": "Click to select this boat.",
+    "priest": "Click to select this priest.",
+    "siege": "Click to select this siege weapon.",
+};
 Unit.prototype.COLORIZE = true;
 Unit.prototype.LEAVES_LEFTOVERS = true;
 Unit.prototype.CAN_ENTER_SHIP = true;

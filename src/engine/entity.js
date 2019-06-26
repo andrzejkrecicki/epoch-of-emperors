@@ -105,6 +105,9 @@ class Entity extends Graphics.Node {
     getName() {
         return this.NAME;
     }
+    toolTip() {
+        return this.TOOLTIP;
+    }
     updateImage() {
         this.image.image(Sprites.Colorize(this.getSprite(), this.COLORIZE && this.player));
         this.image.x(-this.getOffset().x);
@@ -165,5 +168,6 @@ Entity.prototype.COST = {
     food: 0, wood: 0, stone: 0, gold: 0
 }
 Entity.prototype.COLORIZE = false;
+Entity.prototype.TOOLTIP = '';
 
 export { Entity }

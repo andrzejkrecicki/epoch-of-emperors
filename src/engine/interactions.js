@@ -38,9 +38,13 @@ class Interaction {
     static getDistance() {
         return Interaction.prototype.DISTANCE;
     }
+    toolTip() {
+        return this.TOOLTIP;
+    }
 }
 Interaction.prototype.DISTANCE = 0;
 Interaction.prototype.CURSOR = 'pointer';
+Interaction.prototype.TOOLTIP = '';
 
 
 class ResourceExtractionInteraction extends Interaction {
@@ -85,6 +89,7 @@ class FarmingInteraction extends ResourceExtractionInteraction {
 FarmingInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.FOOD;
 FarmingInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.FOOD];
 FarmingInteraction.prototype.RATE = 60;
+FarmingInteraction.prototype.TOOLTIP = 'Right-click to farm here.';
 
 
 class BuilderInteraction extends Interaction {
@@ -105,6 +110,7 @@ class BuilderInteraction extends Interaction {
     }
 }
 BuilderInteraction.prototype.RATE = 3;
+BuilderInteraction.prototype.TOOLTIP = 'Right-click to construct this building.';
 
 
 class ReturnResourcesInteraction extends Interaction {
@@ -125,6 +131,8 @@ class ReturnResourcesInteraction extends Interaction {
         } else this.active.setBaseState(this.active.STATE.IDLE);
     }
 }
+ReturnResourcesInteraction.prototype.TOOLTIP = 'Right-click to return resources.';
+
 
 class LumberInteraction extends Interaction {
     preInit() {
@@ -148,6 +156,7 @@ class LumberInteraction extends Interaction {
     }
 }
 LumberInteraction.prototype.RATE = 11;
+LumberInteraction.prototype.TOOLTIP = 'Right-click to chop down this tree.';
 
 
 class ChopInteraction extends ResourceExtractionInteraction {
@@ -164,6 +173,7 @@ class ChopInteraction extends ResourceExtractionInteraction {
 ChopInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.WOOD;
 ChopInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.WOOD];
 ChopInteraction.prototype.RATE = 63;
+ChopInteraction.prototype.TOOLTIP = 'Right-click to chop down this tree.';
 
 
 class ForageInteraction extends ResourceExtractionInteraction {
@@ -175,6 +185,7 @@ class ForageInteraction extends ResourceExtractionInteraction {
 ForageInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.FOOD;
 ForageInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.FOOD];
 ForageInteraction.prototype.RATE = 60;
+ForageInteraction.prototype.TOOLTIP = 'Right-click to forage here.';
 
 
 class GoldMineInteraction extends ResourceExtractionInteraction {
@@ -191,6 +202,7 @@ class GoldMineInteraction extends ResourceExtractionInteraction {
 GoldMineInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.GOLD;
 GoldMineInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.GOLD];
 GoldMineInteraction.prototype.RATE = 77;
+GoldMineInteraction.prototype.TOOLTIP = 'Right-click to mine for gold.';
 
 
 class StoneMineInteraction extends ResourceExtractionInteraction {
@@ -208,6 +220,7 @@ class StoneMineInteraction extends ResourceExtractionInteraction {
 StoneMineInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.STONE;
 StoneMineInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.STONE];
 StoneMineInteraction.prototype.RATE = 77;
+StoneMineInteraction.prototype.TOOLTIP = 'Right-click to mine for stone.';
 
 
 class HunterInteraction extends Interaction {
@@ -236,6 +249,7 @@ class HunterInteraction extends Interaction {
 }
 HunterInteraction.prototype.RATE = 10;
 HunterInteraction.prototype.DISTANCE = 6;
+HunterInteraction.prototype.TOOLTIP = 'Right-click to hunt this animal.';
 
 
 class ButcherInteraction extends ResourceExtractionInteraction {
@@ -256,6 +270,7 @@ class ButcherInteraction extends ResourceExtractionInteraction {
 ButcherInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.FOOD;
 ButcherInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.FOOD];
 ButcherInteraction.prototype.RATE = 60;
+ButcherInteraction.prototype.TOOLTIP = 'Right-click to hunt this animal.';
 
 
 class FishingInteraction extends ResourceExtractionInteraction {
@@ -273,6 +288,7 @@ class FishingInteraction extends ResourceExtractionInteraction {
 FishingInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.FOOD;
 FishingInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.FOOD];
 FishingInteraction.prototype.RATE = 60;
+FishingInteraction.prototype.TOOLTIP = 'Right-click to fish here.';
 
 
 class TradeInteraction extends ResourceExtractionInteraction {
@@ -308,7 +324,25 @@ class TradeInteraction extends ResourceExtractionInteraction {
 }
 
 
-class AttackInteraction extends Interaction {
+class BaseAttackInteraction extends Interaction {
+    toolTip() {
+        if (this.passive instanceof Unit && this.passive.TYPE == "animal") return this.TOOLTIPS[0];
+        else if (this.passive instanceof Unit && this.passive.TYPE == "ship") return this.TOOLTIPS[1];
+        else if (this.passive instanceof Unit && this.passive.TYPE == "fishing_boat") return this.TOOLTIPS[1];
+        else if (this.passive instanceof Unit) return this.TOOLTIPS[2];
+        else return this.TOOLTIPS[3];
+    }
+}
+BaseAttackInteraction.prototype.CURSOR = 'attack';
+BaseAttackInteraction.prototype.TOOLTIPS = [
+    'Right-click to attack this animal.',
+    'Right-click to attack this boat.',
+    'Right-click to attack this unit.',
+    'Right-click to attack this building.'
+];
+
+
+class AttackInteraction extends BaseAttackInteraction {
     init() {
         if (this.active.hasFullPath) {
             if (!this.active.isAdjecentTo(this.passive)) {
@@ -340,10 +374,8 @@ class AttackInteraction extends Interaction {
         this.active.rotateToEntity(this.passive);
     }
 }
-AttackInteraction.prototype.CURSOR = 'attack';
 
-
-class DistantAttackInteraction extends Interaction {
+class DistantAttackInteraction extends BaseAttackInteraction {
     init() {
         if (this.active.hasFullPath) {
             this.active.state = this.active.STATE.ATTACK;
@@ -380,7 +412,7 @@ class DistantAttackInteraction extends Interaction {
 DistantAttackInteraction.prototype.CURSOR = 'attack';
 
 
-class TowerAttackInteraction extends Interaction {
+class TowerAttackInteraction extends BaseAttackInteraction {
     init() {
         if (this.passive.destroyed) this.terminate();
     }
@@ -441,6 +473,7 @@ class EnterShipInteraction extends Interaction {
     }
 }
 EnterShipInteraction.prototype.CURSOR = 'affect';
+EnterShipInteraction.prototype.TOOLTIP = 'Right-click to board this transport.';
 
 
 class ConversionInteraction extends Interaction {
@@ -493,6 +526,10 @@ class ConversionInteraction extends Interaction {
         }
         this.active.rotateToEntity(this.passive);
     }
+    toolTip() {
+        if (this.passive instanceof Unit) return this.TOOLTIPS[0];
+        else return this.TOOLTIPS[1];
+    }
     static getDistance(active) {
         return active.attributes.range;
     }
@@ -500,6 +537,10 @@ class ConversionInteraction extends Interaction {
 ConversionInteraction.prototype.SUCCESS_PROBABILITY = 1 / 200;
 ConversionInteraction.prototype.MINIMAL_TIME = 35 * 4;
 ConversionInteraction.prototype.CURSOR = 'affect';
+ConversionInteraction.prototype.TOOLTIPS = [
+    'Right-click to convert this unit.',
+    'Right-click to convert this building.'
+]
 
 
 class HealInteraction extends Interaction {
@@ -535,6 +576,7 @@ class HealInteraction extends Interaction {
 }
 HealInteraction.prototype.RATE = 12;
 HealInteraction.prototype.CURSOR = 'affect';
+HealInteraction.prototype.TOOLTIP = 'Right-click to heal this unit.';
 
 
 export {
