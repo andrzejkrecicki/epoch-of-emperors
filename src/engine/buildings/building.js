@@ -81,6 +81,10 @@ class Building extends Entity {
             this.updateImage();
         }
     }
+    repairTick() {
+        ++this.hp;
+        this.adjustFlames((this.max_hp - this.hp) / this.max_hp);
+    }
     addTask(task) {
         if (!task.SUPPORTS_QUEUE && this.tasks.length) return;
         this.tasks.push(task);

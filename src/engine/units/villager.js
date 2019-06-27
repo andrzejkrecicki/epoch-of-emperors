@@ -32,7 +32,8 @@ class Villager extends Unit {
         if (object instanceof Farm && object.isComplete) return interactions.FarmingInteraction;
         else if (object instanceof Building) {
             if (this.carriedResource && object.acceptsResource(this.carriedResource)) return interactions.ReturnResourcesInteraction;
-            else if (object.hp < object.MAX_HP) return interactions.BuilderInteraction;
+            else if (!object.isComplete) return interactions.BuilderInteraction;
+            else if (object.hp < object.MAX_HP) return interactions.RepairInteraction;
         } else if (object instanceof Tree) {
             if (object.state == Tree.prototype.STATE.ALIVE) return interactions.LumberInteraction;
             else return interactions.ChopInteraction;

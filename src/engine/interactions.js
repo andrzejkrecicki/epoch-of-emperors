@@ -113,6 +113,22 @@ BuilderInteraction.prototype.RATE = 3;
 BuilderInteraction.prototype.TOOLTIP = 'Right-click to construct this building.';
 
 
+class RepairInteraction extends BuilderInteraction {
+    process() {
+        if (this.passive.destroyed) {
+            this.terminate();
+        } else if (this.passive.hp == this.passive.max_hp)
+            this.terminate();
+        else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
+            this.passive.repairTick();
+            this.active.ticks_waited = 0;
+        }
+    }
+}
+RepairInteraction.prototype.RATE = 10;
+RepairInteraction.prototype.TOOLTIP = 'Right-click to repair this building.';
+
+
 class ReturnResourcesInteraction extends Interaction {
     init() {
         if (this.passive.destroyed) {
@@ -580,9 +596,9 @@ HealInteraction.prototype.TOOLTIP = 'Right-click to heal this unit.';
 
 
 export {
-    FarmingInteraction, BuilderInteraction, ReturnResourcesInteraction, LumberInteraction,
-    ChopInteraction, ForageInteraction, GoldMineInteraction, StoneMineInteraction,
-    HunterInteraction, ButcherInteraction, FishingInteraction, TradeInteraction,
-    AttackInteraction, DistantAttackInteraction, TowerAttackInteraction, EnterShipInteraction,
-    ConversionInteraction, HealInteraction
+    FarmingInteraction, BuilderInteraction, RepairInteraction, ReturnResourcesInteraction,
+    LumberInteraction, ChopInteraction, ForageInteraction, GoldMineInteraction,
+    StoneMineInteraction, HunterInteraction, ButcherInteraction, FishingInteraction,
+    TradeInteraction, AttackInteraction, DistantAttackInteraction, TowerAttackInteraction,
+    EnterShipInteraction, ConversionInteraction, HealInteraction
 }

@@ -101,6 +101,7 @@ class Player {
         }
         this.interactionBonus = {
             BuilderInteraction: 0,
+            RepairInteraction: 0,
             FarmingInteraction: 0,
             ChopInteraction: 0,
             ForageInteraction: 0,
