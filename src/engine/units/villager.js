@@ -4,6 +4,7 @@ import { Farm } from '../buildings/farm.js';
 import { GoldMine } from '../resources/gold.js';
 import { StoneMine } from '../resources/stone.js';
 import { Bush } from '../resources/bush.js';
+import { FishBig } from '../resources/fish.js';
 import { Animal } from './animal.js';
 import { Tree } from '../trees.js';
 import { Sprites } from '../../sprites.js';
@@ -40,6 +41,7 @@ class Villager extends Unit {
         } else if (object instanceof Bush) return interactions.ForageInteraction;
         else if (object instanceof GoldMine) return interactions.GoldMineInteraction;
         else if (object instanceof StoneMine) return interactions.StoneMineInteraction;
+        else if (object instanceof FishBig) return interactions.FisherInteraction;
         else if (object instanceof Animal) {
             if (object.hp > 0) return interactions.HunterInteraction;
             else return interactions.ButcherInteraction;
@@ -57,6 +59,7 @@ class Villager extends Unit {
         if (this.state & Villager.prototype.STATE.CARRY_FARM) this.state = Villager.prototype.STATE.FARMER;
         if (this.state & Villager.prototype.STATE.BUTCHER) this.state = Villager.prototype.STATE.HUNTER;
         if (this.state & Villager.prototype.STATE.CARRY_MEAT) this.state = Villager.prototype.STATE.HUNTER;
+        if (this.state & Villager.prototype.STATE.CARRY_FISH) this.state = Villager.prototype.STATE.FISHER;
     }
     takeHit(value, attacker, engine) {
         // take into account armour etc
@@ -154,6 +157,16 @@ Villager.prototype.STATE.CARRY_MEAT = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH
 Villager.prototype.STATE.CARRY_MEAT_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_MEAT;
 Villager.prototype.STATE.CARRY_MEAT_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_MEAT;
 
+Villager.prototype.STATE.FISHER = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH + 14);
+Villager.prototype.STATE.FISHER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FISHER;
+Villager.prototype.STATE.FISHER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FISHER;
+Villager.prototype.STATE.FISHER_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.FISHER;
+Villager.prototype.STATE.FISHER_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.FISHER;
+
+Villager.prototype.STATE.CARRY_FISH = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH + 15);
+Villager.prototype.STATE.CARRY_FISH_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_FISH;
+Villager.prototype.STATE.CARRY_FISH_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_FISH;
+
 
 Villager.prototype.FRAME_RATE = { ...Unit.prototype.FRAME_RATE,
     [Villager.prototype.STATE.ATTACK]: 3,
@@ -165,7 +178,8 @@ Villager.prototype.FRAME_RATE = { ...Unit.prototype.FRAME_RATE,
     [Villager.prototype.STATE.MINE]: 3,
     [Villager.prototype.STATE.FARMER]: 3,
     [Villager.prototype.STATE.HUNTER]: 2,
-    [Villager.prototype.STATE.BUTCHER]: 4
+    [Villager.prototype.STATE.BUTCHER]: 4,
+    [Villager.prototype.STATE.FISHER]: 3
 }
 
 Villager.prototype.IMAGES = {
@@ -181,6 +195,8 @@ Villager.prototype.IMAGES = {
     [Villager.prototype.STATE.CARRY_FARM_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_farm/", 1, 12)],
     [Villager.prototype.STATE.HUNTER_IDLE]: [Sprites.DirectionSprites("img/units/villager/hunter_idle/", 1)],
     [Villager.prototype.STATE.CARRY_MEAT_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_meat/", 1, 12)],
+    [Villager.prototype.STATE.FISHER_IDLE]: [Sprites.DirectionSprites("img/units/villager/fisher_idle/", 1)],
+    [Villager.prototype.STATE.CARRY_FISH_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_fish/", 1, 1)],
 
     [Villager.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/villager/moving/", 15)],
     [Villager.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/villager/attack/", 15)],
@@ -224,8 +240,13 @@ Villager.prototype.IMAGES = {
     [Villager.prototype.STATE.HUNTER_DEAD]: [Sprites.DirectionSprites("img/units/villager/hunter_dead/", 6)],
 
     [Villager.prototype.STATE.BUTCHER]: [Sprites.DirectionSprites("img/units/villager/butcher/", 12)],
-    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_meat/", 15)]
+    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_meat/", 15)],
 
+    [Villager.prototype.STATE.FISHER]: [Sprites.DirectionSprites("img/units/villager/fisher/", 16)],
+    [Villager.prototype.STATE.FISHER_MOVING]: [Sprites.DirectionSprites("img/units/villager/hunter_moving/", 15)],
+    [Villager.prototype.STATE.FISHER_DYING]: [Sprites.DirectionSprites("img/units/villager/hunter_dying/", 10)],
+    [Villager.prototype.STATE.FISHER_DEAD]: [Sprites.DirectionSprites("img/units/villager/hunter_dead/", 6)],
+    [Villager.prototype.STATE.CARRY_FISH_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_fish/", 15)],
 
 }
 
@@ -288,6 +309,15 @@ Villager.prototype.IMAGE_OFFSETS = {
     [Villager.prototype.STATE.BUTCHER]: [{ x: 11, y: 32 }],
     [Villager.prototype.STATE.CARRY_MEAT_MOVING]: [{ x: -1, y: 34 }],
     [Villager.prototype.STATE.CARRY_MEAT_IDLE]: [{ x: -1, y: 34 }],
+
+    [Villager.prototype.STATE.FISHER]: [{ x: 30, y: 49 }],
+    [Villager.prototype.STATE.FISHER_IDLE]: [{ x: -1, y: 40 }],
+    [Villager.prototype.STATE.FISHER_MOVING]: [{ x: 10, y: 41 }],
+    [Villager.prototype.STATE.FISHER_DYING]: [{ x: 51, y: 51 }],
+    [Villager.prototype.STATE.FISHER_DEAD]: [{ x: 51, y: 26 }],
+
+    [Villager.prototype.STATE.CARRY_FISH_MOVING]: [{ x: 1, y: 34 }],
+    [Villager.prototype.STATE.CARRY_FISH_IDLE]: [{ x: 1, y: 34 }],
 };
 
 

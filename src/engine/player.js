@@ -107,6 +107,7 @@ class Player {
             ForageInteraction: 0,
             GoldMineInteraction: 0,
             StoneMineInteraction: 0,
+            FisherInteraction: 0,
             ButcherInteraction: 0,
             FishingInteraction: 0,
             ConversionInteraction: 0

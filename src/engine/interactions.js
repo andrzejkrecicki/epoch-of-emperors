@@ -239,6 +239,24 @@ StoneMineInteraction.prototype.RATE = 77;
 StoneMineInteraction.prototype.TOOLTIP = 'Right-click to mine for stone.';
 
 
+class FisherInteraction extends ResourceExtractionInteraction {
+    preInit() {
+        this.active.state = this.active.STATE.FISHER;
+        this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
+
+    }
+    stop() {
+        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FISH;
+        else this.active.state = this.active.STATE.FISHER;
+        super.stop();
+    }
+}
+FisherInteraction.prototype.RESOURCE_TYPE = RESOURCE_TYPES.FOOD;
+FisherInteraction.prototype.RESOURCE_NAME = RESOURCE_NAME[RESOURCE_TYPES.FOOD];
+FisherInteraction.prototype.RATE = 54;
+FisherInteraction.prototype.TOOLTIP = 'Right-click to fish here.';
+
+
 class HunterInteraction extends Interaction {
     preInit() {
         this.active.state = this.active.STATE.HUNTER;
@@ -598,7 +616,7 @@ HealInteraction.prototype.TOOLTIP = 'Right-click to heal this unit.';
 export {
     FarmingInteraction, BuilderInteraction, RepairInteraction, ReturnResourcesInteraction,
     LumberInteraction, ChopInteraction, ForageInteraction, GoldMineInteraction,
-    StoneMineInteraction, HunterInteraction, ButcherInteraction, FishingInteraction,
-    TradeInteraction, AttackInteraction, DistantAttackInteraction, TowerAttackInteraction,
-    EnterShipInteraction, ConversionInteraction, HealInteraction
+    StoneMineInteraction, FisherInteraction, HunterInteraction, ButcherInteraction,
+    FishingInteraction, TradeInteraction, AttackInteraction, DistantAttackInteraction,
+    TowerAttackInteraction, EnterShipInteraction, ConversionInteraction, HealInteraction
 }
