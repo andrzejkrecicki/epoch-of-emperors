@@ -23,6 +23,25 @@ class Test {
     pass() {
         this.state = this.STATE.PASSED;
     }
+    unit(Unit, x, y, player) {
+        let unit = new Unit(this.center.x + x, this.center.y + y, this.engine.players[player]);
+        this.engine.addUnit(unit);
+        this.viewer.addEntity(unit);
+        return unit;
+    }
+    building(Building, x, y, player, complete=true) {
+        let building = new Building(this.center.x + x, this.center.y + y, this.engine.players[player]);
+        if (complete) building.setComplete();
+        this.engine.addBuilding(building);
+        this.viewer.addEntity(building);
+        return building;
+    }
+    entity(Entity, x, y) {
+        let entity = new Entity(this.center.x + x, this.center.y + y);
+        this.map.fillSubtilesWith(entity.subtile_x, entity.subtile_y, entity.SUBTILE_WIDTH, entity);
+        this.map.entities.push(entity);
+        return entity;
+    }
 }
 Test.prototype.STATE = {
     RUNNING: 0,

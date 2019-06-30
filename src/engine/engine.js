@@ -45,7 +45,7 @@ class Engine {
         this.buildings = [];
         this.projectiles = [];
         this.drawables = [];
-        this.addSampleUnits();
+        if (this.definition.map.addSampleUnits) this.addSampleUnits();
     }
     processUnits() {
         for (let entity of this.units) {

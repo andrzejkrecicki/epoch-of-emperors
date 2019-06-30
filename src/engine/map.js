@@ -44,7 +44,7 @@ class RandomMap extends Map {
     }
     generate() {
         this.terrain_tiles = new Array(this.edge_size).fill(null).map(() => {
-            return new Array(this.edge_size).fill(this.constructor.DEFAULT_TILE);
+            return new Array(this.edge_size).fill(this.DEFAULT_TILE);
         });
 
         // subtiles represent map tiles divided into 4 subtiles to allow
@@ -54,10 +54,6 @@ class RandomMap extends Map {
         }); 
 
         this.randomizeTerrain();
-        this.makeLake(50, 75, 10);
-        this.makeLake(50 - 10, 75 + 10, 10);
-        this.makeLake(50 - 20, 75 + 20, 10);
-        this.makeLake(50 - 30, 75 + 30, 10);
         this.normalizeNeighbouringTiles();
         // this.plantTrees();
     }
@@ -286,6 +282,11 @@ class CoastalMap extends RandomMap {
             }, 2, this.edge_size - 2 - 1
         );
         walker.run();
+
+        this.makeLake(50, 75, 10);
+        this.makeLake(50 - 10, 75 + 10, 10);
+        this.makeLake(50 - 20, 75 + 20, 10);
+        this.makeLake(50 - 30, 75 + 30, 10);
     }
     mutateTerrain(terrain, prob = .0275) {
         if (Math.random() < prob) {
@@ -296,7 +297,15 @@ class CoastalMap extends RandomMap {
         }
     }
 }
-CoastalMap.DEFAULT_TILE = Map.TERRAIN_TYPES.WATER;
+CoastalMap.prototype.DEFAULT_TILE = Map.TERRAIN_TYPES.WATER;
+
+
+class FlatLandMap extends RandomMap {
+    randomizeTerrain() {
+    }
+
+}
+FlatLandMap.prototype.DEFAULT_TILE = Map.TERRAIN_TYPES.GRASS;
 
 
 function MapFactory(definition) {
@@ -310,7 +319,8 @@ MapFactory.TYPES_CONSTRUCTOR = {
     // 0: SmallIslandsMap,
     // 1: LargeIslandsMap,
     2: CoastalMap,
-    // 3: InlandMap
+    // 3: InlandMap,
+    4: FlatLandMap
 }
 
 export {

@@ -407,7 +407,8 @@ class RandomMapMenu extends Menu {
                 difficulty: 2,
                 revealMap: false,
                 fullTech: false,
-                random: true
+                random: true,
+                addSampleUnits: true,
             }
         };
     }

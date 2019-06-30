@@ -2,6 +2,8 @@ import { Entity } from '../engine/entity.js';
 import { Player } from '../engine/player.js';
 
 import { Test } from './test.js';
+import { BushTest, TreeTest } from './resource_tests';
+
 
 class TestRunner {
     constructor(game, results) {
@@ -10,7 +12,10 @@ class TestRunner {
         this.running = true;
         this.results = document.getElementById(results);
 
-        this.syncTests = [];
+        this.syncTests = [
+            BushTest,
+            TreeTest,
+        ];
 
         this.MAX_TIME =  10 * 60 * 35;
     }
@@ -43,7 +48,7 @@ class TestRunner {
             this.pushResult(Test, test, exception);
         }
     }
-    loop(skip_draw=false) {
+    loop() {
         ++this.engine.framesCount;
         this.engine.viewer.process();
         this.engine.processProjectiles();
@@ -54,7 +59,7 @@ class TestRunner {
     cleanUp() {
         for (let unit of this.engine.units) unit.toggleDead(this.engine);
 
-        for (let entity of engine.map.entities) entity.destroy(engine);
+        for (let entity of this.engine.map.entities) entity.destroy(this.engine);
 
         for (let building of this.engine.buildings) building.destroy(this.engine);
         for (let projectile of this.engine.projectiles) projectile.destroy(this.engine);
@@ -82,7 +87,10 @@ class TestRunner {
     initGame() {
         this.game.navigator.navigate("SinglePlayerMenu");
         this.game.navigator.navigate("RandomMapMenu");
-        this.game.navigator.startGame(this.game.navigator.currentMenu.game_definition);
+        let definition = this.game.navigator.currentMenu.game_definition;
+        definition.map.addSampleUnits = false;
+        definition.map.type = 4;
+        this.game.navigator.startGame(definition);
         this.viewer = this.game.navigator.gameViewer;
         this.engine = this.game.navigator.gameViewer.engine;
         this.map = this.game.navigator.gameViewer.engine.map;
