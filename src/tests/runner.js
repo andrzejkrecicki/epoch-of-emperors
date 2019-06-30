@@ -16,10 +16,17 @@ class TestRunner {
             BushTest,
             TreeTest,
         ];
+        this.asyncTests = [];
 
         this.MAX_TIME =  10 * 60 * 35;
     }
-    run() {
+    run(async=false) {
+        if (async) {
+            this.asyncTests = [...this.syncTests];
+            this.asyncRun();
+            return;
+        }
+
         this.initGame();
 
         for (let Test of this.syncTests) {
@@ -48,7 +55,59 @@ class TestRunner {
             this.pushResult(Test, test, exception);
         }
     }
-    loop() {
+    asyncRun() {
+        this.initGame();
+        let tests = this.asyncTests.entries();
+
+        let exception = null;
+        let test = null;
+        let T0 = 0;
+        let nextTest = () => {
+            let next = tests.next();
+            return next.value && next.value[1];
+        }
+        let Test = nextTest();
+
+        let sub = () => {
+            if (Test == null) window.clearInterval(interval);
+            else if (test == null) {
+               this.cleanUp();
+
+                try {
+                    test = new Test(this.engine);
+                    test.setup();
+                    T0 = this.engine.framesCount;
+                } catch (e) {
+                    exception = e;
+                    if (test) test.fail();
+                    else test = {};
+                }
+            } else if (test.state == Test.prototype.STATE.RUNNING) {
+                if (this.engine.framesCount - T0 > this.MAX_TIME) {
+                    test.state = Test.prototype.STATE.TIMEOUT
+                } else {
+                    try {
+                        for (let i = 0; i < 35; ++i) {
+                            this.loop(true);
+                            test.check();
+                        }
+                        this.engine.viewer.stage.draw();
+                    } catch (e) {
+                        exception = e;
+                        test.fail();
+                    }
+                }
+            } else {
+                this.pushResult(Test, test, exception);
+                exception = null;
+                test = null;
+                Test = nextTest();
+            }
+        };
+
+        let interval = window.setInterval(sub, 0);
+    }
+    loop(skip_draw=false) {
         ++this.engine.framesCount;
         this.engine.viewer.process();
         this.engine.processProjectiles();
