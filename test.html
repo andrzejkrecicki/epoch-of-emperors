@@ -21,11 +21,30 @@
             left: 556px;
             margin: 70px;
         }
+        #results {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: "verdana";
+            white-space: pre;
+        }
+        #results td {
+            border: solid 1px #ccc;
+        }
+        #results td.FAILED {
+            color: #f00;
+        }
+        #results td.PASSED {
+            color: #090;
+        }
+        #results td.TIMEOUT {
+            color: #f90;
+        }
     </style>
 </head>
 <body>
     <div id="container"></div>
     <div id="debugInfo"></div>
-    <script type="text/javascript" src="dist/app.js"></script>
+    <table id="results"></table>
+    <script type="text/javascript" src="dist/test.js"></script>
 </body>
 </html>
