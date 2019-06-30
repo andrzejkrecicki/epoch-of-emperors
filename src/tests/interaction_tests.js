@@ -1,4 +1,4 @@
-import { Test } from './test.js';
+import { Test, ComplexTest } from './test.js';
 import { Map } from '../engine/map.js';
 import { RESOURCE_TYPES } from '../utils.js';
 import { Actions } from '../engine/actions.js';
@@ -12,7 +12,6 @@ import { TradeBoat } from '../engine/units/trade_boat.js';
 import { TownCenter } from '../engine/buildings/town_center.js';
 import { Tower } from '../engine/buildings/tower.js';
 import { Dock } from '../engine/buildings/dock.js';
-
 
 
 class TradeTest extends Test {
@@ -148,7 +147,61 @@ class HealUnitTest extends Test {
 
 
 
+
+class TransportTest extends ComplexTest {
+    constructor(engine) {
+        super(engine)
+        this.boat = this.unit(TransportBoat, -1, -12, 0);
+
+        this.units = [];
+        for (let i = 0; i < 6; ++i) this.units.push(
+            this.unit(Villager, -1 - i + 4, -12 - i - 4, 0)
+        );
+
+        this.engine.map.makeLake(this.center.x / 2 - 4, this.center.y / 2 + 4, 10);
+        this.engine.map.normalizeNeighbouringTiles();
+
+    }
+    setup() {
+        super.setup();
+
+        this.steps = ([
+            function() {
+                if (this.boat.attributes.load != "0/5" || this.boat.carriedUnits.length != 0) this.fail();
+            },
+            function() {
+                for (let unit of this.units) this.engine.interactOrder(unit, this.boat);
+            },
+            this.sleep(350),
+            function() {
+                if (this.boat.carriedUnits.length > 5) this.fail();
+            },
+            function() {
+                this.selectEntity(this.boat);
+                let action = new Actions.Unload(this.viewer);
+                action.execute();
+                this.engine.moveOrder(this.boat, { x: 120, y: 134 });
+            },
+            this.sleep(350),
+            function() {
+                if (this.boat.carriedUnits.length < 5) this.fail();
+                else {
+                    let action = new Actions.Unload(this.viewer);
+                    action.execute();
+                    this.engine.moveOrder(this.boat, { x: 146, y: 125 });
+                }
+            },
+            this.sleep(350),
+            function() {
+                if (this.boat.carriedUnits.length == 0) this.pass();
+            }
+        ]).values();
+    }
+}
+
+
+
 export {
     TradeTest, AttackUnitUnitTest, AttackTowerUnitTest, ConvertUnitTest,
-    HealUnitTest
+    HealUnitTest, TransportTest
 }

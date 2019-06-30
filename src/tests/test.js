@@ -62,4 +62,27 @@ Test.prototype.STATE = {
 };
 
 
-export { Test }
+
+class ComplexTest extends Test {
+    constructor(engine) {
+        super(engine);
+        this.lastFrame = this.engine.framesCount;
+        this.step = null;
+    }
+    nextStep() {
+        this.lastFrame = this.engine.framesCount;
+        this.step = this.steps.next().value;
+    }
+    sleep(time) {
+        return function() {
+            if (this.engine.framesCount - this.lastFrame < time) return false;
+        }
+    }
+    check() {
+        if (this.step == null) this.nextStep();
+        if (this.step() !== false) this.nextStep();
+    }
+}
+
+
+export { Test, ComplexTest }

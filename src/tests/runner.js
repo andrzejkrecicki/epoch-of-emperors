@@ -29,6 +29,7 @@ class TestRunner {
             interaction.AttackTowerUnitTest,
             interaction.ConvertUnitTest,
             interaction.HealUnitTest,
+            interaction.TransportTest,
         ];
         this.asyncTests = [];
     }
