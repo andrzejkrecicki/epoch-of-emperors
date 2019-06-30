@@ -10,6 +10,7 @@ class Test {
         };
 
         this.state = this.STATE.RUNNING;
+        this.message = null;
     }
     setup() {
         this.viewer.resetEntitiesCoords();
@@ -17,8 +18,9 @@ class Test {
     }
     check() {
     }
-    fail() {
+    fail(message=null) {
         this.state = this.STATE.FAILED;
+        if (message) this.message = message;
     }
     pass() {
         this.state = this.STATE.PASSED;

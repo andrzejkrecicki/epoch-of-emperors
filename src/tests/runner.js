@@ -172,7 +172,7 @@ class TestRunner {
             let state = Test.prototype.STATE[test.state];
             row.innerHTML = (
                 `<td>${Test.name}</td>` +
-                `<td class="${state}">${state}</td>`
+                `<td class="${state}">${[state, test.message].join('\n')}</td>`
             );
         } else {
             row.innerHTML = (

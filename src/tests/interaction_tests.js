@@ -14,7 +14,7 @@ import { Tower } from '../engine/buildings/tower.js';
 import { Dock } from '../engine/buildings/dock.js';
 
 
-class TradeTest extends Test {
+class TradeTest extends ComplexTest {
     constructor(engine) {
         super(engine)
 
@@ -32,35 +32,59 @@ class TradeTest extends Test {
         this.engine.map.makeLake(this.center.x / 2, this.center.y / 2, 8);
         this.engine.map.normalizeNeighbouringTiles();
 
-        let profit = this.dock2.getTradeProfit(this.engine.current_player);
-        this.desired_gold = 80 + ((80 * 3) / 20) * profit;
+        this.profit = this.dock2.getTradeProfit(this.engine.current_player);
+        this.desired_gold = 80 + ((80 * 3) / 20) * this.profit;
 
         this.selectEntity(this.ship);
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.ship, this.dock2);
-    }
-    check() {
 
-        if (this.engine.current_player.resources.food == 0 &&
-            this.engine.current_player.resources.wood == 0 &&
-            this.engine.current_player.resources.gold == this.desired_gold &&
-            this.engine.current_player.resources.stone == 0
-        ) this.pass();
-        else if (this.engine.current_player.resources.wood == 0 &&
-            this.ship.tradedResource == RESOURCE_TYPES.WOOD &&
-            this.ship.attributes.gold == null
-        ) {
-            let action = (new Actions.TradeFood(this.viewer));
-            action.execute();
-        } else if (this.engine.current_player.resources.food == 0 &&
-            this.ship.tradedResource == RESOURCE_TYPES.FOOD &&
-            this.ship.attributes.gold == null
-        ) {
-            let action = (new Actions.TradeStone(this.viewer));
-            action.execute();
-        }
+        this.steps = ([
+            function() {
+                this.engine.interactOrder(this.ship, this.dock2);
+            },
+            function() {
+                if (this.ship.attributes.gold == null) return false;
+                if (this.ship.attributes.gold != this.profit) this.fail("Incorrect amount of returned gold.");
+            },
+            function() {
+                if (this.engine.current_player.resources.wood == 0 &&
+                    this.ship.tradedResource == RESOURCE_TYPES.WOOD &&
+                    this.ship.attributes.gold == null
+                ) {
+                    let action = (new Actions.TradeFood(this.viewer));
+                    action.execute();
+                } else return false;
+            },
+            function() {
+                if (this.engine.current_player.resources.food == 0 &&
+                    this.ship.tradedResource == RESOURCE_TYPES.FOOD &&
+                    this.ship.attributes.gold == null
+                ) {
+                    let action = (new Actions.TradeStone(this.viewer));
+                    action.execute();
+                } else return false;
+            },
+            function() {
+                if (this.dock2.attributes.trade_units >= 20) return false;
+            },
+            function() {
+                if (!this.ship.isAdjecentTo(this.dock2)) return false;
+            },
+            function() {
+                if (this.dock2.attributes.trade_units < 20) return false;
+                if (this.ship.ticks_waited <= 1) this.fail("Ship must wait if dock has too little trade units.");
+            },
+            function() {
+                if (this.engine.current_player.resources.food == 0 &&
+                    this.engine.current_player.resources.wood == 0 &&
+                    this.engine.current_player.resources.gold == this.desired_gold &&
+                    this.engine.current_player.resources.stone == 0
+                ) this.pass();
+                else return false;
+            },
+        ]).values();
     }
 }
 
