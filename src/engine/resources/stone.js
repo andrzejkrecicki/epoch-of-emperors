@@ -8,10 +8,7 @@ class StoneMine extends Entity {
             stone: 400
         };
         if (imgChoice == -1) this.imgChoice = Math.floor(Math.random() * this.IMAGES.length);
-        this.imgChoice = imgChoice;
-
-        this.hp = this.MAX_HP;
-        this.max_hp = this.MAX_HP;
+        else this.imgChoice = imgChoice;
 
         this.setImage();
         this.resetBoundingBox();

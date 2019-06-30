@@ -2,7 +2,7 @@ import { Entity } from '../engine/entity.js';
 import { Player } from '../engine/player.js';
 
 import { Test } from './test.js';
-import { BushTest, TreeTest } from './resource_tests';
+import * as resource from './resource_tests';
 
 
 class TestRunner {
@@ -13,12 +13,16 @@ class TestRunner {
         this.results = document.getElementById(results);
 
         this.syncTests = [
-            BushTest,
-            TreeTest,
+            resource.BushTest,
+            resource.TreeTest,
+            resource.StoneTest,
+            resource.GoldTest,
+            resource.FarmTest,
+            resource.HuntTest,
+            resource.FisherTest,
+            resource.FishingTest,
         ];
         this.asyncTests = [];
-
-        this.MAX_TIME =  10 * 60 * 35;
     }
     run(async=false) {
         if (async) {
@@ -40,7 +44,7 @@ class TestRunner {
                 let T0 = this.engine.framesCount;
 
                 while (test.state == Test.prototype.STATE.RUNNING) {
-                    if (this.engine.framesCount - T0 > this.MAX_TIME) {
+                    if (this.engine.framesCount - T0 > test.MAX_TIME) {
                         test.state = Test.prototype.STATE.TIMEOUT
                     } else {
                         this.loop(true);
@@ -84,7 +88,7 @@ class TestRunner {
                     else test = {};
                 }
             } else if (test.state == Test.prototype.STATE.RUNNING) {
-                if (this.engine.framesCount - T0 > this.MAX_TIME) {
+                if (this.engine.framesCount - T0 > test.MAX_TIME) {
                     test.state = Test.prototype.STATE.TIMEOUT
                 } else {
                     try {
@@ -117,20 +121,15 @@ class TestRunner {
         this.engine.processDrawables();
     }
     cleanUp() {
-        for (let unit of this.engine.units) unit.toggleDead(this.engine);
-
-        for (let entity of this.engine.map.entities) entity.destroy(this.engine);
-
-        for (let building of this.engine.buildings) building.destroy(this.engine);
-        for (let projectile of this.engine.projectiles) projectile.destroy(this.engine);
-        for (let drawable of this.engine.drawables) drawable.destroy(this.engine);
-
         let W = this.viewer.entitiesHolder.grid.length;
         let H = this.viewer.entitiesHolder.grid[0].length;
 
         this.viewer.entitiesHolder.grid = new Array(W).fill(null).map(
             () => new Array(H).fill(null).map(() => [])
         );
+
+        this.engine.map.reset();
+        this.engine.map.setInitialTiles();
 
         this.engine.players = [];
         for (let i = 0; i < this.engine.definition.players.length; ++i) {

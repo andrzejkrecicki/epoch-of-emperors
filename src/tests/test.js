@@ -43,6 +43,7 @@ class Test {
         return entity;
     }
 }
+Test.prototype.MAX_TIME =  10 * 60 * 35;
 Test.prototype.STATE = {
     RUNNING: 0,
     PASSED: 1,

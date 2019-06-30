@@ -43,9 +43,7 @@ class RandomMap extends Map {
         this.generate();
     }
     generate() {
-        this.terrain_tiles = new Array(this.edge_size).fill(null).map(() => {
-            return new Array(this.edge_size).fill(this.DEFAULT_TILE);
-        });
+        this.reset();
 
         // subtiles represent map tiles divided into 4 subtiles to allow
         // support for objects smaller than whole tile.
@@ -56,6 +54,19 @@ class RandomMap extends Map {
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
         // this.plantTrees();
+    }
+    reset() {
+        this.terrain_tiles = new Array(this.edge_size).fill(null).map(() => {
+            return new Array(this.edge_size).fill(this.DEFAULT_TILE);
+        });
+    }
+    setInitialTiles() {
+        this.initial_tiles = new Array(this.edge_size).fill(null).map(() => new Array(this.edge_size).fill(0));
+        for (let y = 0; y < this.edge_size; ++y) {
+            for (let x = 0; x < this.edge_size; ++x) {
+                this.initial_tiles[x][y] = this.terrain_tiles[x][y];
+            }
+        }
     }
     makeLake(x, y, radius) {
         let done = 0;
@@ -184,12 +195,7 @@ class RandomMap extends Map {
 
     }
     normalizeNeighbouringTiles() {
-        this.initial_tiles = new Array(this.edge_size).fill(null).map(() => new Array(this.edge_size).fill(0));
-        for (let y = 0; y < this.edge_size; ++y) {
-            for (let x = 0; x < this.edge_size; ++x) {
-                this.initial_tiles[x][y] = this.terrain_tiles[x][y];
-            }
-        }
+        this.setInitialTiles();
 
         let changes_pending = true;
         while (changes_pending) {
