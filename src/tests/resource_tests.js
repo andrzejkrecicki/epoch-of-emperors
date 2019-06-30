@@ -63,6 +63,7 @@ class GoldTest extends Test {
         this.towncenter = this.building(TownCenter, 1, -8, 0);
         this.villager = this.unit(Villager, 7, -10, 0);
         this.gold = this.entity(GoldMine, 1, 4);
+        this.gold.attributes.gold = 100;
     }
     setup() {
         super.setup();
@@ -72,7 +73,7 @@ class GoldTest extends Test {
         if (this.gold.destroyed &&
             this.engine.current_player.resources.food == 400 &&
             this.engine.current_player.resources.wood == 400 &&
-            this.engine.current_player.resources.gold == 400 + 400 &&
+            this.engine.current_player.resources.gold == 400 + 100 &&
             this.engine.current_player.resources.stone == 400
         ) this.pass();
     }
@@ -86,6 +87,7 @@ class StoneTest extends Test {
         this.towncenter = this.building(TownCenter, 1, -8, 0);
         this.villager = this.unit(Villager, 7, -10, 0);
         this.stone = this.entity(StoneMine, 1, 4);
+        this.stone.attributes.stone = 100;
     }
     setup() {
         super.setup();
@@ -96,7 +98,7 @@ class StoneTest extends Test {
             this.engine.current_player.resources.food == 400 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&
-            this.engine.current_player.resources.stone == 400 + 400
+            this.engine.current_player.resources.stone == 400 + 100
         ) this.pass();
     }
 }

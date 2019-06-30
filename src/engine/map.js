@@ -45,12 +45,6 @@ class RandomMap extends Map {
     generate() {
         this.reset();
 
-        // subtiles represent map tiles divided into 4 subtiles to allow
-        // support for objects smaller than whole tile.
-        this.subtiles = new Array(this.edge_size * 2).fill(null).map(() => {
-            return new Array(this.edge_size * 2).fill(null);
-        }); 
-
         this.randomizeTerrain();
         this.normalizeNeighbouringTiles();
         // this.plantTrees();
@@ -59,6 +53,12 @@ class RandomMap extends Map {
         this.terrain_tiles = new Array(this.edge_size).fill(null).map(() => {
             return new Array(this.edge_size).fill(this.DEFAULT_TILE);
         });
+
+        // subtiles represent map tiles divided into 4 subtiles to allow
+        // support for objects smaller than whole tile.
+        this.subtiles = new Array(this.edge_size * 2).fill(null).map(() => {
+            return new Array(this.edge_size * 2).fill(null);
+        }); 
     }
     setInitialTiles() {
         this.initial_tiles = new Array(this.edge_size).fill(null).map(() => new Array(this.edge_size).fill(0));

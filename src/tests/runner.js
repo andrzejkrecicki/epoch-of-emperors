@@ -2,7 +2,8 @@ import { Entity } from '../engine/entity.js';
 import { Player } from '../engine/player.js';
 
 import { Test } from './test.js';
-import * as resource from './resource_tests';
+import * as resource from './resource_tests.js';
+import * as interaction from './interaction_tests.js';
 
 
 class TestRunner {
@@ -13,6 +14,7 @@ class TestRunner {
         this.results = document.getElementById(results);
 
         this.syncTests = [
+
             resource.BushTest,
             resource.TreeTest,
             resource.StoneTest,
@@ -21,6 +23,12 @@ class TestRunner {
             resource.HuntTest,
             resource.FisherTest,
             resource.FishingTest,
+
+            interaction.TradeTest,
+            interaction.AttackUnitUnitTest,
+            interaction.AttackTowerUnitTest,
+            interaction.ConvertUnitTest,
+            interaction.HealUnitTest,
         ];
         this.asyncTests = [];
     }
@@ -92,7 +100,7 @@ class TestRunner {
                     test.state = Test.prototype.STATE.TIMEOUT
                 } else {
                     try {
-                        for (let i = 0; i < 35; ++i) {
+                        for (let i = 0; i < 35 && test.state == Test.prototype.STATE.RUNNING; ++i) {
                             this.loop(true);
                             test.check();
                         }
@@ -130,6 +138,8 @@ class TestRunner {
 
         this.engine.map.reset();
         this.engine.map.setInitialTiles();
+
+        this.engine.viewer.deselectEntity();
 
         this.engine.players = [];
         for (let i = 0; i < this.engine.definition.players.length; ++i) {
