@@ -50,6 +50,25 @@ class Test {
             }
         });
     }
+    click(x, y, right=false) {
+        for (let type of ["mousedown", "click", "mouseup"]) {
+            let event = document.createEvent("MouseEvent");
+            if (!right) event.initMouseEvent(type, true, true, window, null, x, y, x, y);
+            else {
+                event.initMouseEvent(
+                    type, true, true, window, null,
+                    x, y, x, y, false, false, false, false, 2
+                );
+            }
+
+            this.viewer.stage.container.dispatchEvent(event);
+        }
+    }
+    mouseMove(x, y) {
+        let event = document.createEvent("MouseEvent");
+        event.initMouseEvent("mousemove", true, true, window, null, x, y, x, y);
+        this.viewer.stage.container.dispatchEvent(event);
+    }
 }
 Test.prototype.MAX_TIME =  10 * 60 * 35;
 Test.prototype.STATE = {

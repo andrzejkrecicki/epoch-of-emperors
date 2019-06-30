@@ -30,6 +30,9 @@ class TestRunner {
             interaction.ConvertUnitTest,
             interaction.HealUnitTest,
             interaction.TransportTest,
+            interaction.RepairTest,
+
+            interaction.ConstructionTest,
         ];
         this.asyncTests = [];
     }
@@ -64,7 +67,7 @@ class TestRunner {
                 exception = e;
             }
 
-            this.engine.viewer.stage.draw();
+            this.viewer.stage.draw();
             this.pushResult(Test, test, exception);
         }
     }
@@ -105,7 +108,7 @@ class TestRunner {
                             this.loop(true);
                             test.check();
                         }
-                        this.engine.viewer.stage.draw();
+                        this.viewer.stage.draw();
                     } catch (e) {
                         exception = e;
                         test.fail();
@@ -140,7 +143,7 @@ class TestRunner {
         this.engine.map.reset();
         this.engine.map.setInitialTiles();
 
-        this.engine.viewer.deselectEntity();
+        this.viewer.deselectEntity();
 
         this.engine.players = [];
         for (let i = 0; i < this.engine.definition.players.length; ++i) {

@@ -10,6 +10,7 @@ import { TransportBoat } from '../engine/units/transport_boat.js';
 import { Priest } from '../engine/units/priest.js';
 import { TradeBoat } from '../engine/units/trade_boat.js';
 import { TownCenter } from '../engine/buildings/town_center.js';
+import { Barracks } from '../engine/buildings/barracks.js';
 import { Tower } from '../engine/buildings/tower.js';
 import { Dock } from '../engine/buildings/dock.js';
 
@@ -170,8 +171,6 @@ class HealUnitTest extends Test {
 }
 
 
-
-
 class TransportTest extends ComplexTest {
     constructor(engine) {
         super(engine)
@@ -224,8 +223,109 @@ class TransportTest extends ComplexTest {
 }
 
 
+class RepairTest extends Test {
+    constructor(engine) {
+        super(engine)
+        this.towncenter = this.building(TownCenter, 1, -8, 0);
+        this.villager = this.unit(Villager, 7, -10, 0);
+        this.towncenter.takeHit(550, null, this.engine);
+    }
+    setup() {
+        super.setup();
+        this.engine.interactOrder(this.villager, this.towncenter);
+    }
+    check() {
+        if (this.towncenter.hp == this.towncenter.max_hp) this.pass();
+    }
+}
+
+
+class ConstructionTest extends ComplexTest {
+    constructor(engine) {
+        super(engine)
+        this.villager = this.unit(Villager, 7, -10, 0);
+
+        this.engine.map.terrain_tiles[this.center.x / 2][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;
+        this.engine.map.terrain_tiles[this.center.x / 2 + 1][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;
+        this.engine.map.terrain_tiles[this.center.x / 2 + 1][this.center.y / 2 + 3] = Map.TERRAIN_TYPES.WATER;
+        this.engine.map.terrain_tiles[this.center.x / 2][this.center.y / 2 + 3] = Map.TERRAIN_TYPES.WATER;
+        this.engine.map.normalizeNeighbouringTiles();
+    }
+    setup() {
+        super.setup();
+
+        this.steps = ([
+            function() {
+                this.selectEntity(this.villager);
+            },
+            function() {
+                if (this.villager.ACTIONS.length != 3) this.fail("Wrong initial number of villager actions.");
+
+                let action = new this.villager.ACTIONS[0](this.viewer);
+                action.execute();
+
+                let building = new action.ACTIONS[1](this.viewer);
+                if (building.BUILDING != Barracks) this.fail("Building at index 1 expected to be Barracks");
+                building.execute();
+            },
+            this.sleep(35),
+            function() {
+                this.mouseMove(310, 300);
+                this.click(310, 300);
+            },
+            function() {
+                if (this.viewer.isPlanningConstruction || this.viewer.constructionIndicator.visible()) {
+                    this.fail("Construction indicator did not disappear.");
+                }
+            },
+            function() {
+                if (!this.engine.buildings[0].isComplete) return false;
+            },
+            function() {
+                let action = new this.villager.ACTIONS[0](this.viewer);
+                action.execute();
+
+                (new action.ACTIONS[3](this.viewer)).execute();
+            },
+            function() {
+                this.mouseMove(360, 350);
+                this.click(360, 350);
+            },
+            function() {
+                if (!this.viewer.isPlanningConstruction || !this.viewer.constructionIndicator.visible()) {
+                    this.fail("Construction must be forbidden at occupied area.");
+                }
+            },
+            this.sleep(70),
+            function() {
+                this.mouseMove(605, 340);
+                this.click(605, 340);
+            },
+            function() {
+                if (!this.viewer.isPlanningConstruction || !this.viewer.constructionIndicator.visible()) {
+                    this.fail("Construction must be forbidden at water.");
+                }
+            },
+            function() {
+                this.click(310, 300, true);
+            },
+            this.sleep(35),
+            function() {
+                if (this.viewer.isPlanningConstruction || this.viewer.constructionIndicator.visible()) {
+                    this.fail("Construction indicator did not disappear on right click.");
+                }
+            },
+            function() {
+                this.pass();
+            },
+        ]).values();
+    }
+}
+
+
+
 
 export {
     TradeTest, AttackUnitUnitTest, AttackTowerUnitTest, ConvertUnitTest,
-    HealUnitTest, TransportTest
+    HealUnitTest, TransportTest, RepairTest, ConstructionTest
 }
