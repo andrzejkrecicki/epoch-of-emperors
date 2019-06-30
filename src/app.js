@@ -1,6 +1,8 @@
 import { Sprites } from './sprites.js';
 import './graphics/graphics.js';
 import { MenuNavigator } from './navigator.js';
+import { TestRunner } from './tests/runner.js';
+
 
 class Game {
     constructor(container) {
@@ -58,5 +60,10 @@ Sprites.ready.then(function() {
 
     let game = new Game('container');
     game.draw();
+
+    if (document.location.pathname == '/test.html') {
+        let runner = new TestRunner(game, 'results');
+        runner.run(true);
+    }
 })
 

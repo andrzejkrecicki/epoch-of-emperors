@@ -57,18 +57,19 @@ class TestRunner {
     }
     asyncRun() {
         this.initGame();
-        let tests = this.asyncTests.entries();
 
         let exception = null;
         let test = null;
         let T0 = 0;
+
+        let tests = this.asyncTests.entries();
         let nextTest = () => {
             let next = tests.next();
             return next.value && next.value[1];
         }
         let Test = nextTest();
 
-        let sub = () => {
+        let subtask = () => {
             if (Test == null) window.clearInterval(interval);
             else if (test == null) {
                this.cleanUp();
@@ -105,9 +106,9 @@ class TestRunner {
             }
         };
 
-        let interval = window.setInterval(sub, 0);
+        let interval = window.setInterval(subtask, 0);
     }
-    loop(skip_draw=false) {
+    loop() {
         ++this.engine.framesCount;
         this.engine.viewer.process();
         this.engine.processProjectiles();
