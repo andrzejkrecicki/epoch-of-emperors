@@ -270,8 +270,8 @@ class ConstructionTest extends ComplexTest {
             },
             this.sleep(35),
             function() {
-                this.mouseMove(310, 300);
-                this.click(310, 300);
+                this.mockMouseMove(310, 300);
+                this.mockClick(this.viewer.constructionIndicator);
             },
             function() {
                 if (this.viewer.isPlanningConstruction || this.viewer.constructionIndicator.visible()) {
@@ -288,8 +288,8 @@ class ConstructionTest extends ComplexTest {
                 (new action.ACTIONS[3](this.viewer)).execute();
             },
             function() {
-                this.mouseMove(360, 350);
-                this.click(360, 350);
+                this.mockMouseMove(360, 350);
+                this.mockClick(this.viewer.constructionIndicator);
             },
             function() {
                 if (!this.viewer.isPlanningConstruction || !this.viewer.constructionIndicator.visible()) {
@@ -298,8 +298,8 @@ class ConstructionTest extends ComplexTest {
             },
             this.sleep(70),
             function() {
-                this.mouseMove(605, 340);
-                this.click(605, 340);
+                this.mockMouseMove(605, 340);
+                this.mockClick(this.viewer.constructionIndicator);
             },
             function() {
                 if (!this.viewer.isPlanningConstruction || !this.viewer.constructionIndicator.visible()) {
@@ -307,7 +307,7 @@ class ConstructionTest extends ComplexTest {
                 }
             },
             function() {
-                this.click(310, 300, true);
+                this.mockClick(this.viewer.constructionIndicator, true);
             },
             this.sleep(35),
             function() {

@@ -51,7 +51,7 @@ class Test {
         });
     }
     click(x, y, right=false) {
-        for (let type of ["mousedown", "click", "mouseup"]) {
+        for (let type of ["mousedown", "mouseup", "click"]) {
             let event = document.createEvent("MouseEvent");
             if (!right) event.initMouseEvent(type, true, true, window, null, x, y, x, y);
             else {
@@ -68,6 +68,16 @@ class Test {
         let event = document.createEvent("MouseEvent");
         event.initMouseEvent("mousemove", true, true, window, null, x, y, x, y);
         this.viewer.stage.container.dispatchEvent(event);
+    }
+    mockClick(node, right=false) {
+        for (let type of ["mousedown", "mouseup", "click"]) {
+            if (right) this.viewer.constructionIndicator.fire(type, { evt: { button: 2 } });
+            else this.viewer.constructionIndicator.fire(type, { evt: { button: 0 } });
+        }
+    }
+    mockMouseMove(x, y) {
+        this.viewer.mouseX = x;
+        this.viewer.mouseY = y;
     }
 }
 Test.prototype.MAX_TIME =  10 * 60 * 35;
