@@ -26,9 +26,9 @@ class TradeTest extends ComplexTest {
             gold: 80
         };
 
-        this.dock1 = this.building(Dock, 1 + 10, -8 - 8, 0);
-        this.ship = this.unit(TradeBoat, 2, -15, 0);
-        this.dock2 = this.building(Dock, 10, 10, 1);
+        this.dock1 = this.building(Dock, 139, 112, 0);
+        this.ship = this.unit(TradeBoat, 130, 113, 0);
+        this.dock2 = this.building(Dock, 138, 138, 1);
 
         this.engine.map.makeLake(this.center.x / 2, this.center.y / 2, 8);
         this.engine.map.normalizeNeighbouringTiles();
@@ -93,14 +93,14 @@ class TradeTest extends ComplexTest {
 class AttackUnitUnitTest extends Test {
     constructor(engine) {
         super(engine)
-        this.unit1 = this.unit(SwordsMan, 2, -14, 0);
-        this.unit2 = this.unit(Villager, 7, -10, 0);
+        this.unit1 = this.unit(SwordsMan, 130, 114, 0);
+        this.unit2 = this.unit(Villager, 135, 118, 0);
 
-        this.unit3 = this.unit(SwordsMan, -4, -8, 1);
-        this.unit4 = this.unit(Villager, 2, -5, 0);
+        this.unit3 = this.unit(SwordsMan, 124, 120, 1);
+        this.unit4 = this.unit(Villager, 130, 123, 0);
 
-        this.unit5 = this.unit(ImprovedBowMan, -8, -4, 1);
-        this.unit6 = this.unit(Villager, -2, -1, 0);
+        this.unit5 = this.unit(ImprovedBowMan, 120, 124, 1);
+        this.unit6 = this.unit(Villager, 126, 127, 0);
     }
     setup() {
         super.setup();
@@ -120,8 +120,8 @@ class AttackUnitUnitTest extends Test {
 class AttackTowerUnitTest extends Test {
     constructor(engine) {
         super(engine)
-        this.tower = this.building(Tower, 2, -14, 0);
-        this.unit = this.unit(Villager, 7, -10, 1);
+        this.tower = this.building(Tower, 130, 114, 0);
+        this.unit = this.unit(Villager, 135, 118, 1);
     }
     setup() {
         super.setup();
@@ -136,9 +136,9 @@ class AttackTowerUnitTest extends Test {
 class ConvertUnitTest extends Test {
     constructor(engine) {
         super(engine)
-        this.priest = this.unit(Priest, 2, -14, 0);
-        this.unit = this.unit(SwordsMan, 7, -10, 1);
-        this.towncenter = this.building(TownCenter, 3, -6, 0);
+        this.priest = this.unit(Priest, 130, 114, 0);
+        this.unit = this.unit(SwordsMan, 135, 118, 1);
+        this.towncenter = this.building(TownCenter, 131, 122, 0);
    }
     setup() {
         super.setup();
@@ -157,8 +157,8 @@ class ConvertUnitTest extends Test {
 class HealUnitTest extends Test {
     constructor(engine) {
         super(engine)
-        this.priest = this.unit(Priest, 2, -14, 0);
-        this.unit = this.unit(SwordsMan, 7, -10, 0);
+        this.priest = this.unit(Priest, 130, 114, 0);
+        this.unit = this.unit(SwordsMan, 135, 118, 0);
         this.unit.hp = 1;
    }
     setup() {
@@ -174,11 +174,11 @@ class HealUnitTest extends Test {
 class TransportTest extends ComplexTest {
     constructor(engine) {
         super(engine)
-        this.boat = this.unit(TransportBoat, -1, -12, 0);
+        this.boat = this.unit(TransportBoat, 127, 116, 0);
 
         this.units = [];
         for (let i = 0; i < 6; ++i) this.units.push(
-            this.unit(Villager, -1 - i + 4, -12 - i - 4, 0)
+            this.unit(Villager, 131 - i, 112 - i, 0)
         );
 
         this.engine.map.makeLake(this.center.x / 2 - 4, this.center.y / 2 + 4, 10);
@@ -226,8 +226,8 @@ class TransportTest extends ComplexTest {
 class RepairTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
         this.towncenter.takeHit(550, null, this.engine);
     }
     setup() {
@@ -243,7 +243,7 @@ class RepairTest extends Test {
 class ConstructionTest extends ComplexTest {
     constructor(engine) {
         super(engine)
-        this.villager = this.unit(Villager, 7, -10, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
 
         this.engine.map.terrain_tiles[this.center.x / 2][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;
         this.engine.map.terrain_tiles[this.center.x / 2 + 1][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;

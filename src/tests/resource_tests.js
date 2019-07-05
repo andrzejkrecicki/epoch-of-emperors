@@ -17,9 +17,9 @@ import { LeafTree } from '../engine/trees.js';
 class BushTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
-        this.bush = this.entity(Bush, 1, 4);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.bush = this.entity(Bush, 129, 132);
     }
     setup() {
         super.setup();
@@ -38,9 +38,9 @@ class BushTest extends Test {
 class TreeTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
-        this.tree = this.entity(LeafTree, 1, 4);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.tree = this.entity(LeafTree, 129, 132);
     }
     setup() {
         super.setup();
@@ -60,9 +60,9 @@ class TreeTest extends Test {
 class GoldTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
-        this.gold = this.entity(GoldMine, 1, 4);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.gold = this.entity(GoldMine, 129, 132);
         this.gold.attributes.gold = 100;
     }
     setup() {
@@ -84,9 +84,9 @@ GoldTest.prototype.MAX_TIME =  20 * 60 * 35;
 class StoneTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
-        this.stone = this.entity(StoneMine, 1, 4);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.stone = this.entity(StoneMine, 129, 132);
         this.stone.attributes.stone = 100;
     }
     setup() {
@@ -108,9 +108,9 @@ StoneTest.prototype.MAX_TIME =  20 * 60 * 35;
 class FarmTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
-        this.farm = this.building(Farm, 1, 4, 0);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.farm = this.building(Farm, 129, 132, 0);
     }
     setup() {
         super.setup();
@@ -131,9 +131,9 @@ FarmTest.prototype.MAX_TIME =  20 * 60 * 35;
 class HuntTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
-        this.animal = this.unit(Gazelle, 1, 4, 0);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.animal = this.unit(Gazelle, 129, 132, 0);
     }
     setup() {
         super.setup();
@@ -154,9 +154,9 @@ class HuntTest extends Test {
 class FisherTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 1, -8, 0);
-        this.villager = this.unit(Villager, 7, -10, 0);
-        this.fish = this.entity(FishBig, 0, 4);
+        this.towncenter = this.building(TownCenter, 129, 120, 0);
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.fish = this.entity(FishBig, 128, 132);
 
         this.engine.map.terrain_tiles[this.center.x / 2][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;
         this.engine.map.terrain_tiles[this.center.x / 2 + 1][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;
@@ -182,9 +182,9 @@ class FisherTest extends Test {
 class FishingTest extends Test {
     constructor(engine) {
         super(engine)
-        this.dock = this.building(Dock, 1 + 10, -8 - 8, 0);
-        this.ship = this.unit(FishingBoat, 7, -10, 0);
-        this.fish = this.entity(FishBig, 0, 4);
+        this.dock = this.building(Dock, 139, 112, 0);
+        this.ship = this.unit(FishingBoat, 135, 118, 0);
+        this.fish = this.entity(FishBig, 128, 132);
 
         this.engine.map.makeLake(this.center.x / 2, this.center.y / 2, 10);
         this.engine.map.normalizeNeighbouringTiles();
