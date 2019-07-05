@@ -72,7 +72,8 @@ class ResourceExtractionInteraction extends Interaction {
         let types = this.getReturnBuildingTypes();
         let building = this.active.player.getNearestBuilding(this.active, { NAME: types, isComplete: [true] });
         this.active.prevInteractionObject = this.active.interactionObject;
-        this.engine.interactOrder(this.active, building);
+        if (building) this.engine.interactOrder(this.active, building);
+        else this.terminate();
     }
 }
 

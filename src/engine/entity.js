@@ -14,6 +14,7 @@ class Entity extends Graphics.Node {
         this.actions_changed = false;
         this.interaction = null;
         this.interactionSuccessor = null;
+        this.attempts_count = 0;
         this.selectionRect = null;
         this.healthBar = null;
         this.destroyed = false;

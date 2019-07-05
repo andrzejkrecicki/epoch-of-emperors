@@ -62,10 +62,13 @@ class Engine {
                 } else entity.toggleDead(this);
             } else if (!entity.hasFullPath && entity.interactionObject != null) {
                 if (Math.random() > .85) ++entity.ticks_waited;
-                if (entity.ticks_waited > Engine.prototype.UNIT_MAX_WAIT_TIME * 3 && Math.random() > .85) {
+                if (entity.attempts_count >= Engine.prototype.UNIT_MAX_INTERACTION_ATTEMPTS) {
+                    entity.terminateInteraction();
+                } else if (entity.ticks_waited > Engine.prototype.UNIT_MAX_WAIT_TIME * 3 && Math.random() > .85) {
                     entity.ticks_waited = 0;
+                    ++entity.attempts_count;
                     let dist = manhatan_subtile_distance(entity.getCenterSubtile(), entity.interactionObject.getCenterSubtile());
-                    this.interactOrder(entity, entity.interactionObject, Math.floor((dist + 5) ** 2));
+                    this.interactOrder(entity, entity.interactionObject, Math.floor((dist + 5) ** 2), false);
                 }
             }
             if (entity.needsProcessing) entity.process();
@@ -316,9 +319,10 @@ class Engine {
             unit.afterMoveOrder();
         }
     }
-    interactOrder(active, passive, subtilesLimit) {
+    interactOrder(active, passive, subtilesLimit, resetAttempts=true) {
         let Interaction = active.getInteractionType(passive);
         let distance = Interaction == null ? 0 : Interaction.getDistance(active);
+        if (resetAttempts) active.attempts_count = 0;
 
         let finder = new AStarToEntity(active, this.map, passive, distance, subtilesLimit);
         let path = finder.run();
@@ -622,6 +626,7 @@ Engine.prototype.AREA_ENTRANCE_RESOLUTION = {
     BYPASS: 2 // area was permanently taken - bypass needed
 };
 Engine.prototype.UNIT_MAX_WAIT_TIME = 15;
+Engine.prototype.UNIT_MAX_INTERACTION_ATTEMPTS = 5;
 
 export {
     Engine
