@@ -14,6 +14,9 @@ import { Barracks } from '../engine/buildings/barracks.js';
 import { Tower } from '../engine/buildings/tower.js';
 import { Dock } from '../engine/buildings/dock.js';
 
+import { LeafTree } from '../engine/trees.js';
+
+
 
 class TradeTest extends ComplexTest {
     constructor(engine) {
@@ -323,9 +326,38 @@ class ConstructionTest extends ComplexTest {
 }
 
 
+class ImpossibleToReachInteractionTest extends Test {
+    constructor(engine) {
+        super(engine)
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.tree = this.entity(LeafTree, 131, 131);
+
+        let cx = this.center.x / 2;
+        let cy = this.center.y / 2;
+
+        for (let dy = 0; dy < 4; ++dy) {
+            for (let dx = 0; dx < 4; ++dx) {
+                this.engine.map.terrain_tiles[cx + dx][cy + dy] = Map.TERRAIN_TYPES.WATER;
+
+            }
+        }
+        this.engine.map.normalizeNeighbouringTiles();
+    }
+    setup() {
+        super.setup();
+        this.engine.interactOrder(this.villager, this.tree);
+    }
+    check() {
+        if (this.villager.attempts_count == 5 &&
+            this.villager.interaction == null &&
+            this.villager.interactionObject == null) this.pass();
+    }
+}
+
 
 
 export {
     TradeTest, AttackUnitUnitTest, AttackTowerUnitTest, ConvertUnitTest,
-    HealUnitTest, TransportTest, RepairTest, ConstructionTest
+    HealUnitTest, TransportTest, RepairTest, ConstructionTest,
+    ImpossibleToReachInteractionTest
 }

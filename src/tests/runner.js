@@ -23,6 +23,7 @@ class TestRunner {
             resource.HuntTest,
             resource.FisherTest,
             resource.FishingTest,
+            resource.NowhereToReturnTest,
 
             interaction.TradeTest,
             interaction.AttackUnitUnitTest,
@@ -31,8 +32,10 @@ class TestRunner {
             interaction.HealUnitTest,
             interaction.TransportTest,
             interaction.RepairTest,
-
             interaction.ConstructionTest,
+            interaction.ImpossibleToReachInteractionTest,
+
+
         ];
         this.asyncTests = [];
     }

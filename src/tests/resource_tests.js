@@ -205,6 +205,22 @@ class FishingTest extends Test {
 FishingTest.prototype.MAX_TIME =  20 * 60 * 35;
 
 
+class NowhereToReturnTest extends Test {
+    constructor(engine) {
+        super(engine)
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.tree = this.entity(LeafTree, 131, 131);
+    }
+    setup() {
+        super.setup();
+        this.engine.interactOrder(this.villager, this.tree);
+    }
+    check() {
+        if (this.villager.interaction == null && this.villager.interactionObject == null) this.pass();
+    }
+}
+
+
 export {
     BushTest,
     TreeTest,
@@ -214,4 +230,5 @@ export {
     HuntTest,
     FisherTest,
     FishingTest,
+    NowhereToReturnTest,
 }
