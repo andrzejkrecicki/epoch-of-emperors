@@ -1,5 +1,29 @@
 import { manhatan_subtile_distance } from '../utils.js';
 
+
+class UnitAttributeBonus {
+    constructor() {
+        this.attack = 0;
+        this.armor = 0;
+        this.missile_armor = 0;
+        this.hp_multiplier = 1;
+        this.speed = 0;
+    }
+}
+
+class CarrierAttributeBonus extends UnitAttributeBonus {
+    constructor() {
+        super();
+        this.capacity = {
+            food: 0,
+            wood: 0,
+            stone: 0,
+            gold: 0
+        };
+    }
+}
+
+
 class Player {
     constructor(definition, map) {
         this.index = definition.index;
@@ -23,81 +47,21 @@ class Player {
         };
 
         this.attributeBonus = {
-            infantry: {
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            },
-            archer: {
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            },
-            cavalry: {
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            },
-            siege: {
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            },
-            priest: {
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            },
+            infantry: new UnitAttributeBonus(),
+            archer: new UnitAttributeBonus(),
+            cavalry: new UnitAttributeBonus(),
+            siege: new UnitAttributeBonus(),
+            priest: new UnitAttributeBonus(),
             farm: {
                 food: 0
             },
-            villager: {
-                capacity: {
-                    food: 0,
-                    wood: 0,
-                    stone: 0,
-                    gold: 0
-                },
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            },
-            fishing_boat: {
-                capacity: {
-                    food: 0
-                },
-                hp_multiplier: 1,
-                speed: 0
-            },
-            ship: {
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            },
+            villager: new CarrierAttributeBonus(),
+            fishing_boat: new CarrierAttributeBonus(),
+            ship: new UnitAttributeBonus(),
             building: {
                 hp_multiplier: 1
             },
-            animal: {
-                attack: 0,
-                armor: 0,
-                missile_armor: 0,
-                hp_multiplier: 1,
-                speed: 0
-            }
+            animal: new UnitAttributeBonus()
         }
         this.interactionBonus = {
             BuilderInteraction: 0,
