@@ -114,7 +114,10 @@ BuilderInteraction.prototype.RATE = 3;
 BuilderInteraction.prototype.TOOLTIP = 'Right-click to construct this building.';
 
 
-class RepairInteraction extends BuilderInteraction {
+class RepairInteraction extends Interaction {
+    preInit() {
+        this.active.state = this.active.STATE.REPAIRING;
+    }
     process() {
         if (this.passive.destroyed) {
             this.terminate();
@@ -207,12 +210,12 @@ ForageInteraction.prototype.TOOLTIP = 'Right-click to forage here.';
 
 class GoldMineInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.MINE;
+        this.active.state = this.active.STATE.MINE_GOLD;
         this.active.attributes.food = this.active.attributes.wood = this.active.attributes.stone = null;
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_GOLD;
-        else this.active.state = this.active.STATE.MINE;
+        else this.active.state = this.active.STATE.MINE_GOLD;
         super.stop();
     }
 }
@@ -224,13 +227,13 @@ GoldMineInteraction.prototype.TOOLTIP = 'Right-click to mine for gold.';
 
 class StoneMineInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.MINE;
+        this.active.state = this.active.STATE.MINE_STONE;
         this.active.attributes.food = this.active.attributes.wood = this.active.attributes.gold = null;
 
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_STONE;
-        else this.active.state = this.active.STATE.MINE;
+        else this.active.state = this.active.STATE.MINE_STONE;
         super.stop();
     }
 }

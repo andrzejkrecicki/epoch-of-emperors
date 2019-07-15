@@ -58,7 +58,7 @@ TradeBoat.prototype.CAPACITY = {
 TradeBoat.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
 
 TradeBoat.prototype.STATE = { ...TradeBoat.prototype.STATE };
-TradeBoat.prototype.STATE.TRADING = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH + 1);
+TradeBoat.prototype.STATE.TRADING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 
 TradeBoat.prototype.IMAGES = {
     [TradeBoat.prototype.STATE.IDLE]: [

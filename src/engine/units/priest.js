@@ -72,7 +72,7 @@ Priest.prototype.ATTRIBUTES = {
 }
 
 Priest.prototype.STATE = { ...Priest.prototype.STATE };
-Priest.prototype.STATE.HEAL = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH + 1);
+Priest.prototype.STATE.HEAL = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 
 Priest.prototype.FRAME_RATE = {
     ...Unit.prototype.FRAME_RATE,

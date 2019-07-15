@@ -144,6 +144,9 @@ class Unit extends Entity {
         this.state |= state;
         this.actions_changed = true;
     }
+    getHighState() {
+        return this.state & this.BASE_STATE_MASK;
+    }
     hit(target, engine) {
         let base = this.attributes.attack;
         let bonus = this.player.attributeBonus[this.TYPE].attack;
@@ -200,10 +203,10 @@ Unit.prototype.DIRECTIONS_DELTA = [
     { x: 0, y: -0.5656854249491516 }, { x: .8, y: -.4 }, { x: 1.1313708498983033, y: 0 }, { x: .8, y: .4 },
     { x: 0, y: 0.5656854249491516 }, { x: -.8, y: .4 }, { x: -1.1313708498983033, y: 0 }, { x: -.8, y: -.4 }
 ];
-Unit.prototype.BASE_STATE_MASK_WIDTH = 10;
+Unit.prototype.BASE_STATE_MASK_WIDTH = 5;
 Unit.prototype.BASE_STATE_MASK = (
-    (~0) >> Unit.prototype.BASE_STATE_MASK_WIDTH
-    << Unit.prototype.BASE_STATE_MASK_WIDTH
+    (~0) >> (Unit.prototype.BASE_STATE_MASK_WIDTH - 1)
+    << (Unit.prototype.BASE_STATE_MASK_WIDTH - 1)
 );
 Unit.prototype.STATE = {
     INTERACTION: 0,
@@ -211,7 +214,7 @@ Unit.prototype.STATE = {
     MOVING: 2,
     DYING: 4,
     DEAD: 8,
-    ATTACK: 1 << Unit.prototype.BASE_STATE_MASK_WIDTH
+    ATTACK: 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH - 1)
 }
 
 Unit.prototype.FRAME_RATE = {

@@ -51,7 +51,7 @@ FishingBoat.prototype.CAPACITY = {
 FishingBoat.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
 
 FishingBoat.prototype.STATE = { ...FishingBoat.prototype.STATE };
-FishingBoat.prototype.STATE.FISHING = 1 << (Unit.prototype.BASE_STATE_MASK_WIDTH + 1);
+FishingBoat.prototype.STATE.FISHING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
 
 FishingBoat.prototype.FRAME_RATE = {
     ...FishingBoat.prototype.FRAME_RATE,
