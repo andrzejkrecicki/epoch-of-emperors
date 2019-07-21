@@ -15,6 +15,7 @@ class PlayerDefinition {
         };
 
         this.color = color;
+        this.startingAge = 0;
         this.team = team;
         this.is_cpu = is_cpu;
     }

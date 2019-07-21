@@ -1,31 +1,7 @@
 import { manhatan_subtile_distance } from '../utils.js';
 
-
-class UnitAttributeBonus {
-    constructor() {
-        this.attack = 0;
-        this.armor = 0;
-        this.missile_armor = 0;
-        this.hp_multiplier = 1;
-        this.speed = 0;
-    }
-}
-
-class CarrierAttributeBonus extends UnitAttributeBonus {
-    constructor() {
-        super();
-        this.capacity = {
-            food: 0,
-            wood: 0,
-            stone: 0,
-            gold: 0
-        };
-    }
-}
-
-
 class Player {
-    constructor(definition, map) {
+    constructor(definition) {
         this.index = definition.index;
         this.name = definition.name;
         this.civ = definition.civ;
@@ -36,7 +12,7 @@ class Player {
         this.population = 0;
         this.max_population = Player.prototype.DEFAULT_POPULATION;
 
-        this.age = map.startingAge;
+        this.age = definition.startingAge;
 
         this.units = [];
         this.buildings = [];
@@ -118,5 +94,31 @@ class Player {
     }
 }
 Player.prototype.DEFAULT_POPULATION = 4;
+
+
+class UnitAttributeBonus {
+    constructor() {
+        this.attack = 0;
+        this.armor = 0;
+        this.missile_armor = 0;
+        this.hp_multiplier = 1;
+        this.speed = 0;
+    }
+}
+
+class CarrierAttributeBonus extends UnitAttributeBonus {
+    constructor() {
+        super();
+        this.capacity = {
+            food: 0,
+            wood: 0,
+            stone: 0,
+            gold: 0
+        };
+    }
+}
+
+
+
 
 export { Player }

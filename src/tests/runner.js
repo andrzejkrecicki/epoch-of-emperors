@@ -150,7 +150,7 @@ class TestRunner {
 
         this.engine.players = [];
         for (let i = 0; i < this.engine.definition.players.length; ++i) {
-            this.engine.players.push(new Player(this.engine.definition.players[i], this.engine.definition.map));
+            this.engine.players.push(new Player(this.engine.definition.players[i]));
         }
         this.engine.current_player = this.engine.players[0];
 

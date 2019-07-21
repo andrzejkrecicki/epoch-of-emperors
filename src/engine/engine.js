@@ -36,7 +36,7 @@ class Engine {
 
         this.players = [];
         for (let i = 0; i < this.definition.players.length; ++i) {
-            this.players.push(new Player(this.definition.players[i], this.definition.map));
+            this.players.push(new Player(this.definition.players[i]));
         }
         this.current_player = this.players[0];
 

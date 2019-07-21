@@ -184,6 +184,9 @@ class RandomMapMenu extends Menu {
         this.add(this.startGameBtn);
 
         this.startGameBtn.on("click", () => {
+            for (let player of this.game_definition.players) {
+                player.startingAge = this.game_definition.map.startingAge;
+            }
             this.navigator.startGame(this.game_definition);
         });
 
