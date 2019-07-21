@@ -52,14 +52,14 @@ class Villager extends Unit {
     }
     preDead() {
         if (this.state & Villager.prototype.STATE.ATTACK) this.state = Villager.prototype.STATE.IDLE;
-        if (this.state & Villager.prototype.STATE.CHOP) this.state = Villager.prototype.STATE.LUMBER;
-        if (this.state & Villager.prototype.STATE.CARRY_WOOD) this.state = Villager.prototype.STATE.LUMBER;
-        if (this.state & Villager.prototype.STATE.CARRY_GOLD) this.state = Villager.prototype.STATE.MINE_GOLD;
-        if (this.state & Villager.prototype.STATE.CARRY_STONE) this.state = Villager.prototype.STATE.MINE_STONE;
-        if (this.state & Villager.prototype.STATE.CARRY_FARM) this.state = Villager.prototype.STATE.FARMER;
-        if (this.state & Villager.prototype.STATE.BUTCHER) this.state = Villager.prototype.STATE.HUNTER;
-        if (this.state & Villager.prototype.STATE.CARRY_MEAT) this.state = Villager.prototype.STATE.HUNTER;
-        if (this.state & Villager.prototype.STATE.CARRY_FISH) this.state = Villager.prototype.STATE.FISHER;
+        if (this.state & Villager.prototype.STATE.CHOP.BASE) this.state = Villager.prototype.STATE.LUMBER.BASE;
+        if (this.state & Villager.prototype.STATE.CARRY_WOOD.BASE) this.state = Villager.prototype.STATE.LUMBER.BASE;
+        if (this.state & Villager.prototype.STATE.CARRY_GOLD.BASE) this.state = Villager.prototype.STATE.MINE_GOLD.BASE;
+        if (this.state & Villager.prototype.STATE.CARRY_STONE.BASE) this.state = Villager.prototype.STATE.MINE_STONE.BASE;
+        if (this.state & Villager.prototype.STATE.CARRY_FARM.BASE) this.state = Villager.prototype.STATE.FARMER.BASE;
+        if (this.state & Villager.prototype.STATE.BUTCHER.BASE) this.state = Villager.prototype.STATE.HUNTER.BASE;
+        if (this.state & Villager.prototype.STATE.CARRY_MEAT.BASE) this.state = Villager.prototype.STATE.HUNTER.BASE;
+        if (this.state & Villager.prototype.STATE.CARRY_FISH.BASE) this.state = Villager.prototype.STATE.FISHER.BASE;
     }
     takeHit(value, attacker, engine) {
         // take into account armour etc
@@ -98,209 +98,109 @@ Villager.prototype.ATTRIBUTES = {
     ATTACK: 3
 }
 
-Villager.prototype.STATE = { ...Villager.prototype.STATE };
-Villager.prototype.STATE.BUILDING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.BUILDING_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.BUILDING;
-Villager.prototype.STATE.BUILDING_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.BUILDING;
-Villager.prototype.STATE.BUILDING_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.BUILDING;
-Villager.prototype.STATE.BUILDING_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.BUILDING;
 
-Villager.prototype.STATE.REPAIRING = 2 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.REPAIRING_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.REPAIRING;
-Villager.prototype.STATE.REPAIRING_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.REPAIRING;
-Villager.prototype.STATE.REPAIRING_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.REPAIRING;
-Villager.prototype.STATE.REPAIRING_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.REPAIRING;
+class InteractionState {
+    constructor(id) {
+        this.BASE = id << Unit.prototype.BASE_STATE_MASK_WIDTH;
+        this.IDLE = Unit.prototype.STATE.IDLE | this.BASE;
+        this.MOVING = Unit.prototype.STATE.MOVING | this.BASE;
+        this.DYING = Unit.prototype.STATE.DYING | this.BASE;
+        this.DEAD = Unit.prototype.STATE.DEAD | this.BASE;
+    }
+}
 
-Villager.prototype.STATE.FORAGE = 3 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.FORAGE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FORAGE;
-Villager.prototype.STATE.FORAGE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FORAGE;
-Villager.prototype.STATE.FORAGE_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.FORAGE;
-Villager.prototype.STATE.FORAGE_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.FORAGE;
-
-Villager.prototype.STATE.LUMBER = 4 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.LUMBER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.LUMBER;
-Villager.prototype.STATE.LUMBER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.LUMBER;
-Villager.prototype.STATE.LUMBER_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.LUMBER;
-Villager.prototype.STATE.LUMBER_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.LUMBER;
-
-Villager.prototype.STATE.CHOP = 5 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-
-Villager.prototype.STATE.CARRY_WOOD = 6 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.CARRY_WOOD_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_WOOD;
-Villager.prototype.STATE.CARRY_WOOD_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_WOOD;
-
-Villager.prototype.STATE.MINE_GOLD = 7 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.MINE_GOLD_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.MINE_GOLD;
-Villager.prototype.STATE.MINE_GOLD_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.MINE_GOLD;
-Villager.prototype.STATE.MINE_GOLD_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.MINE_GOLD;
-Villager.prototype.STATE.MINE_GOLD_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.MINE_GOLD;
-
-Villager.prototype.STATE.MINE_STONE = 8 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.MINE_STONE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.MINE_STONE;
-Villager.prototype.STATE.MINE_STONE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.MINE_STONE;
-Villager.prototype.STATE.MINE_STONE_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.MINE_STONE;
-Villager.prototype.STATE.MINE_STONE_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.MINE_STONE;
-
-Villager.prototype.STATE.CARRY_GOLD = 9 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.CARRY_GOLD_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_GOLD;
-Villager.prototype.STATE.CARRY_GOLD_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_GOLD;
-
-Villager.prototype.STATE.CARRY_STONE = 10 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.CARRY_STONE_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_STONE;
-Villager.prototype.STATE.CARRY_STONE_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_STONE;
-
-Villager.prototype.STATE.FARMER = 11 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.FARMER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FARMER;
-Villager.prototype.STATE.FARMER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FARMER;
-Villager.prototype.STATE.FARMER_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.FARMER;
-Villager.prototype.STATE.FARMER_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.FARMER;
-
-Villager.prototype.STATE.CARRY_FARM = 12 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.CARRY_FARM_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_FARM;
-Villager.prototype.STATE.CARRY_FARM_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_FARM;
-
-Villager.prototype.STATE.HUNTER = 13 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.HUNTER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.HUNTER;
-Villager.prototype.STATE.HUNTER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.HUNTER;
-Villager.prototype.STATE.HUNTER_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.HUNTER;
-Villager.prototype.STATE.HUNTER_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.HUNTER;
-
-Villager.prototype.STATE.BUTCHER = 14 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-
-Villager.prototype.STATE.CARRY_MEAT = 15 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.CARRY_MEAT_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_MEAT;
-Villager.prototype.STATE.CARRY_MEAT_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_MEAT;
-
-Villager.prototype.STATE.FISHER = 16 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.FISHER_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.FISHER;
-Villager.prototype.STATE.FISHER_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.FISHER;
-Villager.prototype.STATE.FISHER_DYING = Villager.prototype.STATE.DYING | Villager.prototype.STATE.FISHER;
-Villager.prototype.STATE.FISHER_DEAD = Villager.prototype.STATE.DEAD | Villager.prototype.STATE.FISHER;
-
-Villager.prototype.STATE.CARRY_FISH = 17 << Unit.prototype.BASE_STATE_MASK_WIDTH;
-Villager.prototype.STATE.CARRY_FISH_IDLE = Villager.prototype.STATE.IDLE | Villager.prototype.STATE.CARRY_FISH;
-Villager.prototype.STATE.CARRY_FISH_MOVING = Villager.prototype.STATE.MOVING | Villager.prototype.STATE.CARRY_FISH;
+Villager.prototype.STATE = {
+    ...Villager.prototype.STATE,
+    BUILDING: new InteractionState(1),
+    REPAIRING: new InteractionState(2),
+    FORAGE: new InteractionState(3),
+    LUMBER: new InteractionState(4),
+    CHOP: new InteractionState(5),
+    CARRY_WOOD: new InteractionState(6),
+    MINE_GOLD: new InteractionState(7),
+    MINE_STONE: new InteractionState(8),
+    CARRY_GOLD: new InteractionState(9),
+    CARRY_STONE: new InteractionState(10),
+    FARMER: new InteractionState(11),
+    CARRY_FARM: new InteractionState(12),
+    HUNTER: new InteractionState(13),
+    BUTCHER: new InteractionState(14),
+    CARRY_MEAT: new InteractionState(15),
+    FISHER: new InteractionState(16),
+    CARRY_FISH: new InteractionState(17)
+};
 
 
 Villager.prototype.NAME = {
     0: "Villager",
-    [Villager.prototype.STATE.ATTACK]: "Villager",
-    [Villager.prototype.STATE.BUILDING]: "Builder",
-    [Villager.prototype.STATE.REPAIRING]: "Repairman",
-    [Villager.prototype.STATE.FORAGE]: "Forager",
-    [Villager.prototype.STATE.LUMBER]: "Woodcutter",
-    [Villager.prototype.STATE.CHOP]: "Woodcutter",
-    [Villager.prototype.STATE.CARRY_WOOD]: "Woodcutter",
-    [Villager.prototype.STATE.MINE_GOLD]: "Gold Miner",
-    [Villager.prototype.STATE.MINE_STONE]: "Stone Miner",
-    [Villager.prototype.STATE.CARRY_GOLD]: "Gold Miner",
-    [Villager.prototype.STATE.CARRY_STONE]: "Stone Miner",
-    [Villager.prototype.STATE.FARMER]: "Farmer",
-    [Villager.prototype.STATE.CARRY_FARM]: "Farmer",
-    [Villager.prototype.STATE.HUNTER]: "Hunter",
-    [Villager.prototype.STATE.BUTCHER]: "Hunter",
-    [Villager.prototype.STATE.CARRY_MEAT]: "Hunter",
-    [Villager.prototype.STATE.FISHER]: "Fisherman",
-    [Villager.prototype.STATE.CARRY_FISH]: "Fisherman",
+    [Villager.prototype.STATE.ATTACK.BASE]: "Villager",
+    [Villager.prototype.STATE.BUILDING.BASE]: "Builder",
+    [Villager.prototype.STATE.REPAIRING.BASE]: "Repairman",
+    [Villager.prototype.STATE.FORAGE.BASE]: "Forager",
+    [Villager.prototype.STATE.LUMBER.BASE]: "Woodcutter",
+    [Villager.prototype.STATE.CHOP.BASE]: "Woodcutter",
+    [Villager.prototype.STATE.CARRY_WOOD.BASE]: "Woodcutter",
+    [Villager.prototype.STATE.MINE_GOLD.BASE]: "Gold Miner",
+    [Villager.prototype.STATE.MINE_STONE.BASE]: "Stone Miner",
+    [Villager.prototype.STATE.CARRY_GOLD.BASE]: "Gold Miner",
+    [Villager.prototype.STATE.CARRY_STONE.BASE]: "Stone Miner",
+    [Villager.prototype.STATE.FARMER.BASE]: "Farmer",
+    [Villager.prototype.STATE.CARRY_FARM.BASE]: "Farmer",
+    [Villager.prototype.STATE.HUNTER.BASE]: "Hunter",
+    [Villager.prototype.STATE.BUTCHER.BASE]: "Hunter",
+    [Villager.prototype.STATE.CARRY_MEAT.BASE]: "Hunter",
+    [Villager.prototype.STATE.FISHER.BASE]: "Fisherman",
+    [Villager.prototype.STATE.CARRY_FISH.BASE]: "Fisherman",
 }
 
 
 Villager.prototype.FRAME_RATE = { ...Unit.prototype.FRAME_RATE,
-    [Villager.prototype.STATE.ATTACK]: 3,
-    [Villager.prototype.STATE.DYING]: 3,
-    [Villager.prototype.STATE.BUILDING]: 2,
-    [Villager.prototype.STATE.REPAIRING]: 2,
-    [Villager.prototype.STATE.FORAGE]: 4,
-    [Villager.prototype.STATE.LUMBER]: 3,
-    [Villager.prototype.STATE.CHOP]: 3,
-    [Villager.prototype.STATE.MINE_GOLD]: 3,
-    [Villager.prototype.STATE.MINE_STONE]: 3,
-    [Villager.prototype.STATE.FARMER]: 3,
-    [Villager.prototype.STATE.HUNTER]: 2,
-    [Villager.prototype.STATE.BUTCHER]: 4,
-    [Villager.prototype.STATE.FISHER]: 3
+    [Villager.prototype.STATE.ATTACK.BASE]: 3,
+    [Villager.prototype.STATE.DYING.BASE]: 3,
+    [Villager.prototype.STATE.BUILDING.BASE]: 2,
+    [Villager.prototype.STATE.REPAIRING.BASE]: 2,
+    [Villager.prototype.STATE.FORAGE.BASE]: 4,
+    [Villager.prototype.STATE.LUMBER.BASE]: 3,
+    [Villager.prototype.STATE.CHOP.BASE]: 3,
+    [Villager.prototype.STATE.MINE_GOLD.BASE]: 3,
+    [Villager.prototype.STATE.MINE_STONE.BASE]: 3,
+    [Villager.prototype.STATE.FARMER.BASE]: 3,
+    [Villager.prototype.STATE.HUNTER.BASE]: 2,
+    [Villager.prototype.STATE.BUTCHER.BASE]: 4,
+    [Villager.prototype.STATE.FISHER.BASE]: 3
 }
 
 Villager.prototype.IMAGES = {
     [Villager.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/villager/idle/", 1)],
-    [Villager.prototype.STATE.BUILDING_IDLE]: [Sprites.DirectionSprites("img/units/villager/builder_idle/", 1)],
-    [Villager.prototype.STATE.REPAIRING_IDLE]: [Sprites.DirectionSprites("img/units/villager/builder_idle/", 1)],
-    [Villager.prototype.STATE.FORAGE_IDLE]: [Sprites.DirectionSprites("img/units/villager/forage_idle/", 1)],
-    [Villager.prototype.STATE.LUMBER_IDLE]: [Sprites.DirectionSprites("img/units/villager/lumber_idle/", 1)],
-    [Villager.prototype.STATE.CARRY_WOOD_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_wood/", 1, 12)],
-    [Villager.prototype.STATE.MINE_GOLD_IDLE]: [Sprites.DirectionSprites("img/units/villager/mine_idle/", 1)],
-    [Villager.prototype.STATE.MINE_STONE_IDLE]: [Sprites.DirectionSprites("img/units/villager/mine_idle/", 1)],
-    [Villager.prototype.STATE.CARRY_GOLD_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_gold/", 1, 12)],
-    [Villager.prototype.STATE.CARRY_STONE_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_stone/", 1, 12)],
-    [Villager.prototype.STATE.FARMER_IDLE]: [Sprites.DirectionSprites("img/units/villager/farmer_idle/", 1)],
-    [Villager.prototype.STATE.CARRY_FARM_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_farm/", 1, 12)],
-    [Villager.prototype.STATE.HUNTER_IDLE]: [Sprites.DirectionSprites("img/units/villager/hunter_idle/", 1)],
-    [Villager.prototype.STATE.CARRY_MEAT_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_meat/", 1, 12)],
-    [Villager.prototype.STATE.FISHER_IDLE]: [Sprites.DirectionSprites("img/units/villager/fisher_idle/", 1)],
-    [Villager.prototype.STATE.CARRY_FISH_IDLE]: [Sprites.DirectionSprites("img/units/villager/carry_fish/", 1, 1)],
-
     [Villager.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/villager/moving/", 15)],
     [Villager.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/villager/attack/", 15)],
     [Villager.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/villager/dying/", 10)],
     [Villager.prototype.STATE.DEAD]: [Sprites.DirectionSprites("img/units/villager/dead/", 6)],
 
-    [Villager.prototype.STATE.BUILDING]: [Sprites.DirectionSprites("img/units/villager/building/", 16)],
-    [Villager.prototype.STATE.BUILDING_MOVING]: [Sprites.DirectionSprites("img/units/villager/builder_moving/", 15)],
-    [Villager.prototype.STATE.BUILDING_DYING]: [Sprites.DirectionSprites("img/units/villager/builder_dying/", 10)],
-    [Villager.prototype.STATE.BUILDING_DEAD]: [Sprites.DirectionSprites("img/units/villager/builder_dead/", 6)],
+    ...Sprites.CarrySprites(Villager.prototype.STATE.CARRY_WOOD, "img/units/villager/carry_wood/", 15),
+    ...Sprites.CarrySprites(Villager.prototype.STATE.CARRY_GOLD, "img/units/villager/carry_gold/", 15),
+    ...Sprites.CarrySprites(Villager.prototype.STATE.CARRY_STONE, "img/units/villager/carry_stone/", 15),
+    ...Sprites.CarrySprites(Villager.prototype.STATE.CARRY_FARM, "img/units/villager/carry_farm/", 15),
+    ...Sprites.CarrySprites(Villager.prototype.STATE.CARRY_MEAT, "img/units/villager/carry_meat/", 15),
+    ...Sprites.CarrySprites(Villager.prototype.STATE.CARRY_FISH, "img/units/villager/carry_fish/", 15),
 
-    [Villager.prototype.STATE.REPAIRING]: [Sprites.DirectionSprites("img/units/villager/building/", 16)],
-    [Villager.prototype.STATE.REPAIRING_MOVING]: [Sprites.DirectionSprites("img/units/villager/builder_moving/", 15)],
-    [Villager.prototype.STATE.REPAIRING_DYING]: [Sprites.DirectionSprites("img/units/villager/builder_dying/", 10)],
-    [Villager.prototype.STATE.REPAIRING_DEAD]: [Sprites.DirectionSprites("img/units/villager/builder_dead/", 6)],
-
-    [Villager.prototype.STATE.FORAGE]: [Sprites.DirectionSprites("img/units/villager/forage/", 27)],
-    [Villager.prototype.STATE.FORAGE_MOVING]: [Sprites.DirectionSprites("img/units/villager/forage_moving/", 15)],
-    [Villager.prototype.STATE.FORAGE_DYING]: [Sprites.DirectionSprites("img/units/villager/forage_dying/", 10)],
-    [Villager.prototype.STATE.FORAGE_DEAD]: [Sprites.DirectionSprites("img/units/villager/forage_dead/", 6)],
-
-    [Villager.prototype.STATE.LUMBER]: [Sprites.DirectionSprites("img/units/villager/lumber/", 11)],
-    [Villager.prototype.STATE.LUMBER_MOVING]: [Sprites.DirectionSprites("img/units/villager/lumber_moving/", 15)],
-    [Villager.prototype.STATE.LUMBER_DYING]: [Sprites.DirectionSprites("img/units/villager/lumber_dying/", 10)],
-    [Villager.prototype.STATE.LUMBER_DEAD]: [Sprites.DirectionSprites("img/units/villager/lumber_dead/", 6)],
-
-    [Villager.prototype.STATE.CHOP]: [Sprites.DirectionSprites("img/units/villager/chop/", 15)],
-    [Villager.prototype.STATE.CARRY_WOOD_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_wood/", 15)],
-
-    [Villager.prototype.STATE.MINE_GOLD]: [Sprites.DirectionSprites("img/units/villager/mine/", 13)],
-    [Villager.prototype.STATE.MINE_GOLD_MOVING]: [Sprites.DirectionSprites("img/units/villager/mine_moving/", 15)],
-    [Villager.prototype.STATE.MINE_GOLD_DYING]: [Sprites.DirectionSprites("img/units/villager/mine_dying/", 10)],
-    [Villager.prototype.STATE.MINE_GOLD_DEAD]: [Sprites.DirectionSprites("img/units/villager/mine_dead/", 6)],
-
-    [Villager.prototype.STATE.MINE_STONE]: [Sprites.DirectionSprites("img/units/villager/mine/", 13)],
-    [Villager.prototype.STATE.MINE_STONE_MOVING]: [Sprites.DirectionSprites("img/units/villager/mine_moving/", 15)],
-    [Villager.prototype.STATE.MINE_STONE_DYING]: [Sprites.DirectionSprites("img/units/villager/mine_dying/", 10)],
-    [Villager.prototype.STATE.MINE_STONE_DEAD]: [Sprites.DirectionSprites("img/units/villager/mine_dead/", 6)],
-
-    [Villager.prototype.STATE.CARRY_GOLD_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_gold/", 15)],
-    [Villager.prototype.STATE.CARRY_STONE_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_stone/", 15)],
-
-    [Villager.prototype.STATE.FARMER]: [Sprites.DirectionSprites("img/units/villager/farming/", 29)],
-    [Villager.prototype.STATE.FARMER_MOVING]: [Sprites.DirectionSprites("img/units/villager/farmer_moving/", 15)],
-    [Villager.prototype.STATE.FARMER_DYING]: [Sprites.DirectionSprites("img/units/villager/farmer_dying/", 10)],
-    [Villager.prototype.STATE.FARMER_DEAD]: [Sprites.DirectionSprites("img/units/villager/farmer_dead/", 6)],
-    [Villager.prototype.STATE.CARRY_FARM_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_farm/", 15)],
-
-    [Villager.prototype.STATE.HUNTER]: [Sprites.DirectionSprites("img/units/villager/hunter/", 23)],
-    [Villager.prototype.STATE.HUNTER_MOVING]: [Sprites.DirectionSprites("img/units/villager/hunter_moving/", 15)],
-    [Villager.prototype.STATE.HUNTER_DYING]: [Sprites.DirectionSprites("img/units/villager/hunter_dying/", 10)],
-    [Villager.prototype.STATE.HUNTER_DEAD]: [Sprites.DirectionSprites("img/units/villager/hunter_dead/", 6)],
-
-    [Villager.prototype.STATE.BUTCHER]: [Sprites.DirectionSprites("img/units/villager/butcher/", 12)],
-    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_meat/", 15)],
-
-    [Villager.prototype.STATE.FISHER]: [Sprites.DirectionSprites("img/units/villager/fisher/", 16)],
-    [Villager.prototype.STATE.FISHER_MOVING]: [Sprites.DirectionSprites("img/units/villager/hunter_moving/", 15)],
-    [Villager.prototype.STATE.FISHER_DYING]: [Sprites.DirectionSprites("img/units/villager/hunter_dying/", 10)],
-    [Villager.prototype.STATE.FISHER_DEAD]: [Sprites.DirectionSprites("img/units/villager/hunter_dead/", 6)],
-    [Villager.prototype.STATE.CARRY_FISH_MOVING]: [Sprites.DirectionSprites("img/units/villager/carry_fish/", 15)],
-
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.BUILDING, "img/units/villager/builder", 16, 1, 15, 10, 6),
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.REPAIRING, "img/units/villager/builder", 16, 1, 15, 10, 6),
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.FORAGE, "img/units/villager/forage", 27, 1, 15, 10, 6),
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.LUMBER, "img/units/villager/lumber", 11, 1, 15, 10, 6),
+    [Villager.prototype.STATE.CHOP.BASE]: [Sprites.DirectionSprites("img/units/villager/chop/", 15)],
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.MINE_GOLD, "img/units/villager/mine", 13, 1, 15, 10, 6),
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.MINE_STONE, "img/units/villager/mine", 13, 1, 15, 10, 6),
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.FARMER, "img/units/villager/farmer", 29, 1, 15, 10, 6),
+    ...Sprites.InteractionSprites(Villager.prototype.STATE.HUNTER, "img/units/villager/hunter", 23, 1, 15, 10, 6),
+    [Villager.prototype.STATE.BUTCHER.BASE]: [Sprites.DirectionSprites("img/units/villager/butcher/", 12)],
+    [Villager.prototype.STATE.FISHER.BASE]: [Sprites.DirectionSprites("img/units/villager/fisher/", 16)],
+    [Villager.prototype.STATE.FISHER.IDLE]: [Sprites.DirectionSprites("img/units/villager/fisher_idle/", 1)],
+    [Villager.prototype.STATE.FISHER.MOVING]: [Sprites.DirectionSprites("img/units/villager/hunter_moving/", 15)],
+    [Villager.prototype.STATE.FISHER.DYING]: [Sprites.DirectionSprites("img/units/villager/hunter_dying/", 10)],
+    [Villager.prototype.STATE.FISHER.DEAD]: [Sprites.DirectionSprites("img/units/villager/hunter_dead/", 6)],
 }
+
 
 Villager.prototype.IMAGE_OFFSETS = {
     [Villager.prototype.STATE.IDLE]: [{ x: -5, y: 33 }],
@@ -309,79 +209,79 @@ Villager.prototype.IMAGE_OFFSETS = {
     [Villager.prototype.STATE.DYING]: [{ x: 27, y: 40 }],
     [Villager.prototype.STATE.DEAD]: [{ x: 28, y: 23 }],
 
-    [Villager.prototype.STATE.BUILDING]: [{ x: 8, y: 31 }],
-    [Villager.prototype.STATE.BUILDING_IDLE]: [{ x: -5, y: 32 }],
-    [Villager.prototype.STATE.BUILDING_MOVING]: [{ x: 2, y: 33 }],
-    [Villager.prototype.STATE.BUILDING_DYING]: [{ x: 43, y: 40 }],
-    [Villager.prototype.STATE.BUILDING_DEAD]: [{ x: 43, y: 22 }],
+    [Villager.prototype.STATE.BUILDING.BASE]: [{ x: 8, y: 31 }],
+    [Villager.prototype.STATE.BUILDING.IDLE]: [{ x: -5, y: 32 }],
+    [Villager.prototype.STATE.BUILDING.MOVING]: [{ x: 2, y: 33 }],
+    [Villager.prototype.STATE.BUILDING.DYING]: [{ x: 43, y: 40 }],
+    [Villager.prototype.STATE.BUILDING.DEAD]: [{ x: 43, y: 22 }],
 
-    [Villager.prototype.STATE.REPAIRING]: [{ x: 8, y: 31 }],
-    [Villager.prototype.STATE.REPAIRING_IDLE]: [{ x: -5, y: 32 }],
-    [Villager.prototype.STATE.REPAIRING_MOVING]: [{ x: 2, y: 33 }],
-    [Villager.prototype.STATE.REPAIRING_DYING]: [{ x: 43, y: 40 }],
-    [Villager.prototype.STATE.REPAIRING_DEAD]: [{ x: 43, y: 22 }],
+    [Villager.prototype.STATE.REPAIRING.BASE]: [{ x: 8, y: 31 }],
+    [Villager.prototype.STATE.REPAIRING.IDLE]: [{ x: -5, y: 32 }],
+    [Villager.prototype.STATE.REPAIRING.MOVING]: [{ x: 2, y: 33 }],
+    [Villager.prototype.STATE.REPAIRING.DYING]: [{ x: 43, y: 40 }],
+    [Villager.prototype.STATE.REPAIRING.DEAD]: [{ x: 43, y: 22 }],
 
-    [Villager.prototype.STATE.FORAGE]: [{ x: 17, y: 39 }],
-    [Villager.prototype.STATE.FORAGE_IDLE]: [{ x: 1, y: 31 }],
-    [Villager.prototype.STATE.FORAGE_MOVING]: [{ x: 7, y: 33 }],
-    [Villager.prototype.STATE.FORAGE_DYING]: [{ x: 34, y: 40 }],
-    [Villager.prototype.STATE.FORAGE_DEAD]: [{ x: 41, y: 28 }],
+    [Villager.prototype.STATE.FORAGE.BASE]: [{ x: 17, y: 39 }],
+    [Villager.prototype.STATE.FORAGE.IDLE]: [{ x: 1, y: 31 }],
+    [Villager.prototype.STATE.FORAGE.MOVING]: [{ x: 7, y: 33 }],
+    [Villager.prototype.STATE.FORAGE.DYING]: [{ x: 34, y: 40 }],
+    [Villager.prototype.STATE.FORAGE.DEAD]: [{ x: 41, y: 28 }],
 
-    [Villager.prototype.STATE.LUMBER]: [{ x: 1, y: 46 }],
-    [Villager.prototype.STATE.LUMBER_IDLE]: [{ x: 1, y: 32 }],
-    [Villager.prototype.STATE.LUMBER_MOVING]: [{ x: 3, y: 33 }],
-    [Villager.prototype.STATE.LUMBER_DYING]: [{ x: 34, y: 43 }],
-    [Villager.prototype.STATE.LUMBER_DEAD]: [{ x: 34, y: 22 }],
+    [Villager.prototype.STATE.LUMBER.BASE]: [{ x: 1, y: 46 }],
+    [Villager.prototype.STATE.LUMBER.IDLE]: [{ x: 1, y: 32 }],
+    [Villager.prototype.STATE.LUMBER.MOVING]: [{ x: 3, y: 33 }],
+    [Villager.prototype.STATE.LUMBER.DYING]: [{ x: 34, y: 43 }],
+    [Villager.prototype.STATE.LUMBER.DEAD]: [{ x: 34, y: 22 }],
 
-    [Villager.prototype.STATE.CHOP]: [{ x: 17, y: 43 }],
-    [Villager.prototype.STATE.CARRY_WOOD_MOVING]: [{ x: 4, y: 32 }],
-    [Villager.prototype.STATE.CARRY_WOOD_IDLE]: [{ x: 4, y: 32 }],
+    [Villager.prototype.STATE.CHOP.BASE]: [{ x: 17, y: 43 }],
+    [Villager.prototype.STATE.CARRY_WOOD.MOVING]: [{ x: 4, y: 32 }],
+    [Villager.prototype.STATE.CARRY_WOOD.IDLE]: [{ x: 4, y: 32 }],
 
-    [Villager.prototype.STATE.MINE_GOLD]: [{ x: 14, y: 45 }],
-    [Villager.prototype.STATE.MINE_GOLD_IDLE]: [{ x: 0, y: 31 }],
-    [Villager.prototype.STATE.MINE_GOLD_MOVING]: [{ x: 6, y: 32 }],
-    [Villager.prototype.STATE.MINE_GOLD_DYING]: [{ x: 38, y: 48 }],
-    [Villager.prototype.STATE.MINE_GOLD_DEAD]: [{ x: 38, y: 25 }],
+    [Villager.prototype.STATE.MINE_GOLD.BASE]: [{ x: 14, y: 45 }],
+    [Villager.prototype.STATE.MINE_GOLD.IDLE]: [{ x: 0, y: 31 }],
+    [Villager.prototype.STATE.MINE_GOLD.MOVING]: [{ x: 6, y: 32 }],
+    [Villager.prototype.STATE.MINE_GOLD.DYING]: [{ x: 38, y: 48 }],
+    [Villager.prototype.STATE.MINE_GOLD.DEAD]: [{ x: 38, y: 25 }],
 
-    [Villager.prototype.STATE.MINE_STONE]: [{ x: 14, y: 45 }],
-    [Villager.prototype.STATE.MINE_STONE_IDLE]: [{ x: 0, y: 31 }],
-    [Villager.prototype.STATE.MINE_STONE_MOVING]: [{ x: 6, y: 32 }],
-    [Villager.prototype.STATE.MINE_STONE_DYING]: [{ x: 38, y: 48 }],
-    [Villager.prototype.STATE.MINE_STONE_DEAD]: [{ x: 38, y: 25 }],
+    [Villager.prototype.STATE.MINE_STONE.BASE]: [{ x: 14, y: 45 }],
+    [Villager.prototype.STATE.MINE_STONE.IDLE]: [{ x: 0, y: 31 }],
+    [Villager.prototype.STATE.MINE_STONE.MOVING]: [{ x: 6, y: 32 }],
+    [Villager.prototype.STATE.MINE_STONE.DYING]: [{ x: 38, y: 48 }],
+    [Villager.prototype.STATE.MINE_STONE.DEAD]: [{ x: 38, y: 25 }],
 
-    [Villager.prototype.STATE.CARRY_GOLD_MOVING]: [{ x: 0, y: 32 }],
-    [Villager.prototype.STATE.CARRY_GOLD_IDLE]: [{ x: 0, y: 32 }],
+    [Villager.prototype.STATE.CARRY_GOLD.MOVING]: [{ x: 0, y: 32 }],
+    [Villager.prototype.STATE.CARRY_GOLD.IDLE]: [{ x: 0, y: 32 }],
 
-    [Villager.prototype.STATE.CARRY_STONE_MOVING]: [{ x: 0, y: 33 }],
-    [Villager.prototype.STATE.CARRY_STONE_IDLE]: [{ x: 0, y: 33 }],
+    [Villager.prototype.STATE.CARRY_STONE.MOVING]: [{ x: 0, y: 33 }],
+    [Villager.prototype.STATE.CARRY_STONE.IDLE]: [{ x: 0, y: 33 }],
 
-    [Villager.prototype.STATE.FARMER]: [{ x: 12, y: 34 }],
-    [Villager.prototype.STATE.FARMER_IDLE]: [{ x: -3, y: 35 }],
-    [Villager.prototype.STATE.FARMER_MOVING]: [{ x: 12, y: 37 }],
-    [Villager.prototype.STATE.FARMER_DYING]: [{ x: 56, y: 45 }],
-    [Villager.prototype.STATE.FARMER_DEAD]: [{ x: 56, y: 32 }],
+    [Villager.prototype.STATE.FARMER.BASE]: [{ x: 12, y: 34 }],
+    [Villager.prototype.STATE.FARMER.IDLE]: [{ x: -3, y: 35 }],
+    [Villager.prototype.STATE.FARMER.MOVING]: [{ x: 12, y: 37 }],
+    [Villager.prototype.STATE.FARMER.DYING]: [{ x: 56, y: 45 }],
+    [Villager.prototype.STATE.FARMER.DEAD]: [{ x: 56, y: 32 }],
 
-    [Villager.prototype.STATE.CARRY_FARM_IDLE]: [{ x: 7, y: 35 }],
-    [Villager.prototype.STATE.CARRY_FARM_MOVING]: [{ x: 7, y: 35 }],
+    [Villager.prototype.STATE.CARRY_FARM.IDLE]: [{ x: 7, y: 35 }],
+    [Villager.prototype.STATE.CARRY_FARM.MOVING]: [{ x: 7, y: 35 }],
 
-    [Villager.prototype.STATE.HUNTER]: [{ x: 29, y: 54 }],
-    [Villager.prototype.STATE.HUNTER_IDLE]: [{ x: 17, y: 32 }],
-    [Villager.prototype.STATE.HUNTER_MOVING]: [{ x: 10, y: 41 }],
-    [Villager.prototype.STATE.HUNTER_DYING]: [{ x: 51, y: 51 }],
-    [Villager.prototype.STATE.HUNTER_DEAD]: [{ x: 51, y: 26 }],
+    [Villager.prototype.STATE.HUNTER.BASE]: [{ x: 29, y: 54 }],
+    [Villager.prototype.STATE.HUNTER.IDLE]: [{ x: 17, y: 32 }],
+    [Villager.prototype.STATE.HUNTER.MOVING]: [{ x: 10, y: 41 }],
+    [Villager.prototype.STATE.HUNTER.DYING]: [{ x: 51, y: 51 }],
+    [Villager.prototype.STATE.HUNTER.DEAD]: [{ x: 51, y: 26 }],
 
-    [Villager.prototype.STATE.BUTCHER]: [{ x: 11, y: 32 }],
-    [Villager.prototype.STATE.CARRY_MEAT_MOVING]: [{ x: -1, y: 34 }],
-    [Villager.prototype.STATE.CARRY_MEAT_IDLE]: [{ x: -1, y: 34 }],
+    [Villager.prototype.STATE.BUTCHER.BASE]: [{ x: 11, y: 32 }],
+    [Villager.prototype.STATE.CARRY_MEAT.MOVING]: [{ x: -1, y: 34 }],
+    [Villager.prototype.STATE.CARRY_MEAT.IDLE]: [{ x: -1, y: 34 }],
 
-    [Villager.prototype.STATE.FISHER]: [{ x: 30, y: 49 }],
-    [Villager.prototype.STATE.FISHER_IDLE]: [{ x: -1, y: 40 }],
-    [Villager.prototype.STATE.FISHER_MOVING]: [{ x: 10, y: 41 }],
-    [Villager.prototype.STATE.FISHER_DYING]: [{ x: 51, y: 51 }],
-    [Villager.prototype.STATE.FISHER_DEAD]: [{ x: 51, y: 26 }],
+    [Villager.prototype.STATE.FISHER.BASE]: [{ x: 30, y: 49 }],
+    [Villager.prototype.STATE.FISHER.IDLE]: [{ x: -1, y: 40 }],
+    [Villager.prototype.STATE.FISHER.MOVING]: [{ x: 10, y: 41 }],
+    [Villager.prototype.STATE.FISHER.DYING]: [{ x: 51, y: 51 }],
+    [Villager.prototype.STATE.FISHER.DEAD]: [{ x: 51, y: 26 }],
 
-    [Villager.prototype.STATE.CARRY_FISH_MOVING]: [{ x: 1, y: 34 }],
-    [Villager.prototype.STATE.CARRY_FISH_IDLE]: [{ x: 1, y: 34 }],
+    [Villager.prototype.STATE.CARRY_FISH.MOVING]: [{ x: 1, y: 34 }],
+    [Villager.prototype.STATE.CARRY_FISH.IDLE]: [{ x: 1, y: 34 }],
 };
 
 

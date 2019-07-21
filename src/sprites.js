@@ -57,6 +57,21 @@ const Sprites = {
         if (mul == 0) return sprites;
         else return Array(mul).fill(sprites);
     },
+    CarrySprites(state, path, frames, idle_offset=12) {
+        return {
+            [state.IDLE]: [Sprites.DirectionSprites(path, 1, idle_offset)],
+            [state.MOVING]: [Sprites.DirectionSprites(path, frames)],
+        };
+    },
+    InteractionSprites(state, path, ...frames) {
+        return {
+            [state.BASE]: [Sprites.DirectionSprites(`${path}/`, frames[0])],
+            [state.IDLE]: [Sprites.DirectionSprites(`${path}_idle/`, frames[1])],
+            [state.MOVING]: [Sprites.DirectionSprites(`${path}_moving/`, frames[2])],
+            [state.DYING]: [Sprites.DirectionSprites(`${path}_dying/`, frames[3])],
+            [state.DEAD]: [Sprites.DirectionSprites(`${path}_dead/`, frames[4])],
+        };
+    },
     Sprite(path) {
         let canvas = document.createElement("canvas");
         this.ready.then(() => {

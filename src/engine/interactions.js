@@ -79,11 +79,11 @@ class ResourceExtractionInteraction extends Interaction {
 
 class FarmingInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.FARMER;
+        this.active.state = this.active.STATE.FARMER.BASE;
     }
     stop() {
-        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FARM;
-        else this.active.state = this.active.STATE.FARMER;
+        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FARM.BASE;
+        else this.active.state = this.active.STATE.FARMER.BASE;
         super.stop();
     }
 }
@@ -95,7 +95,7 @@ FarmingInteraction.prototype.TOOLTIP = 'Right-click to farm here.';
 
 class BuilderInteraction extends Interaction {
     preInit() {
-        this.active.state = this.active.STATE.BUILDING;
+        this.active.state = this.active.STATE.BUILDING.BASE;
     }
     process() {
         if (this.passive.destroyed) {
@@ -116,7 +116,7 @@ BuilderInteraction.prototype.TOOLTIP = 'Right-click to construct this building.'
 
 class RepairInteraction extends Interaction {
     preInit() {
-        this.active.state = this.active.STATE.REPAIRING;
+        this.active.state = this.active.STATE.REPAIRING.BASE;
     }
     process() {
         if (this.passive.destroyed) {
@@ -156,7 +156,7 @@ ReturnResourcesInteraction.prototype.TOOLTIP = 'Right-click to return resources.
 
 class LumberInteraction extends Interaction {
     preInit() {
-        this.active.state = this.active.STATE.LUMBER;
+        this.active.state = this.active.STATE.LUMBER.BASE;
         this.active.attributes.food = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     process() {
@@ -181,12 +181,12 @@ LumberInteraction.prototype.TOOLTIP = 'Right-click to chop down this tree.';
 
 class ChopInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.LUMBER;
+        this.active.state = this.active.STATE.LUMBER.BASE;
         this.active.attributes.food = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     stop() {
-        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_WOOD;
-        else this.active.state = this.active.STATE.LUMBER;
+        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_WOOD.BASE;
+        else this.active.state = this.active.STATE.LUMBER.BASE;
         super.stop();
     }
 }
@@ -198,7 +198,7 @@ ChopInteraction.prototype.TOOLTIP = 'Right-click to chop down this tree.';
 
 class ForageInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.FORAGE;
+        this.active.state = this.active.STATE.FORAGE.BASE;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
     }
 }
@@ -210,12 +210,12 @@ ForageInteraction.prototype.TOOLTIP = 'Right-click to forage here.';
 
 class GoldMineInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.MINE_GOLD;
+        this.active.state = this.active.STATE.MINE_GOLD.BASE;
         this.active.attributes.food = this.active.attributes.wood = this.active.attributes.stone = null;
     }
     stop() {
-        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_GOLD;
-        else this.active.state = this.active.STATE.MINE_GOLD;
+        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_GOLD.BASE;
+        else this.active.state = this.active.STATE.MINE_GOLD.BASE;
         super.stop();
     }
 }
@@ -227,13 +227,13 @@ GoldMineInteraction.prototype.TOOLTIP = 'Right-click to mine for gold.';
 
 class StoneMineInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.MINE_STONE;
+        this.active.state = this.active.STATE.MINE_STONE.BASE;
         this.active.attributes.food = this.active.attributes.wood = this.active.attributes.gold = null;
 
     }
     stop() {
-        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_STONE;
-        else this.active.state = this.active.STATE.MINE_STONE;
+        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_STONE.BASE;
+        else this.active.state = this.active.STATE.MINE_STONE.BASE;
         super.stop();
     }
 }
@@ -245,13 +245,13 @@ StoneMineInteraction.prototype.TOOLTIP = 'Right-click to mine for stone.';
 
 class FisherInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.FISHER;
+        this.active.state = this.active.STATE.FISHER.BASE;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
 
     }
     stop() {
-        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FISH;
-        else this.active.state = this.active.STATE.FISHER;
+        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FISH.BASE;
+        else this.active.state = this.active.STATE.FISHER.BASE;
         super.stop();
     }
 }
@@ -263,7 +263,7 @@ FisherInteraction.prototype.TOOLTIP = 'Right-click to fish here.';
 
 class HunterInteraction extends Interaction {
     preInit() {
-        this.active.state = this.active.STATE.HUNTER;
+        this.active.state = this.active.STATE.HUNTER.BASE;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     process() {
@@ -277,7 +277,7 @@ class HunterInteraction extends Interaction {
         } else if (this.active.ticks_waited == this.RATE) {
             this.engine.makeProjectile(Spear, this.active, this.passive);
             // this.active.hit(this.passive, engine);
-        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER][this.active.level][0].length) {
+        } else if (this.active.frame == this.active.IMAGES[this.active.STATE.HUNTER.BASE][this.active.level][0].length) {
             this.engine.interactOrder(this.active, this.passive);
         }
     }
@@ -292,16 +292,16 @@ HunterInteraction.prototype.TOOLTIP = 'Right-click to hunt this animal.';
 
 class ButcherInteraction extends ResourceExtractionInteraction {
     preInit() {
-        this.active.state = this.active.STATE.HUNTER;
+        this.active.state = this.active.STATE.HUNTER.BASE;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
     }
     init() {
-        if (this.active.hasFullPath) this.active.state = this.active.STATE.BUTCHER;
+        if (this.active.hasFullPath) this.active.state = this.active.STATE.BUTCHER.BASE;
         super.init();
     }
     stop() {
-        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_MEAT;
-        else this.active.state = this.active.STATE.HUNTER;
+        if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_MEAT.BASE;
+        else this.active.state = this.active.STATE.HUNTER.BASE;
         super.stop();
     }
 }
