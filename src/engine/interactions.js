@@ -184,6 +184,10 @@ class ChopInteraction extends ResourceExtractionInteraction {
         this.active.state = this.active.STATE.LUMBER.BASE;
         this.active.attributes.food = this.active.attributes.gold = this.active.attributes.stone = null;
     }
+    init() {
+        super.init();
+        if (this.active.state == this.active.STATE.LUMBER.BASE) this.active.state = this.active.STATE.CHOP.BASE
+    }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_WOOD.BASE;
         else this.active.state = this.active.STATE.LUMBER.BASE;
