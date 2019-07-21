@@ -211,8 +211,8 @@ class GameViewer {
         }
     }
     setHoveredEntity() {
+        this.hoveredEntity = null;
         if (this.layers.interface.getNodeAt(this.mouseX, this.mouseY) == null) {
-            this.hoveredEntity = null;
             this.tooltip.hide();
 
             let node = this.layers.entities.getNodeAt(this.mouseX, this.mouseY);

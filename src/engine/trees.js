@@ -22,9 +22,7 @@ class Tree extends Entity {
         if (this.hp == 0) {
             this.state = Tree.prototype.STATE.CUT;
             this.imgChoice = Math.floor(Math.random() * this.IMAGES[this.state].length);
-            this.image.remove();
-            this.selectionRect.remove();
-            this.setImage();
+            this.updateImage();
             this.resetBoundingBox();
         }
     }
