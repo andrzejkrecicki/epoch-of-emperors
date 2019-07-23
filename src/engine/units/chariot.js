@@ -15,7 +15,7 @@ Chariot.prototype.SUBTILE_WIDTH = 2;
 Chariot.prototype.NAME = ["Chariot"];
 Chariot.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/chariot.png")];
 Chariot.prototype.TYPE = "cavalry";
-Chariot.prototype.MAX_HP = 100;
+Chariot.prototype.MAX_HP = [100];
 Chariot.prototype.SPEED = 2.5;
 Chariot.prototype.CREATION_TIME = 40 * 35;
 Chariot.prototype.ATTACK_RATE = 9 * 3;
@@ -26,8 +26,8 @@ Chariot.prototype.COST = {
 }
 
 Chariot.prototype.ATTRIBUTES = {
-    ATTACK: 7,
-    ARMOR: 0
+    ATTACK: [7],
+    ARMOR: [0]
 }
 
 

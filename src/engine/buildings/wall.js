@@ -28,7 +28,7 @@ class Wall extends Building {
     }
     takeHit(value, attacker, engine) {
         super.takeHit(value, attacker, engine);
-        if (this.hp < this.MAX_HP / 2) {
+        if (this.hp < this.MAX_HP[this.level] / 2) {
             this.state &= ~Wall.prototype.STATE.DONE;
             this.state |= Wall.prototype.STATE.DAMAGED;
             this.flag.hide();
@@ -72,7 +72,7 @@ Wall.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/wall_03_greek.png")
     ]
 ];
-Wall.prototype.MAX_HP = 200;
+Wall.prototype.MAX_HP = [200, 300];
 Wall.prototype.SUBTILE_WIDTH = 2;
 Wall.prototype.CONTINUOUS_PREVIEW = true;
 Wall.prototype.LEVELS_UP_ON_AGE = false;

@@ -23,7 +23,7 @@ SiegeWorkshop.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/siege_workshop_03_greek.png")
     ]
 ];
-SiegeWorkshop.prototype.MAX_HP = 350;
+SiegeWorkshop.prototype.MAX_HP = [350];
 SiegeWorkshop.prototype.SUBTILE_WIDTH = 5;
 
 SiegeWorkshop.prototype.ACTION_KEY = "K";

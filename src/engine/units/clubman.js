@@ -14,7 +14,7 @@ ClubMan.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/clubman.png"),
     Sprites.Sprite("img/interface/avatars/axeman.png")
 ];
-ClubMan.prototype.MAX_HP = 40;
+ClubMan.prototype.MAX_HP = [40, 50];
 ClubMan.prototype.SPEED = 1;
 ClubMan.prototype.CREATION_TIME = 26 * 35;
 ClubMan.prototype.ATTACK_RATE = 10 * 3;
@@ -25,8 +25,8 @@ ClubMan.prototype.COST = {
 }
 
 ClubMan.prototype.ATTRIBUTES = {
-    ATTACK: 3,
-    ARMOR: 0
+    ATTACK: [3, 5],
+    ARMOR: [0, 0]
 }
 
 ClubMan.prototype.FRAME_RATE = {

@@ -23,7 +23,7 @@ Academy.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/academy_03_greek.png")
     ]
 ];
-Academy.prototype.MAX_HP = 350;
+Academy.prototype.MAX_HP = [350];
 Academy.prototype.SUBTILE_WIDTH = 5;
 
 Academy.prototype.ACTION_KEY = "Y";

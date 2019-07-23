@@ -27,7 +27,7 @@ Stable.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/stable_03_greek.png")
     ]
 ];
-Stable.prototype.MAX_HP = 350;
+Stable.prototype.MAX_HP = [350];
 Stable.prototype.SUBTILE_WIDTH = 5;
 
 Stable.prototype.ACTION_KEY = "L";

@@ -23,7 +23,7 @@ BowMan.prototype.SUBTILE_WIDTH = 1;
 BowMan.prototype.NAME = ["Bowman"];
 BowMan.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/bowman.png")];
 BowMan.prototype.TYPE = "archer";
-BowMan.prototype.MAX_HP = 35;
+BowMan.prototype.MAX_HP = [35];
 BowMan.prototype.SPEED = 1.1;
 BowMan.prototype.CREATION_TIME = 26 * 35;
 BowMan.prototype.ATTACK_RATE = 7 * 3;
@@ -36,9 +36,9 @@ BowMan.prototype.COST = {
 }
 
 BowMan.prototype.ATTRIBUTES = {
-    ATTACK: 3,
-    ARMOR: 0,
-    RANGE: 5
+    ATTACK: [3],
+    ARMOR: [0],
+    RANGE: [5]
 }
 
 

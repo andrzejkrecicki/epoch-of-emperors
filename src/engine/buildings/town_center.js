@@ -28,7 +28,7 @@ TownCenter.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/town_center_04_greek.png")
     ]
 ];
-TownCenter.prototype.MAX_HP = 600;
+TownCenter.prototype.MAX_HP = [600];
 TownCenter.prototype.SUBTILE_WIDTH = 5;
 
 TownCenter.prototype.ACTION_KEY = "N";

@@ -27,7 +27,7 @@ Market.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/market_01_all.png")
     ]
 ];
-Market.prototype.MAX_HP = 350;
+Market.prototype.MAX_HP = [350];
 Market.prototype.SUBTILE_WIDTH = 5;
 
 Market.prototype.ACTION_KEY = "M";

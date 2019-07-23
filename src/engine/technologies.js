@@ -70,12 +70,7 @@ class BattleAxe extends Technology {
     }
     finalize() {
         for (let unit of this.player.units) {
-            if (!unit.wasConverted && unit instanceof ClubMan) {
-                unit.levelUp();
-                unit.max_hp += 10;
-                unit.hp += 10;
-                unit.attributes.attack += 2;
-            }
+            if (!unit.wasConverted && unit instanceof ClubMan) unit.levelUp();
         }
         this.player.defaultEntityLevel.ClubMan = 1;
         super.finalize();
@@ -450,13 +445,7 @@ class CompositeBow extends Technology {
     }
     finalize() {
         for (let unit of this.player.units) {
-            if (!unit.wasConverted && unit instanceof ImprovedBowMan) {
-                unit.levelUp();
-                unit.max_hp += 5;
-                unit.hp += 5;
-                unit.attributes.attack += 1;
-                unit.attributes.range += 1;
-            }
+            if (!unit.wasConverted && unit instanceof ImprovedBowMan) unit.levelUp();
         }
         this.player.defaultEntityLevel.ImprovedBowMan = 1;
         super.finalize();
@@ -507,12 +496,7 @@ class BroadSword extends Technology {
     }
     finalize() {
         for (let unit of this.player.units) {
-            if (!unit.wasConverted && unit instanceof SwordsMan) {
-                unit.levelUp();
-                unit.max_hp += 10;
-                unit.hp += 10;
-                unit.attributes.attack += 2;
-            }
+            if (!unit.wasConverted && unit instanceof SwordsMan) unit.levelUp();
         }
         this.player.defaultEntityLevel.SwordsMan = 1;
         super.finalize();
@@ -675,11 +659,7 @@ class MediumWall extends Technology {
     }
     finalize() {
         for (let building of this.player.buildings) {
-            if (!building.wasConverted && building instanceof Wall) {
-                building.levelUp();
-                building.max_hp += 100;
-                building.hp += 100;
-            }
+            if (!building.wasConverted && building instanceof Wall) building.levelUp();
         }
         this.player.defaultEntityLevel.Wall = 1;
         super.finalize();
@@ -708,11 +688,7 @@ class SentryTower extends Technology {
     }
     finalize() {
         for (let building of this.player.buildings) {
-            if (!building.wasConverted && building instanceof Tower) {
-                building.levelUp();
-                building.max_hp += 50;
-                building.hp += 50;
-            }
+            if (!building.wasConverted && building instanceof Tower) building.levelUp();
         }
         this.player.defaultEntityLevel.Tower = 1;
         super.finalize();
@@ -742,8 +718,6 @@ class FishingShip extends Technology {
         for (let unit of this.player.units) {
             if (!unit.wasConverted && unit instanceof FishingBoat) {
                 unit.levelUp();
-                unit.max_hp += 30;
-                unit.hp += 30;
                 this.player.attributeBonus.fishing_boat.capacity.food += 5;
             }
         }
@@ -773,11 +747,7 @@ class MerchantShip extends Technology {
     }
     finalize() {
         for (let unit of this.player.units) {
-            if (!unit.wasConverted && unit instanceof TradeBoat) {
-                unit.levelUp();
-                unit.max_hp += 50;
-                unit.hp += 50;
-            }
+            if (!unit.wasConverted && unit instanceof TradeBoat) unit.levelUp();
         }
         this.player.defaultEntityLevel.TradeBoat = 1;
         super.finalize();
@@ -805,13 +775,7 @@ class WarGallery extends Technology {
     }
     finalize() {
         for (let unit of this.player.units) {
-            if (!unit.wasConverted && unit instanceof ScoutShip) {
-                unit.levelUp();
-                unit.max_hp += 40;
-                unit.hp += 40;
-                unit.attributes.attack += 3;
-                unit.attributes.range += 1;
-            }
+            if (!unit.wasConverted && unit instanceof ScoutShip) unit.levelUp();
         }
         this.player.defaultEntityLevel.ScoutShip = 1;
         super.finalize();

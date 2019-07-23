@@ -70,6 +70,17 @@ class Entity extends Graphics.Node {
             this.absY() - offset.y
         );
     }
+    recalculateMaxHP() {
+        if (this.MAX_HP.length >= this.level + 1 && this.level > 0) {
+            let old_max = this.max_hp;
+            this.max_hp = Math.floor(this.MAX_HP[this.level] * this.player.attributeBonus[this.TYPE].hp_multiplier);
+            this.hp = this.hp + (this.max_hp - old_max);
+        }
+    }
+    setLevel(level) {
+        this.level = level;
+        this.recalculateMaxHP();
+    }
     getCenterSubtile() {
         return {
             subtile_x: this.subtile_x + this.SUBTILE_WIDTH / 2 - .5,

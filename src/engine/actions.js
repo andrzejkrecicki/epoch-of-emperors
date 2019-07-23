@@ -66,7 +66,7 @@ function CreateBuildingFactory(BUILDING) {
 
             let sub = this.viewer.constructionIndicator.sub;
             let building = new this.BUILDING(sub.x, sub.y, this.player);
-            building.level = CreateBuilding.getLevel(this.player);
+            building.setLevel(CreateBuilding.getLevel(this.player));
             building.updateImage();
             this.viewer.engine.addBuilding(building);
             this.viewer.addEntity(building);

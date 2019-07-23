@@ -54,7 +54,7 @@ Priest.prototype.SUBTILE_WIDTH = 1;
 Priest.prototype.NAME = ["Priest"];
 Priest.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/priest.png")];
 Priest.prototype.TYPE = "priest";
-Priest.prototype.MAX_HP = 25;
+Priest.prototype.MAX_HP = [25];
 Priest.prototype.SPEED = 0.7;
 Priest.prototype.CREATION_TIME = 50 * 35;
 Priest.prototype.ATTACK_RATE = 5 * 3;
@@ -67,8 +67,8 @@ Priest.prototype.COST = {
 }
 
 Priest.prototype.ATTRIBUTES = {
-    ARMOR: 0,
-    RANGE: 10,
+    ARMOR: [0],
+    RANGE: [10],
 }
 
 Priest.prototype.STATE = { ...Priest.prototype.STATE };

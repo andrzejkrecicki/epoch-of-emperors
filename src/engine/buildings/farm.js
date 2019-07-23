@@ -26,7 +26,7 @@ Farm.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/farm.png")
     ]
 ];
-Farm.prototype.MAX_HP = 50;
+Farm.prototype.MAX_HP = [50];
 Farm.prototype.SUBTILE_WIDTH = 5;
 Farm.prototype.INTERACT_WHEN_COMPLETE = true;
 

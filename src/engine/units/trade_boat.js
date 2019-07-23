@@ -36,7 +36,7 @@ TradeBoat.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/merchant_ship.png")
 ];
 TradeBoat.prototype.TYPE = "ship";
-TradeBoat.prototype.MAX_HP = 200;
+TradeBoat.prototype.MAX_HP = [200, 250];
 TradeBoat.prototype.SPEED = 3;
 TradeBoat.prototype.CREATION_TIME = 26 * 35;
 TradeBoat.prototype.LEAVES_LEFTOVERS = false;

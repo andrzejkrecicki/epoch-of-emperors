@@ -32,7 +32,7 @@ FishingBoat.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/fishing_ship.png")
 ];
 FishingBoat.prototype.TYPE = "fishing_boat";
-FishingBoat.prototype.MAX_HP = 45;
+FishingBoat.prototype.MAX_HP = [45, 75];
 FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;
 FishingBoat.prototype.LEAVES_LEFTOVERS = false;

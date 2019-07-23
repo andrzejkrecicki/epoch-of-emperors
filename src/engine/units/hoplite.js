@@ -12,7 +12,7 @@ Hoplite.prototype.SUBTILE_WIDTH = 1;
 Hoplite.prototype.NAME = ["Hoplite"];
 Hoplite.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/hoplite.png")];
 Hoplite.prototype.TYPE = "infantry";
-Hoplite.prototype.MAX_HP = 120;
+Hoplite.prototype.MAX_HP = [120];
 Hoplite.prototype.SPEED = 1;
 Hoplite.prototype.CREATION_TIME = 36 * 35;
 Hoplite.prototype.ATTACK_RATE = 8 * 3;
@@ -23,8 +23,8 @@ Hoplite.prototype.COST = {
 }
 
 Hoplite.prototype.ATTRIBUTES = {
-    ATTACK: 17,
-    ARMOR: 5
+    ATTACK: [17],
+    ARMOR: [5]
 }
 
 

@@ -26,7 +26,7 @@ Temple.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/temple_04_greek.png")
     ]
 ];
-Temple.prototype.MAX_HP = 350;
+Temple.prototype.MAX_HP = [350];
 Temple.prototype.SUBTILE_WIDTH = 5;
 
 Temple.prototype.ACTION_KEY = "P";

@@ -24,7 +24,7 @@ GovernmentCenter.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/government_center_04_greek.png")
     ]
 ];
-GovernmentCenter.prototype.MAX_HP = 350;
+GovernmentCenter.prototype.MAX_HP = [350];
 GovernmentCenter.prototype.SUBTILE_WIDTH = 5;
 
 GovernmentCenter.prototype.ACTION_KEY = "C";

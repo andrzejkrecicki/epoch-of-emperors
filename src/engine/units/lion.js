@@ -13,12 +13,12 @@ class Lion extends Animal {
 Lion.prototype.SUBTILE_WIDTH = 1;
 Lion.prototype.NAME = ["Lion"];
 Lion.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/lion.png");
-Lion.prototype.MAX_HP = 24;
+Lion.prototype.MAX_HP = [24];
 Lion.prototype.SPEED = 3;
 Lion.prototype.ATTACK_RATE = 13;
 
 Lion.prototype.ATTRIBUTES = {
-    ATTACK: 4
+    ATTACK: [4]
 }
 
 Lion.prototype.STATE = { ...Lion.prototype.STATE };

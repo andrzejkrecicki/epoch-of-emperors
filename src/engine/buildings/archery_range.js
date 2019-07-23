@@ -29,7 +29,7 @@ ArcheryRange.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/archery_range_04_greek.png")
     ]
 ];
-ArcheryRange.prototype.MAX_HP = 350;
+ArcheryRange.prototype.MAX_HP = [350];
 ArcheryRange.prototype.SUBTILE_WIDTH = 5;
 
 ArcheryRange.prototype.ACTION_KEY = "A";

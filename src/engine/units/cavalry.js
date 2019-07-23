@@ -15,7 +15,7 @@ Cavalry.prototype.SUBTILE_WIDTH = 2;
 Cavalry.prototype.NAME = ["Cavalry"];
 Cavalry.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/cavalry.png")];
 Cavalry.prototype.TYPE = "cavalry";
-Cavalry.prototype.MAX_HP = 150;
+Cavalry.prototype.MAX_HP = [150];
 Cavalry.prototype.SPEED = 3;
 Cavalry.prototype.CREATION_TIME = 40 * 35;
 Cavalry.prototype.ATTACK_RATE = 7 * 3;
@@ -26,8 +26,8 @@ Cavalry.prototype.COST = {
 }
 
 Cavalry.prototype.ATTRIBUTES = {
-    ATTACK: 8,
-    ARMOR: 0
+    ATTACK: [8],
+    ARMOR: [0]
 }
 
 

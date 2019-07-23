@@ -78,7 +78,7 @@ class Villager extends Unit {
 Villager.prototype.SUBTILE_WIDTH = 1;
 Villager.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/villager.png")];
 Villager.prototype.TYPE = "villager";
-Villager.prototype.MAX_HP = 25;
+Villager.prototype.MAX_HP = [25];
 Villager.prototype.SPEED = 1;
 Villager.prototype.CREATION_TIME = 20 * 35;
 Villager.prototype.ATTACK_RATE = 10 * 3;
@@ -95,7 +95,7 @@ Villager.prototype.CAPACITY = {
     [RESOURCE_NAME[RESOURCE_TYPES.GOLD]]: 10
 }
 Villager.prototype.ATTRIBUTES = {
-    ATTACK: 3
+    ATTACK: [3]
 }
 
 

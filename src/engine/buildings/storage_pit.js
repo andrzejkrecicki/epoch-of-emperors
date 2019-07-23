@@ -35,7 +35,7 @@ StoragePit.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/storage_pit_04_greek.png")
     ]
 ];
-StoragePit.prototype.MAX_HP = 350;
+StoragePit.prototype.MAX_HP = [350];
 StoragePit.prototype.SUBTILE_WIDTH = 5;
 
 StoragePit.prototype.ACTION_KEY = "S";

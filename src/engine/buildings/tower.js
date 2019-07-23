@@ -13,8 +13,8 @@ class Tower extends Building {
     }
     setComplete() {
         super.setComplete();
-        this.attributes.attack = this.ATTRIBUTES.ATTACK + this.level;
-        this.attributes.range = this.ATTRIBUTES.RANGE + this.level;
+        this.attributes.attack = this.ATTRIBUTES.ATTACK[0] + this.level;
+        this.attributes.range = this.ATTRIBUTES.RANGE[0] + this.level;
 
         for (let pos of this.TORCH_POSITIONS[this.level]) {
             let torch = new FireSmall();
@@ -65,7 +65,7 @@ Tower.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/tower_01_all.png")
     ]
 ];
-Tower.prototype.MAX_HP = 100;
+Tower.prototype.MAX_HP = [100, 150];
 Tower.prototype.ATTACK_RATE = 7 * 3;
 Tower.prototype.SHOT_DELAY = 27;
 Tower.prototype.SUBTILE_WIDTH = 4;
@@ -79,8 +79,8 @@ Tower.prototype.COST = {
 }
 
 Tower.prototype.ATTRIBUTES = {
-    ATTACK: 3,
-    RANGE: 5
+    ATTACK: [3],
+    RANGE: [5]
 }
 
 

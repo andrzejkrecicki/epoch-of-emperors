@@ -53,7 +53,7 @@ House.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/house_04_greek.png")
     ]
 ];
-House.prototype.MAX_HP = 75;
+House.prototype.MAX_HP = [75];
 House.prototype.SUBTILE_WIDTH = 3;
 House.prototype.PEOPLE_PER_HOUSE = 4;
 

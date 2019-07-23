@@ -40,7 +40,7 @@ class Tree extends Entity {
         return this.IMAGES[this.state][this.imgChoice];
     }
 }
-Tree.prototype.MAX_HP = 25;
+Tree.prototype.MAX_HP = [25];
 Tree.prototype.SUBTILE_WIDTH = 1;
 Tree.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/tree.png");
 Tree.prototype.TOOLTIP = "Chop down trees for wood.";

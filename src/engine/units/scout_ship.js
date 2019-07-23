@@ -41,7 +41,7 @@ ScoutShip.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/war_gallery.png")
 ];
 ScoutShip.prototype.TYPE = "ship";
-ScoutShip.prototype.MAX_HP = 120;
+ScoutShip.prototype.MAX_HP = [120, 160];
 ScoutShip.prototype.SPEED = 3;
 ScoutShip.prototype.CREATION_TIME = 26 * 35;
 ScoutShip.prototype.ATTACK_RATE = 5 * 3;
@@ -56,9 +56,9 @@ ScoutShip.prototype.COST = {
 }
 
 ScoutShip.prototype.ATTRIBUTES = {
-    ATTACK: 5,
-    ARMOR: 0,
-    RANGE: 5
+    ATTACK: [5, 8],
+    ARMOR: [0, 0],
+    RANGE: [5, 6]
 }
 
 ScoutShip.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);

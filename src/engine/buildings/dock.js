@@ -64,7 +64,7 @@ Dock.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/dock_04_greek.png")
     ]
 ];
-Dock.prototype.MAX_HP = 350;
+Dock.prototype.MAX_HP = [350];
 Dock.prototype.SUBTILE_WIDTH = 4;
 
 Dock.prototype.ACTION_KEY = "D";

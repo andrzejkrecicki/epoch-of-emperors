@@ -12,7 +12,7 @@ Scout.prototype.SUBTILE_WIDTH = 2;
 Scout.prototype.NAME = ["Scout"];
 Scout.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/scout.png")];
 Scout.prototype.TYPE = "cavalry";
-Scout.prototype.MAX_HP = 60;
+Scout.prototype.MAX_HP = [60];
 Scout.prototype.SPEED = 3;
 Scout.prototype.CREATION_TIME = 26 * 35;
 Scout.prototype.ATTACK_RATE = 5 * 3;
@@ -23,8 +23,8 @@ Scout.prototype.COST = {
 }
 
 Scout.prototype.ATTRIBUTES = {
-    ATTACK: 3,
-    ARMOR: 0
+    ATTACK: [3],
+    ARMOR: [0]
 }
 
 Scout.prototype.FRAME_RATE = {

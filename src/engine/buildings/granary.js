@@ -25,7 +25,7 @@ Granary.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/granary_04_greek.png")
     ]
 ];
-Granary.prototype.MAX_HP = 350;
+Granary.prototype.MAX_HP = [350];
 Granary.prototype.SUBTILE_WIDTH = 5;
 
 Granary.prototype.ACTION_KEY = "G";

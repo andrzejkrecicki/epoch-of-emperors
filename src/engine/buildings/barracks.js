@@ -25,7 +25,7 @@ Barracks.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/barracks_04_greek.png")
     ]
 ];
-Barracks.prototype.MAX_HP = 350;
+Barracks.prototype.MAX_HP = [350];
 Barracks.prototype.SUBTILE_WIDTH = 5;
 
 Barracks.prototype.ACTION_KEY = "B";

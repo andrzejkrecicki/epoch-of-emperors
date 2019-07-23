@@ -24,7 +24,7 @@ class Gazelle extends Animal {
 Gazelle.prototype.SUBTILE_WIDTH = 1;
 Gazelle.prototype.NAME = ["Gazelle"];
 Gazelle.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/gazelle.png");
-Gazelle.prototype.MAX_HP = 8;
+Gazelle.prototype.MAX_HP = [8];
 Gazelle.prototype.SPEED = 3;
 
 Gazelle.prototype.ATTRIBUTES = {}

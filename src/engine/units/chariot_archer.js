@@ -26,7 +26,7 @@ ChariotArcher.prototype.SUBTILE_WIDTH = 2;
 ChariotArcher.prototype.NAME = ["Chariot Archer"];
 ChariotArcher.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/chariot_archer.png")];
 ChariotArcher.prototype.TYPE = "archer";
-ChariotArcher.prototype.MAX_HP = 70;
+ChariotArcher.prototype.MAX_HP = [70];
 ChariotArcher.prototype.SPEED = 2.5;
 ChariotArcher.prototype.CREATION_TIME = 40 * 35;
 ChariotArcher.prototype.ATTACK_RATE = 7 * 3;
@@ -39,9 +39,9 @@ ChariotArcher.prototype.COST = {
 }
 
 ChariotArcher.prototype.ATTRIBUTES = {
-    ATTACK: 4,
-    ARMOR: 0,
-    RANGE: 7
+    ATTACK: [4],
+    ARMOR: [0],
+    RANGE: [7]
 }
 
 

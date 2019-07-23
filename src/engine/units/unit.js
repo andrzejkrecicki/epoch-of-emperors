@@ -7,10 +7,11 @@ import * as interactions from '../interactions.js';
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, level=0, rotation=null) {
         super(...arguments);
-        this.hp = Math.floor(this.MAX_HP * player.attributeBonus[this.TYPE].hp_multiplier);
-        this.max_hp = Math.floor(this.MAX_HP * player.attributeBonus[this.TYPE].hp_multiplier);
+        this.hp = Math.floor(this.MAX_HP[this.level] * player.attributeBonus[this.TYPE].hp_multiplier);
+        this.max_hp = Math.floor(this.MAX_HP[this.level] * player.attributeBonus[this.TYPE].hp_multiplier);
+        this.player = player;
         this.state = this.STATE.IDLE;
-        this.level = level;
+        this.setLevel(level);
         this.rotation = rotation != null ? rotation : Math.floor(Math.random() * 8);
         this.frame = 0;
         this.needsProcessing = false;
@@ -19,13 +20,7 @@ class Unit extends Entity {
         this.interactionObject = null;
         this.prevInteractionObject = null;
         this.hasFullPath = false;
-        this.player = player;
         this.player.addUnit(this);
-
-        if (this.ATTRIBUTES.ATTACK != null) this.attributes.attack = this.ATTRIBUTES.ATTACK;
-        if (this.ATTRIBUTES.ARMOR != null) this.attributes.armor = this.ATTRIBUTES.ARMOR;
-        if (this.ATTRIBUTES.MISSILE_ARMOR != null) this.attributes.missile_armor = this.ATTRIBUTES.MISSILE_ARMOR;
-        if (this.ATTRIBUTES.RANGE != null) this.attributes.range = this.ATTRIBUTES.RANGE;
 
         this.setImage();
         this.resetBoundingBox();
@@ -51,8 +46,26 @@ class Unit extends Entity {
         return this.NAME[this.level];
     }
     levelUp() {
-        ++this.level;
+        this.setLevel(this.level + 1);
+        this.recalculateMaxHP();
         this.updateSprite();
+    }
+    setLevel(level) {
+        this.level = level;
+        this.recalculateMaxHP();
+
+        if (this.ATTRIBUTES.ATTACK != null && this.ATTRIBUTES.ATTACK[level]) {
+            this.attributes.attack = this.ATTRIBUTES.ATTACK[level];
+        }
+        if (this.ATTRIBUTES.ARMOR != null && this.ATTRIBUTES.ARMOR[level]) {
+            this.attributes.armor = this.ATTRIBUTES.ARMOR[level];
+        }
+        if (this.ATTRIBUTES.MISSILE_ARMOR != null && this.ATTRIBUTES.MISSILE_ARMOR[level]) {
+            this.attributes.missile_armor = this.ATTRIBUTES.MISSILE_ARMOR[level];
+        }
+        if (this.ATTRIBUTES.RANGE != null && this.ATTRIBUTES.RANGE[level]) {
+            this.attributes.range = this.ATTRIBUTES.RANGE[level];
+        }
     }
     getSpeed() {
         return this.player ? this.SPEED + this.player.attributeBonus[this.TYPE].speed : this.SPEED;

@@ -13,12 +13,12 @@ class Alligator extends Animal {
 Alligator.prototype.SUBTILE_WIDTH = 1;
 Alligator.prototype.NAME = ["Alligator"];
 Alligator.prototype.AVATAR = Sprites.Sprite("img/interface/avatars/alligator.png");
-Alligator.prototype.MAX_HP = 24;
+Alligator.prototype.MAX_HP = [24];
 Alligator.prototype.SPEED = .75;
 Alligator.prototype.ATTACK_RATE = 19;
 
 Alligator.prototype.ATTRIBUTES = {
-    ATTACK: 4
+    ATTACK: [4]
 }
 
 Alligator.prototype.FRAME_RATE = {

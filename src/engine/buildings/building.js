@@ -8,7 +8,7 @@ class Building extends Entity {
     constructor(subtile_x, subtile_y, player) {
         super(...arguments);
         this.hp = 1;
-        this.max_hp = Math.floor(this.MAX_HP * player.attributeBonus[this.TYPE].hp_multiplier);
+        this.max_hp = Math.floor(this.MAX_HP[this.level] * player.attributeBonus[this.TYPE].hp_multiplier);
         this.construction_stage = 0;
         this.isComplete = false;
         this.normalized = true;
@@ -45,7 +45,7 @@ class Building extends Entity {
         this.player.possessions[this.constructor.name] = (this.player.possessions[this.constructor.name] || 0) + 1;
     }
     levelUp() {
-        ++this.level;
+        this.setLevel(this.level + 1);
         this.updateImage();
     }
     createFlames() {

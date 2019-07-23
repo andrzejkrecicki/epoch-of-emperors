@@ -17,7 +17,7 @@ SwordsMan.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/short_swordsman.png"),
     Sprites.Sprite("img/interface/avatars/broad_swordsman.png")
 ];
-SwordsMan.prototype.MAX_HP = 60;
+SwordsMan.prototype.MAX_HP = [60, 70];
 SwordsMan.prototype.SPEED = 1;
 SwordsMan.prototype.CREATION_TIME = 26 * 35;
 SwordsMan.prototype.ATTACK_RATE = 8 * 3;
@@ -28,8 +28,8 @@ SwordsMan.prototype.COST = {
 }
 
 SwordsMan.prototype.ATTRIBUTES = {
-    ATTACK: 7,
-    ARMOR: 1
+    ATTACK: [7, 9],
+    ARMOR: [1, 1]
 }
 
 

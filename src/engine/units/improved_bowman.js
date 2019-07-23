@@ -29,7 +29,7 @@ ImprovedBowMan.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/composite_bowman.png")
 ];
 ImprovedBowMan.prototype.TYPE = "archer";
-ImprovedBowMan.prototype.MAX_HP = 40;
+ImprovedBowMan.prototype.MAX_HP = [40, 45];
 ImprovedBowMan.prototype.SPEED = 1.1;
 ImprovedBowMan.prototype.CREATION_TIME = 30 * 35;
 ImprovedBowMan.prototype.ATTACK_RATE = 6 * 3;
@@ -42,9 +42,9 @@ ImprovedBowMan.prototype.COST = {
 }
 
 ImprovedBowMan.prototype.ATTRIBUTES = {
-    ATTACK: 4,
-    ARMOR: 0,
-    RANGE: 6
+    ATTACK: [4, 5],
+    ARMOR: [0, 0],
+    RANGE: [6, 7]
 }
 
 

@@ -23,7 +23,7 @@ StoneThrower.prototype.SUBTILE_WIDTH = 3;
 StoneThrower.prototype.NAME = ["Stone Thrower"];
 StoneThrower.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/stone_thrower.png")];
 StoneThrower.prototype.TYPE = "siege";
-StoneThrower.prototype.MAX_HP = 75;
+StoneThrower.prototype.MAX_HP = [75];
 StoneThrower.prototype.SPEED = 0.72;
 StoneThrower.prototype.CREATION_TIME = 60 * 35;
 StoneThrower.prototype.ATTACK_RATE = 3 * 3;
@@ -36,9 +36,9 @@ StoneThrower.prototype.COST = {
 }
 
 StoneThrower.prototype.ATTRIBUTES = {
-    ATTACK: 50,
-    ARMOR: 0,
-    RANGE: 10,
+    ATTACK: [50],
+    ARMOR: [0],
+    RANGE: [10],
 }
 
 
