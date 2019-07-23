@@ -184,12 +184,34 @@ class Engine {
         let seed = { x: entity.subtile_x, y: entity.subtile_y };
         let found = null;
         let count = 0
-        let walker = new BFSWalker(seed, new StandardQueue, (node) => {
-                let { x, y } = node;
-                if (this.map.subtiles[x][y] != null && this.map.subtiles[x][y] != entity &&
-                    this.map.subtiles[x][y] instanceof entity.constructor &&
-                    !this.map.subtiles[x][y].destroyed
-                ) found = this.map.subtiles[x][y];
+        let walker = new BFSWalker(seed, new StandardQueue, ({ x, y }) => {
+                let tile = this.map.subtiles[x][y];
+                if (tile != null && tile != entity && 
+                    tile instanceof entity.constructor && !tile.destroyed
+                ) found = tile;
+                ++count;
+            }, (x, y, node) => ({ x, y }),
+            () => (found != null || count > 1000),
+            0, this.map.edge_size * 2 - 1
+        );
+        walker.run();
+        entity.interactionSuccessor = found;
+        if (found) this.interactOrder(active, found);
+        return found;
+    }
+    findConstructionSuccessor(active, entity) {
+        if (entity.interactionSuccessor != null) {
+            this.interactOrder(active, entity.interactionSuccessor);
+            return entity.interactionSuccessor;
+        }
+        let seed = { x: entity.subtile_x, y: entity.subtile_y };
+        let found = null;
+        let count = 0
+        let walker = new BFSWalker(seed, new StandardQueue, ({ x, y }) => {
+                let tile = this.map.subtiles[x][y];
+                if (tile != null && tile != entity && tile instanceof Building &&
+                    !tile.destroyed && !tile.isComplete && tile.player == entity.player
+                ) found = tile;
                 ++count;
             }, (x, y, node) => ({ x, y }),
             () => (found != null || count > 1000),

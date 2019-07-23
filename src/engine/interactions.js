@@ -97,14 +97,22 @@ class BuilderInteraction extends Interaction {
     preInit() {
         this.active.state = this.active.STATE.BUILDING.BASE;
     }
+    init() {
+        if (this.passive.isComplete) this.interactWithSuccessor();
+        else super.init();
+    }
     process() {
         if (this.passive.destroyed) {
-            this.terminate();
+            if (this.engine.findConstructionSuccessor(this.active, this.passive) == null) {
+                this.terminate();
+            }
         } else if (this.passive.isComplete && this.passive.INTERACT_WHEN_COMPLETE) {
             this.engine.interactImmediately(this.active, this.passive);
-        } else if (this.passive.isComplete)
-            this.terminate();
-        else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
+        } else if (this.passive.isComplete) {
+            if (this.engine.findConstructionSuccessor(this.active, this.passive) == null) {
+                this.terminate();
+            }
+        } else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
             this.passive.constructionTick();
             this.active.ticks_waited = 0;
         }
