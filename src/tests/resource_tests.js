@@ -14,7 +14,24 @@ import { GoldMine } from '../engine/resources/gold.js';
 import { LeafTree } from '../engine/trees.js';
 
 
-class BushTest extends Test {
+class ResourceTest extends Test {
+    constructor(engine) {
+        super(engine)
+        this.states = [];
+    }
+    pass() {
+        for (let i = 0; i < this.DESIRED_STATES.length; ++i) {
+            if (this.DESIRED_STATES[i] != this.states[i]) {
+                this.fail("Expected states " + this.DESIRED_STATES + " got " + this.states);
+                return;
+            }
+        }
+        super.pass();
+    }
+}
+
+
+class BushTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
@@ -26,6 +43,7 @@ class BushTest extends Test {
         this.engine.interactOrder(this.villager, this.bush);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.bush.destroyed &&
             this.engine.current_player.resources.food == 400 + 150 &&
             this.engine.current_player.resources.wood == 400 &&
@@ -34,8 +52,9 @@ class BushTest extends Test {
         ) this.pass();
     }
 }
+BushTest.prototype.DESIRED_STATES = [98, 96, 98, 96];
 
-class TreeTest extends Test {
+class TreeTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
@@ -47,6 +66,7 @@ class TreeTest extends Test {
         this.engine.interactOrder(this.villager, this.tree);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.tree.destroyed &&
             this.engine.current_player.resources.food == 400 &&
             this.engine.current_player.resources.wood == 400 + 75 &&
@@ -55,9 +75,10 @@ class TreeTest extends Test {
         ) this.pass();
     }
 }
+TreeTest.prototype.DESIRED_STATES = [130, 128, 160, 194, 130, 160, 194, 130];
 
 
-class GoldTest extends Test {
+class GoldTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
@@ -70,6 +91,7 @@ class GoldTest extends Test {
         this.engine.interactOrder(this.villager, this.gold);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.gold.destroyed &&
             this.engine.current_player.resources.food == 400 &&
             this.engine.current_player.resources.wood == 400 &&
@@ -79,9 +101,10 @@ class GoldTest extends Test {
     }
 }
 GoldTest.prototype.MAX_TIME =  20 * 60 * 35;
+GoldTest.prototype.DESIRED_STATES = [226, 224, 290, 226, 224, 290];
 
 
-class StoneTest extends Test {
+class StoneTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
@@ -94,6 +117,7 @@ class StoneTest extends Test {
         this.engine.interactOrder(this.villager, this.stone);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.stone.destroyed &&
             this.engine.current_player.resources.food == 400 &&
             this.engine.current_player.resources.wood == 400 &&
@@ -103,9 +127,10 @@ class StoneTest extends Test {
     }
 }
 StoneTest.prototype.MAX_TIME =  20 * 60 * 35;
+StoneTest.prototype.DESIRED_STATES = [258, 256, 322, 258, 256, 322];
 
 
-class FarmTest extends Test {
+class FarmTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
@@ -117,6 +142,7 @@ class FarmTest extends Test {
         this.engine.interactOrder(this.villager, this.farm);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.farm.destroyed &&
             this.engine.current_player.resources.food == 400 + 250 &&
             this.engine.current_player.resources.wood == 400 &&
@@ -126,9 +152,10 @@ class FarmTest extends Test {
     }
 }
 FarmTest.prototype.MAX_TIME =  20 * 60 * 35;
+FarmTest.prototype.DESIRED_STATES = [354, 352, 386, 354, 352, 386];
 
 
-class HuntTest extends Test {
+class HuntTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
@@ -140,6 +167,7 @@ class HuntTest extends Test {
         this.engine.interactOrder(this.villager, this.animal);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.animal.destroyed &&
             this.engine.current_player.resources.food >= 400 + 50 &&
             this.engine.current_player.resources.wood == 400 &&
@@ -149,9 +177,10 @@ class HuntTest extends Test {
     }
 }
 // HuntTest.prototype.MAX_TIME =  20 * 60 * 35;
+HuntTest.prototype.DESIRED_STATES = [418, 416, 418, 416, 418, 448, 482, 418, 448, 482];
 
 
-class FisherTest extends Test {
+class FisherTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
@@ -169,6 +198,7 @@ class FisherTest extends Test {
         this.engine.interactOrder(this.villager, this.fish);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.fish.destroyed &&
             this.engine.current_player.resources.food == 400 + 250 &&
             this.engine.current_player.resources.wood == 400 &&
@@ -177,9 +207,10 @@ class FisherTest extends Test {
         ) this.pass();
     }
 }
+FisherTest.prototype.DESIRED_STATES = [514, 512, 546, 514, 512, 546];
 
 
-class FishingTest extends Test {
+class FishingTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.dock = this.building(Dock, 139, 112, 0);
@@ -194,6 +225,7 @@ class FishingTest extends Test {
         this.engine.interactOrder(this.ship, this.fish);
     }
     check() {
+        if (this.ship.state != this.states[this.states.length - 1]) this.states.push(this.ship.state);
         if (this.fish.destroyed &&
             this.engine.current_player.resources.food == 400 + 250 &&
             this.engine.current_player.resources.wood == 400 &&
@@ -203,9 +235,10 @@ class FishingTest extends Test {
     }
 }
 FishingTest.prototype.MAX_TIME =  20 * 60 * 35;
+FishingTest.prototype.DESIRED_STATES = [2, 32, 2, 32];
 
 
-class NowhereToReturnTest extends Test {
+class NowhereToReturnTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.villager = this.unit(Villager, 135, 118, 0);
@@ -216,9 +249,11 @@ class NowhereToReturnTest extends Test {
         this.engine.interactOrder(this.villager, this.tree);
     }
     check() {
+        if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
         if (this.villager.interaction == null && this.villager.interactionObject == null) this.pass();
     }
 }
+NowhereToReturnTest.prototype.DESIRED_STATES = [130, 128, 160, 193];
 
 
 export {
