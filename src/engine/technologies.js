@@ -964,6 +964,8 @@ Polytheism.prototype.COST = {
 
 
 const Technologies = {
+    Technology,
+
     ToolAge,
     BattleAxe,
     Toolworking,

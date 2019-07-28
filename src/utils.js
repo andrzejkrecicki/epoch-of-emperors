@@ -7,12 +7,7 @@ class PlayerDefinition {
         } else {
             this.civ = civ;
         }
-        this.resources = {
-            wood: 400,
-            food: 400,
-            stone: 400,
-            gold: 400
-        };
+        this.resources = { ...this.RESOURCES };
 
         this.color = color;
         this.startingAge = 0;
@@ -20,6 +15,13 @@ class PlayerDefinition {
         this.is_cpu = is_cpu;
     }
 }
+PlayerDefinition.prototype.RESOURCES = {
+    wood: 400,
+    food: 400,
+    stone: 400,
+    gold: 400
+};
+
 
 const RESOURCE_TYPES = {
     NONE: 0,

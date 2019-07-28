@@ -2,6 +2,7 @@ import { Sprites } from './sprites.js';
 import './graphics/graphics.js';
 import { MenuNavigator } from './navigator.js';
 import { TestRunner } from './tests/runner.js';
+import './magic.js';
 
 
 class Game {

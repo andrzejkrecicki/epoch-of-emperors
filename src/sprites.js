@@ -108,6 +108,7 @@ const Sprites = {
                     (function(path, img) {
                         this.cache[path] = img;
                         if (++finished == json.length) {
+                            window.debugInfo.innerHTML = '';
                             resolve();
                         }
                         if (finished % 100 == 0) window.debugInfo.innerHTML = Math.floor(100 * finished / json.length);
