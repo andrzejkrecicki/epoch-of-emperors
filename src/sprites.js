@@ -33,19 +33,19 @@ const Sprites = {
         this.colorizedCache[player.color].set(img, ctx.canvas);
         return ctx.canvas;
     },
-    DirectionSprites(path, count, start=0) {
+    DirectionSprites(path, count, start=0, total_count=count) {
         let sprites = new Array(8).fill(null).map(() => []);
         this.ready.then(() => { setTimeout(() => {
             const all = this.cache[path];
-            let width = all.width / (count * 5);
+            let width = all.width / (total_count * 5);
 
             for (let [offset, dir] of DIRECTIONS.entries()) {
-                for (let i = start; i < start + count; ++i) {
+                for (let i = start; i < start + total_count; ++i) {
                     let ctx = getCanvasContext(width, all.height);
 
                     ctx.drawImage(
                         all,
-                        (offset * count + i) * width, 0, width, all.height,
+                        (offset * total_count + i) * width, 0, width, all.height,
                         0, 0, width, all.height
                     )
 
@@ -54,7 +54,7 @@ const Sprites = {
             }
 
             for (let dir of MIRRORED_DIRECTIONS) {
-                for (let i = start; i < start + count; ++i) {
+                for (let i = start; i < start + total_count; ++i) {
                     let ref = sprites[8 - dir][i - start];
                     let ctx = getCanvasContext(ref.width, ref.height);
 
@@ -102,7 +102,7 @@ const Sprites = {
     },
     CarrySprites(state, path, frames, idle_offset=12) {
         return {
-            [state.IDLE]: [Sprites.DirectionSprites(path, 1, idle_offset)],
+            [state.IDLE]: [Sprites.DirectionSprites(path, 1, idle_offset, frames)],
             [state.MOVING]: [Sprites.DirectionSprites(path, frames)],
         };
     },
