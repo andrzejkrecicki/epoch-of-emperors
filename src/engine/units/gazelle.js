@@ -37,7 +37,7 @@ Gazelle.prototype.STATE.SLOW_DYING = Gazelle.prototype.STATE.DYING | Gazelle.pro
 
 
 Gazelle.prototype.IMAGES = {
-    [Gazelle.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/gazelle/idle/", 1)],
+    [Gazelle.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/gazelle/idle/", 12)],
     [Gazelle.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/gazelle/moving/", 8)],
     [Gazelle.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/gazelle/dying/", 10)],
     [Gazelle.prototype.STATE.DEAD]: [Sprites.DirectionSprites("img/units/gazelle/dead/", 4)],

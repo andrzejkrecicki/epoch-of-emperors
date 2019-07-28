@@ -5,7 +5,7 @@ class Alligator extends Animal {
     constructor() {
         super(...arguments);
         this.attributes = {
-            attack: Alligator.prototype.ATTRIBUTES.ATTACK,
+            ...this.attributes,
             food: 200
         }
     }

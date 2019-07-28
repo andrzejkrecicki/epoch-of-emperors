@@ -16,7 +16,7 @@ class Villager extends Unit {
     constructor() {
         super(...arguments);
         this.attributes = {
-            attack: Villager.prototype.ATTRIBUTES.ATTACK,
+            ...this.attributes,
             food: null,
             wood: null,
             gold: null,
@@ -133,7 +133,7 @@ Villager.prototype.STATE = {
 
 Villager.prototype.NAME = {
     0: "Villager",
-    [Villager.prototype.STATE.ATTACK.BASE]: "Villager",
+    [Villager.prototype.STATE.ATTACK]: "Villager",
     [Villager.prototype.STATE.BUILDING.BASE]: "Builder",
     [Villager.prototype.STATE.REPAIRING.BASE]: "Repairman",
     [Villager.prototype.STATE.FORAGE.BASE]: "Forager",
@@ -155,7 +155,7 @@ Villager.prototype.NAME = {
 
 
 Villager.prototype.FRAME_RATE = { ...Unit.prototype.FRAME_RATE,
-    [Villager.prototype.STATE.ATTACK.BASE]: 3,
+    [Villager.prototype.STATE.ATTACK]: 3,
     [Villager.prototype.STATE.DYING.BASE]: 3,
     [Villager.prototype.STATE.BUILDING.BASE]: 2,
     [Villager.prototype.STATE.REPAIRING.BASE]: 2,

@@ -5,7 +5,7 @@ class Lion extends Animal {
     constructor() {
         super(...arguments);
         this.attributes = {
-            attack: Lion.prototype.ATTRIBUTES.ATTACK,
+            ...this.attributes,
             food: 350
         }
     }
@@ -29,7 +29,7 @@ Lion.prototype.STATE.SLOW_DYING = Lion.prototype.STATE.DYING | Lion.prototype.ST
 
 
 Lion.prototype.IMAGES = {
-    [Lion.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/lion/idle/", 1)],
+    [Lion.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/lion/idle/", 10)],
     [Lion.prototype.STATE.MOVING]: [Sprites.DirectionSprites("img/units/lion/moving/", 12)],
     [Lion.prototype.STATE.ATTACK]: [Sprites.DirectionSprites("img/units/lion/attack/", 10)],
     [Lion.prototype.STATE.DYING]: [Sprites.DirectionSprites("img/units/lion/dying/", 10)],

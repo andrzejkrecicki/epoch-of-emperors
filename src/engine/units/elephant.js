@@ -5,7 +5,7 @@ class Elephant extends Animal {
     constructor() {
         super(...arguments);
         this.attributes = {
-            attack: Elephant.prototype.ATTRIBUTES.ATTACK,
+            ...this.attributes,
             food: 550
         }
     }
