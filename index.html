@@ -11,8 +11,12 @@
            position: relative;
            background: black;
         }
-        #debugInfo {
-            white-space: pre;
+        #loader {
+            font-family: sans-serif;
+            font-size: 45px;
+            padding: 300px 0;
+            text-align: center;
+            user-select: none;
         }
         body > canvas.tmpMiniMap {
             transform: rotateX(60deg) rotateZ(-45deg) scale(1.2);
@@ -26,7 +30,7 @@
 </head>
 <body>
     <div id="container"></div>
-    <div id="debugInfo"></div>
+    <div id="loader"></div>
     <script type="text/javascript" src="dist/app.js"></script>
 </body>
 </html>

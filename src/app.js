@@ -46,6 +46,8 @@ Game.CURSORS = [
 
 document.oncontextmenu = function() { return false; };
 
+window.loader.style.width = `${Game.STAGE_WIDTH}px`;
+
 Sprites.ready.then(function() {
 
     const offset_x = 40;

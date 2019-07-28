@@ -2,8 +2,16 @@ import { leftpad, getCanvasContext } from './utils.js';
 import { rgb, palette, color_idx } from './palette.js';
 
 
-const DIRECTIONS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
-
+const DIRECTIONS = [
+    { idx: 0, name: "N", source: null },
+    { idx: 1, name: "NE", source: "NW" },
+    { idx: 2, name: "E", source: "W" },
+    { idx: 3, name: "SE", source: "SW" },
+    { idx: 4, name: "S", source: null },
+    { idx: 5, name: "SW", source: null },
+    { idx: 6, name: "W", source: null },
+    { idx: 7, name: "NW", source: null },
+];
 
 
 const Sprites = {
@@ -36,9 +44,23 @@ const Sprites = {
     DirectionSprites(path, count, start=0) {
         let sprites = new Array(8).fill(null).map(() => []);
         this.ready.then(() => {
-            for (let dir = 0; dir < 8; ++dir) {
+            for (let dir of DIRECTIONS) if (!dir.source) {
                 for (let i = start; i < start + count; ++i) {
-                    sprites[dir].push(this.cache[`${path}${DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`]);
+                    sprites[dir.idx].push(this.cache[`${path}${dir.name}_${leftpad(i, 2, "0")}.png`]);
+                }
+            }
+
+            for (let dir of DIRECTIONS) if (dir.source) {
+                for (let i = start; i < start + count; ++i) {
+                    let ref = this.cache[`${path}${dir.source}_${leftpad(i, 2, "0")}.png`];
+                    let ctx = getCanvasContext(ref.width, ref.height);
+
+                    ctx.save();
+                    ctx.scale(-1, 1);
+                    ctx.drawImage(ref, -ref.width, 0);
+                    ctx.restore();
+
+                    sprites[dir.idx].push(ctx.canvas);
                 }
             }
         })
@@ -100,22 +122,31 @@ const Sprites = {
             let offset = 0;
             let finished = 0;
 
-            let i = 0;
-            for (let [path, size] of json) setTimeout(() => {
-                let p = createImageBitmap(
-                    bin.slice(offset, offset + size)
-                ).then(
-                    (function(path, img) {
-                        this.cache[path] = img;
-                        if (++finished == json.length) {
-                            window.debugInfo.innerHTML = '';
-                            resolve();
-                        }
-                        if (finished % 100 == 0) window.debugInfo.innerHTML = Math.floor(100 * finished / json.length);
-                    }).bind(this, path)
-                );
-                offset += size;
-            }, ++i / 2);
+            const iter = json.values();
+            let step = () => {
+                const T = Date.now();
+
+                for (let [path, size] of iter) {
+                    let p = createImageBitmap(
+                        bin.slice(offset, offset + size)
+                    ).then(
+                        (function(path, img) {
+                            this.cache[path] = img;
+                            ++finished;
+                        }).bind(this, path)
+                    );
+                    offset += size;
+                   if (Date.now() - T > 40) break;
+                };
+                if (finished < json.length) {
+                    window.loader.innerHTML = Math.floor(100 * finished / json.length);
+                    setTimeout(step, 0);
+                } else {
+                    window.loader.remove();
+                    resolve();
+                }
+            };
+            setTimeout(step, 0);
         });
     }
 }
