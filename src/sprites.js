@@ -2,16 +2,8 @@ import { leftpad, getCanvasContext } from './utils.js';
 import { rgb, palette, color_idx } from './palette.js';
 
 
-const DIRECTIONS = [
-    { idx: 0, name: "N", source: null },
-    { idx: 1, name: "NE", source: "NW" },
-    { idx: 2, name: "E", source: "W" },
-    { idx: 3, name: "SE", source: "SW" },
-    { idx: 4, name: "S", source: null },
-    { idx: 5, name: "SW", source: null },
-    { idx: 6, name: "W", source: null },
-    { idx: 7, name: "NW", source: null },
-];
+const DIRECTIONS = [0, 4, 5, 6, 7]; // N, S, SW, W, NW
+const MIRRORED_DIRECTIONS = [1, 2, 3]; // NE, E, SE
 
 
 const Sprites = {
@@ -44,15 +36,26 @@ const Sprites = {
     DirectionSprites(path, count, start=0) {
         let sprites = new Array(8).fill(null).map(() => []);
         this.ready.then(() => { setTimeout(() => {
-            for (let dir of DIRECTIONS) if (!dir.source) {
+            const all = this.cache[path];
+
+            for (let [offset, dir] of DIRECTIONS.entries()) {
                 for (let i = start; i < start + count; ++i) {
-                    sprites[dir.idx].push(this.cache[`${path}${dir.name}_${leftpad(i, 2, "0")}.png`]);
+                    let width = all.width / (count * 5);
+                    let ctx = getCanvasContext(width, all.height);
+
+                    ctx.drawImage(
+                        all,
+                        (offset * count + i) * width, 0, width, all.height,
+                        0, 0, width, all.height
+                    )
+
+                    sprites[dir].push(ctx.canvas);
                 }
             }
 
-            for (let dir of DIRECTIONS) if (dir.source) {
+            for (let dir of MIRRORED_DIRECTIONS) {
                 for (let i = start; i < start + count; ++i) {
-                    let ref = this.cache[`${path}${dir.source}_${leftpad(i, 2, "0")}.png`];
+                    let ref = sprites[8 - dir][i - start];
                     let ctx = getCanvasContext(ref.width, ref.height);
 
                     ctx.save();
@@ -60,7 +63,7 @@ const Sprites = {
                     ctx.drawImage(ref, -ref.width, 0);
                     ctx.restore();
 
-                    sprites[dir.idx].push(ctx.canvas);
+                    sprites[dir].push(ctx.canvas);
                 }
             }
         })});

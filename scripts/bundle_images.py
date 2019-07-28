@@ -21,16 +21,24 @@ if __name__ == "__main__":
     out = file(args.out_bin, "wb")
     offset = 0
 
+
+    def push_file(path):
+        global offset
+        img = file(path, "rb")
+        out.write(img.read())
+        size = os.path.getsize(path)
+        data.append([path.replace("__glued.png", ""), size])
+        offset += size
+        img.close()
+
+
     for root, dirs, files in os.walk(args.input):
-        for name in files:
-            if name.endswith("." + args.ext):
-                path = os.path.join(root, name)
-                img = file(path, "rb")
-                out.write(img.read())
-                size = os.path.getsize(path)
-                data.append([path, size])
-                offset += size
-                img.close()
+        if '__glued.png' in files:
+            push_file(os.path.join(root, '__glued.png'))
+        else:
+            for name in files:
+                if name.endswith("." + args.ext):
+                    push_file(os.path.join(root, name))
     out.close()
 
     out = file(args.out_json, "w")
