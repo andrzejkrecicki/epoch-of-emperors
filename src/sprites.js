@@ -43,7 +43,7 @@ const Sprites = {
     },
     DirectionSprites(path, count, start=0) {
         let sprites = new Array(8).fill(null).map(() => []);
-        this.ready.then(() => {
+        this.ready.then(() => { setTimeout(() => {
             for (let dir of DIRECTIONS) if (!dir.source) {
                 for (let i = start; i < start + count; ++i) {
                     sprites[dir.idx].push(this.cache[`${path}${dir.name}_${leftpad(i, 2, "0")}.png`]);
@@ -63,16 +63,16 @@ const Sprites = {
                     sprites[dir.idx].push(ctx.canvas);
                 }
             }
-        })
+        })});
         return sprites;
     },
     SpriteSequence(path, count, start=0, mul=0) {
         let sprites = [];
-        this.ready.then(() => {
+        this.ready.then(() => { setTimeout(() => {
             for (let i = start; i < start + count; ++i) {
                 sprites.push(this.cache[`${path}${leftpad(i, 2, "0")}.png`]);
             }
-        })
+        })});
         if (mul == 0) return sprites;
         else return Array(mul).fill(sprites);
     },
@@ -139,7 +139,7 @@ const Sprites = {
                    if (Date.now() - T > 40) break;
                 };
                 if (finished < json.length) {
-                    window.loader.innerHTML = Math.floor(100 * finished / json.length);
+                    window.loader.innerHTML = Math.floor(100 * finished / json.length) + "%";
                     setTimeout(step, 0);
                 } else {
                     window.loader.remove();
