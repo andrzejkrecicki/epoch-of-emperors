@@ -90,16 +90,6 @@ const Sprites = {
         if (mul == 0) return sprites;
         else return Array(mul).fill(sprites);
     },
-    OldSpriteSequence(path, count, start=0, mul=0) {
-        let sprites = [];
-        this.ready.then(() => { setTimeout(() => {
-            for (let i = start; i < start + count; ++i) {
-                sprites.push(this.cache[`${path}${leftpad(i, 2, "0")}.png`]);
-            }
-        })});
-        if (mul == 0) return sprites;
-        else return Array(mul).fill(sprites);
-    },
     CarrySprites(state, path, frames, idle_offset=12) {
         return {
             [state.IDLE]: [Sprites.DirectionSprites(path, 1, idle_offset, frames)],
