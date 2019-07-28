@@ -54,6 +54,7 @@ class GameViewer {
         this.layers.terrain.on("click", this.handleClick.bind(this));
         this.layers.entities.on("click", this.handleClick.bind(this));
         this.stage.on("mousemove", this.handleMouseMove.bind(this));
+        this.stage.on("mouseout", this.handleMouseOut.bind(this));
 
         this.constructionIndicator = new ConstructionIndicator(this);
         this.constructionIndicator.hide();
@@ -160,6 +161,10 @@ class GameViewer {
         this.mouseX = e.evt.layerX;
         this.mouseY = e.evt.layerY;
     }
+    handleMouseOut(e) {
+        this.mouseX = NaN;
+        this.mouseY = NaN;
+    }
     handleScroll() {
         if (this.mouseX < GameViewer.prototype.SCROLL_MARGIN) {
             this.scroll_acc.x = Math.min(this.scroll_acc.x + 1, GameViewer.prototype.MAX_SCROLL_SPEED);
@@ -190,6 +195,7 @@ class GameViewer {
         this.orderIndicator.attrs.y += this.scroll_acc.y;
     }
     setCursor() {
+        if (isNaN(this.mouseX) || isNaN(this.mouseY)) return;
         let cursor = "arrow";
 
         if (this.hoveredEntity != null) cursor = "pointer";
@@ -211,6 +217,8 @@ class GameViewer {
         }
     }
     setHoveredEntity() {
+        if (isNaN(this.mouseX) || isNaN(this.mouseY)) return;
+
         this.hoveredEntity = null;
         if (this.layers.interface.getNodeAt(this.mouseX, this.mouseY) == null) {
             this.tooltip.hide();
