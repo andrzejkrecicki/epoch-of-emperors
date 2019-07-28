@@ -4,16 +4,13 @@ import { rgb, palette, color_idx } from './palette.js';
 
 const DIRECTIONS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 
-let _resolve = null;
 
 
 const Sprites = {
     cache: {},
     hitmaskCache: new Map(),
     colorizedCache: Array(8).fill(null).map(() => new Map),
-    ready: new Promise((resolve) => {
-        _resolve = resolve;
-    }),
+    ready: null,
     Colorize(img, player) {
         if (!player) return img;
         if (this.colorizedCache[player.color].has(img)) return this.colorizedCache[player.color].get(img);
@@ -38,22 +35,22 @@ const Sprites = {
     },
     DirectionSprites(path, count, start=0) {
         let sprites = new Array(8).fill(null).map(() => []);
-        for (let dir = 0; dir < 8; ++dir) {
-            for (let i = start; i < start + count; ++i) {
-                this.ready.then(() => {
+        this.ready.then(() => {
+            for (let dir = 0; dir < 8; ++dir) {
+                for (let i = start; i < start + count; ++i) {
                     sprites[dir].push(this.cache[`${path}${DIRECTIONS[dir]}_${leftpad(i, 2, "0")}.png`]);
-                })
+                }
             }
-        }
+        })
         return sprites;
     },
     SpriteSequence(path, count, start=0, mul=0) {
         let sprites = [];
-        for (let i = start; i < start + count; ++i) {
-            this.ready.then(() => {
+        this.ready.then(() => {
+            for (let i = start; i < start + count; ++i) {
                 sprites.push(this.cache[`${path}${leftpad(i, 2, "0")}.png`]);
-            })
-        }
+            }
+        })
         if (mul == 0) return sprites;
         else return Array(mul).fill(sprites);
     },
@@ -97,26 +94,27 @@ const Sprites = {
     preload() {
         return this.ready = new Promise(async (resolve) => {
             let [bin, json] = await Promise.all([fetch("dist/gfx.bin"), fetch("dist/gfx.json")]);
+
             [bin, json] = await Promise.all([bin.blob(), json.json()])
 
-            let promises = [];
             let offset = 0;
+            let finished = 0;
 
-            for (let [path, size] of json) {
+            let i = 0;
+            for (let [path, size] of json) setTimeout(() => {
                 let p = createImageBitmap(
                     bin.slice(offset, offset + size)
                 ).then(
                     (function(path, img) {
                         this.cache[path] = img;
+                        if (++finished == json.length) {
+                            resolve();
+                        }
+                        if (finished % 100 == 0) window.debugInfo.innerHTML = Math.floor(100 * finished / json.length);
                     }).bind(this, path)
                 );
                 offset += size;
-                promises.push(p);
-            }
-            await Promise.all(promises);
-
-            _resolve();
-            resolve();
+            }, ++i / 2);
         });
     }
 }
