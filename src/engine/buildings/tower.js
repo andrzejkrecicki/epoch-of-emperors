@@ -101,10 +101,10 @@ Tower.prototype.IMAGES = {
     ],
     [Building.prototype.STATE.CONSTRUCTION]: [
         [
-            Sprites.SpriteSequence("img/buildings/construction_small_", 4),
-            Sprites.SpriteSequence("img/buildings/construction_small_", 4),
-            Sprites.SpriteSequence("img/buildings/construction_small_", 4),
-            Sprites.SpriteSequence("img/buildings/construction_small_", 4)
+            Sprites.SpriteSequence("img/buildings/construction_small/", 4),
+            Sprites.SpriteSequence("img/buildings/construction_small/", 4),
+            Sprites.SpriteSequence("img/buildings/construction_small/", 4),
+            Sprites.SpriteSequence("img/buildings/construction_small/", 4)
         ]
     ],
     [Building.prototype.STATE.DESTROYED]: [

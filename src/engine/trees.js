@@ -52,7 +52,7 @@ Tree.prototype.STATE = {
 }
 
 Tree.prototype.IMAGES = {
-    [Tree.prototype.STATE.CUT]: Sprites.SpriteSequence("img/trees/cut_", 2)
+    [Tree.prototype.STATE.CUT]: Sprites.OldSpriteSequence("img/trees/cut_", 2)
 };
 Tree.prototype.IMAGE_OFFSETS = {
     [Tree.prototype.STATE.CUT]: [
@@ -67,7 +67,7 @@ class LeafTree extends Tree {
 LeafTree.prototype.NAME = "Leaf Tree";
 LeafTree.prototype.IMAGES = {
     [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGES[Tree.prototype.STATE.CUT],
-    [Tree.prototype.STATE.ALIVE]: Sprites.SpriteSequence("img/trees/leaf_", 6)
+    [Tree.prototype.STATE.ALIVE]: Sprites.OldSpriteSequence("img/trees/leaf_", 6)
 }
 
 LeafTree.prototype.IMAGE_OFFSETS = {
@@ -87,7 +87,7 @@ class PalmTree extends Tree {
 PalmTree.prototype.NAME = "Palm";
 PalmTree.prototype.IMAGES = {
     [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGES[Tree.prototype.STATE.CUT],
-    [Tree.prototype.STATE.ALIVE]: Sprites.SpriteSequence("img/trees/palm_", 4)
+    [Tree.prototype.STATE.ALIVE]: Sprites.OldSpriteSequence("img/trees/palm_", 4)
 };
 
 PalmTree.prototype.IMAGE_OFFSETS = {
@@ -106,7 +106,7 @@ class PineTree extends Tree {
 PineTree.prototype.NAME = "Pine";
 PineTree.prototype.IMAGES = {
     [Tree.prototype.STATE.CUT]: Tree.prototype.IMAGES[Tree.prototype.STATE.CUT],
-    [Tree.prototype.STATE.ALIVE]: Sprites.SpriteSequence("img/trees/pine_", 5)
+    [Tree.prototype.STATE.ALIVE]: Sprites.OldSpriteSequence("img/trees/pine_", 5)
 };
 
 PineTree.prototype.IMAGE_OFFSETS = {

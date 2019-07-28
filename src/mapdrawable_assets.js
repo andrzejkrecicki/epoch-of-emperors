@@ -3,14 +3,14 @@ import { Sprites } from './sprites.js';
 
 const TERRAIN_IMAGES = {
     [Map.TERRAIN_TYPES.WATER]: [
-        Sprites.SpriteSequence("img/tiles/water_0_", 44),
-        Sprites.SpriteSequence("img/tiles/water_1_", 44),
-        Sprites.SpriteSequence("img/tiles/water_2_", 44),
-        Sprites.SpriteSequence("img/tiles/water_3_", 44)
+        Sprites.SpriteSequence("img/tiles/water_0/", 44),
+        Sprites.SpriteSequence("img/tiles/water_1/", 44),
+        Sprites.SpriteSequence("img/tiles/water_2/", 44),
+        Sprites.SpriteSequence("img/tiles/water_3/", 44)
     ],
 
-    [Map.TERRAIN_TYPES.GRASS]: Sprites.SpriteSequence("img/tiles/grass_", 9),
-    [Map.TERRAIN_TYPES.SAND]: Sprites.SpriteSequence("img/tiles/sand_", 9),
+    [Map.TERRAIN_TYPES.GRASS]: Sprites.SpriteSequence("img/tiles/grass/", 9),
+    [Map.TERRAIN_TYPES.SAND]: Sprites.SpriteSequence("img/tiles/sand/", 9),
 
     [Map.TERRAIN_TYPES.SANDWATER_4]: [Sprites.Sprite("img/tiles/sandwater_4.png")],
     [Map.TERRAIN_TYPES.SANDWATER_6]: [Sprites.Sprite("img/tiles/sandwater_6.png")],

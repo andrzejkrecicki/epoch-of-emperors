@@ -86,10 +86,10 @@ Dock.prototype.IMAGES = {
     ],
     [Building.prototype.STATE.CONSTRUCTION]: [
         [
-            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3),
-            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3),
-            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3),
-            Sprites.SpriteSequence("img/buildings/dock/construction_01_all_", 3)
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all/", 3),
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all/", 3),
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all/", 3),
+            Sprites.SpriteSequence("img/buildings/dock/construction_01_all/", 3)
         ]
     ],
     [Building.prototype.STATE.DESTROYED]: [

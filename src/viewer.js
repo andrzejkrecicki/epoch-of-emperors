@@ -1036,7 +1036,7 @@ class MoverOrderIndicator extends Graphics.Node {
     }
 }
 MoverOrderIndicator.prototype.IMAGE_OFFSET = { x: 24, y: 10 };
-MoverOrderIndicator.prototype.FRAMES = Sprites.SpriteSequence("img/interface/misc/move_order_", 6);
+MoverOrderIndicator.prototype.FRAMES = Sprites.SpriteSequence("img/interface/misc/move_order/", 6);
 
 export {
     GameViewer, MapDrawable

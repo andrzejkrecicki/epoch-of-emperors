@@ -142,10 +142,10 @@ Wall.prototype.IMAGES = {
     ],
     [Wall.prototype.STATE.CONSTRUCTION]: [
         [
-            Sprites.SpriteSequence("img/buildings/wall/construction_all_all_", 4),
-            Sprites.SpriteSequence("img/buildings/wall/construction_all_all_", 4),
-            Sprites.SpriteSequence("img/buildings/wall/construction_all_all_", 4),
-            Sprites.SpriteSequence("img/buildings/wall/construction_all_all_", 4)
+            Sprites.SpriteSequence("img/buildings/wall/construction_all_all/", 4),
+            Sprites.SpriteSequence("img/buildings/wall/construction_all_all/", 4),
+            Sprites.SpriteSequence("img/buildings/wall/construction_all_all/", 4),
+            Sprites.SpriteSequence("img/buildings/wall/construction_all_all/", 4)
         ]
     ],
     [Wall.prototype.STATE.DESTROYED]: [

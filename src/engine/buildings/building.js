@@ -158,10 +158,10 @@ Building.prototype.STATE = {
 Building.prototype.IMAGES = {
     [Building.prototype.STATE.CONSTRUCTION]: [
         [
-            Sprites.SpriteSequence("img/buildings/construction_big_", 4),
-            Sprites.SpriteSequence("img/buildings/construction_big_", 4),
-            Sprites.SpriteSequence("img/buildings/construction_big_", 4),
-            Sprites.SpriteSequence("img/buildings/construction_big_", 4)
+            Sprites.SpriteSequence("img/buildings/construction_big/", 4),
+            Sprites.SpriteSequence("img/buildings/construction_big/", 4),
+            Sprites.SpriteSequence("img/buildings/construction_big/", 4),
+            Sprites.SpriteSequence("img/buildings/construction_big/", 4)
         ]
     ],
     [Building.prototype.STATE.DESTROYED]: [

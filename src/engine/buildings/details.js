@@ -22,12 +22,12 @@ class AnimatedDetail extends Graphics.Node {
 AnimatedDetail.prototype.FRAME_DELTA = .5;
 
 class FireSmall extends AnimatedDetail {}
-FireSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/fire_small_", 20);
+FireSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/fire_small/", 20);
 FireSmall.prototype.IMAGE_OFFSETS = { x: 6, y: 26 }
 
 
 class SmokeSmall extends AnimatedDetail {}
-SmokeSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/smoke_small_", 17);
+SmokeSmall.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/smoke_small/", 17);
 SmokeSmall.prototype.IMAGE_OFFSETS = { x: 9, y: 27 }
 
 
@@ -74,16 +74,16 @@ class Flame extends Graphics.Node {
 }
 Flame.prototype.IMAGES = [
     [
-        Sprites.SpriteSequence("img/buildings/details/flame_small_a_", 20),
-        Sprites.SpriteSequence("img/buildings/details/flame_small_b_", 20)
+        Sprites.SpriteSequence("img/buildings/details/flame_small_a/", 20),
+        Sprites.SpriteSequence("img/buildings/details/flame_small_b/", 20)
     ],
     [
-        Sprites.SpriteSequence("img/buildings/details/flame_medium_a_", 20),
-        Sprites.SpriteSequence("img/buildings/details/flame_medium_b_", 20)
+        Sprites.SpriteSequence("img/buildings/details/flame_medium_a/", 20),
+        Sprites.SpriteSequence("img/buildings/details/flame_medium_b/", 20)
     ],
     [
-        Sprites.SpriteSequence("img/buildings/details/flame_large_a_", 20),
-        Sprites.SpriteSequence("img/buildings/details/flame_large_b_", 20)
+        Sprites.SpriteSequence("img/buildings/details/flame_large_a/", 20),
+        Sprites.SpriteSequence("img/buildings/details/flame_large_b/", 20)
     ]
 ];
 Flame.prototype.IMAGE_OFFSETS = [
@@ -96,7 +96,7 @@ Flame.prototype.FRAME_DELTA = .75;
 
 
 class SmallWallFlag extends AnimatedDetail {}
-SmallWallFlag.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/small_wall_flag_01_", 6);
+SmallWallFlag.prototype.IMAGES = Sprites.SpriteSequence("img/buildings/details/small_wall_flag_01/", 6);
 SmallWallFlag.prototype.IMAGE_OFFSETS = { x: 34, y: 36 }
 
 

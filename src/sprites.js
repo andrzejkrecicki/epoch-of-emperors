@@ -37,10 +37,10 @@ const Sprites = {
         let sprites = new Array(8).fill(null).map(() => []);
         this.ready.then(() => { setTimeout(() => {
             const all = this.cache[path];
+            let width = all.width / (count * 5);
 
             for (let [offset, dir] of DIRECTIONS.entries()) {
                 for (let i = start; i < start + count; ++i) {
-                    let width = all.width / (count * 5);
                     let ctx = getCanvasContext(width, all.height);
 
                     ctx.drawImage(
@@ -70,6 +70,27 @@ const Sprites = {
         return sprites;
     },
     SpriteSequence(path, count, start=0, mul=0) {
+        let sprites = [];
+        this.ready.then(() => { setTimeout(() => {
+            const all = this.cache[path];
+            let width = all.width / count;
+
+            for (let i = start; i < start + count; ++i) {
+                let ctx = getCanvasContext(width, all.height);
+
+                ctx.drawImage(
+                    all,
+                    i * width, 0, width, all.height,
+                    0, 0, width, all.height
+                )
+
+                sprites.push(ctx.canvas);
+            }
+        })});
+        if (mul == 0) return sprites;
+        else return Array(mul).fill(sprites);
+    },
+    OldSpriteSequence(path, count, start=0, mul=0) {
         let sprites = [];
         this.ready.then(() => { setTimeout(() => {
             for (let i = start; i < start + count; ++i) {
