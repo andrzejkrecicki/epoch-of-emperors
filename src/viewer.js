@@ -594,32 +594,30 @@ class EntityAttribute extends Graphics.Node {
 }
 
 class HealthBarBig extends Graphics.Node {
-    constructor() {
-        super(...arguments);
-        this.init();
-    }
-    init() {
-        this.red = new Graphics.Image({
-            image: HealthBarBig.BAR_RED,
-        });
-        this.add(this.red);
-
-        this._barCtx = getCanvasContext(HealthBarBig.BAR_GREEN.width, HealthBarBig.BAR_GREEN.height);
-        this.setValue(1);
-
-        this.green = new Graphics.Image({
-            image: this._barCtx.canvas,
-        });
-        this.add(this.green);
+    constructor(options) {
+        super(options);
+        this.value = 1;
     }
     setValue(value) {
-        this._barCtx.clearRect(0, 0, HealthBarBig.BAR_GREEN.width, HealthBarBig.BAR_GREEN.height);
-        this._barCtx.drawImage(
+        this.value = value;
+    }
+    draw() {
+        let green_width = Math.floor(HealthBarBig.BAR_GREEN.width * this.value);
+
+        this.layer.ctx.drawImage(
             HealthBarBig.BAR_GREEN,
             0, 0,
-            Math.floor(HealthBarBig.BAR_GREEN.width * value), HealthBarBig.BAR_GREEN.height,
-            0, 0,
-            Math.floor(HealthBarBig.BAR_GREEN.width * value), HealthBarBig.BAR_GREEN.height
+            green_width, HealthBarBig.BAR_GREEN.height,
+            this.absX() + 0, this.absY(),
+            green_width, HealthBarBig.BAR_GREEN.height
+        );
+
+        this.layer.ctx.drawImage(
+            HealthBarBig.BAR_RED,
+            green_width + 1, 0,
+            HealthBarBig.BAR_RED.width - green_width - 1, HealthBarBig.BAR_RED.height,
+            this.absX() + green_width + 1, this.absY(),
+            HealthBarBig.BAR_RED.width - green_width - 1, HealthBarBig.BAR_RED.height
         );
     }
 }
