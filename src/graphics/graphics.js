@@ -59,8 +59,7 @@ class Node {
         if (!(event in this.events)) this.events[event] = [];
         this.events[event].push(callback);
     }
-    fire(event, e) {
-        e = e || {};
+    fire(event, e = {}) {
         if (event in this.events) for (let callback of this.events[event]) {
             callback.call(this, e);
         }
@@ -226,8 +225,8 @@ class Stage extends Node {
     }
 }
 class Layer extends Node {
-    constructor(options) {
-        super(options || {});
+    constructor(options = {}) {
+        super(options);
         this.stage = null;
         this.canvas = null;
         this.ctx = null;
@@ -375,8 +374,8 @@ HealthBar.prototype.HEIGHT = 2;
 
 
 class Rect extends Node {
-    constructor(options) {
-        super(options || {});
+    constructor(options = {}) {
+        super(options);
 
         this.attrs.fill = options.fill != null ? options.fill : this.DEFAULT_ATTRS.fill;
         this.attrs.strokeWidth = options.strokeWidth != null ? options.strokeWidth : this.DEFAULT_ATTRS.strokeWidth;
@@ -402,8 +401,8 @@ class Rect extends Node {
 
 
 class Text extends Node {
-    constructor(options) {
-        super(options || {});
+    constructor(options = {}) {
+        super(options);
 
         this.attrs.fill = options.fill ? options.fill : this.DEFAULT_ATTRS.fill;
         // this.attrs.stroke = options.stroke ? options.stroke : this.DEFAULT_ATTRS.stroke;
@@ -446,13 +445,13 @@ class StrokedText extends Text {
 
 
 class Path extends Node {
-    constructor(options) {
-        super(options || {});
+    constructor(options = {}) {
+        super(options);
     }
 }
 class Image extends Node {
-    constructor(options) {
-        super(options || {});
+    constructor(options = {}) {
+        super(options);
         this.image(options.image || null);
         this.attrs.hasHitmap = options.hasHitmap || false;
     }
