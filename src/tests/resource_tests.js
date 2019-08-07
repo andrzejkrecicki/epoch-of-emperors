@@ -36,15 +36,19 @@ class BushTest extends ResourceTest {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
-        this.bush = this.entity(Bush, 129, 132);
+        this.bush1 = this.entity(Bush, 129, 132);
+        this.bush2 = this.entity(Bush, 132, 135);
+
+        this.bush1.attributes.food = 75;
+        this.bush2.attributes.food = 75;
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.villager, this.bush);
+        this.engine.interactOrder(this.villager, this.bush1);
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.bush.destroyed &&
+        if (this.bush1.destroyed && this.bush2.destroyed &&
             this.engine.current_player.resources.food == 400 + 150 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&
@@ -54,22 +58,24 @@ class BushTest extends ResourceTest {
 }
 BushTest.prototype.DESIRED_STATES = [98, 96, 98, 96];
 
+
 class TreeTest extends ResourceTest {
     constructor(engine) {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
-        this.tree = this.entity(LeafTree, 129, 132);
+        this.tree1 = this.entity(LeafTree, 129, 132);
+        this.tree2 = this.entity(LeafTree, 132, 135);
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.villager, this.tree);
+        this.engine.interactOrder(this.villager, this.tree1);
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.tree.destroyed &&
+        if (this.tree1.destroyed && this.tree2.destroyed &&
             this.engine.current_player.resources.food == 400 &&
-            this.engine.current_player.resources.wood == 400 + 75 &&
+            this.engine.current_player.resources.wood == 400 + 150 &&
             this.engine.current_player.resources.gold == 400 &&
             this.engine.current_player.resources.stone == 400
         ) this.pass();
@@ -83,16 +89,19 @@ class GoldTest extends ResourceTest {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
-        this.gold = this.entity(GoldMine, 129, 132);
-        this.gold.attributes.gold = 100;
+        this.gold1 = this.entity(GoldMine, 129, 132);
+        this.gold2 = this.entity(GoldMine, 132, 135);
+
+        this.gold1.attributes.gold = 50;
+        this.gold2.attributes.gold = 50;
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.villager, this.gold);
+        this.engine.interactOrder(this.villager, this.gold1);
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.gold.destroyed &&
+        if (this.gold1.destroyed && this.gold2.destroyed &&
             this.engine.current_player.resources.food == 400 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 + 100 &&
@@ -109,16 +118,19 @@ class StoneTest extends ResourceTest {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
-        this.stone = this.entity(StoneMine, 129, 132);
-        this.stone.attributes.stone = 100;
+        this.stone1 = this.entity(StoneMine, 129, 132);
+        this.stone2 = this.entity(StoneMine, 132, 135);
+
+        this.stone1.attributes.stone = 50;
+        this.stone2.attributes.stone = 50;
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.villager, this.stone);
+        this.engine.interactOrder(this.villager, this.stone1);
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.stone.destroyed &&
+        if (this.stone1.destroyed && this.stone2.destroyed &&
             this.engine.current_player.resources.food == 400 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&
@@ -160,16 +172,18 @@ class HuntTest extends ResourceTest {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
-        this.animal = this.unit(Gazelle, 129, 132, 0);
+
+        this.animal1 = this.unit(Gazelle, 123, 126, 0);
+        this.animal2 = this.unit(Gazelle, 126, 123, 0);
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.villager, this.animal);
+        this.engine.interactOrder(this.villager, this.animal1);
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.animal.destroyed &&
-            this.engine.current_player.resources.food >= 400 + 50 &&
+        if (this.animal1.destroyed && this.animal2.destroyed &&
+            this.engine.current_player.resources.food >= 400 + 100 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&
             this.engine.current_player.resources.stone == 400
@@ -185,7 +199,11 @@ class FisherTest extends ResourceTest {
         super(engine)
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
-        this.fish = this.entity(FishBig, 128, 132);
+        this.fish1 = this.entity(FishBig, 128, 132);
+        this.fish2 = this.entity(FishBig, 131, 129);
+
+        this.fish1.attributes.food = 50;
+        this.fish2.attributes.food = 50;
 
         this.engine.map.terrain_tiles[this.center.x / 2][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;
         this.engine.map.terrain_tiles[this.center.x / 2 + 1][this.center.y / 2 + 2] = Map.TERRAIN_TYPES.WATER;
@@ -195,12 +213,12 @@ class FisherTest extends ResourceTest {
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.villager, this.fish);
+        this.engine.interactOrder(this.villager, this.fish1);
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.fish.destroyed &&
-            this.engine.current_player.resources.food == 400 + 250 &&
+        if (this.fish1.destroyed && this.fish2.destroyed &&
+            this.engine.current_player.resources.food == 400 + 100 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&
             this.engine.current_player.resources.stone == 400
@@ -215,19 +233,23 @@ class FishingTest extends ResourceTest {
         super(engine)
         this.dock = this.building(Dock, 139, 112, 0);
         this.ship = this.unit(FishingBoat, 135, 118, 0);
-        this.fish = this.entity(FishBig, 128, 132);
+        this.fish1 = this.entity(FishBig, 128, 132);
+        this.fish2 = this.entity(FishBig, 132, 128);
+
+        this.fish1.attributes.food = 50;
+        this.fish2.attributes.food = 50;
 
         this.engine.map.makeLake(this.center.x / 2, this.center.y / 2, 10);
         this.engine.map.normalizeNeighbouringTiles();
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.ship, this.fish);
+        this.engine.interactOrder(this.ship, this.fish1);
     }
     check() {
         if (this.ship.state != this.states[this.states.length - 1]) this.states.push(this.ship.state);
-        if (this.fish.destroyed &&
-            this.engine.current_player.resources.food == 400 + 250 &&
+        if (this.fish1.destroyed && this.fish2.destroyed &&
+            this.engine.current_player.resources.food == 400 + 100 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&
             this.engine.current_player.resources.stone == 400
