@@ -81,17 +81,14 @@ class TestRunner {
         let test = null;
         let T0 = 0;
 
-        let tests = this.asyncTests.entries();
-        let nextTest = () => {
-            let next = tests.next();
-            return next.value && next.value[1];
-        }
-        let Test = nextTest();
+        let tests = this.asyncTests.values();
+        let Test = tests.next().value;
 
         let subtask = () => {
             if (Test == null) window.clearInterval(interval);
             else if (test == null) {
                this.cleanUp();
+               this.pushRunning(Test);
 
                 try {
                     test = new Test(this.engine);
@@ -118,10 +115,11 @@ class TestRunner {
                     }
                 }
             } else {
+                this.popResult();
                 this.pushResult(Test, test, exception);
                 exception = null;
                 test = null;
-                Test = nextTest();
+                Test = tests.next().value;
             }
         };
 
@@ -188,6 +186,15 @@ class TestRunner {
         }
         this.results.appendChild(row);
     }
+    pushRunning(Test) {
+        let row = document.createElement("tr");
+        row.innerHTML = `<td>${Test.name}</td><td>RUNNING...</td>`;
+        this.results.appendChild(row);
+    }
+    popResult() {
+        this.results.lastElementChild.remove();
+    }
+
 }
 
 

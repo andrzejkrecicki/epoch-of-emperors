@@ -3,6 +3,9 @@
 <head>
     <title>Epoch of Emperors</title>
     <style type="text/css">
+        body {
+            margin: 0;
+        }
         #container canvas {
             border: none !important;
             position: absolute;
@@ -21,16 +24,36 @@
         body > canvas.tmpMiniMap {
             transform: rotateX(60deg) rotateZ(-45deg) scale(1.2);
             position: absolute;
-            top: 479px;
-            left: 626px;
-            width: 128px;
-            height: 128px;
+            top: 470px;
+            left: 617px;
+        }
+        #results {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: "verdana";
+            white-space: pre;
+        }
+        #results td {
+            border: solid 1px #ccc;
+        }
+        #results td.FAILED {
+            color: #f00;
+        }
+        #results td.PASSED {
+            color: #090;
+        }
+        #results td.TIMEOUT {
+            color: #f90;
+        }
+        #results td:first-child {
+            width: 305px;
         }
     </style>
 </head>
 <body>
     <div id="container"></div>
     <div id="loader"></div>
+    <table id="results"></table>
     <script type="text/javascript" src="dist/app.js"></script>
 </body>
 </html>

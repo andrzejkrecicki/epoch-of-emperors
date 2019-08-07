@@ -5,7 +5,7 @@ import { Technologies } from './engine/technologies.js';
 import { PlayerDefinition } from './utils.js';
 import { GameViewer } from './viewer.js';
 
-if (document.location.search == '?dev') {
+if (/dev/.test(document.location.search)) {
 
     const RecruitUnitFactory = Actions.RecruitUnitFactory;
     Actions.RecruitUnitFactory = function(UNIT) {
@@ -57,3 +57,8 @@ if (document.location.search == '?dev') {
         handleLeftClick.call(this, e);
     }
 }
+
+if (/test/.test(document.location.search)) {
+    GameViewer.prototype.handleScroll = function() {};
+}
+

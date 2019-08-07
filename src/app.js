@@ -64,7 +64,7 @@ Sprites.ready.then(function() {
     let game = new Game('container');
     game.draw();
 
-    if (document.location.pathname == '/test.html') {
+    if (/test/.test(document.location.search)) {
         let runner = new TestRunner(game, 'results');
         runner.run(true);
     }
