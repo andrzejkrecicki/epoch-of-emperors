@@ -229,16 +229,18 @@ class TransportTest extends ComplexTest {
 class RepairTest extends Test {
     constructor(engine) {
         super(engine)
-        this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
-        this.towncenter.takeHit(550, null, this.engine);
+        this.towncenter1 = this.building(TownCenter, 129, 120, 0);
+        this.towncenter1.takeHit(550, null, this.engine);
+        this.towncenter2 = this.building(TownCenter, 136, 113, 0);
+        this.towncenter2.takeHit(50, null, this.engine);
     }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.villager, this.towncenter);
+        this.engine.interactOrder(this.villager, this.towncenter1);
     }
     check() {
-        if (this.towncenter.hp == this.towncenter.max_hp) this.pass();
+        if (this.towncenter1.hp == this.towncenter1.max_hp && this.towncenter2.hp == this.towncenter2.max_hp) this.pass();
     }
 }
 
@@ -326,6 +328,26 @@ class ConstructionTest extends ComplexTest {
 }
 
 
+class MultipleConstructionsTest extends Test {
+    constructor(engine) {
+        super(engine)
+        this.building1 = this.building(TownCenter, 129, 120, 0, false);
+        this.building2 = this.building(TownCenter, 136, 113, 0, false);
+        this.villager = this.unit(Villager, 135, 118, 0);
+    }
+    setup() {
+        super.setup();
+        this.engine.interactOrder(this.villager, this.building1);
+    }
+    check() {
+        if (this.building1.isComplete && this.building2.isComplete) this.pass();
+    }
+}
+
+
+
+
+
 class ImpossibleToReachInteractionTest extends Test {
     constructor(engine) {
         super(engine)
@@ -359,5 +381,5 @@ class ImpossibleToReachInteractionTest extends Test {
 export {
     TradeTest, AttackUnitUnitTest, AttackTowerUnitTest, ConvertUnitTest,
     HealUnitTest, TransportTest, RepairTest, ConstructionTest,
-    ImpossibleToReachInteractionTest
+    MultipleConstructionsTest, ImpossibleToReachInteractionTest
 }

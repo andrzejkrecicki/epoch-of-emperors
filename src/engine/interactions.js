@@ -1,6 +1,8 @@
 import { RESOURCE_TYPES, RESOURCE_NAME } from '../utils.js';
 import { Spear } from './projectiles.js';
 import { Unit } from './units/unit.js';
+import { Building } from './buildings/building.js';
+import { Tree } from './trees.js';
 
 class Interaction {
     constructor(active, passive, engine) {
@@ -26,6 +28,9 @@ class Interaction {
     interactWithSuccessor() {
         if (this.passive.interactionSuccessor) this.engine.interactOrder(this.active, this.passive.interactionSuccessor);
         else this.terminate();
+    }
+    canBeSuccessor(candidate) {
+        return false;
     }
     terminate() {
         this.stop();
@@ -64,6 +69,9 @@ class ResourceExtractionInteraction extends Interaction {
             this.active.ticks_waited = 0;
         }
     }
+    canBeSuccessor(candidate) {
+        return candidate instanceof this.passive.constructor;
+    }
     getReturnBuildingTypes() {
         if (this.RESOURCE_TYPE == RESOURCE_TYPES.FOOD) return ["Town Center", "Granary"];
         else return ["Town Center", "Storage Pit"];
@@ -80,6 +88,9 @@ class ResourceExtractionInteraction extends Interaction {
 class FarmingInteraction extends ResourceExtractionInteraction {
     preInit() {
         this.active.state = this.active.STATE.FARMER.BASE;
+    }
+    canBeSuccessor(candidate) {
+        return candidate instanceof this.passive.constructor && candidate.player === this.active.player;
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_FARM.BASE;
@@ -101,15 +112,18 @@ class BuilderInteraction extends Interaction {
         if (this.passive.isComplete) this.interactWithSuccessor();
         else super.init();
     }
+    canBeSuccessor(candidate) {
+        return candidate instanceof Building && !candidate.isComplete && candidate.player === this.active.player
+    }
     process() {
         if (this.passive.destroyed) {
-            if (this.engine.findConstructionSuccessor(this.active, this.passive) == null) {
+            if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
                 this.terminate();
             }
         } else if (this.passive.isComplete && this.passive.INTERACT_WHEN_COMPLETE) {
             this.engine.interactImmediately(this.active, this.passive);
         } else if (this.passive.isComplete) {
-            if (this.engine.findConstructionSuccessor(this.active, this.passive) == null) {
+            if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
                 this.terminate();
             }
         } else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
@@ -126,12 +140,20 @@ class RepairInteraction extends Interaction {
     preInit() {
         this.active.state = this.active.STATE.REPAIRING.BASE;
     }
+    canBeSuccessor(candidate) {
+        return candidate instanceof Building && candidate.isComplete &&
+            candidate.player === this.active.player && candidate.hp < candidate.max_hp
+    }
     process() {
         if (this.passive.destroyed) {
-            this.terminate();
-        } else if (this.passive.hp == this.passive.max_hp)
-            this.terminate();
-        else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
+            if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
+                this.terminate();
+            }
+        } else if (this.passive.hp == this.passive.max_hp) {
+            if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
+                this.terminate();
+            }
+        } else if (this.active.ticks_waited >= this.RATE - this.active.player.interactionBonus[this.constructor.name]) {
             this.passive.repairTick();
             this.active.ticks_waited = 0;
         }
@@ -182,6 +204,9 @@ class LumberInteraction extends Interaction {
             } else this.engine.interactImmediately(this.active, this.passive);
         }
     }
+    canBeSuccessor(candidate) {
+        return candidate instanceof Tree;
+    }
 }
 LumberInteraction.prototype.RATE = 11;
 LumberInteraction.prototype.TOOLTIP = 'Right-click to chop down this tree.';
@@ -195,6 +220,9 @@ class ChopInteraction extends ResourceExtractionInteraction {
     init() {
         super.init();
         if (this.active.state == this.active.STATE.LUMBER.BASE) this.active.state = this.active.STATE.CHOP.BASE
+    }
+    canBeSuccessor(candidate) {
+        return candidate instanceof Tree;
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_WOOD.BASE;
@@ -293,6 +321,9 @@ class HunterInteraction extends Interaction {
             this.engine.interactOrder(this.active, this.passive);
         }
     }
+    canBeSuccessor(candidate) {
+        return candidate instanceof Unit && candidate.TYPE === "animal";
+    }
     static getDistance() {
         return HunterInteraction.prototype.DISTANCE;
     }
@@ -310,6 +341,9 @@ class ButcherInteraction extends ResourceExtractionInteraction {
     init() {
         if (this.active.hasFullPath) this.active.state = this.active.STATE.BUTCHER.BASE;
         super.init();
+    }
+    canBeSuccessor(candidate) {
+        return candidate instanceof Unit && candidate.TYPE === "animal";
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_MEAT.BASE;

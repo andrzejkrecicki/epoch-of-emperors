@@ -3,6 +3,7 @@ import { Map } from '../engine/map.js';
 
 import { Villager } from '../engine/units/villager.js';
 import { Gazelle } from '../engine/units/gazelle.js';
+import { Lion } from '../engine/units/lion.js';
 import { FishingBoat } from '../engine/units/fishing_boat.js';
 import { TownCenter } from '../engine/buildings/town_center.js';
 import { Dock } from '../engine/buildings/dock.js';
@@ -11,7 +12,7 @@ import { Bush } from '../engine/resources/bush.js';
 import { FishBig } from '../engine/resources/fish.js';
 import { StoneMine } from '../engine/resources/stone.js';
 import { GoldMine } from '../engine/resources/gold.js';
-import { LeafTree } from '../engine/trees.js';
+import { LeafTree, PineTree } from '../engine/trees.js';
 
 
 class ResourceTest extends Test {
@@ -65,7 +66,7 @@ class TreeTest extends ResourceTest {
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
         this.tree1 = this.entity(LeafTree, 129, 132);
-        this.tree2 = this.entity(LeafTree, 132, 135);
+        this.tree2 = this.entity(PineTree, 132, 135);
     }
     setup() {
         super.setup();
@@ -174,7 +175,9 @@ class HuntTest extends ResourceTest {
         this.villager = this.unit(Villager, 135, 118, 0);
 
         this.animal1 = this.unit(Gazelle, 123, 126, 0);
-        this.animal2 = this.unit(Gazelle, 126, 123, 0);
+        this.animal2 = this.unit(Lion, 126, 123, 0);
+        this.animal2.attributes.attack = 1;
+        this.animal2.attributes.food = 150;
     }
     setup() {
         super.setup();
@@ -182,7 +185,7 @@ class HuntTest extends ResourceTest {
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.animal1.destroyed && this.animal2.destroyed &&
+        if (this.animal1.destroyed && this.animal2.destroyed && this.villager.hp < this.villager.max_hp &&
             this.engine.current_player.resources.food >= 400 + 100 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&

@@ -33,6 +33,7 @@ class TestRunner {
             interaction.TransportTest,
             interaction.RepairTest,
             interaction.ConstructionTest,
+            interaction.MultipleConstructionsTest,
             interaction.ImpossibleToReachInteractionTest,
 
 
