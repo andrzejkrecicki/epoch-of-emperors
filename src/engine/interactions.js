@@ -654,9 +654,14 @@ class HealInteraction extends Interaction {
     stop() {
         this.active.state = this.active.STATE.IDLE;
     }
+    canBeSuccessor(candidate) {
+        return candidate instanceof Unit && candidate.player === this.active.player && candidate.hp < candidate.max_hp
+    }
     process() {
         if (this.passive.destroyed || this.passive.hp == this.passive.max_hp) {
-            this.terminate();
+            if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
+                this.terminate();
+            }
         } else if (!this.active.isAdjecentTo(this.passive)) {
             this.engine.interactOrder(this.active, this.passive);
             return;

@@ -179,15 +179,23 @@ class HealUnitTest extends Test {
     constructor(engine) {
         super(engine)
         this.priest = this.unit(Priest, 130, 114, 0);
-        this.unit = this.unit(SwordsMan, 135, 118, 0);
-        this.unit.hp = 1;
+
+        this.unit1 = this.unit(SwordsMan, 135, 118, 0);
+        this.unit2 = this.unit(SwordsMan, 137, 120, 1);
+        this.unit3 = this.unit(SwordsMan, 139, 122, 0);
+
+        this.unit1.hp = 1;
+        this.unit2.hp = 1;
+        this.unit3.hp = 1;
    }
     setup() {
         super.setup();
-        this.engine.interactOrder(this.priest, this.unit);
+        this.engine.interactOrder(this.priest, this.unit1);
     }
     check() {
-        if (this.unit.hp == this.unit.max_hp) this.pass();
+        if (this.unit1.hp == this.unit1.max_hp &&
+            this.unit2.hp == 1 &&
+            this.unit3.hp == this.unit3.max_hp) this.pass();
     }
 }
 
