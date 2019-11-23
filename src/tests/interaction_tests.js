@@ -102,19 +102,37 @@ class AttackUnitUnitTest extends Test {
         this.unit3 = this.unit(SwordsMan, 124, 120, 1);
         this.unit4 = this.unit(Villager, 130, 123, 0);
 
-        this.unit5 = this.unit(ImprovedBowMan, 120, 124, 1);
-        this.unit6 = this.unit(Villager, 126, 127, 0);
+        this.unit5 = this.unit(Villager, 132, 125, 0);
+        this.unit6 = this.unit(Villager, 134, 127, 0);
     }
     setup() {
         super.setup();
         this.engine.interactOrder(this.unit1, this.unit2);
         this.engine.interactOrder(this.unit3, this.unit4);
-        this.engine.interactOrder(this.unit5, this.unit6);
     }
     check() {
-        if (this.unit4.destroyed &&
-            this.unit6.destroyed &&
-            this.unit2.hp == this.unit2.max_hp
+        if (this.unit4.destroyed && this.unit5.destroyed &&
+            this.unit6.destroyed && this.unit2.hp == this.unit2.max_hp
+        ) this.pass();
+    }
+}
+
+
+class DistantAttackUnitUnitTest extends Test {
+    constructor(engine) {
+        super(engine)
+        this.unit1 = this.unit(ImprovedBowMan, 120, 124, 1);
+        this.unit2 = this.unit(Villager, 130, 131, 0);
+        this.unit3 = this.unit(Villager, 132, 133, 0);
+        this.unit4 = this.unit(Villager, 134, 135, 0);
+    }
+    setup() {
+        super.setup();
+        this.engine.interactOrder(this.unit1, this.unit2);
+    }
+    check() {
+        if (this.unit2.destroyed && this.unit3.destroyed &&
+            this.unit4.destroyed && this.unit1.hp == this.unit1.max_hp
         ) this.pass();
     }
 }
@@ -379,7 +397,7 @@ class ImpossibleToReachInteractionTest extends Test {
 
 
 export {
-    TradeTest, AttackUnitUnitTest, AttackTowerUnitTest, ConvertUnitTest,
-    HealUnitTest, TransportTest, RepairTest, ConstructionTest,
+    TradeTest, AttackUnitUnitTest, DistantAttackUnitUnitTest, AttackTowerUnitTest,
+    ConvertUnitTest, HealUnitTest, TransportTest, RepairTest, ConstructionTest,
     MultipleConstructionsTest, ImpossibleToReachInteractionTest
 }

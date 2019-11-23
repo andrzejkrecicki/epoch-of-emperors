@@ -27,6 +27,7 @@ class TestRunner {
 
             interaction.TradeTest,
             interaction.AttackUnitUnitTest,
+            interaction.DistantAttackUnitUnitTest,
             interaction.AttackTowerUnitTest,
             interaction.ConvertUnitTest,
             interaction.HealUnitTest,

@@ -416,6 +416,10 @@ class BaseAttackInteraction extends Interaction {
         else if (this.passive instanceof Unit) return this.TOOLTIPS[2];
         else return this.TOOLTIPS[3];
     }
+    canBeSuccessor(candidate) {
+        return (candidate instanceof Building || candidate instanceof Unit) && candidate.TYPE !== "animal" &&
+            candidate.player !== this.active.player
+    }
 }
 BaseAttackInteraction.prototype.CURSOR = 'attack';
 BaseAttackInteraction.prototype.TOOLTIPS = [
@@ -445,8 +449,11 @@ class AttackInteraction extends BaseAttackInteraction {
         this.active.state = this.active.STATE.IDLE;
     }
     process() {
-        if (this.passive.destroyed || this.passive.hp <= 0) {
-            this.terminate();
+        // check if player is the same in case if unit got converted by priest
+        if (this.passive.destroyed || this.passive.hp <= 0 || this.passive.player == this.active.player) {
+            if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
+                this.terminate();
+            }
         } else if (!this.active.isAdjecentTo(this.passive)) {
             this.engine.interactOrder(this.active, this.passive);
             return;
@@ -477,8 +484,10 @@ class DistantAttackInteraction extends BaseAttackInteraction {
         if (this.engine.framesCount - this.active.lastShot < this.active.SHOT_DELAY) {
             this.active.frame = 0;
             this.active.ticks_waited = 0;
-        } else if (this.passive.destroyed || this.passive.hp <= 0) {
-            this.terminate();
+        } else if (this.passive.destroyed || this.passive.hp <= 0 || this.passive.player == this.active.player) {
+            if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
+                this.terminate();
+            }
         } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
             this.engine.makeProjectile(this.active.getProjectileType(), this.active, this.passive);
         } else if (this.active.ticks_waited > this.active.ATTACK_RATE &&
@@ -516,7 +525,7 @@ class TowerAttackInteraction extends BaseAttackInteraction {
             this.terminate();
         } else if (this.engine.framesCount - this.active.lastShot < this.active.SHOT_DELAY) {
             this.active.ticks_waited = 0;
-        } else if (this.passive.destroyed || this.passive.hp <= 0) {
+        } else if (this.passive.destroyed || this.passive.hp <= 0 || this.passive.player == this.active.player) {
             this.terminate();
         } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
             this.engine.makeProjectile(this.active.getProjectileType(), this.active, this.passive);
