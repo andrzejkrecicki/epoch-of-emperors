@@ -106,7 +106,9 @@ class Unit extends Entity {
     }
     getInteractionType(object) {
         if (object instanceof Unit && object.canCarry(this)) return interactions.EnterShipInteraction;
-        else if ((object instanceof Unit || object instanceof Building) && object.player != this.player && this.CAN_ATTACK) {
+        else if ((object instanceof Unit || object instanceof Building) &&
+            object.player != this.player && this.CAN_ATTACK &&
+            !(this.TYPE == "villager" && object.TYPE == "animal")) {
             if (this.ATTACKS_FROM_DISTANCE) return interactions.DistantAttackInteraction;
             else return interactions.AttackInteraction;
         } else return this.getOwnInteractionType(object);

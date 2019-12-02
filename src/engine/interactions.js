@@ -72,6 +72,12 @@ class ResourceExtractionInteraction extends Interaction {
     canBeSuccessor(candidate) {
         return candidate instanceof this.passive.constructor;
     }
+    interactWithSuccessor() {
+        if (this.passive.interactionSuccessor) this.engine.interactOrder(this.active, this.passive.interactionSuccessor);
+        else if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
+            this.terminate();
+        }
+    }
     getReturnBuildingTypes() {
         if (this.RESOURCE_TYPE == RESOURCE_TYPES.FOOD) return ["Town Center", "Granary"];
         else return ["Town Center", "Storage Pit"];
