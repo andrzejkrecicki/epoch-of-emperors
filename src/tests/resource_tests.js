@@ -174,8 +174,8 @@ class HuntTest extends ResourceTest {
         this.towncenter = this.building(TownCenter, 129, 120, 0);
         this.villager = this.unit(Villager, 135, 118, 0);
 
-        this.animal1 = this.unit(Gazelle, 123, 126, 0);
-        this.animal2 = this.unit(Lion, 126, 123, 0);
+        this.animal1 = this.unit(Gazelle, 123, 126, 1);
+        this.animal2 = this.unit(Lion, 126, 123, 1);
         this.animal2.attributes.attack = 1;
         this.animal2.attributes.food = 150;
     }
@@ -185,7 +185,10 @@ class HuntTest extends ResourceTest {
     }
     check() {
         if (this.villager.state != this.states[this.states.length - 1]) this.states.push(this.villager.state);
-        if (this.animal1.destroyed && this.animal2.destroyed && this.villager.hp < this.villager.max_hp &&
+        if (this.animal1.destroyed && this.animal2.destroyed &&
+            this.villager.hp < this.villager.max_hp &&
+            (this.animal1.subtile_x !== 123 || this.animal1.subtile_y !== 126) &&
+            (this.animal2.subtile_x !== 126 || this.animal2.subtile_y !== 123) &&
             this.engine.current_player.resources.food >= 400 + 100 &&
             this.engine.current_player.resources.wood == 400 &&
             this.engine.current_player.resources.gold == 400 &&
