@@ -149,8 +149,8 @@ class TestRunner {
         this.viewer.deselectEntity();
 
         this.engine.players = [];
-        for (let i = 0; i < this.engine.definition.players.length; ++i) {
-            this.engine.players.push(new Player(this.engine.definition.players[i]));
+        for (let definition of this.engine.definition.players) {
+            this.engine.players.push(new Player(definition));
         }
         this.engine.current_player = this.engine.players[0];
 

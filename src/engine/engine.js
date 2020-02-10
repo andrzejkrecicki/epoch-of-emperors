@@ -35,8 +35,8 @@ class Engine {
         this.definition = { ...definition };
 
         this.players = [];
-        for (let i = 0; i < this.definition.players.length; ++i) {
-            this.players.push(new Player(this.definition.players[i]));
+        for (let definition of this.definition.players) {
+            this.players.push(new Player(definition));
         }
         this.current_player = this.players[0];
 

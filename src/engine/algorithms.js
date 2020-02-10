@@ -39,9 +39,8 @@ BFSWalker.NEIGHBOURS_DELTA = [{ x: -1, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, {
 
 class MultiSlotQueue {
     constructor(numOfSlots=5) {
-        this.numOfSlots = numOfSlots;
         this.slots = [];
-        for (let i = 0; i < this.numOfSlots; ++i) {
+        for (let i = 0; i < numOfSlots; ++i) {
             this.slots.push({
                head: 0,
                values: []
@@ -49,19 +48,19 @@ class MultiSlotQueue {
         }
     }
     empty() {
-        for (let i = 0; i < this.numOfSlots; ++i) {
-            if (this.slots[i].values.length > this.slots[i].head) return false;
+        for (let slot of this.slots) {
+            if (slot.values.length > slot.head) return false;
         }
         return true;
     }
     push(value) {
-        let num = Math.floor(Math.random() * this.numOfSlots);
+        let num = Math.floor(Math.random() * this.slots.length);
         this.slots[num].values.push(value);
     }
     pop() {
-        for (let i = 0; i < this.numOfSlots; ++i) {
-            if (this.slots[i].values.length > this.slots[i].head) {
-                return this.slots[i].values[this.slots[i].head++];
+        for (let slot of this.slots) {
+            if (slot.values.length > slot.head) {
+                return slot.values[slot.head++];
             }
         }
         throw new Error();

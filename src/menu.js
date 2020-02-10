@@ -343,11 +343,11 @@ class RandomMapMenu extends Menu {
         let offset = {
             x: 0, y: 0
         }
-        for (let i = 0; i < this.game_definition.players.length; ++i) {
+        for (let player of this.game_definition.players) {
             offset.x = 0;
 
             this.playersSection.add(new Label({
-                text: this.game_definition.players[i].name,
+                text: player.name,
                 x: offset.x, y: offset.y
             }));
 
@@ -355,17 +355,15 @@ class RandomMapMenu extends Menu {
 
             let civDropDown = new DropDown(
                 offset.x, offset.y , 150, 
-                CIVILIZATIONS_NAMES, this.game_definition.players[i].civ
+                CIVILIZATIONS_NAMES, player.civ
             );
-            civDropDown.on("update", (function(){
-                return function() {
-                    that.game_definition.players[i].civ = this.chosenIndex;
-                }
-            })(i));
+            civDropDown.on("update", function() {
+                player.civ = this.chosenIndex;
+            });
             this.playersSection.add(civDropDown);
             offset.x += RandomMapMenu.CIV_SECTION_WIDTH;
 
-            let colorBtn = new ColorSelect(offset.x + 8, offset.y, this.game_definition.players[i].color);
+            let colorBtn = new ColorSelect(offset.x + 8, offset.y, player.color);
             this.playersSection.add(colorBtn);
             colorBtn.on("update", function() {
                 for (let player of that.game_definition.players) {
@@ -382,14 +380,12 @@ class RandomMapMenu extends Menu {
             let teamButton = new MultiStateButton(
                 offset.x, offset.y,
                 ["-", "1", "2", "3"],
-                this.game_definition.players[i].team || 0
+                player.team || 0
             );
             this.playersSection.add(teamButton);
-            teamButton.on("update", (function(i) {
-                return function() {
-                    that.game_definition.players[i].team = this.currentState || null;
-                }
-            })(i));
+            teamButton.on("update", function() {
+                player.team = this.currentState || null;
+            });
 
             offset.y += 40;
         }

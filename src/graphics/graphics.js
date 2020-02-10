@@ -529,9 +529,9 @@ class EntitiesHolder extends Node {
 
         for (let x = first_x; x < last_x; ++x) {
             for (let y = first_y; y < last_y; ++y) {
-                for (let i = 0; i < this.grid[x][y].length; ++i) {
-                    if (rect_intersection(this.grid[x][y][i].getBoundingBox(), viewPort)) {
-                        let z = this.mapSize - (this.grid[x][y][i].subtile_x - this.grid[x][y][i].subtile_y);
+                for (let entity of this.grid[x][y]) {
+                    if (rect_intersection(entity.getBoundingBox(), viewPort)) {
+                        let z = this.mapSize - (entity.subtile_x - entity.subtile_y);
                         lowest_z = Math.min(z, lowest_z);
                         highest_z = Math.max(z, highest_z);
                     }
@@ -546,18 +546,18 @@ class EntitiesHolder extends Node {
 
         for (let x = first_x; x < last_x; ++x) {
             for (let y = first_y; y < last_y; ++y) {
-                for (let i = 0; i < this.grid[x][y].length; ++i) {
-                    if (rect_intersection(this.grid[x][y][i].getBoundingBox(), viewPort)) {
-                        let z = this.mapSize - (this.grid[x][y][i].subtile_x - this.grid[x][y][i].subtile_y)
-                        if (this.grid[x][y][i].isFlat) z = lowest_z - 1;
-                        z_layers[z - lowest_z + 1].push(this.grid[x][y][i]);
+                for (let entity of this.grid[x][y]) {
+                    if (rect_intersection(entity.getBoundingBox(), viewPort)) {
+                        let z = this.mapSize - (entity.subtile_x - entity.subtile_y)
+                        if (entity.isFlat) z = lowest_z - 1;
+                        z_layers[z - lowest_z + 1].push(entity);
                     }
                 }
             }
         }
 
-        for (let i = 0; i < z_layers.length; ++i) for (let j = 0; j < z_layers[i].length; ++j) {
-            z_layers[i][j].draw();
+        for (let layer of z_layers) for (let entity of layer) {
+            entity.draw();
         }
     }
     updateBucket(entity, old_pos) {
