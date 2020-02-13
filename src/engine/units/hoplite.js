@@ -2,6 +2,7 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
+import { UNIT_TYPES } from '../../utils.js';
 
 class Hoplite extends Unit {
     get ACTIONS() {
@@ -11,7 +12,7 @@ class Hoplite extends Unit {
 Hoplite.prototype.SUBTILE_WIDTH = 1;
 Hoplite.prototype.NAME = ["Hoplite"];
 Hoplite.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/hoplite.png")];
-Hoplite.prototype.TYPE = "infantry";
+Hoplite.prototype.TYPE = UNIT_TYPES.INFANTRY;
 Hoplite.prototype.MAX_HP = [120];
 Hoplite.prototype.SPEED = 1;
 Hoplite.prototype.CREATION_TIME = 36 * 35;

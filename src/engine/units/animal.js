@@ -1,4 +1,5 @@
 import { Unit } from './unit.js';
+import { UNIT_TYPES } from '../../utils.js';
 import * as interactions from '../interactions.js';
 
 class Animal extends Unit {
@@ -58,7 +59,7 @@ class Animal extends Unit {
 }
 Animal.prototype.DECAY_RATE = 4 * 35;
 Animal.prototype.COLORIZE = false;
-Animal.prototype.TYPE = "animal";
+Animal.prototype.TYPE = UNIT_TYPES.ANIMAL;
 Animal.prototype.TOOLTIP = "Hunt this animal for food.";
 
 export { Animal }

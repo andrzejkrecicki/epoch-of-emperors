@@ -3,6 +3,7 @@ import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import { Arrow } from '../projectiles.js';
+import { UNIT_TYPES } from '../../utils.js';
 
 class ChariotArcher extends Unit {
     constructor() {
@@ -25,7 +26,7 @@ class ChariotArcher extends Unit {
 ChariotArcher.prototype.SUBTILE_WIDTH = 2;
 ChariotArcher.prototype.NAME = ["Chariot Archer"];
 ChariotArcher.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/chariot_archer.png")];
-ChariotArcher.prototype.TYPE = "archer";
+ChariotArcher.prototype.TYPE = UNIT_TYPES.ARCHER;
 ChariotArcher.prototype.MAX_HP = [70];
 ChariotArcher.prototype.SPEED = 2.5;
 ChariotArcher.prototype.CREATION_TIME = 40 * 35;

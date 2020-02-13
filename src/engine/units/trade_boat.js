@@ -1,7 +1,7 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Dock } from '../buildings/dock.js';
-import { RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
+import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
@@ -35,7 +35,7 @@ TradeBoat.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/trade_boat.png"),
     Sprites.Sprite("img/interface/avatars/merchant_ship.png")
 ];
-TradeBoat.prototype.TYPE = "ship";
+TradeBoat.prototype.TYPE = UNIT_TYPES.SHIP;
 TradeBoat.prototype.MAX_HP = [200, 250];
 TradeBoat.prototype.SPEED = 3;
 TradeBoat.prototype.CREATION_TIME = 26 * 35;

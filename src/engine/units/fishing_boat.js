@@ -1,7 +1,7 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { FishBig } from '../resources/fish.js';
-import { RESOURCE_TYPES, RESOURCE_NAME } from '../../utils.js';
+import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
@@ -31,7 +31,7 @@ FishingBoat.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/fishing_boat.png"),
     Sprites.Sprite("img/interface/avatars/fishing_ship.png")
 ];
-FishingBoat.prototype.TYPE = "fishing_boat";
+FishingBoat.prototype.TYPE = UNIT_TYPES.FISHING_BOAT;
 FishingBoat.prototype.MAX_HP = [45, 75];
 FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * 35;

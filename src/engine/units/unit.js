@@ -3,6 +3,8 @@ import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Building } from '../buildings/building.js';
 import * as interactions from '../interactions.js';
+import { UNIT_TYPES } from '../../utils.js';
+
 
 class Unit extends Entity {
     constructor(subtile_x, subtile_y, player, level=0, rotation=null) {
@@ -108,7 +110,7 @@ class Unit extends Entity {
         if (object instanceof Unit && object.canCarry(this)) return interactions.EnterShipInteraction;
         else if ((object instanceof Unit || object instanceof Building) &&
             object.player != this.player && this.CAN_ATTACK &&
-            !(this.TYPE == "villager" && object.TYPE == "animal")) {
+            !(this.TYPE == UNIT_TYPES.VILLAGER && object.TYPE == UNIT_TYPES.ANIMAL)) {
             if (this.ATTACKS_FROM_DISTANCE) return interactions.DistantAttackInteraction;
             else return interactions.AttackInteraction;
         } else return this.getOwnInteractionType(object);
@@ -189,14 +191,14 @@ class Unit extends Entity {
     }
 }
 Unit.prototype.TOOLTIP = {
-    "villager": "Click to select this villager.",
-    "infantry": "Click to select this military unit.",
-    "archer": "Click to select this military unit.",
-    "cavalry": "Click to select this military unit.",
-    "fishing_boat": "Click to select this boat.",
-    "ship": "Click to select this boat.",
-    "priest": "Click to select this priest.",
-    "siege": "Click to select this siege weapon.",
+    [UNIT_TYPES.VILLAGER]: "Click to select this villager.",
+    [UNIT_TYPES.INFANTRY]: "Click to select this military unit.",
+    [UNIT_TYPES.ARCHER]: "Click to select this military unit.",
+    [UNIT_TYPES.CAVALRY]: "Click to select this military unit.",
+    [UNIT_TYPES.FISHING_BOAT]: "Click to select this boat.",
+    [UNIT_TYPES.SHIP]: "Click to select this boat.",
+    [UNIT_TYPES.PRIEST]: "Click to select this priest.",
+    [UNIT_TYPES.SIEGE]: "Click to select this siege weapon.",
 };
 Unit.prototype.COLORIZE = true;
 Unit.prototype.LEAVES_LEFTOVERS = true;
@@ -211,7 +213,7 @@ Unit.prototype.ROTATION = {
 }
 
 Unit.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.GRASS, TERRAIN_TYPES.SAND]);
-Unit.prototype.TYPE = "infantry";
+Unit.prototype.TYPE = UNIT_TYPES.INFANTRY;
 
 Unit.prototype.DIRECTIONS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 Unit.prototype.DIRECTIONS_DELTA = [

@@ -8,6 +8,8 @@ import { TradeBoat } from './units/trade_boat.js';
 import { ScoutShip } from './units/scout_ship.js';
 import { Wall } from './buildings/wall.js';
 import { Tower } from './buildings/tower.js';
+import { UNIT_TYPES } from '../utils.js';
+
 
 class Technology extends Action {
     getCost() {
@@ -803,7 +805,7 @@ class Nobility extends Technology {
     }
     finalize() {
         for (let unit of this.player.units) {
-            if (!unit.wasConverted && unit.TYPE == "cavalry") {
+            if (!unit.wasConverted && unit.TYPE == UNIT_TYPES.CAVALRY) {
                 let delta = Math.floor(unit.max_hp * 0.15);
                 unit.max_hp += delta;
                 unit.hp += delta;
@@ -913,7 +915,7 @@ class Mysticism extends Technology {
     }
     finalize() {
         for (let unit of this.player.units) {
-            if (!unit.wasConverted && unit.TYPE == "priest") {
+            if (!unit.wasConverted && unit.TYPE == UNIT_TYPES.PRIEST) {
                 let delta = Math.floor(unit.max_hp * 1);
                 unit.max_hp += delta;
                 unit.hp += delta;

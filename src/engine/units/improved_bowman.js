@@ -3,6 +3,7 @@ import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import { Arrow } from '../projectiles.js';
+import { UNIT_TYPES } from '../../utils.js';
 
 class ImprovedBowMan extends Unit {
     constructor() {
@@ -28,7 +29,7 @@ ImprovedBowMan.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/improved_bowman.png"),
     Sprites.Sprite("img/interface/avatars/composite_bowman.png")
 ];
-ImprovedBowMan.prototype.TYPE = "archer";
+ImprovedBowMan.prototype.TYPE = UNIT_TYPES.ARCHER;
 ImprovedBowMan.prototype.MAX_HP = [40, 45];
 ImprovedBowMan.prototype.SPEED = 1.1;
 ImprovedBowMan.prototype.CREATION_TIME = 30 * 35;

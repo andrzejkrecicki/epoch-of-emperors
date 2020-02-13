@@ -2,6 +2,7 @@ import { Entity } from '../entity.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Sprites } from '../../sprites.js';
 import { Flame } from './details.js';
+import { UNIT_TYPES } from '../../utils.js';
 
 
 class Building extends Entity {
@@ -142,7 +143,7 @@ Building.prototype.HAS_BITMAP_HITMASK = true;
 Building.prototype.INTERACT_WHEN_COMPLETE = false;
 Building.prototype.COLORIZE = true;
 Building.prototype.TOOLTIP = "Click to select this building.";
-Building.prototype.TYPE = "building";
+Building.prototype.TYPE = UNIT_TYPES.BUILDING;
 Building.prototype.CONTINUOUS_PREVIEW = false;
 Building.prototype.LEVELS_UP_ON_AGE = true;
 Building.prototype.LEAVES_LEFTOVERS = true;

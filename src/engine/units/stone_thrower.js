@@ -3,6 +3,7 @@ import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import { Stone } from '../projectiles.js';
+import { UNIT_TYPES } from '../../utils.js';
 
 class StoneThrower extends Unit {
     constructor() {
@@ -22,7 +23,7 @@ class StoneThrower extends Unit {
 StoneThrower.prototype.SUBTILE_WIDTH = 3;
 StoneThrower.prototype.NAME = ["Stone Thrower"];
 StoneThrower.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/stone_thrower.png")];
-StoneThrower.prototype.TYPE = "siege";
+StoneThrower.prototype.TYPE = UNIT_TYPES.SIEGE;
 StoneThrower.prototype.MAX_HP = [75];
 StoneThrower.prototype.SPEED = 0.72;
 StoneThrower.prototype.CREATION_TIME = 60 * 35;

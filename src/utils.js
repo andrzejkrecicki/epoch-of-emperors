@@ -70,6 +70,19 @@ const AGES = {
     IRON_AGE: 3,
 }
 
+const UNIT_TYPES = {
+    BUILDING: "building",
+    ANIMAL: "animal",
+    ARCHER: "archer",
+    CAVALRY: "cavalry",
+    FISHING_BOAT: "fishing_boat",
+    INFANTRY: "infantry",
+    PRIEST: "priest",
+    SHIP: "ship",
+    SIEGE: "siege",
+    VILLAGER: "villager",
+}
+
 function to_binary(num) {
     let bin = (+num).toString(2);
     return "00000000".substr(bin.length) + bin;
@@ -108,7 +121,7 @@ function getCanvasContext(width, height) {
 
 export {
     PlayerDefinition, PLAYER_COLORS, RESOURCE_TYPES, RESOURCE_NAME,
-    AGES, CIVILIZATIONS, CIVILIZATIONS_NAMES, to_binary, leftpad,
-    rand_choice, rect_intersection, distance,
+    AGES, CIVILIZATIONS, CIVILIZATIONS_NAMES, UNIT_TYPES, to_binary,
+    leftpad, rand_choice, rect_intersection, distance,
     manhatan_subtile_distance, getCanvasContext
 }

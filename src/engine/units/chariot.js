@@ -2,6 +2,7 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
+import { UNIT_TYPES } from '../../utils.js';
 
 class Chariot extends Unit {
     get ACTIONS() {
@@ -14,7 +15,7 @@ class Chariot extends Unit {
 Chariot.prototype.SUBTILE_WIDTH = 2;
 Chariot.prototype.NAME = ["Chariot"];
 Chariot.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/chariot.png")];
-Chariot.prototype.TYPE = "cavalry";
+Chariot.prototype.TYPE = UNIT_TYPES.CAVALRY;
 Chariot.prototype.MAX_HP = [100];
 Chariot.prototype.SPEED = 2.5;
 Chariot.prototype.CREATION_TIME = 40 * 35;

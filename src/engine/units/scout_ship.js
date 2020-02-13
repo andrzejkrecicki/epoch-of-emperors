@@ -5,6 +5,7 @@ import { TERRAIN_TYPES } from '../terrain.js';
 import { SailSmall } from '../buildings/details.js';
 import { Arrow } from '../projectiles.js';
 import { Actions } from '../actions.js';
+import { UNIT_TYPES } from '../../utils.js';
 
 
 class ScoutShip extends Unit {
@@ -40,7 +41,7 @@ ScoutShip.prototype.AVATAR = [
     Sprites.Sprite("img/interface/avatars/scout_ship.png"),
     Sprites.Sprite("img/interface/avatars/war_gallery.png")
 ];
-ScoutShip.prototype.TYPE = "ship";
+ScoutShip.prototype.TYPE = UNIT_TYPES.SHIP;
 ScoutShip.prototype.MAX_HP = [120, 160];
 ScoutShip.prototype.SPEED = 3;
 ScoutShip.prototype.CREATION_TIME = 26 * 35;

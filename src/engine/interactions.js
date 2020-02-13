@@ -1,4 +1,4 @@
-import { RESOURCE_TYPES, RESOURCE_NAME } from '../utils.js';
+import { UNIT_TYPES, RESOURCE_TYPES, RESOURCE_NAME } from '../utils.js';
 import { Spear } from './projectiles.js';
 import { Unit } from './units/unit.js';
 import { Building } from './buildings/building.js';
@@ -328,7 +328,7 @@ class HunterInteraction extends Interaction {
         }
     }
     canBeSuccessor(candidate) {
-        return candidate instanceof Unit && candidate.TYPE === "animal";
+        return candidate instanceof Unit && candidate.TYPE === UNIT_TYPES.ANIMAL;
     }
     static getDistance() {
         return HunterInteraction.prototype.DISTANCE;
@@ -349,7 +349,7 @@ class ButcherInteraction extends ResourceExtractionInteraction {
         super.init();
     }
     canBeSuccessor(candidate) {
-        return candidate instanceof Unit && candidate.TYPE === "animal";
+        return candidate instanceof Unit && candidate.TYPE === UNIT_TYPES.ANIMAL;
     }
     stop() {
         if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]] > 0) this.active.state = this.active.STATE.CARRY_MEAT.BASE;
@@ -416,14 +416,14 @@ class TradeInteraction extends ResourceExtractionInteraction {
 
 class BaseAttackInteraction extends Interaction {
     toolTip() {
-        if (this.passive instanceof Unit && this.passive.TYPE == "animal") return this.TOOLTIPS[0];
-        else if (this.passive instanceof Unit && this.passive.TYPE == "ship") return this.TOOLTIPS[1];
-        else if (this.passive instanceof Unit && this.passive.TYPE == "fishing_boat") return this.TOOLTIPS[1];
+        if (this.passive instanceof Unit && this.passive.TYPE == UNIT_TYPES.ANIMAL) return this.TOOLTIPS[0];
+        else if (this.passive instanceof Unit && this.passive.TYPE == UNIT_TYPES.SHIP) return this.TOOLTIPS[1];
+        else if (this.passive instanceof Unit && this.passive.TYPE == UNIT_TYPES.FISHING_BOAT) return this.TOOLTIPS[1];
         else if (this.passive instanceof Unit) return this.TOOLTIPS[2];
         else return this.TOOLTIPS[3];
     }
     canBeSuccessor(candidate) {
-        return (candidate instanceof Building || candidate instanceof Unit) && candidate.TYPE !== "animal" &&
+        return (candidate instanceof Building || candidate instanceof Unit) && candidate.TYPE !== UNIT_TYPES.ANIMAL &&
             candidate.player !== this.active.player
     }
 }
