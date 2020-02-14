@@ -24,7 +24,7 @@ import { GoldMine } from './resources/gold.js';
 import { StoneMine } from './resources/stone.js';
 import { LeafTree } from './trees.js';
 import { AStarPathFinder, AStarToEntity, BFSWalker, StandardQueue } from './algorithms.js';
-import { distance, manhatan_subtile_distance } from '../utils.js'
+import { distance, manhatan_subtile_distance, FPS } from '../utils.js'
 
 
 class Engine {
@@ -618,7 +618,7 @@ class Engine {
         this.map.entities.push(fish);
     }
 }
-Engine.prototype.frameRate = 35;
+Engine.prototype.frameRate = FPS;
 Engine.prototype.AREA_ENTRANCE_RESOLUTION = {
     GO: 0, // area is not occupied - free to go
     WAIT: 1, // area is temporarily occupied - wait until it's free

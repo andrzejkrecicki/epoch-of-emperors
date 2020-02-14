@@ -1,6 +1,6 @@
 import { Test, ComplexTest } from './test.js';
 import { Map } from '../engine/map.js';
-import { RESOURCE_TYPES } from '../utils.js';
+import { RESOURCE_TYPES, FPS } from '../utils.js';
 import { Actions } from '../engine/actions.js';
 
 import { Villager } from '../engine/units/villager.js';
@@ -299,7 +299,7 @@ class ConstructionTest extends ComplexTest {
                 if (building.BUILDING != Barracks) this.fail("Building at index 1 expected to be Barracks");
                 building.execute();
             },
-            this.sleep(35),
+            this.sleep(FPS),
             function() {
                 this.mockMouseMove(310, 300);
                 this.mockClick(this.viewer.constructionIndicator);
@@ -340,7 +340,7 @@ class ConstructionTest extends ComplexTest {
             function() {
                 this.mockClick(this.viewer.constructionIndicator, true);
             },
-            this.sleep(35),
+            this.sleep(FPS),
             function() {
                 if (this.viewer.isPlanningConstruction || this.viewer.constructionIndicator.visible()) {
                     this.fail("Construction indicator did not disappear on right click.");

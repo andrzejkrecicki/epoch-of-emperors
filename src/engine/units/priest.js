@@ -5,7 +5,7 @@ import { TownCenter } from '../buildings/town_center.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import * as interactions from '../interactions.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 
 
 class Priest extends Unit {
@@ -57,10 +57,10 @@ Priest.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/priest.png")];
 Priest.prototype.TYPE = UNIT_TYPES.PRIEST;
 Priest.prototype.MAX_HP = [25];
 Priest.prototype.SPEED = 0.7;
-Priest.prototype.CREATION_TIME = 50 * 35;
+Priest.prototype.CREATION_TIME = 50 * FPS;
 Priest.prototype.ATTACK_RATE = 5 * 3;
 Priest.prototype.CAN_ATTACK = false;
-Priest.prototype.MAX_MANA = 50 * 35;
+Priest.prototype.MAX_MANA = 50 * FPS;
 
 Priest.prototype.ACTION_KEY = "T";
 Priest.prototype.COST = {

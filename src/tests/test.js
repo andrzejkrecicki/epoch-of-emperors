@@ -1,3 +1,5 @@
+import { FPS } from '../utils.js';
+
 class Test {
     constructor(engine) {
         this.engine = engine;
@@ -80,7 +82,7 @@ class Test {
         this.viewer.mouseY = y;
     }
 }
-Test.prototype.MAX_TIME =  10 * 60 * 35;
+Test.prototype.MAX_TIME =  10 * 60 * FPS;
 Test.prototype.STATE = {
     RUNNING: 0,
     PASSED: 1,

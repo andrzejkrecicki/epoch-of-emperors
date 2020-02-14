@@ -8,7 +8,7 @@ import { TradeBoat } from './units/trade_boat.js';
 import { ScoutShip } from './units/scout_ship.js';
 import { Wall } from './buildings/wall.js';
 import { Tower } from './buildings/tower.js';
-import { UNIT_TYPES } from '../utils.js';
+import { UNIT_TYPES, FPS } from '../utils.js';
 
 
 class Technology extends Action {
@@ -60,7 +60,7 @@ class ToolAge extends Age {
 }
 ToolAge.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/tool_age.png");
 ToolAge.prototype.TOOLTIP = "Advance to Tool Age. Requires two buildings from Stone Age";
-ToolAge.prototype.TIME = 120 * 35;
+ToolAge.prototype.TIME = 120 * FPS;
 ToolAge.prototype.COST = {
     food: 500, wood: 0, stone: 0, gold: 0
 }
@@ -81,7 +81,7 @@ class BattleAxe extends Technology {
 }
 BattleAxe.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/battle_axe.png");
 BattleAxe.prototype.TOOLTIP = "Upgrade to Battle Axe";
-BattleAxe.prototype.TIME = 40 * 35;
+BattleAxe.prototype.TIME = 40 * FPS;
 BattleAxe.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -105,7 +105,7 @@ class Toolworking extends Technology {
 }
 Toolworking.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/toolworking.png");
 Toolworking.prototype.TOOLTIP = "Research Toolworking: +2 hand-to-hand unit attack.";
-Toolworking.prototype.TIME = 40 * 35;
+Toolworking.prototype.TIME = 40 * FPS;
 Toolworking.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -128,7 +128,7 @@ class LeatherArmorInfantry extends Technology {
 }
 LeatherArmorInfantry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/leather_armor_infantry.png");
 LeatherArmorInfantry.prototype.TOOLTIP = "Research Leather Armor: +2 infantry armor.";
-LeatherArmorInfantry.prototype.TIME = 30 * 35;
+LeatherArmorInfantry.prototype.TIME = 30 * FPS;
 LeatherArmorInfantry.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -151,7 +151,7 @@ class LeatherArmorArcher extends Technology {
 }
 LeatherArmorArcher.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/leather_armor_archer.png");
 LeatherArmorArcher.prototype.TOOLTIP = "Research Leather Armor: +2 archer armor.";
-LeatherArmorArcher.prototype.TIME = 30 * 35;
+LeatherArmorArcher.prototype.TIME = 30 * FPS;
 LeatherArmorArcher.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -174,7 +174,7 @@ class LeatherArmorCavalry extends Technology {
 }
 LeatherArmorCavalry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/leather_armor_cavalry.png");
 LeatherArmorCavalry.prototype.TOOLTIP = "Research Leather Armor: +2 cavalry armor.";
-LeatherArmorCavalry.prototype.TIME = 30 * 35;
+LeatherArmorCavalry.prototype.TIME = 30 * FPS;
 LeatherArmorCavalry.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -197,7 +197,7 @@ class Domestication extends Technology {
 }
 Domestication.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/domestication.png");
 Domestication.prototype.TOOLTIP = "Research Domestication: +75 food production for farms.";
-Domestication.prototype.TIME = 40 * 35;
+Domestication.prototype.TIME = 40 * FPS;
 Domestication.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -221,7 +221,7 @@ class Woodworking extends Technology {
 }
 Woodworking.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/woodworking.png");
 Woodworking.prototype.TOOLTIP = "Research Woodworking: +1 missile weapon range; +2 woodcutting";
-Woodworking.prototype.TIME = 60 * 35;
+Woodworking.prototype.TIME = 60 * FPS;
 Woodworking.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -245,7 +245,7 @@ class StoneMining extends Technology {
 }
 StoneMining.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/stone_mining.png");
 StoneMining.prototype.TOOLTIP = "Research Stone Mining: +3 stone mining; +1 Slinger attack range.";
-StoneMining.prototype.TIME = 30 * 35;
+StoneMining.prototype.TIME = 30 * FPS;
 StoneMining.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -269,7 +269,7 @@ class GoldMining extends Technology {
 }
 GoldMining.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/gold_mining.png");
 GoldMining.prototype.TOOLTIP = "Research Gold Mining: +3 gold mining.";
-GoldMining.prototype.TIME = 50 * 35;
+GoldMining.prototype.TIME = 50 * FPS;
 GoldMining.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -286,7 +286,7 @@ class SmallWall extends Technology {
 }
 SmallWall.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/small_wall.png");
 SmallWall.prototype.TOOLTIP = "Research Small Wall.";
-SmallWall.prototype.TIME = 10 * 35;
+SmallWall.prototype.TIME = 10 * FPS;
 SmallWall.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -303,7 +303,7 @@ class WatchTower extends Technology {
 }
 WatchTower.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/watch_tower.png");
 WatchTower.prototype.TOOLTIP = "Research Watch Tower.";
-WatchTower.prototype.TIME = 10 * 35;
+WatchTower.prototype.TIME = 10 * FPS;
 WatchTower.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -329,7 +329,7 @@ class BronzeAge extends Age {
 }
 BronzeAge.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/bronze_age.png");
 BronzeAge.prototype.TOOLTIP = "Advance to Bronze Age. Requires two buildings from Tool Age";
-BronzeAge.prototype.TIME = 140 * 35;
+BronzeAge.prototype.TIME = 140 * FPS;
 BronzeAge.prototype.COST = {
     food: 800, wood: 0, stone: 0, gold: 0
 }
@@ -353,7 +353,7 @@ class Artisanship extends Technology {
 }
 Artisanship.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/artisanship.png");
 Artisanship.prototype.TOOLTIP = "Research Artisanship: +1 missile weapon range; +2 woodcutting";
-Artisanship.prototype.TIME = 80 * 35;
+Artisanship.prototype.TIME = 80 * FPS;
 Artisanship.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -380,7 +380,7 @@ class Plow extends Technology {
 }
 Plow.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/plow.png");
 Plow.prototype.TOOLTIP = "Research Plow: +75 food production for farms.";
-Plow.prototype.TIME = 75 * 35;
+Plow.prototype.TIME = 75 * FPS;
 Plow.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -406,7 +406,7 @@ class Wheel extends Technology {
 }
 Wheel.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/wheel.png");
 Wheel.prototype.TOOLTIP = "Research Wheel: Villagers 30% faster. Required for chariots.";
-Wheel.prototype.TIME = 75 * 35;
+Wheel.prototype.TIME = 75 * FPS;
 Wheel.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN,
@@ -427,7 +427,7 @@ class ImprovedBow extends Technology {
 }
 ImprovedBow.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/improved_bow.png");
 ImprovedBow.prototype.TOOLTIP = "Research Improved Bow.";
-ImprovedBow.prototype.TIME = 60 * 35;
+ImprovedBow.prototype.TIME = 60 * FPS;
 ImprovedBow.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2,
@@ -456,7 +456,7 @@ class CompositeBow extends Technology {
 }
 CompositeBow.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/composite_bow.png");
 CompositeBow.prototype.TOOLTIP = "Upgrade to Composite Bow.";
-CompositeBow.prototype.TIME = 100 * 35;
+CompositeBow.prototype.TIME = 100 * FPS;
 CompositeBow.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2,
@@ -478,7 +478,7 @@ class ShortSword extends Technology {
 }
 ShortSword.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/short_sword.png");
 ShortSword.prototype.TOOLTIP = "Research Short Sword";
-ShortSword.prototype.TIME = 50 * 35;
+ShortSword.prototype.TIME = 50 * FPS;
 ShortSword.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -507,7 +507,7 @@ class BroadSword extends Technology {
 }
 BroadSword.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/broad_sword.png");
 BroadSword.prototype.TOOLTIP = "Upgrade to Broad Sword";
-BroadSword.prototype.TIME = 80 * 35;
+BroadSword.prototype.TIME = 80 * FPS;
 BroadSword.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -536,7 +536,7 @@ class Metalworking extends Technology {
 }
 Metalworking.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/metalworking.png");
 Metalworking.prototype.TOOLTIP = "Research Metalworking: +2 hand-to-hand unit attack.";
-Metalworking.prototype.TIME = 75 * 35;
+Metalworking.prototype.TIME = 75 * FPS;
 Metalworking.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -563,7 +563,7 @@ class ScaleArmorInfantry extends Technology {
 }
 ScaleArmorInfantry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/scale_armor_infantry.png");
 ScaleArmorInfantry.prototype.TOOLTIP = "Research Scale Armor: +2 infantry armor.";
-ScaleArmorInfantry.prototype.TIME = 60 * 35;
+ScaleArmorInfantry.prototype.TIME = 60 * FPS;
 ScaleArmorInfantry.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -591,7 +591,7 @@ class ScaleArmorArcher extends Technology {
 }
 ScaleArmorArcher.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/scale_armor_archer.png");
 ScaleArmorArcher.prototype.TOOLTIP = "Research Scale Armor: +2 archer armor.";
-ScaleArmorArcher.prototype.TIME = 60 * 35;
+ScaleArmorArcher.prototype.TIME = 60 * FPS;
 ScaleArmorArcher.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -618,7 +618,7 @@ class ScaleArmorCavalry extends Technology {
 }
 ScaleArmorCavalry.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/scale_armor_cavalry.png");
 ScaleArmorCavalry.prototype.TOOLTIP = "Research Scale Armor: +2 cavalry armor.";
-ScaleArmorCavalry.prototype.TIME = 60 * 35;
+ScaleArmorCavalry.prototype.TIME = 60 * FPS;
 ScaleArmorCavalry.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -641,7 +641,7 @@ class BronzeShield extends Technology {
 }
 BronzeShield.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/bronze_shield.png");
 BronzeShield.prototype.TOOLTIP = "Research Bronze Shield: +1 infantry armor vs. missile weapons.";
-BronzeShield.prototype.TIME = 50 * 35;
+BronzeShield.prototype.TIME = 50 * FPS;
 BronzeShield.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 4 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -670,7 +670,7 @@ class MediumWall extends Technology {
 }
 MediumWall.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/medium_wall.png");
 MediumWall.prototype.TOOLTIP = "Upgrade to Medium Wall.";
-MediumWall.prototype.TIME = 60 * 35;
+MediumWall.prototype.TIME = 60 * FPS;
 MediumWall.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -699,7 +699,7 @@ class SentryTower extends Technology {
 }
 SentryTower.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/sentry_tower.png");
 SentryTower.prototype.TOOLTIP = "Upgrade to Sentry Tower.";
-SentryTower.prototype.TIME = 30 * 35;
+SentryTower.prototype.TIME = 30 * FPS;
 SentryTower.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -730,7 +730,7 @@ class FishingShip extends Technology {
 }
 FishingShip.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/fishing_ship.png");
 FishingShip.prototype.TOOLTIP = "Upgrade to Fishing Ship";
-FishingShip.prototype.TIME = 15 * 35;
+FishingShip.prototype.TIME = 15 * FPS;
 FishingShip.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -758,7 +758,7 @@ class MerchantShip extends Technology {
 }
 MerchantShip.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/merchant_ship.png");
 MerchantShip.prototype.TOOLTIP = "Upgrade to Merchant Ship";
-MerchantShip.prototype.TIME = 30 * 35;
+MerchantShip.prototype.TIME = 30 * FPS;
 MerchantShip.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -786,7 +786,7 @@ class WarGallery extends Technology {
 }
 WarGallery.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/war_gallery.png");
 WarGallery.prototype.TOOLTIP = "Upgrade to War Gallery";
-WarGallery.prototype.TIME = 38 * 35;
+WarGallery.prototype.TIME = 38 * FPS;
 WarGallery.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
     y: Action.prototype.SIZE + Action.prototype.MARGIN * 2
@@ -818,7 +818,7 @@ class Nobility extends Technology {
 }
 Nobility.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/nobility.png");
 Nobility.prototype.TOOLTIP = "Research Nobility: +15% Cavalry, Chariot, Horse Archer hit points.";
-Nobility.prototype.TIME = 70 * 35;
+Nobility.prototype.TIME = 70 * FPS;
 Nobility.prototype.POS = {
     x: Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -838,7 +838,7 @@ class Writing extends Technology {
 }
 Writing.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/writing.png");
 Writing.prototype.TOOLTIP = "Research Writing: Shared exploration with allies.";
-Writing.prototype.TIME = 60 * 35;
+Writing.prototype.TIME = 60 * FPS;
 Writing.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -871,7 +871,7 @@ class Architecture extends Technology {
 }
 Architecture.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/architecture.png");
 Architecture.prototype.TOOLTIP = "Research Architecture: -33% build time; +20% building/wall HPs";
-Architecture.prototype.TIME = 50 * 35;
+Architecture.prototype.TIME = 50 * FPS;
 Architecture.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -896,7 +896,7 @@ class Astrology extends Technology {
 }
 Astrology.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/astrology.png");
 Astrology.prototype.TOOLTIP = "Research Astrology: Conversion 30% more effective";
-Astrology.prototype.TIME = 50 * 35;
+Astrology.prototype.TIME = 50 * FPS;
 Astrology.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 1 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -928,7 +928,7 @@ class Mysticism extends Technology {
 }
 Mysticism.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/mysticism.png");
 Mysticism.prototype.TOOLTIP = "Research Mysticism: Double Priest hit points";
-Mysticism.prototype.TIME = 50 * 35;
+Mysticism.prototype.TIME = 50 * FPS;
 Mysticism.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 2 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN
@@ -953,7 +953,7 @@ class Polytheism extends Technology {
 }
 Polytheism.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/polytheism.png");
 Polytheism.prototype.TOOLTIP = "Research Polytheism: Priest moves 40% faster";
-Polytheism.prototype.TIME = 50 * 35;
+Polytheism.prototype.TIME = 50 * FPS;
 Polytheism.prototype.POS = {
     x: (Action.prototype.SIZE + Action.prototype.MARGIN * 2) * 3 + Action.prototype.MARGIN,
     y: Action.prototype.MARGIN

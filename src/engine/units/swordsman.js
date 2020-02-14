@@ -2,6 +2,7 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
+import { FPS } from '../../utils.js';
 
 class SwordsMan extends Unit {
     get ACTIONS() {
@@ -19,7 +20,7 @@ SwordsMan.prototype.AVATAR = [
 ];
 SwordsMan.prototype.MAX_HP = [60, 70];
 SwordsMan.prototype.SPEED = 1;
-SwordsMan.prototype.CREATION_TIME = 26 * 35;
+SwordsMan.prototype.CREATION_TIME = 26 * FPS;
 SwordsMan.prototype.ATTACK_RATE = 8 * 3;
 
 SwordsMan.prototype.ACTION_KEY = "Z";

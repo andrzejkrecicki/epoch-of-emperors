@@ -3,7 +3,7 @@ import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import { Arrow } from '../projectiles.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 
 class BowMan extends Unit {
     constructor() {
@@ -26,7 +26,7 @@ BowMan.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/bowman.png")];
 BowMan.prototype.TYPE = UNIT_TYPES.ARCHER;
 BowMan.prototype.MAX_HP = [35];
 BowMan.prototype.SPEED = 1.1;
-BowMan.prototype.CREATION_TIME = 26 * 35;
+BowMan.prototype.CREATION_TIME = 26 * FPS;
 BowMan.prototype.ATTACK_RATE = 7 * 3;
 BowMan.prototype.SHOT_DELAY = 27;
 BowMan.prototype.ATTACKS_FROM_DISTANCE = true;

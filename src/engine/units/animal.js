@@ -1,5 +1,5 @@
 import { Unit } from './unit.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 import * as interactions from '../interactions.js';
 
 class Animal extends Unit {
@@ -57,7 +57,7 @@ class Animal extends Unit {
         return this.AVATAR;
     }
 }
-Animal.prototype.DECAY_RATE = 4 * 35;
+Animal.prototype.DECAY_RATE = 4 * FPS;
 Animal.prototype.COLORIZE = false;
 Animal.prototype.TYPE = UNIT_TYPES.ANIMAL;
 Animal.prototype.TOOLTIP = "Hunt this animal for food.";

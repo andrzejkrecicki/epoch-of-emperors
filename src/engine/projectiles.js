@@ -1,4 +1,5 @@
 import { Sprites } from '../sprites.js';
+import { FPS } from '../utils.js';
 
 class LinearProjectile extends Graphics.Node {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
@@ -31,7 +32,7 @@ class LinearProjectile extends Graphics.Node {
         this.add(this.image);
         this.resetBoundingBox();
         this.destroyed = false;
-        this.TTL = 35;
+        this.TTL = FPS;
     }
     draw() {
         super.draw();

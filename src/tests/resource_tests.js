@@ -13,6 +13,7 @@ import { FishBig } from '../engine/resources/fish.js';
 import { StoneMine } from '../engine/resources/stone.js';
 import { GoldMine } from '../engine/resources/gold.js';
 import { LeafTree, PineTree } from '../engine/trees.js';
+import { FPS } from '../utils.js';
 
 
 class ResourceTest extends Test {
@@ -110,7 +111,7 @@ class GoldTest extends ResourceTest {
         ) this.pass();
     }
 }
-GoldTest.prototype.MAX_TIME =  20 * 60 * 35;
+GoldTest.prototype.MAX_TIME =  20 * 60 * FPS;
 GoldTest.prototype.DESIRED_STATES = [226, 224, 290, 226, 224, 290];
 
 
@@ -139,7 +140,7 @@ class StoneTest extends ResourceTest {
         ) this.pass();
     }
 }
-StoneTest.prototype.MAX_TIME =  20 * 60 * 35;
+StoneTest.prototype.MAX_TIME =  20 * 60 * FPS;
 StoneTest.prototype.DESIRED_STATES = [258, 256, 322, 258, 256, 322];
 
 
@@ -164,7 +165,7 @@ class FarmTest extends ResourceTest {
         ) this.pass();
     }
 }
-FarmTest.prototype.MAX_TIME =  20 * 60 * 35;
+FarmTest.prototype.MAX_TIME =  20 * 60 * FPS;
 FarmTest.prototype.DESIRED_STATES = [354, 352, 386, 354, 352, 386];
 
 
@@ -196,7 +197,7 @@ class HuntTest extends ResourceTest {
         ) this.pass();
     }
 }
-// HuntTest.prototype.MAX_TIME =  20 * 60 * 35;
+// HuntTest.prototype.MAX_TIME =  20 * 60 * FPS;
 HuntTest.prototype.DESIRED_STATES = [418, 416, 418, 416, 418, 448, 482, 418, 448, 482];
 
 
@@ -262,7 +263,7 @@ class FishingTest extends ResourceTest {
         ) this.pass();
     }
 }
-FishingTest.prototype.MAX_TIME =  20 * 60 * 35;
+FishingTest.prototype.MAX_TIME =  20 * 60 * FPS;
 FishingTest.prototype.DESIRED_STATES = [2, 32, 2, 32];
 
 

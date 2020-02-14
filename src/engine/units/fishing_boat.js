@@ -1,7 +1,7 @@
 import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { FishBig } from '../resources/fish.js';
-import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES } from '../../utils.js';
+import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES, FPS } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
@@ -34,7 +34,7 @@ FishingBoat.prototype.AVATAR = [
 FishingBoat.prototype.TYPE = UNIT_TYPES.FISHING_BOAT;
 FishingBoat.prototype.MAX_HP = [45, 75];
 FishingBoat.prototype.SPEED = 2;
-FishingBoat.prototype.CREATION_TIME = 26 * 35;
+FishingBoat.prototype.CREATION_TIME = 26 * FPS;
 FishingBoat.prototype.LEAVES_LEFTOVERS = false;
 FishingBoat.prototype.CAN_ATTACK = false;
 FishingBoat.prototype.CAN_ENTER_SHIP = false;

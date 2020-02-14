@@ -3,7 +3,7 @@ import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import { Stone } from '../projectiles.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 
 class StoneThrower extends Unit {
     constructor() {
@@ -26,9 +26,9 @@ StoneThrower.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/stone_thr
 StoneThrower.prototype.TYPE = UNIT_TYPES.SIEGE;
 StoneThrower.prototype.MAX_HP = [75];
 StoneThrower.prototype.SPEED = 0.72;
-StoneThrower.prototype.CREATION_TIME = 60 * 35;
+StoneThrower.prototype.CREATION_TIME = 60 * FPS;
 StoneThrower.prototype.ATTACK_RATE = 3 * 3;
-StoneThrower.prototype.SHOT_DELAY = 35 * 5;
+StoneThrower.prototype.SHOT_DELAY = FPS * 5;
 StoneThrower.prototype.ATTACKS_FROM_DISTANCE = true;
 
 StoneThrower.prototype.ACTION_KEY = "C";

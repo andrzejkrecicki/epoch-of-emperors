@@ -2,7 +2,7 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 
 class Cavalry extends Unit {
     get ACTIONS() {
@@ -18,7 +18,7 @@ Cavalry.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/cavalry.png")]
 Cavalry.prototype.TYPE = UNIT_TYPES.CAVALRY;
 Cavalry.prototype.MAX_HP = [150];
 Cavalry.prototype.SPEED = 3;
-Cavalry.prototype.CREATION_TIME = 40 * 35;
+Cavalry.prototype.CREATION_TIME = 40 * FPS;
 Cavalry.prototype.ATTACK_RATE = 7 * 3;
 
 Cavalry.prototype.ACTION_KEY = "C";

@@ -2,7 +2,7 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 
 class Scout extends Unit {
     get ACTIONS() {
@@ -15,7 +15,7 @@ Scout.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/scout.png")];
 Scout.prototype.TYPE = UNIT_TYPES.SCOUT;
 Scout.prototype.MAX_HP = [60];
 Scout.prototype.SPEED = 3;
-Scout.prototype.CREATION_TIME = 26 * 35;
+Scout.prototype.CREATION_TIME = 26 * FPS;
 Scout.prototype.ATTACK_RATE = 5 * 3;
 
 Scout.prototype.ACTION_KEY = "T";

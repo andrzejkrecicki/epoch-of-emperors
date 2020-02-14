@@ -4,7 +4,7 @@ import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import { SailSmall } from '../buildings/details.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 
 
 class TransportBoat extends Unit {
@@ -66,7 +66,7 @@ TransportBoat.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/transpor
 TransportBoat.prototype.TYPE = UNIT_TYPES.SHIP;
 TransportBoat.prototype.MAX_HP = [150];
 TransportBoat.prototype.SPEED = 3;
-TransportBoat.prototype.CREATION_TIME = 26 * 35;
+TransportBoat.prototype.CREATION_TIME = 26 * FPS;
 TransportBoat.prototype.MAX_LOAD = [5, 10];
 TransportBoat.prototype.LEAVES_LEFTOVERS = false;
 TransportBoat.prototype.CAN_ATTACK = false;

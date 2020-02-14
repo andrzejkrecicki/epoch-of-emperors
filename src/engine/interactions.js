@@ -1,4 +1,4 @@
-import { UNIT_TYPES, RESOURCE_TYPES, RESOURCE_NAME } from '../utils.js';
+import { UNIT_TYPES, RESOURCE_TYPES, RESOURCE_NAME, FPS } from '../utils.js';
 import { Spear } from './projectiles.js';
 import { Unit } from './units/unit.js';
 import { Building } from './buildings/building.js';
@@ -634,7 +634,7 @@ class ConversionInteraction extends Interaction {
     }
 }
 ConversionInteraction.prototype.SUCCESS_PROBABILITY = 1 / 200;
-ConversionInteraction.prototype.MINIMAL_TIME = 35 * 4;
+ConversionInteraction.prototype.MINIMAL_TIME = FPS * 4;
 ConversionInteraction.prototype.CURSOR = 'affect';
 ConversionInteraction.prototype.TOOLTIPS = [
     'Right-click to convert this unit.',

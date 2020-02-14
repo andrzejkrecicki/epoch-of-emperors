@@ -8,7 +8,7 @@ import { FishBig } from '../resources/fish.js';
 import { Animal } from './animal.js';
 import { Tree } from '../trees.js';
 import { Sprites } from '../../sprites.js';
-import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES } from '../../utils.js';
+import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES, FPS } from '../../utils.js';
 import { Actions } from '../actions.js';
 import * as interactions from '../interactions.js';
 
@@ -80,7 +80,7 @@ Villager.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/villager.png"
 Villager.prototype.TYPE = UNIT_TYPES.VILLAGER;
 Villager.prototype.MAX_HP = [25];
 Villager.prototype.SPEED = 1;
-Villager.prototype.CREATION_TIME = 20 * 35;
+Villager.prototype.CREATION_TIME = 20 * FPS;
 Villager.prototype.ATTACK_RATE = 10 * 3;
 
 Villager.prototype.ACTION_KEY = "C";

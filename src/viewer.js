@@ -6,7 +6,7 @@ import { Unit } from './engine/units/unit.js';
 import { Building } from './engine/buildings/building.js';
 import { Entity } from './engine/entity.js';
 import { MINIMAP_PIXEL_COLORS, TERRAIN_IMAGES } from './mapdrawable_assets.js';
-import { getCanvasContext } from './utils.js';
+import { getCanvasContext, FPS } from './utils.js';
 
 
 class GameViewer {
@@ -264,7 +264,7 @@ class GameViewer {
         this.setCursor();
     }
 }
-GameViewer.prototype.ERROR_MESSAGE_TIMEOUT = 35 * 6;
+GameViewer.prototype.ERROR_MESSAGE_TIMEOUT = FPS * 6;
 GameViewer.prototype.MAX_SCROLL_SPEED = 40;
 GameViewer.prototype.SCROLL_MARGIN = 30;
 GameViewer.prototype.TOOLTIP_OPTIONS = {

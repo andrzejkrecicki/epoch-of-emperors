@@ -2,6 +2,7 @@ import { Unit } from './unit.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
+import { FPS } from '../../utils.js';
 
 class ClubMan extends Unit {
     get ACTIONS() {
@@ -16,7 +17,7 @@ ClubMan.prototype.AVATAR = [
 ];
 ClubMan.prototype.MAX_HP = [40, 50];
 ClubMan.prototype.SPEED = 1;
-ClubMan.prototype.CREATION_TIME = 26 * 35;
+ClubMan.prototype.CREATION_TIME = 26 * FPS;
 ClubMan.prototype.ATTACK_RATE = 10 * 3;
 
 ClubMan.prototype.ACTION_KEY = "T";

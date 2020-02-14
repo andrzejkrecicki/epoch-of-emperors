@@ -3,7 +3,7 @@ import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { Actions } from '../actions.js';
 import { Arrow } from '../projectiles.js';
-import { UNIT_TYPES } from '../../utils.js';
+import { UNIT_TYPES, FPS } from '../../utils.js';
 
 class ChariotArcher extends Unit {
     constructor() {
@@ -29,7 +29,7 @@ ChariotArcher.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/chariot_
 ChariotArcher.prototype.TYPE = UNIT_TYPES.ARCHER;
 ChariotArcher.prototype.MAX_HP = [70];
 ChariotArcher.prototype.SPEED = 2.5;
-ChariotArcher.prototype.CREATION_TIME = 40 * 35;
+ChariotArcher.prototype.CREATION_TIME = 40 * FPS;
 ChariotArcher.prototype.ATTACK_RATE = 7 * 3;
 ChariotArcher.prototype.SHOT_DELAY = 27;
 ChariotArcher.prototype.ATTACKS_FROM_DISTANCE = true;

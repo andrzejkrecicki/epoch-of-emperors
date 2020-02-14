@@ -4,6 +4,7 @@ import { Building } from './engine/buildings/building.js';
 import { Technologies } from './engine/technologies.js';
 import { PlayerDefinition } from './utils.js';
 import { GameViewer } from './viewer.js';
+import { FPS } from './utils.js';
 
 if (/dev/.test(document.location.search)) {
 
@@ -11,7 +12,7 @@ if (/dev/.test(document.location.search)) {
     Actions.RecruitUnitFactory = function(UNIT) {
         const result = RecruitUnitFactory(UNIT);
         result.prototype.time = function() {
-            return 35;
+            return FPS;
         }
         return result;
     }
@@ -27,7 +28,7 @@ if (/dev/.test(document.location.search)) {
     }
 
     Technologies.Technology.prototype.time = function() {
-        return 35;
+        return FPS;
     }
 
     PlayerDefinition.prototype.RESOURCES = {

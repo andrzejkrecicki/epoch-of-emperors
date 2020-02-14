@@ -5,7 +5,7 @@ import { TransportBoat } from '../units/transport_boat.js';
 import { ScoutShip } from '../units/scout_ship.js';
 import { Actions } from '../actions.js';
 import { Technologies } from '../technologies.js';
-import { RESOURCE_TYPES, manhatan_subtile_distance } from '../../utils.js';
+import { RESOURCE_TYPES, manhatan_subtile_distance, FPS } from '../../utils.js';
 import { TERRAIN_TYPES } from '../terrain.js';
 import { Sprites } from '../../sprites.js';
 
@@ -73,7 +73,7 @@ Dock.prototype.COST = {
 }
 
 Dock.prototype.MAX_TRADE_UNITS = 100;
-Dock.prototype.TRADE_UNITS_RESTORE_DELAY = 35;
+Dock.prototype.TRADE_UNITS_RESTORE_DELAY = FPS;
 
 Dock.prototype.IMAGES = {
     [Building.prototype.STATE.DONE]: [

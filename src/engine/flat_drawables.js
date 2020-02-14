@@ -1,5 +1,6 @@
 import { Entity } from './entity.js';
 import { Sprites } from '../sprites.js';
+import { FPS } from '../utils.js';
 
 class FlatDrawable extends Entity {
     constructor(subtile_x, subtile_y) {
@@ -42,7 +43,7 @@ class DeadBody extends Entity {
         this.player = player;
         this.setImage();
         this.age = 0;
-        this.max_age = this.images.length * 15 * 35;
+        this.max_age = this.images.length * 15 * FPS;
     }
     getSprite() {
         return this.images[this.imgIdx];
@@ -53,7 +54,7 @@ class DeadBody extends Entity {
     process(engine) {
         ++this.age;
         if (this.age >= this.max_age) this.destroy(engine);
-        else if (this.age % (15 * 35) == 0) {
+        else if (this.age % (15 * FPS) == 0) {
             this.image.image(Sprites.Colorize(this.images[++this.imgIdx], this.player));
         }
     }
@@ -71,7 +72,7 @@ class Rubble extends Entity {
         this.offset = offset;
         this.setImage();
         this.age = 0;
-        this.max_age = 60 * 35;
+        this.max_age = 60 * FPS;
     }
     getSprite() {
         return this.image;

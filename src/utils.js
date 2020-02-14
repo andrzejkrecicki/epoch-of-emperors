@@ -83,6 +83,8 @@ const UNIT_TYPES = {
     VILLAGER: "villager",
 }
 
+const FPS = 35;
+
 function to_binary(num) {
     let bin = (+num).toString(2);
     return "00000000".substr(bin.length) + bin;
@@ -121,7 +123,7 @@ function getCanvasContext(width, height) {
 
 export {
     PlayerDefinition, PLAYER_COLORS, RESOURCE_TYPES, RESOURCE_NAME,
-    AGES, CIVILIZATIONS, CIVILIZATIONS_NAMES, UNIT_TYPES, to_binary,
-    leftpad, rand_choice, rect_intersection, distance,
+    AGES, CIVILIZATIONS, CIVILIZATIONS_NAMES, UNIT_TYPES, FPS,
+    to_binary, leftpad, rand_choice, rect_intersection, distance,
     manhatan_subtile_distance, getCanvasContext
 }
