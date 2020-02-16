@@ -247,6 +247,12 @@ class Engine {
                 }
                 projectile.destroy();
             } else {
+                if (projectile.TRACE) {
+                    let trace = new projectile.TRACE(projectile.subtile_x, projectile.subtile_y);
+                    trace.position(projectile.position());
+                    this.drawables.push(trace);
+                    this.viewer.addEntity(trace, true);
+                }
                 projectile.move(this.viewer.mapDrawable);
                 let pos = projectile.position();
                 let subtile = this.viewer.mapDrawable.screenCoordsToSubtile(pos.x, pos.y);

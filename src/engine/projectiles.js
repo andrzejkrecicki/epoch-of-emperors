@@ -1,3 +1,4 @@
+import { Entity } from './entity.js';
 import { Sprites } from '../sprites.js';
 import { FPS, distance } from '../utils.js';
 
@@ -51,6 +52,7 @@ class Projectile extends Graphics.Node {
     }
     hasReachedVictim(target_pos) {}
 }
+Projectile.prototype.TRACE = null;
 
 
 class LinearProjectile extends Projectile {
@@ -193,6 +195,57 @@ class ParabolicProjectile extends Projectile {
 ParabolicProjectile.prototype.GRAVITY = 1 / (FPS * 10);
 
 
+class StoneTrace extends Graphics.Node {
+    constructor(subtile_x, subtile_y) {
+        super();
+        this.subtile_x = subtile_x;
+        this.subtile_y = subtile_y;
+        this.isFloating = true;
+        this.age = 0;
+        this.imgIdx = Math.floor(Math.random() * 4);
+        this.setImage();
+    }
+    setImage() {
+        this.image = new Graphics.Image({
+            x: -this.getOffset().x,
+            y: -this.getOffset().y,
+            image: this.getSprite(),
+        });
+        this.add(this.image);
+    }
+    getBoundingBox() {
+        return this.boundingBox;
+    }
+    resetBoundingBox() {
+        this.boundingBox = {
+            x: this.x() -this.IMAGE_OFFSETS.x,
+            y: this.y() -this.IMAGE_OFFSETS.y,
+            w: this.IMAGES[0].width,
+            h: this.IMAGES[0].height
+        }
+    }
+    getSprite() {
+        return this.IMAGES[this.imgIdx];
+    }
+    getOffset() {
+        return this.IMAGE_OFFSETS;
+    }
+    process(engine) {
+        if (++this.age % 7 == 0) {
+            if (++this.imgIdx >= this.IMAGES.length) this.destroy(engine);
+            else this.image.image(this.IMAGES[this.imgIdx]);
+        }
+    }
+    destroy() {
+        this.destroyed = true;
+        this.remove();
+    }
+}
+StoneTrace.prototype.SUBTILE_WIDTH = 0;
+StoneTrace.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/smoke_trace/", 8);
+StoneTrace.prototype.IMAGE_OFFSETS = { x: 30, y: 10 }
+
+
 class Stone extends ParabolicProjectile {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
         super(thrower, victim, position, target, subtile_x, subtile_y);
@@ -210,8 +263,8 @@ class Stone extends ParabolicProjectile {
 Stone.prototype.SPEED = 5 / FPS;
 Stone.prototype.RADIUS = 6;
 Stone.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/stone/", 3);
-Stone.prototype.IMAGE_OFFSETS = { x: 5, y: 4 };
-
+Stone.prototype.IMAGE_OFFSETS = { x: 5, y: 5 };
+Stone.prototype.TRACE = StoneTrace;
 
 
 export {
