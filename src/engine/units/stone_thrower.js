@@ -16,6 +16,9 @@ class StoneThrower extends Unit {
     getProjectileOffset() {
         return { x: 22, y: -63 }
     }
+    getProjectileZOffset() {
+        return 4;
+    }
     get ACTIONS() {
         return [Actions.StandGround, Actions.Stop];
     }

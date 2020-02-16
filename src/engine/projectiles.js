@@ -1,7 +1,46 @@
 import { Sprites } from '../sprites.js';
-import { FPS } from '../utils.js';
+import { FPS, distance } from '../utils.js';
 
-class LinearProjectile extends Graphics.Node {
+
+class Projectile extends Graphics.Node {
+    getBoundingBox() {
+        return this.boundingBox;
+    }
+    resetBoundingBox() {
+        this.boundingBox = {
+            x: this.x() -this.IMAGE_OFFSETS.x,
+            y: this.y() -this.IMAGE_OFFSETS.y,
+            w: this.IMAGES[0].width,
+            h: this.IMAGES[0].height
+        }
+    }
+    position(pos) {
+        if (pos == null) return super.position();
+        let old = {
+            x: this.attrs.x,
+            y: this.attrs.y
+        };
+        this.realPosition = pos;
+        super.position({
+            x: Math.round(this.realPosition.x),
+            y: Math.round(this.realPosition.y)
+        });
+        if (this.parent != null) this.parent.updateBucket(this, old);
+    }
+    move() {}
+    destroy() {
+        this.destroyed = true;
+        this.remove();
+    }
+    getDelta() {}
+    hasReachedSubitle() {
+        return distance(this.realPosition, this.target) - this.RADIUS <= this.SPEED / 2
+    }
+    hasReachedVictim(target_pos) {}
+}
+
+
+class LinearProjectile extends Projectile {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
         super({
             x: position.x,
@@ -34,36 +73,19 @@ class LinearProjectile extends Graphics.Node {
         this.destroyed = false;
         this.TTL = FPS;
     }
-    draw() {
-        super.draw();
+    getDelta() {
+        return this.delta;
     }
-    getBoundingBox() {
-        return this.boundingBox;
-    }
-    resetBoundingBox() {
-        this.boundingBox = {
-            x: this.x() -this.IMAGE_OFFSETS.x,
-            y: this.y() -this.IMAGE_OFFSETS.y,
-            w: this.IMAGES[0].width,
-            h: this.IMAGES[0].height
-        }
-    }
-    position(pos) {
-        if (pos == null) return super.position();
-        let old = {
-            x: this.attrs.x,
-            y: this.attrs.y
+    move() {
+        let delta = this.getDelta();
+        let pos = {
+            x: this.realPosition.x + delta.x,
+            y: this.realPosition.y + delta.y
         };
-        this.realPosition = pos;
-        super.position({
-            x: Math.round(this.realPosition.x),
-            y: Math.round(this.realPosition.y)
-        });
-        if (this.parent != null) this.parent.updateBucket(this, old);
+        this.position(pos);
     }
-    destroy() {
-        this.destroyed = true;
-        this.remove();
+    hasReachedVictim(target_pos) {
+        return distance(this.realPosition, target_pos) - this.RADIUS <= this.SPEED / 2
     }
 }
 
@@ -96,7 +118,90 @@ Arrow.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/arrow/", 72);
 Arrow.prototype.IMAGE_OFFSETS = { x: 20, y: 6 };
 
 
-class Stone extends LinearProjectile {
+
+class ParabolicProjectile extends Projectile {
+    constructor(thrower, victim, position, target, subtile_x, subtile_y) {
+        super({
+            x: position.x,
+            y: position.y
+        });
+        this.thrower = thrower;
+        this.victim = victim;
+        this.target = target;
+
+
+        this.subtile_x = subtile_x;
+        this.subtile_y = subtile_y;
+        this.realPosition = position;
+
+        this.initialHeight = thrower.getProjectileZOffset();
+
+        let begin = thrower.getExactSubtileCenter();
+        this.position3d = {
+            x: begin.subtile_x,
+            y: begin.subtile_y,
+            z: this.initialHeight,
+        };
+
+        let end = victim.getExactSubtileCenter();
+        this.angle = {
+            alpha: Math.PI / 4,
+            beta: Math.atan2(end.subtile_y - begin.subtile_y, end.subtile_x - begin.subtile_x)
+        };
+
+        this.speed = this.getInitialSpeed(begin, end);
+
+        this.delta3d = {
+            x: this.speed * Math.cos(this.angle.alpha) * Math.cos(this.angle.beta),
+            y: this.speed * Math.cos(this.angle.alpha) * Math.sin(this.angle.beta),
+            z: this.speed * Math.sin(this.angle.alpha),
+        };
+
+        this.image = new Graphics.Image({
+            image: this.IMAGES[0],
+            x: -this.IMAGE_OFFSETS.x,
+            y: -this.IMAGE_OFFSETS.y
+        })
+        this.add(this.image);
+        this.resetBoundingBox();
+        this.destroyed = false;
+    }
+
+    getInitialSpeed(begin, end) {
+        const s = Math.sqrt((begin.subtile_x - end.subtile_x)**2 + (begin.subtile_y - end.subtile_y)**2);
+        const g = ParabolicProjectile.prototype.GRAVITY;
+        const h = this.initialHeight;
+
+        return Math.sqrt((s**2 * g) / (2 * (h + s))) * Math.sqrt(2);
+    }
+    move(md) {
+        this.position3d.x += this.delta3d.x;
+        this.position3d.y += this.delta3d.y;
+        this.position3d.z += this.delta3d.z;
+
+        let pos = md.tileCoordsToScreen(this.position3d.x / 2, this.position3d.y / 2);
+        pos.y -= this.position3d.z * 16;
+        this.position(pos);
+
+        if (this.position3d.z < 0) {
+            this.TTL = 2;
+        }
+
+        this.delta3d.z -= ParabolicProjectile.prototype.GRAVITY;
+    }
+    hasReachedVictim(target_pos) {
+        return false;
+    }
+    hasReachedSubitle() {
+        if (this.position3d.z < 0) {
+            return distance(this.realPosition, this.target) < 8;
+        } else return false;
+    }
+}
+ParabolicProjectile.prototype.GRAVITY = 1 / (FPS * 10);
+
+
+class Stone extends ParabolicProjectile {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
         super(thrower, victim, position, target, subtile_x, subtile_y);
         this.attributes = {
@@ -106,11 +211,11 @@ class Stone extends LinearProjectile {
         this.TTL = 350;
     }
     draw() {
-        this.image.image(this.IMAGES[this.TTL % this.IMAGES.length]);
+        this.image.image(this.IMAGES[Math.floor(this.TTL / 5) % this.IMAGES.length]);
         super.draw();
     }
 }
-Stone.prototype.SPEED = 5;
+Stone.prototype.SPEED = 5 / FPS;
 Stone.prototype.RADIUS = 6;
 Stone.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/stone/", 3);
 Stone.prototype.IMAGE_OFFSETS = { x: 5, y: 4 };

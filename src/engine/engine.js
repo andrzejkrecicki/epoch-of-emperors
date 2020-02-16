@@ -237,24 +237,21 @@ class Engine {
             let target_pos = this.viewer.mapDrawable.tileCoordsToScreen(target.subtile_x / 2, target.subtile_y / 2);
 
             if (--projectile.TTL == 0) projectile.destroy();
-            else if (distance(projectile.realPosition, target_pos) - projectile.RADIUS <= projectile.SPEED / 2) {
+            else if (projectile.hasReachedVictim(target_pos)) {
                 projectile.victim.takeHit(projectile.attributes.attack, projectile.thrower, this);
                 projectile.destroy();
-            } else if (distance(projectile.realPosition, projectile.target) - projectile.RADIUS <= projectile.SPEED / 2) {
+            } else if (projectile.hasReachedSubitle()) {
                 let { x, y } = this.viewer.mapDrawable.screenCoordsToSubtile(projectile.target.x, projectile.target.y);
                 if (this.map.subtiles[x][y] instanceof Unit || this.map.subtiles[x][y] instanceof Building) {
                     this.map.subtiles[x][y].takeHit(projectile.attributes.attack, projectile.thrower, this);
                 }
                 projectile.destroy();
             } else {
-                let pos = {
-                    x: projectile.realPosition.x + projectile.delta.x,
-                    y: projectile.realPosition.y + projectile.delta.y
-                };
+                projectile.move(this.viewer.mapDrawable);
+                let pos = projectile.position();
                 let subtile = this.viewer.mapDrawable.screenCoordsToSubtile(pos.x, pos.y);
                 projectile.subtile_x = subtile.x;
                 projectile.subtile_y = subtile.y;
-                projectile.position(pos);
             }
         }
         this.projectiles = this.projectiles.filter((p) => !p.destroyed);
