@@ -550,6 +550,7 @@ class EntitiesHolder extends Node {
                     if (rect_intersection(entity.getBoundingBox(), viewPort)) {
                         let z = this.mapSize - (entity.subtile_x - entity.subtile_y)
                         if (entity.isFlat) z = lowest_z - 1;
+                        else if (entity.isFloating) z = highest_z;
                         z_layers[z - lowest_z + 1].push(entity);
                     }
                 }

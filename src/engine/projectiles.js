@@ -3,6 +3,19 @@ import { FPS, distance } from '../utils.js';
 
 
 class Projectile extends Graphics.Node {
+    constructor(thrower, victim, position, target, subtile_x, subtile_y) {
+        super({
+            x: position.x,
+            y: position.y
+        });
+        this.thrower = thrower;
+        this.victim = victim;
+        this.realPosition = position;
+        this.target = target;
+        this.subtile_x = subtile_x;
+        this.subtile_y = subtile_y;
+        this.isFloating = true;
+    }
     getBoundingBox() {
         return this.boundingBox;
     }
@@ -42,16 +55,7 @@ class Projectile extends Graphics.Node {
 
 class LinearProjectile extends Projectile {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
-        super({
-            x: position.x,
-            y: position.y
-        });
-        this.thrower = thrower;
-        this.victim = victim;
-        this.target = target;
-        this.subtile_x = subtile_x;
-        this.subtile_y = subtile_y;
-        this.realPosition = position;
+        super(thrower, victim, position, target, subtile_x, subtile_y);
         this.angle = Math.atan2(target.y - position.y, target.x - position.x);
         this.delta = {
             x: this.SPEED * Math.cos(this.angle),
@@ -121,19 +125,7 @@ Arrow.prototype.IMAGE_OFFSETS = { x: 20, y: 6 };
 
 class ParabolicProjectile extends Projectile {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
-        super({
-            x: position.x,
-            y: position.y
-        });
-        this.thrower = thrower;
-        this.victim = victim;
-        this.target = target;
-
-
-        this.subtile_x = subtile_x;
-        this.subtile_y = subtile_y;
-        this.realPosition = position;
-
+        super(thrower, victim, position, target, subtile_x, subtile_y);
         this.initialHeight = thrower.getProjectileZOffset();
 
         let begin = thrower.getExactSubtileCenter();

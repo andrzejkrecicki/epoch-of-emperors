@@ -19,6 +19,7 @@ class Entity extends Graphics.Node {
         this.healthBar = null;
         this.destroyed = false;
         this.isFlat = false;
+        this.isFloating = false;
         this.player = null;
         this.wasConverted = false;
         this.level = 0;
