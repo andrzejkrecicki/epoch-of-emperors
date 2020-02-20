@@ -16,6 +16,7 @@ class Projectile extends Graphics.Node {
         this.subtile_x = subtile_x;
         this.subtile_y = subtile_y;
         this.isFloating = true;
+        this.shadow = this.makeShadow();
     }
     getBoundingBox() {
         return this.boundingBox;
@@ -41,10 +42,14 @@ class Projectile extends Graphics.Node {
         });
         if (this.parent != null) this.parent.updateBucket(this, old);
     }
+    makeShadow() {
+        return null;
+    }
     move() {}
     destroy() {
         this.destroyed = true;
         this.remove();
+        if (this.shadow) this.shadow.destroy();
     }
     getDelta() {}
     hasReachedSubitle() {
@@ -174,6 +179,9 @@ class ParabolicProjectile extends Projectile {
         this.position3d.z += this.delta3d.z;
 
         let pos = md.tileCoordsToScreen(this.position3d.x / 2, this.position3d.y / 2);
+
+        if (this.shadow) this.shadow.position({ x: pos.x, y: pos.y });
+
         pos.y -= this.position3d.z * 16;
         this.position(pos);
 
@@ -246,6 +254,63 @@ StoneTrace.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/smoke_trac
 StoneTrace.prototype.IMAGE_OFFSETS = { x: 30, y: 10 }
 
 
+class StoneShadow extends Graphics.Node {
+    constructor(subtile_x, subtile_y) {
+        super();
+        this.subtile_x = subtile_x;
+        this.subtile_y = subtile_y;
+        this.isFlat = true;
+        this.setImage();
+    }
+    position(pos) {
+        if (pos == null) return super.position();
+        let old = {
+            x: this.attrs.x,
+            y: this.attrs.y
+        };
+        this.realPosition = pos;
+        super.position({
+            x: Math.round(this.realPosition.x),
+            y: Math.round(this.realPosition.y)
+        });
+        if (this.parent != null) this.parent.updateBucket(this, old);
+    }
+    setImage() {
+        this.image = new Graphics.Image({
+            x: -this.getOffset().x,
+            y: -this.getOffset().y,
+            image: this.getSprite(),
+        });
+        this.add(this.image);
+    }
+    getBoundingBox() {
+        return this.boundingBox;
+    }
+    resetBoundingBox() {
+        this.boundingBox = {
+            x: this.x() -this.IMAGE_OFFSETS.x,
+            y: this.y() -this.IMAGE_OFFSETS.y,
+            w: this.IMAGE.width,
+            h: this.IMAGE.height
+        }
+    }
+    getSprite() {
+        return this.IMAGE;
+    }
+    getOffset() {
+        return this.IMAGE_OFFSETS;
+    }
+    destroy() {
+        this.destroyed = true;
+        this.remove();
+    }
+}
+StoneShadow.prototype.SUBTILE_WIDTH = 0;
+StoneShadow.prototype.IMAGE = Sprites.Sprite("img/projectiles/stone_shadow.png");
+StoneShadow.prototype.IMAGE_OFFSETS = { x: 5, y: 5 }
+
+
+
 class Stone extends ParabolicProjectile {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
         super(thrower, victim, position, target, subtile_x, subtile_y);
@@ -254,6 +319,9 @@ class Stone extends ParabolicProjectile {
         };
         this.image.image(this.IMAGES[0]);
         this.TTL = 350;
+    }
+    makeShadow() {
+        return new StoneShadow(this.subtile_x, this.subtile_y);
     }
     draw() {
         this.image.image(this.IMAGES[Math.floor(this.TTL / 5) % this.IMAGES.length]);

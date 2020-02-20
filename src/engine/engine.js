@@ -258,6 +258,15 @@ class Engine {
                 let subtile = this.viewer.mapDrawable.screenCoordsToSubtile(pos.x, pos.y);
                 projectile.subtile_x = subtile.x;
                 projectile.subtile_y = subtile.y;
+                projectile.resetBoundingBox();
+
+                if (projectile.shadow) {
+                    let pos = projectile.shadow.position();
+                    let subtile = this.viewer.mapDrawable.screenCoordsToSubtile(pos.x, pos.y);
+                    projectile.shadow.subtile_x = subtile.x;
+                    projectile.shadow.subtile_y = subtile.y;
+                    projectile.shadow.resetBoundingBox();
+                }
             }
         }
         this.projectiles = this.projectiles.filter((p) => !p.destroyed);
@@ -445,6 +454,10 @@ class Engine {
         );
         this.projectiles.push(projectile);
         this.viewer.entitiesHolder.add(projectile);
+        if (projectile.shadow) {
+            this.viewer.entitiesHolder.add(projectile.shadow);
+            projectile.shadow.resetBoundingBox();
+        }
     }
     addSampleUnits() {
 
