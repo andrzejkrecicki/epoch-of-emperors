@@ -268,6 +268,12 @@ class Engine {
                     projectile.shadow.resetBoundingBox();
                 }
             }
+
+            if (projectile.destroyed && projectile.EXPLOSION) {
+                let explosion = new projectile.EXPLOSION(projectile.position(), projectile.subtile_x, projectile.subtile_y);
+                this.drawables.push(explosion);
+                this.viewer.addEntity(explosion);
+            }
         }
         this.projectiles = this.projectiles.filter((p) => !p.destroyed);
     }

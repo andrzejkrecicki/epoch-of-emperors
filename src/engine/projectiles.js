@@ -1,7 +1,7 @@
 import { Entity } from './entity.js';
 import { Sprites } from '../sprites.js';
 import { FPS, distance } from '../utils.js';
-
+import { SmallExplosion } from './explosions.js';
 
 class Projectile extends Graphics.Node {
     constructor(thrower, victim, position, target, subtile_x, subtile_y) {
@@ -58,6 +58,7 @@ class Projectile extends Graphics.Node {
     hasReachedVictim(target_pos) {}
 }
 Projectile.prototype.TRACE = null;
+Projectile.prototype.EXPLOSION = null;
 
 
 class LinearProjectile extends Projectile {
@@ -333,6 +334,7 @@ Stone.prototype.RADIUS = 6;
 Stone.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/stone/", 3);
 Stone.prototype.IMAGE_OFFSETS = { x: 5, y: 5 };
 Stone.prototype.TRACE = StoneTrace;
+Stone.prototype.EXPLOSION = SmallExplosion;
 
 
 export {
