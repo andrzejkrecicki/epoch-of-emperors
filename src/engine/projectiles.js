@@ -83,7 +83,7 @@ class LinearProjectile extends Projectile {
         this.add(this.image);
         this.resetBoundingBox();
         this.destroyed = false;
-        this.TTL = FPS;
+        this.TTL = FPS * 2;
     }
     getDelta() {
         return this.delta;
@@ -110,7 +110,7 @@ class Spear extends LinearProjectile {
         };
     }
 }
-Spear.prototype.SPEED = 10;
+Spear.prototype.SPEED = 7;
 Spear.prototype.RADIUS = 17;
 Spear.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/spear/", 32);
 Spear.prototype.IMAGE_OFFSETS = { x: 25, y: 9 };
@@ -124,7 +124,7 @@ class Arrow extends LinearProjectile {
         };
     }
 }
-Arrow.prototype.SPEED = 10;
+Arrow.prototype.SPEED = 7;
 Arrow.prototype.RADIUS = 13;
 Arrow.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/arrow/", 72);
 Arrow.prototype.IMAGE_OFFSETS = { x: 20, y: 6 };

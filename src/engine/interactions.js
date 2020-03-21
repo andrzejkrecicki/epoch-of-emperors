@@ -487,7 +487,7 @@ class DistantAttackInteraction extends BaseAttackInteraction {
     process() {
         let total_frames = this.active.IMAGES[this.active.STATE.ATTACK][this.active.level][0].length;
 
-        if (this.engine.framesCount - this.active.lastShot < this.active.SHOT_DELAY) {
+        if (this.engine.framesCount - this.active.lastShot < this.active.SHOT_DELAY && this.active.ticks_waited <= 1) {
             this.active.frame = 0;
             this.active.ticks_waited = 0;
         } else if (this.passive.destroyed || this.passive.hp <= 0 || this.passive.player == this.active.player) {
@@ -496,10 +496,10 @@ class DistantAttackInteraction extends BaseAttackInteraction {
             }
         } else if (this.active.ticks_waited == this.active.ATTACK_RATE) {
             this.engine.makeProjectile(this.active.getProjectileType(), this.active, this.passive);
+            this.active.lastShot = this.engine.framesCount;
         } else if (this.active.ticks_waited > this.active.ATTACK_RATE &&
             this.active.ticks_waited >= total_frames * this.active.FRAME_RATE[this.active.STATE.ATTACK]
         ) {
-            this.active.lastShot = this.engine.framesCount;
             this.engine.interactOrder(this.active, this.passive);
         }
         this.active.rotateToEntity(this.passive);
