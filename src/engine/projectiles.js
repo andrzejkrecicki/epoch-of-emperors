@@ -59,6 +59,7 @@ class Projectile extends Graphics.Node {
 }
 Projectile.prototype.TRACE = null;
 Projectile.prototype.EXPLOSION = null;
+Projectile.prototype.EXPLOSION_RADIUS = 0;
 
 
 class LinearProjectile extends Projectile {
@@ -335,6 +336,7 @@ Stone.prototype.IMAGES = Sprites.SpriteSequence("img/projectiles/stone/", 3);
 Stone.prototype.IMAGE_OFFSETS = { x: 5, y: 5 };
 Stone.prototype.TRACE = StoneTrace;
 Stone.prototype.EXPLOSION = SmallExplosion;
+Stone.prototype.EXPLOSION_RADIUS = 1.5;
 
 
 export {

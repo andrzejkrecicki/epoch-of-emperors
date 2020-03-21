@@ -23,7 +23,7 @@ import { FishBig } from './resources/fish.js';
 import { GoldMine } from './resources/gold.js';
 import { StoneMine } from './resources/stone.js';
 import { LeafTree } from './trees.js';
-import { AStarPathFinder, AStarToEntity, BFSWalker, StandardQueue } from './algorithms.js';
+import { AStarPathFinder, AStarToEntity, BFSWalker, BFSBroadWalker, StandardQueue } from './algorithms.js';
 import { distance, manhatan_subtile_distance, FPS } from '../utils.js'
 
 
@@ -235,15 +235,18 @@ class Engine {
         for (let projectile of this.projectiles) {
             let target = projectile.victim.getExactSubtileCenter();
             let target_pos = this.viewer.mapDrawable.tileCoordsToScreen(target.subtile_x / 2, target.subtile_y / 2);
+            let striked_entity = null;
 
             if (--projectile.TTL == 0) projectile.destroy();
             else if (projectile.hasReachedVictim(target_pos)) {
                 projectile.victim.takeHit(projectile.attributes.attack, projectile.thrower, this);
+                striked_entity = projectile.victim;
                 projectile.destroy();
             } else if (projectile.hasReachedSubitle()) {
                 let { x, y } = this.viewer.mapDrawable.screenCoordsToSubtile(projectile.target.x, projectile.target.y);
                 if (this.map.subtiles[x][y] instanceof Unit || this.map.subtiles[x][y] instanceof Building) {
                     this.map.subtiles[x][y].takeHit(projectile.attributes.attack, projectile.thrower, this);
+                    striked_entity = this.map.subtiles[x][y];
                 }
                 projectile.destroy();
             } else {
@@ -273,6 +276,27 @@ class Engine {
                 let explosion = new projectile.EXPLOSION(projectile.position(), projectile.subtile_x, projectile.subtile_y);
                 this.drawables.push(explosion);
                 this.viewer.addEntity(explosion);
+
+                if (projectile.EXPLOSION_RADIUS > 1) {
+                    let seed = { x: projectile.subtile_x, y: projectile.subtile_y };
+                    let victims = new Set();
+                    let reached_radius = false
+
+                    let walker = new BFSBroadWalker(seed, new StandardQueue, ({ x, y }) => {
+                            if (distance({ x, y }, seed) > projectile.EXPLOSION_RADIUS) {
+                                return reached_radius = true;
+                            }
+                            let tile = this.map.subtiles[x][y];
+                            if (tile != null && tile != striked_entity && !tile.destroyed &&
+                                tile instanceof Unit || tile instanceof Building
+                            ) victims.add(tile);
+                        }, (x, y, node) => ({ x, y }),
+                        () => reached_radius,
+                        0, this.map.edge_size * 2 - 1
+                    );
+                    walker.run();
+                    for (const victim of victims) victim.takeHit(projectile.attributes.attack, projectile.thrower, this);
+                }
             }
         }
         this.projectiles = this.projectiles.filter((p) => !p.destroyed);

@@ -19,7 +19,7 @@ class BFSWalker {
         }
     }
     enqueueNeighbours(node) {
-        for (let delta of BFSWalker.NEIGHBOURS_DELTA) {
+        for (let delta of this.NEIGHBOURS_DELTA) {
             if (!this.isVisited(node.x + delta.x, node.y + delta.y)) {
                 this.queue.push(this.node_getter(node.x + delta.x, node.y + delta.y, node));
                 this.setVisited(node.x + delta.x, node.y + delta.y);
@@ -35,7 +35,15 @@ class BFSWalker {
         this.visited[(x << 16) | y] = true;
     }
 }
-BFSWalker.NEIGHBOURS_DELTA = [{ x: -1, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
+BFSWalker.prototype.NEIGHBOURS_DELTA = [{ x: -1, y: 0 }, { x: 1, y: 0 }, { x: 0, y: 1 }, { x: 0, y: -1 }];
+
+
+class BFSBroadWalker extends BFSWalker {}
+BFSBroadWalker.prototype.NEIGHBOURS_DELTA = [
+    { x: 0, y: -1 }, { x: 1, y: -1 }, { x: 1, y: 0 }, { x: 1, y: 1 },
+    { x: 0, y: 1 }, { x: -1, y: 1 }, { x: -1, y: 0 }, { x: -1, y: -1 }
+];
+
 
 class MultiSlotQueue {
     constructor(numOfSlots=5) {
@@ -384,6 +392,6 @@ UnitPathFinder.NEIGHBOURS_DELTA = [
 
 
 export {
-    BFSWalker, UnitPathFinder, MultiSlotQueue, StandardQueue,
-    AStarPathFinder, AStarToEntity
+    BFSWalker, BFSBroadWalker, UnitPathFinder, MultiSlotQueue,
+    StandardQueue, AStarPathFinder, AStarToEntity
 }
