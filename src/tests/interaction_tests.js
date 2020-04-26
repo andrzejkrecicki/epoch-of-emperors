@@ -7,6 +7,7 @@ import { Villager } from '../engine/units/villager.js';
 import { SwordsMan } from '../engine/units/swordsman.js';
 import { ImprovedBowMan } from '../engine/units/improved_bowman.js';
 import { TransportBoat } from '../engine/units/transport_boat.js';
+import { StoneThrower } from '../engine/units/stone_thrower.js';
 import { Priest } from '../engine/units/priest.js';
 import { TradeBoat } from '../engine/units/trade_boat.js';
 import { TownCenter } from '../engine/buildings/town_center.js';
@@ -150,6 +151,59 @@ class AttackTowerUnitTest extends Test {
     }
     check() {
         if (this.unit.destroyed) this.pass();
+    }
+}
+
+
+class CatapultTest extends ComplexTest {
+    constructor(engine) {
+        super(engine)
+
+        this.thrower = this.unit(StoneThrower, 120, 124, 1);
+        this.unit1 = this.unit(Villager, 130, 131, 0);
+
+        this.unit2 = this.unit(Villager, 124, 131, 0);
+        this.unit3 = this.unit(Villager, 123, 131, 0);
+        this.unit4 = this.unit(Villager, 124, 130, 0);
+        this.unit5 = this.unit(Villager, 124, 132, 0);
+    }
+    setup() {
+        super.setup();
+
+        this.steps = ([
+            function() {
+                this.engine.interactOrder(this.thrower, this.unit1);
+            },
+            function() {
+                if (this.engine.projectiles.length != 1) return false;
+            },
+            function() {
+                this.engine.moveOrder(this.unit1, { x: 135, y: 126 });
+            },
+            function() {
+                if (this.engine.projectiles.length > 0) return false;
+                if (this.unit1.destroyed) this.fail("Avoided projectile killed victim.");
+            },
+            function() {
+                if (!this.unit1.destroyed) return false;
+                this.engine.interactOrder(this.thrower, this.unit2);
+            },
+            function() {
+                if (this.engine.projectiles.length != 1) return false;
+            },
+            function() {
+                // check if explosion killed nearby units
+                this.engine.moveOrder(this.unit2, { x: 125, y: 131 });
+                this.thrower.stopInteraction();
+            },
+            function() {
+                if (this.engine.projectiles.length == 0 &&
+                    this.engine.drawables.length == 0 &&
+                    this.engine.units.length == 1 &&
+                    this.unit1.destroyed && this.unit2.destroyed) this.pass();
+                else return false;
+            }
+        ]).values();
     }
 }
 
@@ -462,7 +516,7 @@ class UnitsBuildingsCleanUpTest extends Test {
 
 export {
     TradeTest, AttackUnitUnitTest, DistantAttackUnitUnitTest, AttackTowerUnitTest,
-    ConvertUnitTest, HealUnitTest, TransportTest, RepairTest, ConstructionTest,
-    MultipleConstructionsTest, ImpossibleToReachInteractionTest,
+    CatapultTest, ConvertUnitTest, HealUnitTest, TransportTest, RepairTest,
+    ConstructionTest, MultipleConstructionsTest, ImpossibleToReachInteractionTest,
     UnitsBuildingsCleanUpTest
 }

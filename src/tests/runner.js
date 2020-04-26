@@ -36,6 +36,7 @@ class TestRunner {
             interaction.ConstructionTest,
             interaction.MultipleConstructionsTest,
             interaction.ImpossibleToReachInteractionTest,
+            interaction.CatapultTest,
             interaction.UnitsBuildingsCleanUpTest,
 
 
