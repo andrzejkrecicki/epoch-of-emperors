@@ -27,6 +27,7 @@ FlatDrawable.prototype.HAS_HITMASK = false;
 
 class TreeStump extends FlatDrawable {
 }
+TreeStump.prototype.MAX_AGE = FPS * 60 * 5;
 TreeStump.prototype.IMAGES = [Sprites.Sprite('img/trees/stump.png')];
 TreeStump.prototype.IMAGE_OFFSET = { x: -11, y: 10 }
 
@@ -72,7 +73,6 @@ class Rubble extends Entity {
         this.offset = offset;
         this.setImage();
         this.age = 0;
-        this.max_age = 60 * FPS;
     }
     getSprite() {
         return this.image;
@@ -82,7 +82,7 @@ class Rubble extends Entity {
     }
     process(engine) {
         ++this.age;
-        if (this.age >= this.max_age) {
+        if (this.age >= this.MAX_AGE) {
             if (this.attrs.opacity > 0.04) {
                 this.attrs.opacity -= 0.04;
             } else this.destroy(engine);
@@ -90,6 +90,7 @@ class Rubble extends Entity {
     }
 }
 Rubble.prototype.SUBTILE_WIDTH = 0;
+Rubble.prototype.MAX_AGE = 60 * FPS;
 Rubble.prototype.HAS_BITMAP_HITMASK = false;
 Rubble.prototype.HAS_HITMASK = false;
 

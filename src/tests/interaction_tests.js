@@ -371,9 +371,6 @@ class MultipleConstructionsTest extends Test {
 }
 
 
-
-
-
 class ImpossibleToReachInteractionTest extends Test {
     constructor(engine) {
         super(engine)
@@ -403,9 +400,69 @@ class ImpossibleToReachInteractionTest extends Test {
 }
 
 
+class UnitsBuildingsCleanUpTest extends Test {
+    constructor(engine) {
+        super(engine)
+        this.unit1 = this.unit(ImprovedBowMan, 130, 114, 1);
+        this.unit2 = this.unit(Villager, 135, 118, 0);
+
+        this.unit3 = this.unit(SwordsMan, 124, 120, 1);
+        this.towncenter = this.building(TownCenter, 131, 122, 0);
+
+        this.villager = this.unit(Villager, 120, 130, 1);
+        this.tree = this.entity(LeafTree, 125, 135);
+        this.tree.hp = 1;
+        this.tree.lumberTick();
+        this.tree.attributes.wood = 10;
+    }
+    setup() {
+        super.setup();
+        this.engine.interactOrder(this.unit1, this.unit2);
+        this.engine.interactOrder(this.unit3, this.towncenter);
+        this.engine.interactOrder(this.villager, this.tree);
+
+        if (!(
+            this.engine.players[0].units.length == 1 &&
+            this.engine.players[0].buildings.length == 1 &&
+            this.engine.players[1].units.length == 3 &&
+            this.engine.players[1].buildings.length == 0 &&
+            this.engine.drawables.length == 0 &&
+            this.engine.projectiles.length == 0 &&
+            this.engine.units.length == 4 &&
+            this.engine.buildings.length == 1
+        )) this.fail("Failed to initialize Engine's object lists");
+
+        if (this.nonNullSubtilesCount() != 30) this.fail("Failed to fill subtiles with entities");
+    }
+    nonNullSubtilesCount() {
+        let count = 0;
+        for (let x = 100; x < 160; ++x) {
+            for (let y = 85; y < 145; ++y) {
+                if (this.engine.map.subtiles[x][y] != null) ++count;
+            }
+        }
+        return count;
+    }
+    check() {
+        if (this.unit2.destroyed && this.towncenter.destroyed &&
+            this.unit1.hp == this.unit1.max_hp &&
+            this.unit3.hp == this.unit3.max_hp &&
+            this.engine.players[0].units.length == 0 &&
+            this.engine.players[1].units.length == 3 &&
+            this.engine.players[0].buildings.length == 0 &&
+            this.engine.drawables.length == 0 &&
+            this.engine.projectiles.length == 0 &&
+            this.engine.units.length == 3 &&
+            this.engine.buildings.length == 0 &&
+            this.nonNullSubtilesCount() == 3
+        ) this.pass();
+    }
+}
+
 
 export {
     TradeTest, AttackUnitUnitTest, DistantAttackUnitUnitTest, AttackTowerUnitTest,
     ConvertUnitTest, HealUnitTest, TransportTest, RepairTest, ConstructionTest,
-    MultipleConstructionsTest, ImpossibleToReachInteractionTest
+    MultipleConstructionsTest, ImpossibleToReachInteractionTest,
+    UnitsBuildingsCleanUpTest
 }

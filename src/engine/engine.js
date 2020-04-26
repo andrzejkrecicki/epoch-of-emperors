@@ -307,6 +307,12 @@ class Engine {
         }
         this.drawables = this.drawables.filter((p) => !p.destroyed);
     }
+    processPlayers() {
+        for (const player of this.players) {
+            player.units = player.units.filter(u => !u.destroyed);
+            player.buildings = player.buildings.filter(b => !b.destroyed);
+        }
+    }
     // check if subtile is not occupied by other entity
     canEnterSubtile(subtile_x, subtile_y, entity) {
         for (let x = subtile_x; x < subtile_x + entity.SUBTILE_WIDTH; ++x) {
@@ -334,6 +340,7 @@ class Engine {
         this.processProjectiles();
         this.processUnits();
         this.processBuildings();
+        this.processPlayers();
         this.processDrawables();
         this.viewer.stage.draw();
     }

@@ -36,6 +36,7 @@ class TestRunner {
             interaction.ConstructionTest,
             interaction.MultipleConstructionsTest,
             interaction.ImpossibleToReachInteractionTest,
+            interaction.UnitsBuildingsCleanUpTest,
 
 
         ];
@@ -133,6 +134,7 @@ class TestRunner {
         this.engine.processProjectiles();
         this.engine.processUnits();
         this.engine.processBuildings();
+        this.engine.processPlayers();
         this.engine.processDrawables();
     }
     cleanUp() {
