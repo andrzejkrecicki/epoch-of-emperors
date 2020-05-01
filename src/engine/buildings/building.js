@@ -3,6 +3,7 @@ import { TERRAIN_TYPES } from '../terrain.js';
 import { Sprites } from '../../sprites.js';
 import { Flame } from './details.js';
 import { UNIT_TYPES } from '../../utils.js';
+import { BigExplosion } from '../explosions.js';
 
 
 class Building extends Entity {
@@ -148,6 +149,7 @@ Building.prototype.CONTINUOUS_PREVIEW = false;
 Building.prototype.LEVELS_UP_ON_AGE = true;
 Building.prototype.LEAVES_LEFTOVERS = true;
 Building.prototype.FLAME_POSITIONS = [{ x: 34, y: 0 }, { x: 84, y: 20 }, { x: 136, y: 2 }, { x: 83, y: -26 }];
+Building.prototype.EXPLOSION = BigExplosion;
 
 
 Building.prototype.STATE = {

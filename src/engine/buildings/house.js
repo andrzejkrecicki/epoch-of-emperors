@@ -2,6 +2,7 @@ import { Building } from './building.js';
 import { FireSmall, SmokeSmall } from './details.js';
 import { RESOURCE_TYPES } from '../../utils.js';
 import { Sprites } from '../../sprites.js';
+import { SmallExplosion } from '../explosions.js';
 
 class House extends Building {
     constructor() {
@@ -58,6 +59,7 @@ House.prototype.SUBTILE_WIDTH = 3;
 House.prototype.PEOPLE_PER_HOUSE = 4;
 
 House.prototype.FLAME_POSITIONS = [{ x: 48, y: 0 }];
+House.prototype.EXPLOSION = SmallExplosion;
 
 House.prototype.ACTION_KEY = "E";
 House.prototype.COST = {

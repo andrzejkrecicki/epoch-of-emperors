@@ -29,6 +29,7 @@ Farm.prototype.AVATAR = [
 Farm.prototype.MAX_HP = [50];
 Farm.prototype.SUBTILE_WIDTH = 5;
 Farm.prototype.INTERACT_WHEN_COMPLETE = true;
+Farm.prototype.EXPLOSION = null;
 
 Farm.prototype.ACTION_KEY = "F";
 Farm.prototype.COST = {

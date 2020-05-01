@@ -4,6 +4,7 @@ import { FireSmall } from './details.js';
 import { Sprites } from '../../sprites.js';
 import { Arrow } from '../projectiles.js';
 import * as interactions from '../interactions.js';
+import { SmallExplosion } from '../explosions.js';
 
 
 class Tower extends Building {
@@ -72,6 +73,7 @@ Tower.prototype.SUBTILE_WIDTH = 4;
 Tower.prototype.LEVELS_UP_ON_AGE = false;
 
 Tower.prototype.FLAME_POSITIONS = [{ x: 64, y: 0 }];
+Tower.prototype.EXPLOSION = SmallExplosion;
 
 Tower.prototype.ACTION_KEY = "T";
 Tower.prototype.COST = {

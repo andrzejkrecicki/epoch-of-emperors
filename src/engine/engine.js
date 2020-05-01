@@ -474,6 +474,14 @@ class Engine {
             this.drawables.push(rubble);
             this.viewer.addEntity(rubble);
         }
+
+        if (entity instanceof Building && entity.EXPLOSION) {
+            let sub = entity.getCenterSubtile();
+            let pos = this.viewer.mapDrawable.tileCoordsToScreen(sub.subtile_x / 2, sub.subtile_y / 2);
+            let explosion = new entity.EXPLOSION(pos, sub.subtile_x, sub.subtile_y);
+            this.drawables.push(explosion);
+            this.viewer.addEntity(explosion);
+        }
     }
     makeProjectile(Projectile, thrower, victim) {
         let source = thrower.getCenterSubtile();

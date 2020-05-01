@@ -78,6 +78,7 @@ Wall.prototype.CONTINUOUS_PREVIEW = true;
 Wall.prototype.LEVELS_UP_ON_AGE = false;
 
 Wall.prototype.FLAME_POSITIONS = [];
+Wall.prototype.EXPLOSION = null
 
 Wall.prototype.ACTION_KEY = "W";
 Wall.prototype.COST = {
