@@ -65,7 +65,7 @@ Dock.prototype.AVATAR = [
     ]
 ];
 Dock.prototype.MAX_HP = [350];
-Dock.prototype.SUBTILE_WIDTH = 4;
+Dock.prototype.SUBTILE_WIDTH = 5;
 
 Dock.prototype.ACTION_KEY = "D";
 Dock.prototype.COST = {
@@ -105,13 +105,13 @@ Dock.prototype.IMAGES = {
 
 Dock.prototype.IMAGE_OFFSETS = {
     [Building.prototype.STATE.CONSTRUCTION]: [
-        [{ x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }, { x: -21, y: 36 }]
+        [{ x: -38, y: 34 }, { x: -38, y: 34 }, { x: -38, y: 34 }, { x: -38, y: 34 }]
     ],
     [Building.prototype.STATE.DONE]: [
-        [{ x: -22, y: 36 }, { x: -22, y: 36 }, { x: 11, y: 45 }, { x: 3, y: 79 }]
+        [{ x: -39, y: 34 }, { x: -39, y: 34 }, { x: 11, y: 45 }, { x: 3, y: 79 }]
     ],
     [Building.prototype.STATE.DESTROYED]: [
-        [{ x: -23, y: 26 }, { x: -23, y: 26 }, { x: -23, y: 26 }, { x: -23, y: 26 }]
+        [{ x: -32, y: 26 }, { x: -32, y: 26 }, { x: -32, y: 26 }, { x: -32, y: 26 }]
     ]
 }
 
