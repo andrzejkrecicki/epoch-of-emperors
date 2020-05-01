@@ -1,6 +1,6 @@
 import { Sprites } from '../sprites.js';
 
-class SmallExplosion extends Graphics.Node {
+class Explosion extends Graphics.Node {
     constructor(position, subtile_x, subtile_y) {
         super({ x: position.x, y: position.y });
         this.subtile_x = subtile_x;
@@ -45,9 +45,17 @@ class SmallExplosion extends Graphics.Node {
         this.remove();
     }
 }
-SmallExplosion.prototype.SUBTILE_WIDTH = 0;
+Explosion.prototype.SUBTILE_WIDTH = 0;
+
+
+class SmallExplosion extends Explosion {}
 SmallExplosion.prototype.IMAGES = Sprites.SpriteSequence("img/explosions/small/", 10);
 SmallExplosion.prototype.IMAGE_OFFSETS = { x: 97, y: 59 }
 
 
-export { SmallExplosion }
+class BigExplosion extends Explosion {}
+BigExplosion.prototype.IMAGES = Sprites.SpriteSequence("img/explosions/big/", 10);
+BigExplosion.prototype.IMAGE_OFFSETS = { x: 130, y: 104 }
+
+
+export { SmallExplosion, BigExplosion }
