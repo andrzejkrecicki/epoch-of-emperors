@@ -14,7 +14,7 @@ Hoplite.prototype.NAME = ["Hoplite"];
 Hoplite.prototype.AVATAR = [Sprites.Sprite("img/interface/avatars/hoplite.png")];
 Hoplite.prototype.TYPE = UNIT_TYPES.INFANTRY;
 Hoplite.prototype.MAX_HP = [120];
-Hoplite.prototype.SPEED = 1;
+Hoplite.prototype.SPEED = 0.8;
 Hoplite.prototype.CREATION_TIME = 36 * FPS;
 Hoplite.prototype.ATTACK_RATE = 8 * 3;
 
