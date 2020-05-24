@@ -213,7 +213,9 @@ class GameViewer {
 
         if (this.engine.selectedEntity.actions_changed) {
             this.engine.selectedEntity.actions_changed = false;
-            this.bottombar.entityActions.setEntity(this.engine.selectedEntity);
+            this.isPlanningConstruction = false;
+            this.constructionIndicator.hide();
+            this.bottombar.entityActions.refreshActions(this.engine.selectedEntity);
         }
     }
     setHoveredEntity() {
@@ -641,8 +643,9 @@ class EntityActions extends Graphics.Node {
             if (actions.length) this.pushActions(actions);
         }
     }
-    pushActions(actions) {
+    pushActions(actions, last_choice=null) {
         if (this.states.length) this.removeChildren();
+        if (this.states.length > 0) this.actions_set.last_choice = last_choice;
         this.actions_set = new ActionsSet(this.viewer, actions);
         this.states.push(this.actions_set);
 
@@ -655,6 +658,24 @@ class EntityActions extends Graphics.Node {
             if (this.states.length) {
                 this.actions_set = this.states[this.states.length - 1];
                 this.add(this.actions_set);
+            }
+        }
+    }
+    refreshActions(entity) {
+        let old_states = this.states;
+        this.states = [];
+        this.removeChildren();
+
+        if (entity.ACTIONS) {
+            let actions = entity.ACTIONS.filter((a) => a.isVisible(entity));
+            if (actions.length) this.pushActions(actions);
+
+            for (let state of old_states.slice(0, -1)) {
+                if (state.last_choice == null) break;
+                else if (state.last_choice.isVisible() && state.last_choice.isPossible(entity)) {
+                    let action = new state.last_choice(this.viewer);
+                    action.execute();
+                } else break;
             }
         }
     }
@@ -673,6 +694,7 @@ class ActionsSet extends Graphics.Node {
     constructor(viewer, actions) {
         super();
         this.viewer = viewer;
+        this.last_choice = null;
         this.action_buttons = [];
         let x = actions[0].prototype.MARGIN, y = 0;
         for (let i = 0, Action; Action = actions[i]; ++i) {

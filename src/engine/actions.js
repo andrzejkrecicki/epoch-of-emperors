@@ -40,7 +40,7 @@ function CreateBuildingFactory(BUILDING) {
         execute() {
             if (this.checkCost(this.BUILDING.prototype.COST) == false) return;
             this.viewer.isPlanningConstruction = true;
-            this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
+            this.viewer.bottombar.entityActions.pushActions(this.ACTIONS, this.constructor);
             this.viewer.constructionIndicator.setBuilding(this.BUILDING);
             this.viewer.constructionIndicator.on("confirm", this.confirmConstruction.bind(this));
             this.viewer.constructionIndicator.on("reject", this.rejectConstruction.bind(this));
@@ -52,7 +52,7 @@ function CreateBuildingFactory(BUILDING) {
             return BUILDING.prototype.AVATAR[entity.player.civ][this.getLevel(entity.player)];
         }
         static isPossible(entity) {
-            return BUILDING.isResearched(entity.player);
+            return !!BUILDING.isResearched(entity.player);
         }
         static getLevel(player) {
             let level = player.defaultEntityLevel[BUILDING.name];
@@ -131,7 +131,7 @@ FirstPage.prototype.POS = {
 
 class NextBuildingsPage extends Action {
     execute() {
-        this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
+        this.viewer.bottombar.entityActions.pushActions(this.ACTIONS, NextBuildingsPage);
     }
 }
 NextBuildingsPage.prototype.IMAGE = Sprites.Sprite("img/interface/command/next.png");
@@ -161,7 +161,7 @@ StandGround.prototype.ACTION_KEY = "D";
 
 class Build extends Action {
     execute() {
-        this.viewer.bottombar.entityActions.pushActions(this.ACTIONS);
+        this.viewer.bottombar.entityActions.pushActions(this.ACTIONS, Build);
     }
 }
 Build.prototype.IMAGE = Sprites.Sprite("img/interface/command/build.png");
@@ -318,7 +318,7 @@ function RecruitUnitFactory(UNIT) {
             return UNIT.prototype.CREATION_TIME;
         }
         static isPossible(entity) {
-            return UNIT.isResearched(entity.player);
+            return !!UNIT.isResearched(entity.player);
         }
         findEmptyArea(width) {
             // iterate clockwise around all available areas adjecent to building
