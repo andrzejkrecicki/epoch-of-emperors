@@ -465,8 +465,6 @@ class UnitsBuildingsCleanUpTest extends Test {
 
         this.villager = this.unit(Villager, 120, 130, 1);
         this.tree = this.entity(LeafTree, 125, 135);
-        this.tree.hp = 1;
-        this.tree.lumberTick();
         this.tree.attributes.wood = 10;
     }
     setup() {

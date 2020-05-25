@@ -73,8 +73,8 @@ class Test {
     }
     mockClick(node, right=false) {
         for (let type of ["mousedown", "mouseup", "click"]) {
-            if (right) this.viewer.constructionIndicator.fire(type, { evt: { button: 2 } });
-            else this.viewer.constructionIndicator.fire(type, { evt: { button: 0 } });
+            if (right) node.fire(type, { evt: { button: 2 } });
+            else node.fire(type, { evt: { button: 0 } });
         }
     }
     mockMouseMove(x, y) {
