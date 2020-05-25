@@ -981,6 +981,11 @@ class ConstructionIndicator extends Graphics.Node {
     }
     process() {
         if (!this.viewer.isPlanningConstruction) return;
+        if (!this.BUILDING.isResearched(this.player)) {
+            this.rejectConstruction();
+            return;
+        }
+
         if (this.moved) {
             this.reposition();
         }
@@ -1012,6 +1017,11 @@ class ConstructionIndicator extends Graphics.Node {
             hasHitmap: true
         }));
         this.move();
+    }
+    rejectConstruction() {
+        this.viewer.bottombar.entityActions.popActions();
+        this.viewer.isPlanningConstruction = false;
+        this.hide();
     }
     opacityPulse() {
         if (this.current_opacity > this.MAX_OPACITY || this.current_opacity < this.MIN_OPACITY) this.opacity_delta *= -1;

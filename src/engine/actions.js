@@ -62,6 +62,10 @@ function CreateBuildingFactory(BUILDING) {
         confirmConstruction(e) {
             if (!this.viewer.constructionIndicator.allow_construction) return;
             if (this.checkCost(this.BUILDING.prototype.COST) == false) return;
+            if (!this.BUILDING.isResearched(this.player)) {
+                this.rejectConstruction();
+                return;
+            }
             this.player.subtractResources(this.BUILDING.prototype.COST);
 
             let sub = this.viewer.constructionIndicator.sub;
@@ -78,9 +82,7 @@ function CreateBuildingFactory(BUILDING) {
             }
         }
         rejectConstruction(e) {
-            this.viewer.bottombar.entityActions.popActions();
-            this.viewer.isPlanningConstruction = false;
-            this.viewer.constructionIndicator.hide();
+            this.viewer.constructionIndicator.rejectConstruction();
         }
         toolTipChunks(player) {
             let chunks = [this.TOOLTIP];
