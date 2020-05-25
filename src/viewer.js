@@ -910,8 +910,8 @@ class ConstructionIndicator extends Graphics.Node {
         if (e.evt.button == 2 || e.evt.which == 3) this.fire("reject");
         else {
             if (!this.BUILDING.prototype.CONTINUOUS_PREVIEW) this.fire("confirm");
-            else {
-                let diff = this.start_sub && {
+            else if (this.start_sub != null) {
+                let diff = {
                     x: this.sub.x - this.start_sub.x,
                     y: this.sub.y - this.start_sub.y
                 };
@@ -983,8 +983,8 @@ class ConstructionIndicator extends Graphics.Node {
         if (!this.viewer.isPlanningConstruction) return;
         if (this.moved) {
             this.reposition();
-            this.checkSubtiles();
         }
+        this.checkSubtiles();
         this.opacityPulse();
     }
     draw() {
