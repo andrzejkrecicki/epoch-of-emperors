@@ -4,6 +4,7 @@ import { Player } from '../engine/player.js';
 import { Test } from './test.js';
 import * as resource from './resource_tests.js';
 import * as interaction from './interaction_tests.js';
+import * as buildings from './buildings_tests.js';
 
 
 class TestRunner {
@@ -38,6 +39,7 @@ class TestRunner {
             interaction.ImpossibleToReachInteractionTest,
             interaction.CatapultTest,
             interaction.UnitsBuildingsCleanUpTest,
+            buildings.BuildingCountersTest,
 
 
         ];
