@@ -169,7 +169,6 @@ class Entity extends Graphics.Node {
         if (this.healthBar) this.healthBar.setVisible(this.selected);
     }
     destroy(engine) {
-        if (this.player) --this.player.possessions[this.constructor.name];
         this.destroyed = true;
         if (this.parent) this.remove();
         engine.destroyEntity(this);

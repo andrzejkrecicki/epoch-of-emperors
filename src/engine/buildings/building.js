@@ -8,7 +8,7 @@ import { BigExplosion } from '../explosions.js';
 
 class Building extends Entity {
     constructor(subtile_x, subtile_y, player) {
-        super(...arguments);
+        super(subtile_x, subtile_y, player);
         this.hp = 1;
         this.max_hp = Math.floor(this.MAX_HP[this.level] * player.attributeBonus[this.TYPE].hp_multiplier);
         this.construction_stage = 0;
@@ -125,6 +125,7 @@ class Building extends Entity {
         }
     }
     destroy(engine) {
+        if (this.player && this.isComplete) --this.player.possessions[this.constructor.name];
         this.state = this.STATE.DESTROYED;
         super.destroy(engine);
     }

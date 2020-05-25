@@ -5,6 +5,22 @@ import { Technologies } from '../technologies.js';
 import { Sprites } from '../../sprites.js';
 
 class TownCenter extends Building {
+    constructor(subtile_x, subtile_y, player) {
+        super(subtile_x, subtile_y, player);
+        this.player.possessions[this.constructor.name] = (this.player.possessions[this.constructor.name] || 0) + 1;
+    }
+    setComplete() {
+        super.setComplete();
+        // Town Center possessions is already increased in constructor so we need to
+        // fix redundant increase from parent class method
+        --this.player.possessions[this.constructor.name];
+    }
+    destroy(engine) {
+        // we need to make sure that incomplete Town Center is taken into account
+        // complete Town Center is handled in parent class method
+        if (this.player && !this.isComplete) --this.player.possessions[this.constructor.name];
+        super.destroy(engine);
+    }
     actions() {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(Villager),
