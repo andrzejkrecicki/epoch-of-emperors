@@ -1,4 +1,4 @@
-import { Unit } from './unit.js';
+import { Ship } from './ship.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
@@ -7,7 +7,7 @@ import { SailSmall } from '../buildings/details.js';
 import { UNIT_TYPES, FPS } from '../../utils.js';
 
 
-class TransportBoat extends Unit {
+class TransportBoat extends Ship {
     constructor() {
         super(...arguments);
         this.isUnloading = false;
@@ -16,16 +16,9 @@ class TransportBoat extends Unit {
         this.capacity = this.MAX_LOAD[this.level];
         this.carriedUnits = [];
         this.attributes.load = `${this.load}/${this.capacity}`;
-
-        if (this.level < 2) {
-            this.sail = new SailSmall(this.SAIL_OFFSET[this.level], this.rotation);
-            this.sail.rotation = this.rotation;
-            this.add(this.sail);
-        } else this.sail = null;
     }
-    updateSprite() {
-        super.updateSprite(...arguments);
-        if (this.sail) this.sail.rotation = this.rotation;
+    hasSail() {
+        return this.level < 2;
     }
     canCarry(entity) {
         return entity.CAN_ENTER_SHIP && entity.player == this.player;
@@ -48,10 +41,6 @@ class TransportBoat extends Unit {
         }
         this.isUnloading = false;
     }
-    takeHit() {
-        super.takeHit(...arguments)
-        if (this.hp <= 0) this.sail.hide();
-    }
     destroy(engine) {
         super.destroy(engine);
         for (let unit of this.carriedUnits) unit.destroy(engine);
@@ -70,15 +59,14 @@ TransportBoat.prototype.CREATION_TIME = 26 * FPS;
 TransportBoat.prototype.MAX_LOAD = [5, 10];
 TransportBoat.prototype.LEAVES_LEFTOVERS = false;
 TransportBoat.prototype.CAN_ATTACK = false;
-TransportBoat.prototype.CAN_ENTER_SHIP = false;
+TransportBoat.prototype.FLAME_POSITIONS = [{ x: 32, y: 0 }];
+TransportBoat.prototype.MAX_FLAME_SIZE = 1/2;
 
 
 TransportBoat.prototype.ACTION_KEY = "T";
 TransportBoat.prototype.COST = {
     food: 0, wood: 150, stone: 0, gold: 0
 }
-
-TransportBoat.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
 
 TransportBoat.prototype.IMAGES = {
     [TransportBoat.prototype.STATE.IDLE]: [Sprites.DirectionSprites("img/units/transport_boat/idle/", 1)],

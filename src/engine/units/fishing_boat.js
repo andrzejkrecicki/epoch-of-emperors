@@ -1,4 +1,4 @@
-import { Unit } from './unit.js';
+import { Ship } from './ship.js';
 import { Building } from '../buildings/building.js';
 import { FishBig } from '../resources/fish.js';
 import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES, FPS } from '../../utils.js';
@@ -7,7 +7,7 @@ import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import * as interactions from '../interactions.js';
 
-class FishingBoat extends Unit {
+class FishingBoat extends Ship {
     constructor() {
         super(...arguments);
         this.attributes = {
@@ -37,7 +37,8 @@ FishingBoat.prototype.SPEED = 2;
 FishingBoat.prototype.CREATION_TIME = 26 * FPS;
 FishingBoat.prototype.LEAVES_LEFTOVERS = false;
 FishingBoat.prototype.CAN_ATTACK = false;
-FishingBoat.prototype.CAN_ENTER_SHIP = false;
+FishingBoat.prototype.FLAME_POSITIONS = [{ x: 32, y: 0 }];
+FishingBoat.prototype.MAX_FLAME_SIZE = 1/4;
 
 
 FishingBoat.prototype.ACTION_KEY = "F";
@@ -48,10 +49,8 @@ FishingBoat.prototype.CAPACITY = {
     [RESOURCE_NAME[RESOURCE_TYPES.FOOD]]: 15
 }
 
-FishingBoat.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
-
 FishingBoat.prototype.STATE = { ...FishingBoat.prototype.STATE };
-FishingBoat.prototype.STATE.FISHING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+FishingBoat.prototype.STATE.FISHING = 1 << Ship.prototype.BASE_STATE_MASK_WIDTH;
 
 FishingBoat.prototype.FRAME_RATE = {
     ...FishingBoat.prototype.FRAME_RATE,

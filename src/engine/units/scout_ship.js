@@ -1,4 +1,4 @@
-import { Unit } from './unit.js';
+import { Ship } from './ship.js';
 import { Building } from '../buildings/building.js';
 import { Sprites } from '../../sprites.js';
 import { TERRAIN_TYPES } from '../terrain.js';
@@ -8,22 +8,9 @@ import { Actions } from '../actions.js';
 import { UNIT_TYPES, FPS } from '../../utils.js';
 
 
-class ScoutShip extends Unit {
-    constructor() {
-        super(...arguments);
-        if (this.level < 2) {
-            this.sail = new SailSmall(this.SAIL_OFFSET[this.level], this.rotation);
-            this.sail.rotation = this.rotation;
-            this.add(this.sail);
-        } else this.sail = null;
-    }
-    updateSprite() {
-        super.updateSprite(...arguments);
-        if (this.sail) this.sail.rotation = this.rotation;
-    }
-    takeHit() {
-        super.takeHit(...arguments)
-        if (this.hp <= 0) this.sail.hide();
+class ScoutShip extends Ship {
+    hasSail() {
+        return this.level < 2;
     }
     getProjectileType() {
         return Arrow
@@ -48,8 +35,10 @@ ScoutShip.prototype.CREATION_TIME = 26 * FPS;
 ScoutShip.prototype.ATTACK_RATE = 5 * 3;
 ScoutShip.prototype.SHOT_DELAY = 27;
 ScoutShip.prototype.LEAVES_LEFTOVERS = false;
-ScoutShip.prototype.CAN_ENTER_SHIP = false;
 ScoutShip.prototype.ATTACKS_FROM_DISTANCE = true;
+ScoutShip.prototype.FLAME_POSITIONS = [{ x: 48, y: 0 }];
+ScoutShip.prototype.MAX_FLAME_SIZE = 1/2;
+
 
 ScoutShip.prototype.ACTION_KEY = "E";
 ScoutShip.prototype.COST = {
@@ -61,8 +50,6 @@ ScoutShip.prototype.ATTRIBUTES = {
     ARMOR: [0, 0],
     RANGE: [5, 6]
 }
-
-ScoutShip.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
 
 ScoutShip.prototype.IMAGES = {
     [ScoutShip.prototype.STATE.IDLE]: [

@@ -1,4 +1,4 @@
-import { Unit } from './unit.js';
+import { Ship } from './ship.js';
 import { Building } from '../buildings/building.js';
 import { Dock } from '../buildings/dock.js';
 import { RESOURCE_TYPES, RESOURCE_NAME, UNIT_TYPES, FPS } from '../../utils.js';
@@ -7,7 +7,7 @@ import { TERRAIN_TYPES } from '../terrain.js';
 import { Actions } from '../actions.js';
 import * as interactions from '../interactions.js';
 
-class TradeBoat extends Unit {
+class TradeBoat extends Ship {
     constructor() {
         super(...arguments);
         this.attributes = {
@@ -41,7 +41,8 @@ TradeBoat.prototype.SPEED = 3;
 TradeBoat.prototype.CREATION_TIME = 26 * FPS;
 TradeBoat.prototype.LEAVES_LEFTOVERS = false;
 TradeBoat.prototype.CAN_ATTACK = false;
-TradeBoat.prototype.CAN_ENTER_SHIP = false;
+TradeBoat.prototype.FLAME_POSITIONS = [{ x: 32, y: 0 }];
+TradeBoat.prototype.MAX_FLAME_SIZE = 1/4;
 
 
 TradeBoat.prototype.ACTION_KEY = "R";
@@ -55,10 +56,8 @@ TradeBoat.prototype.CAPACITY = {
     [RESOURCE_NAME[RESOURCE_TYPES.GOLD]]: 75
 }
 
-TradeBoat.prototype.SUPPORTED_TERRAIN = new Set([TERRAIN_TYPES.WATER]);
-
 TradeBoat.prototype.STATE = { ...TradeBoat.prototype.STATE };
-TradeBoat.prototype.STATE.TRADING = 1 << Unit.prototype.BASE_STATE_MASK_WIDTH;
+TradeBoat.prototype.STATE.TRADING = 1 << Ship.prototype.BASE_STATE_MASK_WIDTH;
 
 TradeBoat.prototype.IMAGES = {
     [TradeBoat.prototype.STATE.IDLE]: [
