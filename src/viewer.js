@@ -213,8 +213,6 @@ class GameViewer {
 
         if (this.engine.selectedEntity.actions_changed) {
             this.engine.selectedEntity.actions_changed = false;
-            this.isPlanningConstruction = false;
-            this.constructionIndicator.hide();
             this.bottombar.entityActions.refreshActions(this.engine.selectedEntity);
         }
     }
@@ -674,7 +672,7 @@ class EntityActions extends Graphics.Node {
                 if (state.last_choice == null) break;
                 else if (state.last_choice.isVisible() && state.last_choice.isPossible(entity)) {
                     let action = new state.last_choice(this.viewer);
-                    action.execute();
+                    action.reexecute();
                 } else break;
             }
         }

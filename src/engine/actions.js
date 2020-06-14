@@ -45,6 +45,9 @@ function CreateBuildingFactory(BUILDING) {
             this.viewer.constructionIndicator.on("confirm", this.confirmConstruction.bind(this));
             this.viewer.constructionIndicator.on("reject", this.rejectConstruction.bind(this));
         }
+        reexecute() {
+           
+        }
         getCost() {
             return this.BUILDING.prototype.COST;
         }

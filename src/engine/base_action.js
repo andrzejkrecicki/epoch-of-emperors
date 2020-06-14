@@ -44,6 +44,9 @@ class Action {
         return this.prototype.IMAGE;
     }
     execute() { }
+    reexecute() {
+        this.execute();
+    }
     init() {
         return true;
     }
