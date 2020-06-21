@@ -169,6 +169,24 @@ RepairInteraction.prototype.RATE = 10;
 RepairInteraction.prototype.TOOLTIP = 'Right-click to repair this building.';
 
 
+class ShipRepairInteraction extends RepairInteraction {
+    canBeSuccessor(candidate) {
+        return (candidate.TYPE == UNIT_TYPES.SHIP || candidate.TYPE == UNIT_TYPES.FISHING_BOAT) &&
+            candidate.hp < candidate.max_hp && candidate.player === this.active.player
+    }
+    process() {
+        if (!this.active.isAdjecentTo(this.passive)) {
+            this.engine.interactOrder(this.active, this.passive);
+            return;
+        } else {
+            super.process();
+        }
+    }
+}
+ShipRepairInteraction.prototype.RATE = 10;
+ShipRepairInteraction.prototype.TOOLTIP = 'Right-click to repair this ship.';
+
+
 class ReturnResourcesInteraction extends Interaction {
     init() {
         if (this.passive.destroyed) {
@@ -684,9 +702,10 @@ HealInteraction.prototype.TOOLTIP = 'Right-click to heal this unit.';
 
 
 export {
-    FarmingInteraction, BuilderInteraction, RepairInteraction, ReturnResourcesInteraction,
-    LumberInteraction, ChopInteraction, ForageInteraction, GoldMineInteraction,
-    StoneMineInteraction, FisherInteraction, HunterInteraction, ButcherInteraction,
-    FishingInteraction, TradeInteraction, AttackInteraction, DistantAttackInteraction,
-    TowerAttackInteraction, EnterShipInteraction, ConversionInteraction, HealInteraction
+    FarmingInteraction, BuilderInteraction, RepairInteraction, ShipRepairInteraction,
+    ReturnResourcesInteraction, LumberInteraction, ChopInteraction, ForageInteraction,
+    GoldMineInteraction, StoneMineInteraction, FisherInteraction, HunterInteraction,
+    ButcherInteraction, FishingInteraction, TradeInteraction, AttackInteraction,
+    DistantAttackInteraction, TowerAttackInteraction, EnterShipInteraction,
+    ConversionInteraction, HealInteraction
 }

@@ -34,6 +34,7 @@ class TestRunner {
             interaction.HealUnitTest,
             interaction.TransportTest,
             interaction.RepairTest,
+            interaction.ShipRepairTest,
             interaction.ConstructionTest,
             interaction.MultipleConstructionsTest,
             interaction.ImpossibleToReachInteractionTest,

@@ -19,6 +19,10 @@ class Ship extends Unit {
             this.add(flame);
         }
     }
+    repairTick() {
+        ++this.hp;
+        this.adjustFlames((this.max_hp - this.hp) / this.max_hp);
+    }
     adjustFlames(percentage) {
         for (let flame of this.flames) flame.setPercentage(Math.min(percentage, this.MAX_FLAME_SIZE));
     }

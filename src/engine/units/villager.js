@@ -29,6 +29,12 @@ class Villager extends Unit {
             Actions.Build, Actions.Repair, Actions.Stop
         ];
     }
+    getInteractionType(object) {
+        if ((object.TYPE == UNIT_TYPES.SHIP || object.TYPE == UNIT_TYPES.FISHING_BOAT) &&
+            object.hp < object.max_hp && object.player === this.player) {
+            return interactions.ShipRepairInteraction;
+        } else return super.getInteractionType(object);
+    }
     getOwnInteractionType(object) {
         if (object instanceof Farm && object.isComplete) return interactions.FarmingInteraction;
         else if (object instanceof Building) {

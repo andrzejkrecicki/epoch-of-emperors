@@ -10,6 +10,7 @@ import { TransportBoat } from '../engine/units/transport_boat.js';
 import { StoneThrower } from '../engine/units/stone_thrower.js';
 import { Priest } from '../engine/units/priest.js';
 import { TradeBoat } from '../engine/units/trade_boat.js';
+import { ScoutShip } from '../engine/units/scout_ship.js';
 import { TownCenter } from '../engine/buildings/town_center.js';
 import { Barracks } from '../engine/buildings/barracks.js';
 import { Tower } from '../engine/buildings/tower.js';
@@ -325,6 +326,40 @@ class RepairTest extends Test {
 }
 
 
+class ShipRepairTest extends ComplexTest {
+    constructor(engine) {
+        super(engine)
+        this.villager = this.unit(Villager, 135, 118, 0);
+        this.ship1 = this.unit(ScoutShip, 129, 120, 0);
+        this.ship1.takeHit(100, null, this.engine);
+        this.ship2 = this.unit(TransportBoat, 136, 113, 0);
+        this.ship2.takeHit(100, null, this.engine);
+    }
+    setup() {
+        super.setup();
+
+        this.steps = ([
+            function() {
+                if (!this.ship1.flames[0].visible() ||
+                    !this.ship2.flames[0].visible()) this.fail("Damaged ship has to have flames.");
+            },
+            function() {
+                this.engine.interactOrder(this.villager, this.ship1);
+            },
+            function() {
+                if (!(this.ship1.hp == this.ship1.max_hp && this.ship2.hp == this.ship2.max_hp)) return false;
+            },
+            function() {
+                if (this.ship1.flames[0].visible() ||
+                    this.ship2.flames[0].visible()) this.fail("Repaired ship must not have flames.");
+                else this.pass();
+            }
+        ]).values();
+    }
+}
+
+
+
 class ConstructionTest extends ComplexTest {
     constructor(engine) {
         super(engine)
@@ -514,7 +549,7 @@ class UnitsBuildingsCleanUpTest extends Test {
 
 export {
     TradeTest, AttackUnitUnitTest, DistantAttackUnitUnitTest, AttackTowerUnitTest,
-    CatapultTest, ConvertUnitTest, HealUnitTest, TransportTest, RepairTest,
+    CatapultTest, ConvertUnitTest, HealUnitTest, TransportTest, RepairTest, ShipRepairTest,
     ConstructionTest, MultipleConstructionsTest, ImpossibleToReachInteractionTest,
     UnitsBuildingsCleanUpTest
 }
