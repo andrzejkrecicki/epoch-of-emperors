@@ -70,6 +70,9 @@ class GameViewer {
         this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
         this.layers.interface.add(this.bottombar);
 
+        this.minimap = new MiniMap(this.engine.map);
+        this.bottombar.add(this.minimap);
+
         this.tooltip = new Graphics.StrokedText({
             ...this.TOOLTIP_OPTIONS,
             fill: 'white',
@@ -286,7 +289,6 @@ class MapDrawable extends Graphics.Node {
         this.offset = offset;
         this.map = map;
         this.stage = stage;
-        this.insertTiles();
         this.frame = 0;
     }
     draw() {
@@ -334,22 +336,6 @@ class MapDrawable extends Graphics.Node {
         rnd ^= rnd >> 5;
         return rnd;
     }
-    insertTiles() {
-        let miniCtx = getCanvasContext(this.map.edge_size, this.map.edge_size);
-
-        for (let y = 0; y < this.map.edge_size; ++y) {
-            for (let x = 0; x < this.map.edge_size; ++x) {
-
-                miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
-                if (this.map.getEntityAtSubtile(x * 2, y * 2) instanceof Tree) miniCtx.fillStyle = MapDrawable.MINIMAP_PIXEL_COLORS.TREE;
-
-                miniCtx.fillRect(x, y, 1, 1);
-            }
-        }
-
-        miniCtx.canvas.className = "tmpMiniMap";
-        document.body.appendChild(miniCtx.canvas);
-    }
     tileCoordsToScreen(tx, ty) {
         let H = MapDrawable.TILE_SIZE.height;
         let W = MapDrawable.TILE_SIZE.width;
@@ -390,7 +376,6 @@ MapDrawable.TILE_COL_OFFSET = {
     y: MapDrawable.TILE_SIZE.height + MapDrawable.TILE_ROW_OFFSET.y
 }
 MapDrawable.TERRAIN_IMAGES = TERRAIN_IMAGES;
-MapDrawable.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
 
 
 class TopBar extends Graphics.Node {
@@ -1065,6 +1050,44 @@ class MoverOrderIndicator extends Graphics.Node {
 }
 MoverOrderIndicator.prototype.IMAGE_OFFSET = { x: 24, y: 10 };
 MoverOrderIndicator.prototype.FRAMES = Sprites.SpriteSequence("img/interface/misc/move_order/", 6);
+
+
+class MiniMap extends Graphics.Node {
+    constructor(map) {
+        super({ x: 573, y: 61 });
+
+        this.map = map;
+        this.scaleFactor = 1.2 * (128 / map.edge_size);
+        this.terrainLayer = null;
+        this.makeTerrainLayer();
+    }
+    makeTerrainLayer() {
+        let ctx = getCanvasContext(this.map.edge_size, this.map.edge_size);
+
+        for (let y = 0; y < this.map.edge_size; ++y) {
+            for (let x = 0; x < this.map.edge_size; ++x) {
+
+                ctx.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
+                if (this.map.getEntityAtSubtile(x * 2, y * 2) instanceof Tree) ctx.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
+
+                ctx.fillRect(x, y, 1, 1);
+            }
+        }
+        this.terrainLayer = ctx;
+    }
+    draw() {
+        this.layer.ctx.save();
+        this.layer.ctx.setTransform(
+            this.scaleFactor, 0, 0,
+            .5 * this.scaleFactor, this.absX(), this.absY()
+        );
+        this.layer.ctx.rotate(-Math.PI / 4);
+        this.layer.ctx.drawImage(this.terrainLayer.canvas, 0, 0);
+        this.layer.ctx.restore();
+    }
+}
+MiniMap.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
+
 
 export {
     GameViewer, MapDrawable
