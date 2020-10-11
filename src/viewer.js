@@ -6,7 +6,7 @@ import { Unit } from './engine/units/unit.js';
 import { Building } from './engine/buildings/building.js';
 import { Entity } from './engine/entity.js';
 import { MINIMAP_PIXEL_COLORS, TERRAIN_IMAGES } from './mapdrawable_assets.js';
-import { getCanvasContext, FPS } from './utils.js';
+import { getCanvasContext, FPS, PLAYER_COLORS } from './utils.js';
 
 
 class GameViewer {
@@ -70,7 +70,7 @@ class GameViewer {
         this.bottombar = new BottomBar(this, 0, this.stage.height() - BottomBar.IMAGE.height);
         this.layers.interface.add(this.bottombar);
 
-        this.minimap = new MiniMap(this.engine.map);
+        this.minimap = new MiniMap(this.engine.map, this);
         this.bottombar.add(this.minimap);
 
         this.tooltip = new Graphics.StrokedText({
@@ -1053,27 +1053,55 @@ MoverOrderIndicator.prototype.FRAMES = Sprites.SpriteSequence("img/interface/mis
 
 
 class MiniMap extends Graphics.Node {
-    constructor(map) {
+    constructor(map, viewer) {
         super({ x: 573, y: 61 });
 
         this.map = map;
-        this.scaleFactor = 1.2 * (128 / map.edge_size);
+        this.viewer = viewer
+        this.scaleFactor = 1.2 * (Map.SIZES[0] / map.edge_size);
         this.terrainLayer = null;
+        this.entitiesLayer = null;
+
         this.makeTerrainLayer();
+        this.makeEntitiesLayer();
     }
     makeTerrainLayer() {
         let ctx = getCanvasContext(this.map.edge_size, this.map.edge_size);
 
         for (let y = 0; y < this.map.edge_size; ++y) {
             for (let x = 0; x < this.map.edge_size; ++x) {
-
                 ctx.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
-                if (this.map.getEntityAtSubtile(x * 2, y * 2) instanceof Tree) ctx.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
-
                 ctx.fillRect(x, y, 1, 1);
             }
         }
         this.terrainLayer = ctx;
+    }
+    makeEntitiesLayer() {
+        let ctx = getCanvasContext(MiniMap.WIDTH, MiniMap.HEIGHT);
+
+        const UH = MapDrawable.TILE_SIZE.height * this.map.edge_size;
+        const UW = MapDrawable.TILE_SIZE.width * this.map.edge_size;
+
+        for (let entity of this.map.entities) {
+            const { x, y } = this.viewer.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2);
+            let color = null;
+
+            if (entity instanceof Tree) color = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
+            else if ((entity instanceof Unit || entity instanceof Building) && entity.player != null) {
+                color = PLAYER_COLORS[entity.player.color];
+            }
+
+            if (color != null) {
+                ctx.fillStyle = color;
+                ctx.fillRect(
+                    Math.round(MiniMap.WIDTH * x / UW),
+                    Math.round(MiniMap.HEIGHT * y / UH),
+                    2, 2
+                );
+            }
+        }
+
+        this.entitiesLayer = ctx;
     }
     draw() {
         this.layer.ctx.save();
@@ -1082,11 +1110,22 @@ class MiniMap extends Graphics.Node {
             .5 * this.scaleFactor, this.absX(), this.absY()
         );
         this.layer.ctx.rotate(-Math.PI / 4);
+
         this.layer.ctx.drawImage(this.terrainLayer.canvas, 0, 0);
         this.layer.ctx.restore();
+        this.layer.ctx.drawImage(
+            this.entitiesLayer.canvas,
+            this.absX(),
+            this.absY() - MiniMap.HEIGHT / 2
+        );
+    }
+    process() {
+        this.makeEntitiesLayer
     }
 }
 MiniMap.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
+MiniMap.WIDTH = 220;
+MiniMap.HEIGHT = 110;
 
 
 export {
