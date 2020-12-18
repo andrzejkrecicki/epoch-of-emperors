@@ -1059,25 +1059,22 @@ class MiniMap extends Graphics.Node {
         this.map = map;
         this.viewer = viewer
         this.scaleFactor = 1.2 * (Map.SIZES[0] / map.edge_size);
-        this.terrainLayer = null;
-        this.entitiesLayer = null;
+        this.terrainLayer = getCanvasContext(this.map.edge_size, this.map.edge_size);
+        this.entitiesLayer = getCanvasContext(MiniMap.WIDTH, MiniMap.HEIGHT);
 
-        this.makeTerrainLayer();
-        this.makeEntitiesLayer();
+        this.refreshTerrainLayer();
+        this.refreshEntitiesLayer();
     }
-    makeTerrainLayer() {
-        let ctx = getCanvasContext(this.map.edge_size, this.map.edge_size);
-
+    refreshTerrainLayer() {
         for (let y = 0; y < this.map.edge_size; ++y) {
             for (let x = 0; x < this.map.edge_size; ++x) {
-                ctx.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
-                ctx.fillRect(x, y, 1, 1);
+                this.terrainLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
+                this.terrainLayer.fillRect(x, y, 1, 1);
             }
         }
-        this.terrainLayer = ctx;
     }
-    makeEntitiesLayer() {
-        let ctx = getCanvasContext(MiniMap.WIDTH, MiniMap.HEIGHT);
+    refreshEntitiesLayer() {
+        this.entitiesLayer.clearRect(0, 0, MiniMap.WIDTH, MiniMap.HEIGHT);
 
         const UH = MapDrawable.TILE_SIZE.height * this.map.edge_size;
         const UW = MapDrawable.TILE_SIZE.width * this.map.edge_size;
@@ -1088,15 +1085,13 @@ class MiniMap extends Graphics.Node {
             const my = Math.round(MiniMap.HEIGHT * y / UH);
 
             if (entity instanceof Tree) {
-                ctx.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
-                ctx.fillRect(mx, my, 1, 1);
+                this.entitiesLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
+                this.entitiesLayer.fillRect(mx, my, 1, 1);
             } else if ((entity instanceof Unit || entity instanceof Building) && entity.player != null) {
-                ctx.fillStyle = PLAYER_COLORS[entity.player.color];
-                ctx.fillRect(mx, my, 2, 2);
+                this.entitiesLayer.fillStyle = PLAYER_COLORS[entity.player.color];
+                this.entitiesLayer.fillRect(mx, my, 2, 2);
             }
         }
-
-        this.entitiesLayer = ctx;
     }
     draw() {
         this.layer.ctx.save();
@@ -1108,6 +1103,8 @@ class MiniMap extends Graphics.Node {
 
         this.layer.ctx.drawImage(this.terrainLayer.canvas, 0, 0);
         this.layer.ctx.restore();
+
+        this.refreshEntitiesLayer();
         this.layer.ctx.drawImage(
             this.entitiesLayer.canvas,
             this.absX(),
