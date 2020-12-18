@@ -1082,22 +1082,17 @@ class MiniMap extends Graphics.Node {
         const UH = MapDrawable.TILE_SIZE.height * this.map.edge_size;
         const UW = MapDrawable.TILE_SIZE.width * this.map.edge_size;
 
-        for (let entity of this.map.entities) {
+        for (const entity of this.map.entities) {
             const { x, y } = this.viewer.mapDrawable.tileCoordsToScreen(entity.subtile_x / 2, entity.subtile_y / 2);
-            let color = null;
+            const mx = Math.round(MiniMap.WIDTH * x / UW);
+            const my = Math.round(MiniMap.HEIGHT * y / UH);
 
-            if (entity instanceof Tree) color = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
-            else if ((entity instanceof Unit || entity instanceof Building) && entity.player != null) {
-                color = PLAYER_COLORS[entity.player.color];
-            }
-
-            if (color != null) {
-                ctx.fillStyle = color;
-                ctx.fillRect(
-                    Math.round(MiniMap.WIDTH * x / UW),
-                    Math.round(MiniMap.HEIGHT * y / UH),
-                    2, 2
-                );
+            if (entity instanceof Tree) {
+                ctx.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
+                ctx.fillRect(mx, my, 1, 1);
+            } else if ((entity instanceof Unit || entity instanceof Building) && entity.player != null) {
+                ctx.fillStyle = PLAYER_COLORS[entity.player.color];
+                ctx.fillRect(mx, my, 2, 2);
             }
         }
 
