@@ -1084,11 +1084,13 @@ class MiniMap extends Graphics.Node {
             const mx = Math.round(MiniMap.WIDTH * x / UW);
             const my = Math.round(MiniMap.HEIGHT * y / UH);
 
+            if (entity.selected) this.entitiesLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.SELECTED;
+
             if (entity instanceof Tree) {
-                this.entitiesLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
+                if (!entity.selected) this.entitiesLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
                 this.entitiesLayer.fillRect(mx, my, 1, 1);
             } else if ((entity instanceof Unit || entity instanceof Building) && entity.player != null) {
-                this.entitiesLayer.fillStyle = PLAYER_COLORS[entity.player.color];
+                if (!entity.selected) this.entitiesLayer.fillStyle = PLAYER_COLORS[entity.player.color];
                 this.entitiesLayer.fillRect(mx, my, 2, 2);
             }
         }
