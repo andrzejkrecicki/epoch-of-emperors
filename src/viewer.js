@@ -1054,24 +1054,49 @@ MoverOrderIndicator.prototype.FRAMES = Sprites.SpriteSequence("img/interface/mis
 
 class MiniMap extends Graphics.Node {
     constructor(map, viewer) {
-        super({ x: 573, y: 61 });
+        super({ x: 573, y: 6 });
 
         this.map = map;
         this.viewer = viewer
         this.scaleFactor = 1.2 * (Map.SIZES[0] / map.edge_size);
-        this.terrainLayer = getCanvasContext(this.map.edge_size, this.map.edge_size);
+
+        this.ctx = getCanvasContext(MiniMap.WIDTH, MiniMap.HEIGHT);
+        this.setClippingRegion();
+
+        this.terrainLayer = getCanvasContext(MiniMap.WIDTH, MiniMap.HEIGHT);
         this.entitiesLayer = getCanvasContext(MiniMap.WIDTH, MiniMap.HEIGHT);
 
         this.refreshTerrainLayer();
         this.refreshEntitiesLayer();
     }
+    setClippingRegion() {
+        this.ctx.beginPath();
+        this.ctx.moveTo(0, MiniMap.HEIGHT / 2);
+        this.ctx.lineTo(MiniMap.WIDTH / 2, 0);
+        this.ctx.lineTo(MiniMap.WIDTH - 1, MiniMap.HEIGHT / 2);
+        this.ctx.lineTo(MiniMap.WIDTH / 2, MiniMap.HEIGHT - 1);
+        this.ctx.clip();
+    }
     refreshTerrainLayer() {
+        let tmp = getCanvasContext(this.map.edge_size, this.map.edge_size);
+
         for (let y = 0; y < this.map.edge_size; ++y) {
             for (let x = 0; x < this.map.edge_size; ++x) {
-                this.terrainLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
-                this.terrainLayer.fillRect(x, y, 1, 1);
+                tmp.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS[this.map.terrain_tiles[x][y]];
+                tmp.fillRect(x, y, 1, 1);
             }
         }
+
+        this.terrainLayer.clearRect(0, 0, MiniMap.WIDTH, MiniMap.HEIGHT);
+        this.terrainLayer.save();
+        this.terrainLayer.setTransform(
+            this.scaleFactor, 0, 0,
+            .5 * this.scaleFactor, 0, MiniMap.HEIGHT / 2
+        );
+        this.terrainLayer.rotate(-Math.PI / 4);
+
+        this.terrainLayer.drawImage(tmp.canvas, 0, 0);
+        this.terrainLayer.restore();
     }
     refreshEntitiesLayer() {
         this.entitiesLayer.clearRect(0, 0, MiniMap.WIDTH, MiniMap.HEIGHT);
@@ -1098,35 +1123,21 @@ class MiniMap extends Graphics.Node {
     drawViewportRect() {
         const scale = MiniMap.WIDTH / (MapDrawable.TILE_SIZE.width * this.map.edge_size);
 
-        this.layer.ctx.strokeStyle = MiniMap.MINIMAP_PIXEL_COLORS.VIEWPORT;
-        this.layer.ctx.strokeRect(
-            Math.round(this.absX() + this.viewer.viewPort.x * scale) + .5 - 1,
-            Math.round(this.absY() - MiniMap.HEIGHT / 2 + this.viewer.viewPort.y * scale) + .5 - 1,
+        this.ctx.strokeStyle = MiniMap.MINIMAP_PIXEL_COLORS.VIEWPORT;
+        this.ctx.strokeRect(
+            Math.round(this.viewer.viewPort.x * scale) + .5 - 1,
+            Math.round(this.viewer.viewPort.y * scale) + .5 - 1,
             Math.round(this.viewer.viewPort.w * scale) + 2,
             Math.round((this.viewer.viewPort.h - BottomBar.IMAGE.height) * scale) + 1,
         );
     }
     draw() {
-        this.layer.ctx.save();
-        this.layer.ctx.setTransform(
-            this.scaleFactor, 0, 0,
-            .5 * this.scaleFactor, this.absX(), this.absY()
-        );
-        this.layer.ctx.rotate(-Math.PI / 4);
-
-        this.layer.ctx.drawImage(this.terrainLayer.canvas, 0, 0);
-        this.layer.ctx.restore();
-
+        this.ctx.clearRect(0, 0, MiniMap.WIDTH, MiniMap.HEIGHT);
+        this.ctx.drawImage(this.terrainLayer.canvas, 0, 0);
         this.refreshEntitiesLayer();
-        this.layer.ctx.drawImage(
-            this.entitiesLayer.canvas,
-            this.absX(),
-            this.absY() - MiniMap.HEIGHT / 2
-        );
+        this.ctx.drawImage(this.entitiesLayer.canvas, 0, 0);
         this.drawViewportRect();
-    }
-    process() {
-        this.makeEntitiesLayer
+        this.layer.ctx.drawImage(this.ctx.canvas, this.absX(), this.absY());
     }
 }
 MiniMap.MINIMAP_PIXEL_COLORS = MINIMAP_PIXEL_COLORS;
