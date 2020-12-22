@@ -63,7 +63,8 @@ const MINIMAP_PIXEL_COLORS = {
     [Map.TERRAIN_TYPES.WATERSAND_3]: '#3f5f9f',
     [Map.TERRAIN_TYPES.WATERSAND_9]: '#3f5f9f',
     TREE: '#003c00',
-    SELECTED: '#fff'
+    SELECTED: '#fff',
+    VIEWPORT: '#fff'
 }
 
 export {

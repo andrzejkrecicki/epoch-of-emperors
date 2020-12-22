@@ -1095,6 +1095,17 @@ class MiniMap extends Graphics.Node {
             }
         }
     }
+    drawViewportRect() {
+        const scale = MiniMap.WIDTH / (MapDrawable.TILE_SIZE.width * this.map.edge_size);
+
+        this.layer.ctx.strokeStyle = MiniMap.MINIMAP_PIXEL_COLORS.VIEWPORT;
+        this.layer.ctx.strokeRect(
+            Math.round(this.absX() + this.viewer.viewPort.x * scale) + .5 - 1,
+            Math.round(this.absY() - MiniMap.HEIGHT / 2 + this.viewer.viewPort.y * scale) + .5 - 1,
+            Math.round(this.viewer.viewPort.w * scale) + 2,
+            Math.round((this.viewer.viewPort.h - BottomBar.IMAGE.height) * scale) + 1,
+        );
+    }
     draw() {
         this.layer.ctx.save();
         this.layer.ctx.setTransform(
@@ -1112,6 +1123,7 @@ class MiniMap extends Graphics.Node {
             this.absX(),
             this.absY() - MiniMap.HEIGHT / 2
         );
+        this.drawViewportRect();
     }
     process() {
         this.makeEntitiesLayer
