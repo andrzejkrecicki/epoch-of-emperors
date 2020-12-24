@@ -277,8 +277,8 @@ class AStarPathFinder {
     }
     checkSubtiles(subtile_x, subtile_y) {
         if (
-            subtile_x < 0 || subtile_x > this.map.edge_size * 2 - 1 ||
-            subtile_y < 0 || subtile_y > this.map.edge_size * 2 - 1
+            subtile_x < 0 || subtile_x > this.map.edge_size * 2 - this.unit.SUBTILE_WIDTH ||
+            subtile_y < 0 || subtile_y > this.map.edge_size * 2 - this.unit.SUBTILE_WIDTH
         ) return false;
 
         for (let x = subtile_x & -2; x < subtile_x + this.unit.SUBTILE_WIDTH; x += 2) {
