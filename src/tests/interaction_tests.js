@@ -516,7 +516,8 @@ class UnitsBuildingsCleanUpTest extends Test {
             this.engine.drawables.length == 0 &&
             this.engine.projectiles.length == 0 &&
             this.engine.units.length == 4 &&
-            this.engine.buildings.length == 1
+            this.engine.buildings.length == 1 &&
+            this.engine.map.entities.length == 6
         )) this.fail("Failed to initialize Engine's object lists");
 
         if (this.nonNullSubtilesCount() != 30) this.fail("Failed to fill subtiles with entities");
@@ -541,6 +542,7 @@ class UnitsBuildingsCleanUpTest extends Test {
             this.engine.projectiles.length == 0 &&
             this.engine.units.length == 3 &&
             this.engine.buildings.length == 0 &&
+            this.engine.map.entities.length == 3 &&
             this.nonNullSubtilesCount() == 3
         ) this.pass();
     }

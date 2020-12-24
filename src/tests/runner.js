@@ -140,6 +140,7 @@ class TestRunner {
         this.engine.processBuildings();
         this.engine.processPlayers();
         this.engine.processDrawables();
+        this.map.process();
     }
     cleanUp() {
         let W = this.viewer.entitiesHolder.grid.length;

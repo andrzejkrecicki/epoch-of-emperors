@@ -9,6 +9,9 @@ class Map {
         this.entities = [];
         this.edge_size = Map.SIZES[this.definition.size];
     }
+    process() {
+        this.entities = this.entities.filter((e) => !e.destroyed);
+    }
     isShore(x, y) {
         return (
             this.initial_tiles[x][y] == Map.TERRAIN_TYPES.SAND ||

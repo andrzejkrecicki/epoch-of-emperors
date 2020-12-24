@@ -342,6 +342,7 @@ class Engine {
         this.processBuildings();
         this.processPlayers();
         this.processDrawables();
+        this.map.process();
         this.viewer.stage.draw();
     }
     handleRightClick(point) {
