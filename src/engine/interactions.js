@@ -208,7 +208,7 @@ class ReturnResourcesInteraction extends Interaction {
 ReturnResourcesInteraction.prototype.TOOLTIP = 'Right-click to return resources.';
 
 
-class LumberInteraction extends Interaction {
+class LumberInteraction extends ResourceExtractionInteraction {
     preInit() {
         this.active.state = this.active.STATE.LUMBER.BASE;
         this.active.attributes.food = this.active.attributes.gold = this.active.attributes.stone = null;
@@ -216,7 +216,7 @@ class LumberInteraction extends Interaction {
     process() {
         if (this.passive.destroyed) {
             if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
-                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.active.returnResources(this.engine);
+                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.returnResources(this.engine);
                 else this.terminate()
             }
         } else {
@@ -325,7 +325,7 @@ FisherInteraction.prototype.RATE = 54;
 FisherInteraction.prototype.TOOLTIP = 'Right-click to fish here.';
 
 
-class HunterInteraction extends Interaction {
+class HunterInteraction extends ResourceExtractionInteraction {
     preInit() {
         this.active.state = this.active.STATE.HUNTER.BASE;
         this.active.attributes.wood = this.active.attributes.gold = this.active.attributes.stone = null;
@@ -333,7 +333,7 @@ class HunterInteraction extends Interaction {
     process() {
         if (this.passive.destroyed) {
             if (this.engine.findInteractionSuccessor(this.active, this.passive) == null) {
-                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.active.returnResources(this.engine)
+                if (this.active.attributes[RESOURCE_NAME[this.active.carriedResource]]) this.returnResources(this.engine)
                 else this.active.terminateInteraction()
             }
         } else if (this.passive.state == this.passive.STATE.DYING) {
