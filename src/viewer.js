@@ -2,6 +2,9 @@ import { Engine } from './engine/engine.js';
 import { Map } from './engine/map.js';
 import { Sprites } from './sprites.js';
 import { Tree } from './engine/trees.js';
+import { Bush } from './engine/resources/bush.js';
+import { GoldMine } from './engine/resources/gold.js';
+import { StoneMine } from './engine/resources/stone.js';
 import { Unit } from './engine/units/unit.js';
 import { Building } from './engine/buildings/building.js';
 import { Entity } from './engine/entity.js';
@@ -1111,9 +1114,22 @@ class MiniMap extends Graphics.Node {
 
             if (entity.selected) this.entitiesLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.SELECTED;
 
-            if (entity instanceof Tree) {
-                if (!entity.selected) this.entitiesLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
+            if (entity instanceof Tree || entity instanceof Bush) {
+                this.entitiesLayer.fillStyle = MiniMap.MINIMAP_PIXEL_COLORS.TREE;
                 this.entitiesLayer.fillRect(mx, my, 1, 1);
+            } else if (entity instanceof GoldMine || entity instanceof StoneMine) {
+                if (entity instanceof GoldMine) this.entitiesLayer.strokeStyle = MiniMap.MINIMAP_PIXEL_COLORS.GOLD_MINE;
+                else this.entitiesLayer.strokeStyle = MiniMap.MINIMAP_PIXEL_COLORS.STONE_MINE;
+
+                this.entitiesLayer.strokeWidth = 1;
+                this.entitiesLayer.beginPath();
+                this.entitiesLayer.moveTo(mx - 1, my + .5);
+                this.entitiesLayer.lineTo(mx + 2, my + .5);
+                this.entitiesLayer.stroke();
+                this.entitiesLayer.beginPath();
+                this.entitiesLayer.moveTo(mx + .5, my - 1);
+                this.entitiesLayer.lineTo(mx + .5, my + 2);
+                this.entitiesLayer.stroke();
             } else if ((entity instanceof Unit || entity instanceof Building) && entity.player != null) {
                 if (!entity.selected) this.entitiesLayer.fillStyle = PLAYER_COLORS[entity.player.color];
                 this.entitiesLayer.fillRect(mx, my, 2, 2);
