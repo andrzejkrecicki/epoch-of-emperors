@@ -24,7 +24,7 @@ Market.prototype.AVATAR = [
         Sprites.Sprite("img/interface/avatars/market_01_all.png"),
         Sprites.Sprite("img/interface/avatars/market_01_all.png"),
         Sprites.Sprite("img/interface/avatars/market_03_greek.png"),
-        Sprites.Sprite("img/interface/avatars/market_01_all.png")
+        Sprites.Sprite("img/interface/avatars/market_04_greek.png")
     ]
 ];
 Market.prototype.MAX_HP = [350];
