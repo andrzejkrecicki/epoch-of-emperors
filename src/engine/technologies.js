@@ -322,7 +322,6 @@ class BronzeAge extends Age {
         return (
             +!!entity.player.possessions.ArcheryRange +
             +!!entity.player.possessions.Stable +
-            +!!entity.player.possessions.Farm +
             +!!entity.player.possessions.Market
         ) >= 2;
     }
