@@ -962,6 +962,25 @@ Polytheism.prototype.COST = {
 }
 
 
+class IronAge extends Age {
+    static isVisible(entity) {
+        return !entity.player.possessions.IronAge && entity.player.possessions.BronzeAge;
+    }
+    static isPossible(entity) {
+        return (
+            +!!entity.player.possessions.Academy +
+            +!!entity.player.possessions.GovernmentCenter +
+            +!!entity.player.possessions.SiegeWorkshop +
+            +!!entity.player.possessions.Temple
+        ) >= 2;
+    }
+}
+IronAge.prototype.IMAGE = Sprites.Sprite("img/interface/technologies/iron_age.png");
+IronAge.prototype.TOOLTIP = "Advance to Iron Age. Requires two buildings from Bronze Age";
+IronAge.prototype.TIME = 160 * FPS;
+IronAge.prototype.COST = {
+    food: 1000, wood: 0, stone: 0, gold: 800
+}
 
 
 const Technologies = {
@@ -1005,6 +1024,8 @@ const Technologies = {
     Mysticism,
     Polytheism,
 
+    IronAge,
+
     TechByAge: [
         [
             ToolAge
@@ -1046,7 +1067,8 @@ const Technologies = {
             Architecture,
             Astrology,
             Mysticism,
-            Polytheism
+            Polytheism,
+            IronAge,
         ],
         []
     ]

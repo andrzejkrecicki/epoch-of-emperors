@@ -25,7 +25,8 @@ class TownCenter extends Building {
         if (this.isComplete) return [
             Actions.RecruitUnitFactory(Villager),
             Technologies.ToolAge,
-            Technologies.BronzeAge
+            Technologies.BronzeAge,
+            Technologies.IronAge
         ]; else return null;
     }
     acceptsResource(type) {
