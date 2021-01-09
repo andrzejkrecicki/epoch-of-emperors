@@ -25,13 +25,17 @@ import { StoneMine } from './resources/stone.js';
 import { LeafTree } from './trees.js';
 import { AStarPathFinder, AStarToEntity, BFSWalker, BFSBroadWalker, StandardQueue } from './algorithms.js';
 import { distance, manhatan_subtile_distance, FPS } from '../utils.js'
+import { Technologies } from './technologies.js';
 
 
 class Engine {
     constructor(viewer, definition) {
         this.framesCount = 0;
         this.loop = null;
+        this.selectedEntity = null;
         this.viewer = viewer;
+        this.viewer.engine = this;
+
         this.definition = { ...definition };
 
         this.players = [];
@@ -46,6 +50,21 @@ class Engine {
         this.projectiles = [];
         this.drawables = [];
         if (this.definition.map.addSampleUnits) this.addSampleUnits();
+
+        for (const player of this.players) {
+            this.selectedEntity = { player };
+            for (const [age, technologies] of Technologies.TechByAge.entries()) {
+                if (this.definition.players[player.index].startingAge > age) {
+                    for (const Tech of technologies) {
+                        const tech = new Tech(this.viewer);
+                        tech.init();
+                        tech.finalize();
+                    }
+                }
+            }
+        }
+
+        this.selectedEntity = null;
     }
     processUnits() {
         for (let entity of this.units) {

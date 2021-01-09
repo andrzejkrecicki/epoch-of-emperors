@@ -1003,7 +1003,53 @@ const Technologies = {
     Architecture,
     Astrology,
     Mysticism,
-    Polytheism
-}
+    Polytheism,
+
+    TechByAge: [
+        [
+            ToolAge
+        ],
+        [
+            BattleAxe,
+            Toolworking,
+            LeatherArmorInfantry,
+            LeatherArmorArcher,
+            LeatherArmorCavalry,
+            Domestication,
+            Woodworking,
+            StoneMining,
+            GoldMining,
+            SmallWall,
+            WatchTower,
+            BronzeAge,
+        ],
+        [
+            Artisanship,
+            Plow,
+            Wheel,
+            ImprovedBow,
+            CompositeBow,
+            ShortSword,
+            BroadSword,
+            Metalworking,
+            ScaleArmorInfantry,
+            ScaleArmorArcher,
+            ScaleArmorCavalry,
+            BronzeShield,
+            MediumWall,
+            SentryTower,
+            FishingShip,
+            MerchantShip,
+            WarGallery,
+            Nobility,
+            Writing,
+            Architecture,
+            Astrology,
+            Mysticism,
+            Polytheism
+        ],
+        []
+    ]
+};
 
 export { Technologies };

@@ -12,7 +12,7 @@ class Player {
         this.population = 0;
         this.max_population = Player.prototype.DEFAULT_POPULATION;
 
-        this.age = definition.startingAge;
+        this.age = 0;
 
         this.units = [];
         this.buildings = [];
